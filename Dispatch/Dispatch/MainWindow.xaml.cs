@@ -30,11 +30,18 @@ namespace Dispatch
         public MainWindow()
         {
             InitializeComponent();
+            Load();
+        }
 
-            var provider = new GithubUpdateProvider("https://api.github.com/repos/wonderkiln/dispatch-windows/releases/latest", "50a6cb3f19ef948b8707255e35a09bb0675f1791");
-            new ApplicationUpdater(provider).CheckForUpdate();
+        private async void Load()
+        {
+            Version.Text = ApplicationUpdater.CurrentVersion.ToString(2);
 
-            Version.Text = ApplicationUpdater.CurrentVersion.ToString();
+            var provider = new GithubUpdateProvider("https://api.github.com/repos/wonderkiln/dispatch-windows/releases/latest", "a2aeafe429f92d49fda639405deed94957b73aec");
+            var updater = new ApplicationUpdater(provider);
+
+            await updater.CheckForUpdate();
+            UpdateVersion.Text = updater.LatestUpdate.Version.ToString(2);
         }
     }
 }

@@ -21,7 +21,8 @@ namespace Dispatch.Updater
         }
 
         private IUpdateProvider updater;
-        private UpdateInfo info;
+
+        public UpdateInfo LatestUpdate { get; set; }
 
         public ApplicationUpdater(IUpdateProvider updater)
         {
@@ -34,15 +35,20 @@ namespace Dispatch.Updater
             Console.WriteLine($"Downloading... {e}%");
         }
 
-        public async void CheckForUpdate(bool silent = true)
+        public async Task CheckForUpdate(bool silent = true)
         {
             try
             {
-                info = await updater.GetLatestUpdate();
+                LatestUpdate = await updater.GetLatestUpdate();
 
-                if (info.Version > CurrentVersion)
+                if (LatestUpdate.Version > CurrentVersion)
                 {
-                    if (MessageBox.Show($"Release notes:\n{info.ReleaseNotes}\n\nDo you want to download and install it now ({ByteSize.FromBytes(info.DownloadSize)})?", $"Update available from {CurrentVersion} to {info.Version}", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == MessageBoxResult.Yes)
+                    if (MessageBox.Show(
+                        $"Do you want to download and install it now ({ByteSize.FromBytes(LatestUpdate.DownloadSize)})?\nRelease notes:\n{LatestUpdate.ReleaseNotes}",
+                        $"Update available from {CurrentVersion.ToString(2)} to {LatestUpdate.Version.ToString(2)}",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question,
+                        MessageBoxResult.Yes) == MessageBoxResult.Yes)
                     {
                         DownloadUpdate();
                     }
@@ -66,11 +72,11 @@ namespace Dispatch.Updater
             }
         }
 
-        public async void DownloadUpdate()
+        private async void DownloadUpdate()
         {
             try
             {
-                var path = await updater.DownloadUpdate(info);
+                var path = await updater.DownloadUpdate(LatestUpdate);
 
                 Process.Start(path, "/VERYSILENT");
                 Application.Current.Shutdown();

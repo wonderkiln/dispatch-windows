@@ -7,8 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">
-            Current Version <Run Name="Version" />
-        </TextBlock>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock>
+                Current Version: <Run Name="Version" Text="-" />
+            </TextBlock>
+            <TextBlock>
+                Update Version: <Run Name="UpdateVersion" Text="-" />
+            </TextBlock>
+        </StackPanel>
     </Grid>
 </Window>
