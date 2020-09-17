@@ -1,9 +1,11 @@
 ﻿using ByteSizeLib;
 using Dispatch.Updater;
+using Dispatch.ViewModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -20,28 +22,31 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 
-namespace Dispatch
+namespace Dispatch.Screen
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        public ObservableCollection<TabViewModel> Tabs { get; set; } = new ObservableCollection<TabViewModel>() { new TabViewModel() };
+
+        private ApplicationUpdater updater = new ApplicationUpdater(new GithubUpdateProvider("https://api.github.com/repos/wonderkiln/dispatch-windows/releases/latest", "a2aeafe429f92d49fda639405deed94957b73aec"));
+
         public MainWindow()
         {
             InitializeComponent();
-            Load();
+            _ = updater.CheckForUpdate();
         }
 
-        private async void Load()
+        private void TabView_OnConnected(object sender, TabViewModel e)
         {
-            Version.Text = ApplicationUpdater.CurrentVersion.ToString(2);
+            Tabs.Add(new TabViewModel());
+        }
 
-            var provider = new GithubUpdateProvider("https://api.github.com/repos/wonderkiln/dispatch-windows/releases/latest", "a2aeafe429f92d49fda639405deed94957b73aec");
-            var updater = new ApplicationUpdater(provider);
-
-            await updater.CheckForUpdate();
-            UpdateVersion.Text = updater.LatestUpdate.Version.ToString(2);
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            _ = updater.CheckForUpdate(false);
         }
     }
 }
