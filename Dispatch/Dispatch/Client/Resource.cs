@@ -19,6 +19,8 @@ namespace Dispatch.Client
 
         public ResourceType Type { get; set; }
 
-        public long Size { get; set; }
+        public long? Size { get; set; }
+
+        public IClient Client { get; set; }
     }
 }

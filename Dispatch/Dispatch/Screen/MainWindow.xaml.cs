@@ -31,6 +31,8 @@ namespace Dispatch.Screen
     {
         public ObservableCollection<TabViewModel> Tabs { get; set; } = new ObservableCollection<TabViewModel>() { new TabViewModel() };
 
+        public QueueViewModel QueueViewModel { get; set; } = new QueueViewModel();
+
         private ApplicationUpdater updater = new ApplicationUpdater(new GithubUpdateProvider("https://api.github.com/repos/wonderkiln/dispatch-windows/releases/latest", "a2aeafe429f92d49fda639405deed94957b73aec"));
 
         public MainWindow()
@@ -55,6 +57,21 @@ namespace Dispatch.Screen
             await item.RightViewModel.Disconnect();
 
             Tabs.Remove(item);
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            var window = new QueueWindow();
+            window.QueueViewModel = QueueViewModel;
+            window.Show();
+        }
+
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            var tab = (TabViewModel)TabControl.SelectedItem;
+            var source = tab.LeftViewModel.List[0];
+            var destination = tab.RightViewModel.List[0];
+            QueueViewModel.Add(source, destination);
         }
     }
 }

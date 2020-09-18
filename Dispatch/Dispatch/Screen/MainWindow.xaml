@@ -22,6 +22,8 @@
         <Menu>
             <MenuItem Header="Help">
                 <MenuItem Header="Check for updates" Click="MenuItem_Click" />
+                <MenuItem Header="Queue" Click="MenuItem_Click_1" />
+                <MenuItem Header="Transfer" Click="MenuItem_Click_2" />
             </MenuItem>
         </Menu>
         <TabControl x:Name="TabControl" Grid.Row="1" SelectedIndex="0" ItemsSource="{Binding Tabs, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">

@@ -11,9 +11,26 @@ namespace Dispatch.ViewModel
 {
     public class ListViewModel : Observable
     {
+        private List<string> history = new List<string>();
+
         public IClient Client { get; private set; }
 
         public RelayCommand DisconnectCommand { get; private set; }
+
+
+        private string _currentPath;
+        public string CurrentPath
+        {
+            get
+            {
+                return _currentPath;
+            }
+            private set
+            {
+                _currentPath = value;
+                Notify();
+            }
+        }
 
         private List<Resource> _list;
         public List<Resource> List
@@ -38,11 +55,27 @@ namespace Dispatch.ViewModel
         public async void Load(string path)
         {
             List = await Client.List(path);
+
+            if (CurrentPath != null) history.Add(CurrentPath);
+            CurrentPath = path;
         }
 
         public async Task Disconnect()
         {
             await Client.Disconnect();
+        }
+
+        public async void Up()
+        {
+            if (history.Any())
+            {
+                var path = history[history.Count - 1];
+                history.RemoveAt(history.Count - 1);
+
+                List = await Client.List(path);
+
+                CurrentPath = path;
+            }
         }
     }
 }

@@ -4,19 +4,34 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Dispatch.View"
+             xmlns:helpers="clr-namespace:Dispatch.Helpers"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <Style x:Key="ItemStyle" TargetType="{x:Type ListViewItem}">
-            <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
-        </Style>
+        <helpers:BytesToStringConverter x:Key="BytesToStringConverter" />
     </UserControl.Resources>
-    <ListView ItemContainerStyle="{StaticResource ItemStyle}" SelectionMode="Extended" ItemsSource="{Binding ViewModel.List, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}">
-        <ListView.View>
-            <GridView>
-                <GridViewColumn Header="Name" Width="200" DisplayMemberBinding="{Binding Name}" />
-                <GridViewColumn Header="Size" Width="150" DisplayMemberBinding="{Binding Size}" />
-            </GridView>
-        </ListView.View>
-    </ListView>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Back" Click="Button_Click" />
+            <TextBlock Text="{Binding ViewModel.CurrentPath, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}" />
+        </StackPanel>
+        <ListView x:Name="List" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding ViewModel.List, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="AllowDrop" Value="True" />
+                    <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" Width="200" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Size" Width="150" DisplayMemberBinding="{Binding Size, Converter={StaticResource BytesToStringConverter}}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
 </UserControl>
