@@ -70,8 +70,11 @@
     </ApplicationDefinition>
     <Compile Include="Client\FTPClient.cs" />
     <Compile Include="Client\IClient.cs" />
+    <Compile Include="Client\LocalClient.cs" />
     <Compile Include="Client\Resource.cs" />
+    <Compile Include="Helpers\NullToVisibilityConverter.cs" />
     <Compile Include="Helpers\Observable.cs" />
+    <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Updater\ApplicationUpdater.cs" />
     <Compile Include="Updater\GithubUpdateProvider.cs" />
     <Compile Include="Updater\IUpdateProvider.cs" />

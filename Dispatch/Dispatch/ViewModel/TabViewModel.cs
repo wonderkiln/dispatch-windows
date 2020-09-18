@@ -1,4 +1,5 @@
-﻿using Dispatch.Helpers;
+﻿using Dispatch.Client;
+using Dispatch.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Dispatch.ViewModel
             }
         }
 
-        public ListViewModel LeftViewModel { get; } = new ListViewModel(null);
+        public ListViewModel LeftViewModel { get; } = new ListViewModel(new LocalClient());
 
         private ListViewModel _rightViewModel;
         public ListViewModel RightViewModel

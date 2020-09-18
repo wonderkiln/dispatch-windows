@@ -6,9 +6,13 @@
         xmlns:local="clr-namespace:Dispatch.Screen"
         xmlns:view="clr-namespace:Dispatch.View"
         xmlns:vm="clr-namespace:Dispatch.ViewModel"
+        xmlns:helpers="clr-namespace:Dispatch.Helpers"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <helpers:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -33,20 +37,13 @@
             </TabControl.ContentTemplate>
         </TabControl>
         <StatusBar Grid.Row="2">
-            <StatusBar.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                    </Grid>
-                </ItemsPanelTemplate>
-            </StatusBar.ItemsPanel>
-            <StatusBarItem>
+            <StatusBarItem Visibility="{Binding SelectedItem.RightViewModel, Mode=OneWay, Source={x:Reference TabControl}, Converter={StaticResource NullToVisibilityConverter}}">
                 <TextBlock>
                     Connected to <Run Text="{Binding SelectedItem.Title, Mode=OneWay, Source={x:Reference TabControl}}" />
                 </TextBlock>
+            </StatusBarItem>
+            <StatusBarItem Visibility="{Binding SelectedItem.RightViewModel, Mode=OneWay, Source={x:Reference TabControl}, Converter={StaticResource NullToVisibilityConverter}}">
+                <Button Content="Disconnect" Click="Button_Click" />
             </StatusBarItem>
         </StatusBar>
     </Grid>

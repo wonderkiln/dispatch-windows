@@ -19,7 +19,7 @@ namespace Dispatch.Client
             client.Host = host;
             client.Port = port;
             client.Credentials = new NetworkCredential(username, password);
-
+            
             await client.ConnectAsync();
 
             Root = root;

@@ -48,5 +48,13 @@ namespace Dispatch.Screen
         {
             _ = updater.CheckForUpdate(false);
         }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (TabViewModel)TabControl.SelectedItem;
+            await item.RightViewModel.Disconnect();
+
+            Tabs.Remove(item);
+        }
     }
 }

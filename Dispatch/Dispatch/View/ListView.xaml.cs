@@ -1,4 +1,5 @@
-﻿using Dispatch.ViewModel;
+﻿using Dispatch.Client;
+using Dispatch.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,14 @@ namespace Dispatch.View
         public ListView()
         {
             InitializeComponent();
+        }
+
+        private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var item = (ListViewItem)sender;
+            var resource = (Resource)item.DataContext;
+
+            ViewModel.Load(resource.Path);
         }
     }
 }
