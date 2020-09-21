@@ -11,29 +11,30 @@ namespace Dispatch.ViewModel
 {
     public class ListViewModel : Observable
     {
-        private List<string> history = new List<string>();
-
         public IClient Client { get; private set; }
 
-        public RelayCommand DisconnectCommand { get; private set; }
+        public ListViewModel(IClient client)
+        {
+            Client = client;
+            Load(client.RootPath);
+        }
 
-
-        private string _currentPath;
-        public string CurrentPath
+        private IResource _currentResource;
+        public IResource CurrentResource
         {
             get
             {
-                return _currentPath;
+                return _currentResource;
             }
             private set
             {
-                _currentPath = value;
+                _currentResource = value;
                 Notify();
             }
         }
 
-        private List<Resource> _list;
-        public List<Resource> List
+        private List<IResource> _list;
+        public List<IResource> List
         {
             get
             {
@@ -46,36 +47,23 @@ namespace Dispatch.ViewModel
             }
         }
 
-        public ListViewModel(IClient client)
-        {
-            Client = client;
-            Load(client.Root);
-        }
-
         public async void Load(string path)
         {
-            List = await Client.List(path);
+            CurrentResource = await Client.Resource(path);
+            List = await Client.Resources(path);
+        }
 
-            if (CurrentPath != null) history.Add(CurrentPath);
-            CurrentPath = path;
+        public async void Refresh()
+        {
+            if (CurrentResource != null)
+            {
+                List = await Client.Resources(CurrentResource.Path);
+            }
         }
 
         public async Task Disconnect()
         {
             await Client.Disconnect();
-        }
-
-        public async void Up()
-        {
-            if (history.Any())
-            {
-                var path = history[history.Count - 1];
-                history.RemoveAt(history.Count - 1);
-
-                List = await Client.List(path);
-
-                CurrentPath = path;
-            }
         }
     }
 }

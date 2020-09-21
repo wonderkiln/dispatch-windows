@@ -19,9 +19,9 @@ namespace Dispatch.ViewModel
 
         public string Error { get; set; }
 
-        public Resource Source { get; set; }
+        public IResource Source { get; set; }
 
-        public Resource Destination { get; set; }
+        public IResource Destination { get; set; }
     }
 
     public class QueueViewModel : Observable
@@ -36,7 +36,7 @@ namespace Dispatch.ViewModel
             }
         }
 
-        public void Add(Resource source, Resource destination)
+        public void Add(IResource source, IResource destination)
         {
             var obj = new TransferObject()
             {
@@ -47,9 +47,9 @@ namespace Dispatch.ViewModel
             queue.Enqueue(obj, new Action<TransferObject, Action>(async (item, callback) =>
             {
                 //await Task.Delay(1000);
-                var path = await item.Source.Client.Download(item.Source, Path.GetTempPath());
-                await item.Destination.Client.Upload(path, item.Destination.Path);
-                callback();
+                //var path = await item.Source.Client.Download(item.Source, Path.GetTempPath());
+                //await item.Destination.Client.Upload(path, item.Destination);
+                //callback();
             }));
 
             Notify("List");

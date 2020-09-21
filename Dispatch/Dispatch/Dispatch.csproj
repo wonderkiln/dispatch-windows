@@ -71,12 +71,15 @@
     <Compile Include="Client\FTPClient.cs" />
     <Compile Include="Client\IClient.cs" />
     <Compile Include="Client\LocalClient.cs" />
-    <Compile Include="Client\Resource.cs" />
+    <Compile Include="Client\IResource.cs" />
     <Compile Include="Helpers\BytesToStringConverter.cs" />
     <Compile Include="Helpers\NullToVisibilityConverter.cs" />
     <Compile Include="Helpers\Observable.cs" />
     <Compile Include="Helpers\ObjectQueue.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
+    <Compile Include="Screen\ProgressWindow.xaml.cs">
+      <DependentUpon>ProgressWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Screen\QueueWindow.xaml.cs">
       <DependentUpon>QueueWindow.xaml</DependentUpon>
     </Compile>
@@ -108,6 +111,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Screen\ProgressWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Screen\QueueWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

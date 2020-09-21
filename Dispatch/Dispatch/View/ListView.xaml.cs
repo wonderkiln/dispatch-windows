@@ -1,4 +1,5 @@
 ﻿using Dispatch.Client;
+using Dispatch.Screen;
 using Dispatch.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -47,94 +48,124 @@ namespace Dispatch.View
             if (e.ChangedButton == MouseButton.Left)
             {
                 var item = (ListViewItem)sender;
-                var resource = (Resource)item.DataContext;
+                var resource = (IResource)item.DataContext;
 
-                if (resource.Type == ResourceType.Directory)
+                if (resource.Directory)
                 {
                     ViewModel.Load(resource.Path);
                 }
                 else
                 {
-                    var path = await ViewModel.Client.Download(resource, Path.GetTempPath());
+                    var path = Path.Combine(Path.GetTempPath(), resource.Name);
+                    await ViewModel.Client.DownloadFile(resource.Path, path);
                     Process.Start(path);
                 }
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private class DragDropResource
         {
-            ViewModel.Up();
+            public IResource Resource;
         }
 
-        private void ListViewItem_MouseUp(object sender, MouseButtonEventArgs e)
+        private void ListViewItem_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Right)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
                 var item = (ListViewItem)sender;
-                var resource = (Resource)item.DataContext;
+                var resource = (IResource)item.DataContext;
 
-                var menu = new ContextMenu();
-
-                if (resource.Type == ResourceType.File)
-                {
-                    var editItem = new MenuItem() { Header = "Edit" };
-                    editItem.Click += EditItem_Click;
-                    menu.Items.Add(editItem);
-                }
-
-                menu.PlacementTarget = item;
-                menu.IsOpen = true;
+                DragDrop.DoDragDrop(sender as DependencyObject, new DragDropResource() { Resource = resource }, DragDropEffects.Copy);
             }
         }
 
-        private Dictionary<string, string> editPaths = new Dictionary<string, string>();
+        ProgressWindow progressWindow;
 
-        private async void EditItem_Click(object sender, RoutedEventArgs e)
+        private async void List_Drop(object sender, DragEventArgs e)
         {
-            var item = (MenuItem)sender;
-            var resource = (Resource)item.DataContext;
+            if (e.Data.GetDataPresent(typeof(DragDropResource)))
+            {
+                var data = (DragDropResource)e.Data.GetData(typeof(DragDropResource));
 
-            var path = await ViewModel.Client.Download(resource, Path.GetTempPath());
+                var draggedResource = data.Resource;
+                var droppedResource = ViewModel.CurrentResource;
 
-            editPaths[path] = resource.Path;
+                var draggedClient = draggedResource.Client;
+                var droppedClient = ViewModel.Client;
 
-            var watcher = new FileSystemWatcher();
-            watcher.Path = Path.GetDirectoryName(path);
-            watcher.Filter = Path.GetFileName(path);
-            watcher.IncludeSubdirectories = false;
-            watcher.EnableRaisingEvents = true;
-            watcher.NotifyFilter = NotifyFilters.LastWrite;
-            watcher.Changed += Watcher_Changed;
+                progressWindow = new ProgressWindow();
+                progressWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                progressWindow.Owner = Parent as Window;
+                progressWindow.Show();
 
-            Process.Start(path);
+                if (draggedClient is LocalClient)
+                {
+                    droppedClient.OnProgressChange += DroppedClient_OnProgressChange;
+
+                    if (draggedResource.Directory)
+                    {
+                        await droppedClient.UploadDirectory(draggedResource.Path, droppedResource.CombinePath(draggedResource.Name));
+                    }
+                    else
+                    {
+                        await droppedClient.UploadFile(draggedResource.Path, droppedResource.CombinePath(draggedResource.Name));
+                    }
+
+                    droppedClient.OnProgressChange -= DroppedClient_OnProgressChange;
+                }
+                else
+                {
+                    draggedClient.OnProgressChange += DroppedClient_OnProgressChange;
+
+                    if (draggedResource.Directory)
+                    {
+                        await draggedClient.DownloadDirectory(draggedResource.Path, droppedResource.CombinePath(draggedResource.Name));
+                    }
+                    else
+                    {
+                        await draggedClient.DownloadFile(draggedResource.Path, droppedResource.CombinePath(draggedResource.Name));
+                    }
+
+                    draggedClient.OnProgressChange -= DroppedClient_OnProgressChange;
+                }
+
+                progressWindow.Close();
+                progressWindow = null;
+
+                ViewModel.Refresh();
+            }
         }
 
-        private void Watcher_Changed(object sender, FileSystemEventArgs e)
+        private void DroppedClient_OnProgressChange(object sender, ClientProgress e)
         {
-            var remotePath = editPaths[e.FullPath];
-            Console.WriteLine(remotePath);
+            progressWindow.Progress.IsIndeterminate = false;
+            progressWindow.Progress.Value = e.TotalProgress;
         }
 
-        private void ListViewItem_Drop(object sender, DragEventArgs e)
+        private void List_DragEnter(object sender, DragEventArgs e)
         {
-        }
+            if (e.Data.GetDataPresent(typeof(DragDropResource)))
+            {
+                var data = (DragDropResource)e.Data.GetData(typeof(DragDropResource));
 
-        private void ListViewItem_DragOver(object sender, DragEventArgs e)
-        {
-            var item = (ListViewItem)sender;
-            List.SelectedItem = item.DataContext;
+                if (ViewModel.Client == data.Resource.Client)
+                {
+                    e.Effects = DragDropEffects.None;
+                }
+            }
         }
 
         private void List_DragOver(object sender, DragEventArgs e)
         {
-        }
+            if (e.Data.GetDataPresent(typeof(DragDropResource)))
+            {
+                var data = (DragDropResource)e.Data.GetData(typeof(DragDropResource));
 
-        private void List_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var list = (System.Windows.Controls.ListView)sender;
-
-            DataObject data = new DataObject("");
-            DragDrop.DoDragDrop(list, data, DragDropEffects.Copy);
+                if (ViewModel.Client == data.Resource.Client)
+                {
+                    e.Effects = DragDropEffects.None;
+                }
+            }
         }
     }
 }

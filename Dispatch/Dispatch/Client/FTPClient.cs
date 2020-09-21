@@ -9,24 +9,72 @@ using System.Threading.Tasks;
 
 namespace Dispatch.Client
 {
-    public class FTPClient : IClient
+    public class FTPResource : IResource
     {
-        public string Name { get; private set; } = "Remote";
+        public string Path { get; set; }
 
-        public string Root { get; private set; }
+        public string Name { get; set; }
 
+        public bool Directory { get; set; }
+
+        public long? Size { get; set; }
+
+        public IClient Client { get; set; }
+
+        public string CombinePath(string path)
+        {
+            return Path + "/" + path;
+        }
+    }
+
+    public class FTPClient : IClient, IProgress<FtpProgress>
+    {
         private FtpClient client = new FtpClient();
+
+        public event EventHandler<ClientProgress> OnProgressChange;
+
+        public string RootPath { get; private set; }
+
+        private FTPResource MakeResource(FtpListItem item)
+        {
+            var resource = new FTPResource() { Path = item.FullName, Name = item.Name, Client = this };
+
+            switch (item.Type)
+            {
+                case FtpFileSystemObjectType.Directory:
+                    resource.Directory = true;
+                    break;
+                default:
+                    resource.Size = item.Size;
+                    resource.Directory = false;
+                    break;
+            }
+
+            return resource;
+        }
 
         public async Task Connect(string host, int port, string username, string password, string root)
         {
+            client.SslProtocols = System.Security.Authentication.SslProtocols.Tls;
+            client.ValidateAnyCertificate = true;
+            client.DataConnectionType = FtpDataConnectionType.PASV;
+            client.DownloadDataType = FtpDataType.Binary;
+            client.RetryAttempts = 5;
+            client.SocketPollInterval = 1000;
+            client.ConnectTimeout = 2000;
+            client.ReadTimeout = 2000;
+            client.DataConnectionConnectTimeout = 2000;
+            client.DataConnectionReadTimeout = 2000;
+
+            //FtpTrace.EnableTracing = false;
+
             client.Host = host;
             client.Port = port;
             client.Credentials = new NetworkCredential(username, password);
 
             await client.ConnectAsync();
 
-            Root = root;
-            Name = host; // or custom name
+            RootPath = root;
         }
 
         public async Task Disconnect()
@@ -34,63 +82,42 @@ namespace Dispatch.Client
             await client.DisconnectAsync();
         }
 
-        public async Task<List<Resource>> List(string path)
+        public async Task<IResource> Resource(string path)
         {
-            var list = await client.GetListingAsync(path);
-
-            return list.Select(e =>
-            {
-                var item = new Resource() { Path = e.FullName, Name = e.Name, Client = this };
-
-                switch (e.Type)
-                {
-                    case FtpFileSystemObjectType.File:
-                        item.Size = e.Size;
-                        item.Type = ResourceType.File;
-                        break;
-                    case FtpFileSystemObjectType.Link:
-                        item.Size = e.Size;
-                        item.Type = ResourceType.Link;
-                        break;
-                    case FtpFileSystemObjectType.Directory:
-                        item.Type = ResourceType.Directory;
-                        break;
-                }
-
-                return item;
-            }).ToList();
+            var item = await client.GetObjectInfoAsync(path);
+            return MakeResource(item);
         }
 
-        public async Task<string> Download(Resource resource, string destination)
+        public async Task<List<IResource>> Resources(string path)
         {
-            if (resource.Type == ResourceType.Directory)
-            {
-                await client.DownloadDirectoryAsync(destination, resource.Path);
-
-                return destination;
-            }
-            else
-            {
-                var path = Path.Combine(destination, resource.Name);
-                await client.DownloadFileAsync(path, resource.Path);
-
-                return path;
-            }
+            var items = await client.GetListingAsync(path);
+            return items.Select(MakeResource).Cast<IResource>().ToList();
         }
 
-        // TODO: resource
-        public async Task Upload(string source, string destination)
+        public async Task DownloadDirectory(string source, string destination)
         {
-            var fileInfo = new FileInfo(source);
+            await client.DownloadDirectoryAsync(destination, source, FtpFolderSyncMode.Update, FtpLocalExists.Overwrite, FtpVerify.None, null, this);
+        }
 
-            if (fileInfo.Attributes.HasFlag(FileAttributes.Directory))
-            {
-                await client.UploadDirectoryAsync(source, destination);
-            }
-            else
-            {
-                await client.UploadFileAsync(source, destination + "/" + fileInfo.Name);
-            }
+        public async Task DownloadFile(string source, string destination)
+        {
+            await client.DownloadFileAsync(destination, source, FtpLocalExists.Overwrite, FtpVerify.None, this);
+        }
+
+        public async Task UploadDirectory(string source, string destination)
+        {
+            await client.UploadDirectoryAsync(source, destination, FtpFolderSyncMode.Update, FtpRemoteExists.Overwrite, FtpVerify.None, null, this);
+        }
+
+        public async Task UploadFile(string source, string destination)
+        {
+            await client.UploadFileAsync(source, destination, FtpRemoteExists.Overwrite, false, FtpVerify.None, this);
+        }
+
+        public void Report(FtpProgress value)
+        {
+            var progress = 100 * (value.FileIndex + value.Progress / 100) / value.FileCount;
+            OnProgressChange?.Invoke(this, new ClientProgress() { TotalProgress = progress });
         }
     }
 }

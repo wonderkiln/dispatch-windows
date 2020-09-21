@@ -7,51 +7,85 @@ using System.Threading.Tasks;
 
 namespace Dispatch.Client
 {
+    public class LocalResource : IResource
+    {
+        public string Path { get; set; }
+
+        public string Name { get; set; }
+
+        public bool Directory { get; set; }
+
+        public long? Size { get; set; }
+
+        public IClient Client { get; set; }
+
+        public string CombinePath(string path)
+        {
+            return System.IO.Path.Combine(Path, path);
+        }
+    }
+
     public class LocalClient : IClient
     {
-        public string Name { get; } = "Local";
+        public string RootPath { get; } = @"D:\";
 
-        public string Root { get; } = @"C:\Users\Admin\Downloads";
+        public event EventHandler<ClientProgress> OnProgressChange;
+
+        private LocalResource MakeResource(string path)
+        {
+            var fileInfo = new FileInfo(path);
+            var resource = new LocalResource() { Path = fileInfo.FullName, Name = fileInfo.Name, Client = this };
+
+            if (fileInfo.Attributes.HasFlag(FileAttributes.Directory))
+            {
+                resource.Directory = true;
+            }
+            else
+            {
+                resource.Size = fileInfo.Length;
+                resource.Directory = false;
+            }
+
+            return resource;
+        }
 
         public Task Disconnect()
         {
             throw new NotImplementedException();
         }
 
-        public Task<string> Download(Resource resource, string destination)
+        public Task<IResource> Resource(string path)
         {
-            return Task.FromResult(resource.Path);
+            return Task.FromResult<IResource>(MakeResource(path));
         }
 
-        public Task<List<Resource>> List(string path)
+        public Task<List<IResource>> Resources(string path)
         {
-            //if (path == Root)
-            //{
-            //    return Task.FromResult(DriveInfo.GetDrives().Select(e => new Resource() { Path = e.Name, Name = e.Name, Type = ResourceType.Directory, Client = this }).ToList());
-            //}
+            var directories = Directory.GetDirectories(path);
+            var files = Directory.GetFiles(path);
 
-            var directories = Directory.GetDirectories(path).Select(e => new Resource() { Path = e, Name = Path.GetFileName(e), Type = ResourceType.Directory, Client = this }).ToList();
-            var files = Directory.GetFiles(path).Select(e => new Resource() { Path = e, Name = Path.GetFileName(e), Type = ResourceType.File, Size = new FileInfo(e).Length, Client = this }).ToList();
-
-            return Task.FromResult(directories.Concat(files).ToList());
+            var items = directories.Concat(files);
+            return Task.FromResult(items.Select(MakeResource).Cast<IResource>().ToList());
         }
 
-        public Task Upload(string source, string destination)
+        public Task DownloadDirectory(string source, string destination)
         {
-            return new Task(() =>
-            {
-                var fileInfo = new FileInfo(source);
+            throw new NotImplementedException();
+        }
 
-                if (fileInfo.Attributes.HasFlag(FileAttributes.Directory))
-                {
-                    Directory.Move(source, destination);
-                }
-                else
-                {
-                    var path = Path.Combine(destination, Path.GetFileName(source));
-                    File.Move(source, path);
-                }
-            });
+        public Task DownloadFile(string source, string destination)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UploadDirectory(string source, string destination)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UploadFile(string source, string destination)
+        {
+            throw new NotImplementedException();
         }
     }
 }
