@@ -79,67 +79,16 @@ namespace Dispatch.View
             }
         }
 
-        ProgressWindow progressWindow;
-
-        private async void List_Drop(object sender, DragEventArgs e)
+        private void List_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(typeof(DragDropResource)))
             {
                 var data = (DragDropResource)e.Data.GetData(typeof(DragDropResource));
 
-                var draggedResource = data.Resource;
-                var droppedResource = ViewModel.CurrentResource;
+                App.QueueViewModel.Add(data.Resource, ViewModel.CurrentResource);
 
-                var draggedClient = draggedResource.Client;
-                var droppedClient = ViewModel.Client;
-
-                progressWindow = new ProgressWindow();
-                progressWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                progressWindow.Owner = Parent as Window;
-                progressWindow.Show();
-
-                if (draggedClient is LocalClient)
-                {
-                    droppedClient.OnProgressChange += DroppedClient_OnProgressChange;
-
-                    if (draggedResource.Directory)
-                    {
-                        await droppedClient.UploadDirectory(draggedResource.Path, droppedResource.CombinePath(draggedResource.Name));
-                    }
-                    else
-                    {
-                        await droppedClient.UploadFile(draggedResource.Path, droppedResource.CombinePath(draggedResource.Name));
-                    }
-
-                    droppedClient.OnProgressChange -= DroppedClient_OnProgressChange;
-                }
-                else
-                {
-                    draggedClient.OnProgressChange += DroppedClient_OnProgressChange;
-
-                    if (draggedResource.Directory)
-                    {
-                        await draggedClient.DownloadDirectory(draggedResource.Path, droppedResource.CombinePath(draggedResource.Name));
-                    }
-                    else
-                    {
-                        await draggedClient.DownloadFile(draggedResource.Path, droppedResource.CombinePath(draggedResource.Name));
-                    }
-
-                    draggedClient.OnProgressChange -= DroppedClient_OnProgressChange;
-                }
-
-                progressWindow.Close();
-                progressWindow = null;
-
-                ViewModel.Refresh();
+                // ViewModel.Refresh();
             }
-        }
-
-        private void DroppedClient_OnProgressChange(object sender, ClientProgress e)
-        {
-            progressWindow.Progress.IsIndeterminate = false;
-            progressWindow.Progress.Value = e.TotalProgress;
         }
 
         private void List_DragEnter(object sender, DragEventArgs e)
@@ -166,6 +115,38 @@ namespace Dispatch.View
                     e.Effects = DragDropEffects.None;
                 }
             }
+        }
+
+        private void ListViewItem_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var item = (ListViewItem)sender;
+            var resource = (IResource)item.DataContext;
+
+            var menu = new ContextMenu();
+
+            var deleteItem = new MenuItem() { Header = "Delete" };
+            deleteItem.Click += DeleteItem_Click;
+            menu.Items.Add(deleteItem);
+
+            menu.DataContext = resource;
+            menu.PlacementTarget = sender as UIElement;
+            menu.IsOpen = true;
+        }
+
+        private void DeleteItem_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (MenuItem)sender;
+            var resource = (IResource)item.DataContext;
+
+            if (MessageBox.Show("Are you sure you want to delete?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == MessageBoxResult.Yes)
+            {
+                ViewModel.Delete(resource.Path);
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.GoBack();
         }
     }
 }

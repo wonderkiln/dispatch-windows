@@ -4,12 +4,74 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Dispatch.Screen"
+        xmlns:app="clr-namespace:Dispatch"
         mc:Ignorable="d"
-        Title="QueueWindow" Height="450" Width="800">
-    <ListBox ItemsSource="{Binding QueueViewModel.List, RelativeSource={RelativeSource AncestorType={x:Type local:QueueWindow}}}">
+        Title="QueueWindow" Height="400" Width="300">
+    <Window.Resources>
+        <DataTemplate x:Key="Queued">
+            <TextBlock Text="Queued" />
+        </DataTemplate>
+        <DataTemplate x:Key="IntermitentProgress">
+            <StackPanel>
+                <ProgressBar IsIndeterminate="True" Height="12" />
+                <Button Content="Cancel" Command="{Binding CancelCommand}" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="InProgress">
+            <StackPanel>
+                <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress}" Height="12" />
+                <Button Content="Cancel" Command="{Binding CancelCommand}" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="Finished">
+            <TextBlock Text="Finished" />
+        </DataTemplate>
+        <DataTemplate x:Key="Error">
+            <TextBlock>
+                Error: <Run Text="{Binding Error}" />
+            </TextBlock>
+        </DataTemplate>
+        <DataTemplate x:Key="Cancelled">
+            <TextBlock Text="Cancelled" />
+        </DataTemplate>
+    </Window.Resources>
+    <ListBox ItemsSource="{Binding List, Source={x:Static app:App.QueueViewModel}}">
         <ListBox.ItemTemplate>
             <DataTemplate>
-                <TextBlock Text="Something" />
+                <StackPanel>
+                    <TextBlock>
+                        Source: <Run Text="{Binding Source.Path}" />
+                    </TextBlock>
+                    <TextBlock>
+                        Destination: <Run Text="{Binding Destination.Path}" />
+                    </TextBlock>
+                    <ContentControl Content="{Binding}">
+                        <ContentControl.Style>
+                            <Style TargetType="ContentControl">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Status}" Value="Queued">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource Queued}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="IntermitentProgress">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource IntermitentProgress}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="InProgress">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource InProgress}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="Finished">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource Finished}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="Error">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource Error}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="Cancelled">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource Cancelled}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContentControl.Style>
+                    </ContentControl>
+                </StackPanel>
             </DataTemplate>
         </ListBox.ItemTemplate>
     </ListBox>

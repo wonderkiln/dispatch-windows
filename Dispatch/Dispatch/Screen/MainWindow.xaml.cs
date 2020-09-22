@@ -65,13 +65,5 @@ namespace Dispatch.Screen
             window.QueueViewModel = QueueViewModel;
             window.Show();
         }
-
-        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
-        {
-            var tab = (TabViewModel)TabControl.SelectedItem;
-            var source = tab.LeftViewModel.List[0];
-            var destination = tab.RightViewModel.List[0];
-            QueueViewModel.Add(source, destination);
-        }
     }
 }

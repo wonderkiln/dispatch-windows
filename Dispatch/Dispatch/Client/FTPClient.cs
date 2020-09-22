@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Dispatch.Client
@@ -94,24 +95,38 @@ namespace Dispatch.Client
             return items.Select(MakeResource).Cast<IResource>().ToList();
         }
 
-        public async Task DownloadDirectory(string source, string destination)
+        public async Task Delete(string path)
         {
-            await client.DownloadDirectoryAsync(destination, source, FtpFolderSyncMode.Update, FtpLocalExists.Overwrite, FtpVerify.None, null, this);
+            var resource = await Resource(path);
+
+            if (resource.Directory)
+            {
+                await client.DeleteDirectoryAsync(resource.Path, FtpListOption.Auto);
+            }
+            else
+            {
+                await client.DeleteFileAsync(resource.Path);
+            }
         }
 
-        public async Task DownloadFile(string source, string destination)
+        public async Task DownloadDirectory(string source, string destination, CancellationToken token = default)
         {
-            await client.DownloadFileAsync(destination, source, FtpLocalExists.Overwrite, FtpVerify.None, this);
+            await client.DownloadDirectoryAsync(destination, source, FtpFolderSyncMode.Update, FtpLocalExists.Overwrite, FtpVerify.None, null, this, token);
         }
 
-        public async Task UploadDirectory(string source, string destination)
+        public async Task DownloadFile(string source, string destination, CancellationToken token)
         {
-            await client.UploadDirectoryAsync(source, destination, FtpFolderSyncMode.Update, FtpRemoteExists.Overwrite, FtpVerify.None, null, this);
+            await client.DownloadFileAsync(destination, source, FtpLocalExists.Overwrite, FtpVerify.None, this, token = default);
         }
 
-        public async Task UploadFile(string source, string destination)
+        public async Task UploadDirectory(string source, string destination, CancellationToken token)
         {
-            await client.UploadFileAsync(source, destination, FtpRemoteExists.Overwrite, false, FtpVerify.None, this);
+            await client.UploadDirectoryAsync(source, destination, FtpFolderSyncMode.Update, FtpRemoteExists.Overwrite, FtpVerify.None, null, this, token = default);
+        }
+
+        public async Task UploadFile(string source, string destination, CancellationToken token)
+        {
+            await client.UploadFileAsync(source, destination, FtpRemoteExists.Overwrite, false, FtpVerify.None, this, token = default);
         }
 
         public void Report(FtpProgress value)

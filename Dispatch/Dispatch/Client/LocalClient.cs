@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Dispatch.Client
@@ -68,22 +69,46 @@ namespace Dispatch.Client
             return Task.FromResult(items.Select(MakeResource).Cast<IResource>().ToList());
         }
 
-        public Task DownloadDirectory(string source, string destination)
+        public async Task Delete(string path)
+        {
+            var resource = await Resource(path);
+
+            if (resource.Directory)
+            {
+                foreach(var file in Directory.GetFiles(resource.Path))
+                {
+                    File.Delete(file);
+                }
+
+                foreach (var directory in Directory.GetDirectories(resource.Path))
+                {
+                    await Delete(directory);
+                }
+
+                Directory.Delete(resource.Path);
+            }
+            else
+            {
+                File.Delete(resource.Path);
+            }
+        }
+
+        public Task DownloadDirectory(string source, string destination, CancellationToken token = default)
         {
             throw new NotImplementedException();
         }
 
-        public Task DownloadFile(string source, string destination)
+        public Task DownloadFile(string source, string destination, CancellationToken token = default)
         {
             throw new NotImplementedException();
         }
 
-        public Task UploadDirectory(string source, string destination)
+        public Task UploadDirectory(string source, string destination, CancellationToken token = default)
         {
             throw new NotImplementedException();
         }
 
-        public Task UploadFile(string source, string destination)
+        public Task UploadFile(string source, string destination, CancellationToken token = default)
         {
             throw new NotImplementedException();
         }

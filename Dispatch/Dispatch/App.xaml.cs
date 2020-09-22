@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dispatch.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,6 @@ namespace Dispatch
     /// </summary>
     public partial class App : Application
     {
+        public static QueueViewModel QueueViewModel { get; } = new QueueViewModel();
     }
 }

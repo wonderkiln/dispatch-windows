@@ -15,6 +15,29 @@ using System.Windows.Shapes;
 
 namespace Dispatch.Screen
 {
+    public class ItemTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate Queued { get; set; }
+        public DataTemplate IntermitentProgress { get; set; }
+        public DataTemplate InProgress { get; set; }
+        public DataTemplate Finished { get; set; }
+
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        {
+            var status = (TransferObject.TransferStatus)item;
+
+            switch(status)
+            {
+                case TransferObject.TransferStatus.Queued:
+                    return Queued;
+                case TransferObject.TransferStatus.InProgress:
+                    return IntermitentProgress;
+                default:
+                    return Finished;
+            }
+        }
+    }
+
     /// <summary>
     /// Interaction logic for QueueWindow.xaml
     /// </summary>

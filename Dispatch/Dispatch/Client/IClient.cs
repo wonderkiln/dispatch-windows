@@ -28,12 +28,14 @@ namespace Dispatch.Client
 
         Task<List<IResource>> Resources(string path);
 
-        Task DownloadFile(string source, string destination);
+        Task Delete(string path);
 
-        Task DownloadDirectory(string source, string destination);
+        Task DownloadFile(string source, string destination, CancellationToken token = default);
 
-        Task UploadFile(string source, string destination);
+        Task DownloadDirectory(string source, string destination, CancellationToken token = default);
 
-        Task UploadDirectory(string source, string destination);
+        Task UploadFile(string source, string destination, CancellationToken token = default);
+
+        Task UploadDirectory(string source, string destination, CancellationToken token = default);
     }
 }

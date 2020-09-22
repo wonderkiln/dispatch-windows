@@ -16,13 +16,14 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
-            <Button Content="Back" />
+            <Button Content="Back" Click="Button_Click" />
             <TextBlock Text="{Binding ViewModel.CurrentResource.Path, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}" />
         </StackPanel>
         <ListView x:Name="List" AllowDrop="True" DragEnter="List_DragEnter" DragOver="List_DragOver" Drop="List_Drop" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding ViewModel.List, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="AllowDrop" Value="True" />
+                    <EventSetter Event="MouseRightButtonUp" Handler="ListViewItem_MouseRightButtonUp" />
                     <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
                     <EventSetter Event="MouseMove" Handler="ListViewItem_MouseMove" />
                 </Style>
