@@ -1,4 +1,5 @@
 ﻿using Dispatch.Client;
+using Dispatch.Helpers;
 using Dispatch.Screen;
 using Dispatch.ViewModel;
 using System;
@@ -124,6 +125,13 @@ namespace Dispatch.View
 
             var menu = new ContextMenu();
 
+            if (!resource.Directory)
+            {
+                var editItem = new MenuItem() { Header = "Edit" };
+                editItem.Click += EditItem_Click; ;
+                menu.Items.Add(editItem);
+            }
+
             var deleteItem = new MenuItem() { Header = "Delete" };
             deleteItem.Click += DeleteItem_Click;
             menu.Items.Add(deleteItem);
@@ -131,6 +139,19 @@ namespace Dispatch.View
             menu.DataContext = resource;
             menu.PlacementTarget = sender as UIElement;
             menu.IsOpen = true;
+        }
+
+        private async void EditItem_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (MenuItem)sender;
+            var resource = (IResource)item.DataContext;
+
+            var path = Path.Combine(Path.GetTempPath(), resource.Name);
+            await resource.Client.DownloadFile(resource.Path, path);
+
+            ResourceWatcher.Instance.Watch(resource, path);
+
+            Process.Start(path);
         }
 
         private void DeleteItem_Click(object sender, RoutedEventArgs e)
