@@ -55,6 +55,6 @@ jobs:
       - name: Upload to Azure
         uses: LanceMcCarthy/Action-AzureBlobUpload@v1.7.1
         with:
-          connection_string: ${{ secrets.AZURE_CONNECTION_STRING }}
+          connection_string: ${{ secrets.AZURE_CONNECTION_STRING_DEVELOP }}
           container_name: downloads
           source_folder: .
