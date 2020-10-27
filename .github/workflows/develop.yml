@@ -1,0 +1,60 @@
+name: Develop
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1
+
+      - name: Restore NuGet Packages
+        run: nuget restore Dispatch\Dispatch.sln
+
+      - name: Build the Solution
+        run: msbuild Dispatch\Dispatch.sln /p:Configuration=Release
+
+      - name: Install Inno Setup
+        run: choco install -y innosetup
+
+      - name: Package Setup
+        run: iscc /DMyAppBuild=${{ github.run_number }} Setup\script.iss
+
+      - name: Archive Setup
+        uses: actions/upload-artifact@v2
+        with:
+          name: setup
+          path: Setup\Output\
+
+  upload:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Setup
+        uses: actions/download-artifact@v2
+        with:
+          name: setup
+
+      - name: Write Files
+        run: |
+          NAME=$(ls | head -1)
+          VERSION=$(echo $NAME | egrep -o '[0-9]+.[0-9]+.[0-9]+')
+          FORMAT='{ "name": "%s", "version": "%s" }\n'
+          printf "$FORMAT" "$NAME" "$VERSION" > latest.json
+
+      - name: Upload to Azure
+        uses: LanceMcCarthy/Action-AzureBlobUpload@v1.7.1
+        with:
+          connection_string: ${{ secrets.AZURE_CONNECTION_STRING }}
+          container_name: downloads
+          source_folder: .

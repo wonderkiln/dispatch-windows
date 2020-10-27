@@ -163,13 +163,11 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Release (
-  "%25ProgramFiles(x86)%25\Inno Setup 6\ISCC.exe" "$(SolutionDir)\..\Setup\script.iss"
-)</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>if $(ConfigurationName) == Release (
-  RD /S /Q "$(TargetDir)"
-)</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>
