@@ -33,7 +33,7 @@ namespace Dispatch.Screen
 
         public QueueViewModel QueueViewModel { get; set; } = new QueueViewModel();
 
-        private ApplicationUpdater updater = new ApplicationUpdater(new GithubUpdateProvider("https://api.github.com/repos/wonderkiln/dispatch-windows/releases/latest", "a2aeafe429f92d49fda639405deed94957b73aec"));
+        private ApplicationUpdater updater = new ApplicationUpdater(new AzureUpdateProvider());
 
         public MainWindow()
         {

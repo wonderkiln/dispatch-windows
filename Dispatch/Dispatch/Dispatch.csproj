@@ -85,6 +85,7 @@
       <DependentUpon>QueueWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Updater\ApplicationUpdater.cs" />
+    <Compile Include="Updater\AzureUpdateProvider.cs" />
     <Compile Include="Updater\GithubUpdateProvider.cs" />
     <Compile Include="Updater\IUpdateProvider.cs" />
     <Compile Include="Updater\UpdateInfo.cs" />

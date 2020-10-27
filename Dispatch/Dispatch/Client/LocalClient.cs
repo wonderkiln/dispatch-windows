@@ -28,7 +28,7 @@ namespace Dispatch.Client
 
     public class LocalClient : IClient
     {
-        public string RootPath { get; } = @"D:\";
+        public string RootPath { get; } = @"C:\";
 
         public event EventHandler<ClientProgress> OnProgressChange;
 
