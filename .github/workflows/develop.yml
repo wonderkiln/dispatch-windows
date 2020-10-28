@@ -47,7 +47,7 @@ jobs:
 
       - name: Write Files
         run: |
-          NAME=$(ls | head -1)
+          NAME=$(ls | grep '.exe' | head -1)
           VERSION=$(echo $NAME | egrep -o '[0-9]+.[0-9]+.[0-9]+.[0-9]+')
           FORMAT='{ "name": "%s", "version": "%s" }\n'
           printf "$FORMAT" "$NAME" "$VERSION" > latest.json
