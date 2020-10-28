@@ -1,4 +1,5 @@
 ﻿using ByteSizeLib;
+using Dispatch.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -41,19 +42,11 @@ namespace Dispatch.Updater
             {
                 LatestUpdate = await updater.GetLatestUpdate();
 
-                #if DEVELOP
-                var flavour = "Develop";
-                #elif BETA
-                var flavour = "Beta";
-                #else
-                var flavour = "Master";
-                #endif
-
                 if (LatestUpdate.Version > CurrentVersion)
                 {
                     if (MessageBox.Show(
-                        $"Do you want to download and install it now?",
-                        $"Update available from {CurrentVersion} to {LatestUpdate.Version} ({flavour})",
+                        "Do you want to download and install it now?",
+                        $"Update available from {CurrentVersion} to {LatestUpdate.Version} ({Constants.FLAVOUR})",
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Question,
                         MessageBoxResult.Yes) == MessageBoxResult.Yes)
@@ -65,7 +58,11 @@ namespace Dispatch.Updater
                 {
                     if (!silent)
                     {
-                        MessageBox.Show("You already have the latest version", "No update available", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show(
+                            "You already have the latest version",
+                            $"No update available ({Constants.FLAVOUR})",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
                     }
                 }
             }
