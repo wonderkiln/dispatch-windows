@@ -3,14 +3,11 @@
 
 #define MyAppPath "..\Dispatch\Dispatch\bin\Release"
 #define MyAppExeName "Dispatch.exe"
+#define MyAppVersion GetFileVersion(MyAppPath + "\" + MyAppExeName)
 
-#dim Version[4]
-#expr ParseVersion(MyAppPath + "\" + MyAppExeName, Version[0], Version[1], Version[2], Version[3])
-#define MyAppVersion Str(Version[0]) + "." + Str(Version[1]) + "." + MyAppBuild
-
+#define MyAppName "Dispatch"
 #define MyAppPublisher "WonderKiln Inc."
 #define MyAppURL "https://www.wonderkiln.com"
-#define MyAppName "Dispatch"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -29,7 +26,7 @@ LicenseFile=LICENSE.txt
 ; Remove the following line to run in administrative install mode (install for all users.)
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-OutputBaseFilename=Dispatch Setup v{#MyAppVersion}
+OutputBaseFilename=Dispatch Setup {#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern

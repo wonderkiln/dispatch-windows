@@ -21,13 +21,13 @@ jobs:
         run: nuget restore Dispatch\Dispatch.sln
 
       - name: Build the Solution
-        run: msbuild Dispatch\Dispatch.sln /p:Configuration=Release
+        run: msbuild Dispatch\Dispatch.sln /p:Configuration=Release;Revision=${{ github.run_number }}
 
       - name: Install Inno Setup
         run: choco install -y innosetup
 
       - name: Package Setup
-        run: iscc /DMyAppBuild=${{ github.run_number }} Setup\script.iss
+        run: iscc Setup\script.iss
 
       - name: Archive Setup
         uses: actions/upload-artifact@v2
@@ -48,7 +48,7 @@ jobs:
       - name: Write Files
         run: |
           NAME=$(ls | head -1)
-          VERSION=$(echo $NAME | egrep -o '[0-9]+.[0-9]+.[0-9]+')
+          VERSION=$(echo $NAME | egrep -o '[0-9]+.[0-9]+.[0-9]+.[0-9]+')
           FORMAT='{ "name": "%s", "version": "%s" }\n'
           printf "$FORMAT" "$NAME" "$VERSION" > latest.json
 
