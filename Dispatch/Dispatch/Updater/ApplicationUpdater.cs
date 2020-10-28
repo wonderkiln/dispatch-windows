@@ -46,7 +46,7 @@ namespace Dispatch.Updater
                 {
                     if (MessageBox.Show(
                         "Do you want to download and install it now?",
-                        $"Update available from {CurrentVersion} to {LatestUpdate.Version} ({Constants.FLAVOUR})",
+                        $"Update available from {CurrentVersion} to {LatestUpdate.Version} ({Constants.CHANNEL})",
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Question,
                         MessageBoxResult.Yes) == MessageBoxResult.Yes)
@@ -60,7 +60,7 @@ namespace Dispatch.Updater
                     {
                         MessageBox.Show(
                             "You already have the latest version",
-                            $"No update available ({Constants.FLAVOUR})",
+                            $"No update available ({Constants.CHANNEL})",
                             MessageBoxButton.OK,
                             MessageBoxImage.Information);
                     }

@@ -8,14 +8,14 @@ namespace Dispatch.Helpers
 {
     public class Constants
     {
-        public enum Flavour { Develop, Beta, Stable }
+        public enum Channel { Nightly, Beta, Stable }
 
-#if DEVELOP || DEBUG
-        public static Flavour FLAVOUR = Flavour.Develop;
+#if NIGHTLY || DEBUG
+        public static Channel CHANNEL = Channel.Nightly;
 #elif BETA
-        public static Flavour FLAVOUR = Flavour.Beta;
+        public static Channel CHANNEL = Channel.Beta;
 #else
-        public static Flavour FLAVOUR = Flavour.Stable;
+        public static Channel CHANNEL = Channel.Stable;
 #endif
     }
 }

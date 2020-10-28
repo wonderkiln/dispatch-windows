@@ -22,7 +22,7 @@ jobs:
 
       - name: Build the Solution (Develop)
         if: github.ref == 'refs/heads/develop'
-        run: msbuild Dispatch\Dispatch.sln /p:Configuration=Release /p:Revision=${{ github.run_number }} /p:DefineConstants=DEVELOP
+        run: msbuild Dispatch\Dispatch.sln /p:Configuration=Release /p:Revision=${{ github.run_number }} /p:DefineConstants=NIGHTLY
 
       - name: Build the Solution (Beta)
         if: github.ref == 'refs/heads/beta'
@@ -67,7 +67,7 @@ jobs:
         if: github.ref == 'refs/heads/develop'
         with:
           connection_string: ${{ secrets.AZURE_CONNECTION_STRING }}
-          container_name: develop
+          container_name: nightly
           source_folder: .
 
       - name: Upload to Azure (Beta)
@@ -83,5 +83,5 @@ jobs:
         if: github.ref == 'refs/heads/master'
         with:
           connection_string: ${{ secrets.AZURE_CONNECTION_STRING }}
-          container_name: master
+          container_name: stable
           source_folder: .
