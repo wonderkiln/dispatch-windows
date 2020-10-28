@@ -2,7 +2,7 @@ name: Distribute
 
 on:
   push:
-    branches: [master, develop, beta]
+    branches: [develop, beta, master]
 
 jobs:
   build:
