@@ -58,8 +58,9 @@ jobs:
         run: |
           NAME=$(ls | grep '.exe' | head -1)
           VERSION=$(echo $NAME | egrep -o '[0-9]+.[0-9]+.[0-9]+.[0-9]+')
-          FORMAT='{ "name": "%s", "version": "%s" }\n'
-          printf "$FORMAT" "$NAME" "$VERSION" > latest.json
+          DATE=$(date -u +%FT%TZ)
+          FORMAT='{ "name": "%s", "version": "%s", "date": "%s" }\n'
+          printf "$FORMAT" "$NAME" "$VERSION" "$DATE" > latest.json
 
       - name: Upload to Azure (Develop)
         uses: LanceMcCarthy/Action-AzureBlobUpload@v1.7.1
