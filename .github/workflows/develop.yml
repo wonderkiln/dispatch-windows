@@ -2,7 +2,7 @@ name: Develop
 
 on:
   push:
-    branches: [develop]
+    branches: [master, develop, beta]
 
 jobs:
   build:
@@ -19,6 +19,9 @@ jobs:
 
       - name: Restore NuGet Packages
         run: nuget restore Dispatch\Dispatch.sln
+
+      - name: Echo
+        run: echo ${{ github.ref }}
 
       - name: Build the Solution
         run: msbuild Dispatch\Dispatch.sln /p:Configuration=Release /p:Revision=${{ github.run_number }}
