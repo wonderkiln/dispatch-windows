@@ -21,7 +21,7 @@ jobs:
         run: nuget restore Dispatch\Dispatch.sln
 
       - name: Build the Solution
-        run: msbuild Dispatch\Dispatch.sln /p:Configuration=Release;Revision=${{ github.run_number }}
+        run: msbuild Dispatch\Dispatch.sln /p:Configuration=Release /p:Revision=${{ github.run_number }}
 
       - name: Install Inno Setup
         run: choco install -y innosetup
