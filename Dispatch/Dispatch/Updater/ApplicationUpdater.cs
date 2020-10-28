@@ -41,11 +41,19 @@ namespace Dispatch.Updater
             {
                 LatestUpdate = await updater.GetLatestUpdate();
 
+                #if DEVELOP
+                var flavour = "Develop";
+                #elif BETA
+                var flavour = "Beta";
+                #else
+                var flavour = "Master";
+                #endif
+
                 if (LatestUpdate.Version > CurrentVersion)
                 {
                     if (MessageBox.Show(
                         $"Do you want to download and install it now?",
-                        $"Update available from {CurrentVersion} to {LatestUpdate.Version}",
+                        $"Update available from {CurrentVersion} to {LatestUpdate.Version} ({flavour})",
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Question,
                         MessageBoxResult.Yes) == MessageBoxResult.Yes)

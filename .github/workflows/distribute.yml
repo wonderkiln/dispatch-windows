@@ -1,4 +1,4 @@
-name: Develop
+name: Distribute
 
 on:
   push:
@@ -20,10 +20,16 @@ jobs:
       - name: Restore NuGet Packages
         run: nuget restore Dispatch\Dispatch.sln
 
-      - name: Echo
-        run: echo ${{ github.ref }}
+      - name: Build the Solution (Develop)
+        if: ${{ github.ref == 'refs/heads/develop' }}
+        run: msbuild Dispatch\Dispatch.sln /p:Configuration=Release /p:Revision=${{ github.run_number }} /p:DefineConstants=DEVELOP
 
-      - name: Build the Solution
+      - name: Build the Solution (Beta)
+        if: ${{ github.ref == 'refs/heads/beta' }}
+        run: msbuild Dispatch\Dispatch.sln /p:Configuration=Release /p:Revision=${{ github.run_number }} /p:DefineConstants=BETA
+
+      - name: Build the Solution (Master)
+        if: ${{ github.ref == 'refs/heads/master' }}
         run: msbuild Dispatch\Dispatch.sln /p:Configuration=Release /p:Revision=${{ github.run_number }}
 
       - name: Install Inno Setup
@@ -55,6 +61,7 @@ jobs:
           FORMAT='{ "name": "%s", "version": "%s" }\n'
           printf "$FORMAT" "$NAME" "$VERSION" > latest.json
 
+      # TODO: Upload to different connection string based on ref
       - name: Upload to Azure
         uses: LanceMcCarthy/Action-AzureBlobUpload@v1.7.1
         with:
