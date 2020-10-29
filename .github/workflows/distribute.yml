@@ -81,5 +81,5 @@ jobs:
           URL="https://stwonderkilnprod.blob.core.windows.net/${{ env.CONTAINER_NAME }}/$NAME"
           SIZE=$(du -k "$NAME" | cut -f1)
           FORMAT='{ "url": "%s", "version": "%s", "size": %s, "channel": "%s" }\n'
-          JSON=$(printf "$FORMAT" "$URL" "$VERSION" "${{ env.CONTAINER_NAME }}")
+          JSON=$(printf "$FORMAT" "$URL" "$VERSION" "$SIZE" "${{ env.CONTAINER_NAME }}")
           echo $JSON
