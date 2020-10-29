@@ -54,6 +54,18 @@ jobs:
         with:
           name: setup
 
+      - name: Set Container Name (Develop)
+        if: github.ref == 'refs/heads/develop'
+        run: echo 'CONTAINER_NAME=nightly' >> $GITHUB_ENV
+
+      - name: Set Container Name (Beta)
+        if: github.ref == 'refs/heads/beta'
+        run: echo 'CONTAINER_NAME=beta' >> $GITHUB_ENV
+
+      - name: Set Container Name (Master)
+        if: github.ref == 'refs/heads/master'
+        run: echo 'CONTAINER_NAME=stable' >> $GITHUB_ENV
+
       - name: Write Files
         run: |
           NAME=$(ls | grep '.exe' | head -1)
@@ -62,26 +74,10 @@ jobs:
           FORMAT='{ "name": "%s", "version": "%s", "date": "%s" }\n'
           printf "$FORMAT" "$NAME" "$VERSION" "$DATE" > latest.json
 
-      - name: Upload to Azure (Develop)
+      - name: Upload to Azure
         uses: LanceMcCarthy/Action-AzureBlobUpload@v1.7.1
         if: github.ref == 'refs/heads/develop'
         with:
           connection_string: ${{ secrets.AZURE_CONNECTION_STRING }}
-          container_name: nightly
-          source_folder: .
-
-      - name: Upload to Azure (Beta)
-        uses: LanceMcCarthy/Action-AzureBlobUpload@v1.7.1
-        if: github.ref == 'refs/heads/beta'
-        with:
-          connection_string: ${{ secrets.AZURE_CONNECTION_STRING }}
-          container_name: beta
-          source_folder: .
-
-      - name: Upload to Azure (Master)
-        uses: LanceMcCarthy/Action-AzureBlobUpload@v1.7.1
-        if: github.ref == 'refs/heads/master'
-        with:
-          connection_string: ${{ secrets.AZURE_CONNECTION_STRING }}
-          container_name: stable
+          container_name: ${{ env.CONTAINER_NAME }}
           source_folder: .
