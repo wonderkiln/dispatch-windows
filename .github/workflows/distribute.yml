@@ -79,6 +79,7 @@ jobs:
           NAME=$(ls | grep '.exe' | head -1)
           VERSION=$(echo $NAME | egrep -o '[0-9]+.[0-9]+.[0-9]+.[0-9]+')
           URL="https://stwonderkilnprod.blob.core.windows.net/${{ env.CONTAINER_NAME }}/$NAME"
-          FORMAT='{ "url": "%s", "version": "%s" }\n'
-          JSON=$(printf "$FORMAT" "$URL" "$VERSION")
+          SIZE=$(du -k "$NAME" | cut -f1)
+          FORMAT='{ "url": "%s", "version": "%s", "size": %s, "channel": "%s" }\n'
+          JSON=$(printf "$FORMAT" "$URL" "$VERSION" "${{ env.CONTAINER_NAME }}")
           echo $JSON
