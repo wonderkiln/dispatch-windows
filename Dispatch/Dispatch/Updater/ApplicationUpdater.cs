@@ -59,7 +59,7 @@ namespace Dispatch.Updater
                     if (!silent)
                     {
                         MessageBox.Show(
-                            "You already have the latest version",
+                            $"You already have the latest version ({CurrentVersion})",
                             $"No update available ({Constants.CHANNEL})",
                             MessageBoxButton.OK,
                             MessageBoxImage.Information);
