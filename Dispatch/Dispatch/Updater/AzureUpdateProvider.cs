@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Dispatch.Helpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,11 +14,29 @@ namespace Dispatch.Updater
     {
         class LatestRelease
         {
-            public string name { get; set; }
-            public string version { get; set; }
+            public string url { get; set; }
+            public long fileSize { get; set; }
+            public string versionCode { get; set; }
+            public string releaseDate { get; set; }
         }
 
-        private static readonly string BASE_URL = "https://stdispatchdev.blob.core.windows.net/downloads/";
+        private string BaseUrl
+        {
+            get
+            {
+                switch (Constants.CHANNEL)
+                {
+                    case Constants.Channel.Nightly:
+                        return "https://dispatch-api-dev.herokuapp.com/release/nighly";
+                    case Constants.Channel.Beta:
+                        return "https://dispatch-api-dev.herokuapp.com/release/beta";
+                    case Constants.Channel.Stable:
+                        return "https://dispatch-api-dev.herokuapp.com/release/stable";
+                    default:
+                        throw new Exception("Unhandled channel");
+                }
+            }
+        }
 
         public event EventHandler<double> DownloadProgressChanged;
         private WebClient GetWebClient()
@@ -31,16 +50,17 @@ namespace Dispatch.Updater
         public async Task<UpdateInfo> GetLatestUpdate()
         {
             var client = GetWebClient();
+            client.Headers.Add(HttpRequestHeader.Accept, "application/json");
 
-            var data = await client.DownloadStringTaskAsync(new Uri(BASE_URL + "latest.json"));
+            var data = await client.DownloadStringTaskAsync(BaseUrl);
             var json = JsonConvert.DeserializeObject<LatestRelease>(data);
 
             return new UpdateInfo()
             {
-                Version = new Version(json.version),
+                Version = new Version(json.versionCode),
                 ReleaseNotes = "",
-                DownloadSize = 0,
-                DownloadUrl = BASE_URL + json.name
+                DownloadSize = json.fileSize,
+                DownloadUrl = json.url
             };
         }
 

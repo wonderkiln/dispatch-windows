@@ -45,7 +45,7 @@ namespace Dispatch.Updater
                 if (LatestUpdate.Version > CurrentVersion)
                 {
                     if (MessageBox.Show(
-                        "Do you want to download and install it now?",
+                        $"Do you want to download and install it now ({ByteSize.FromBytes(LatestUpdate.DownloadSize)})?",
                         $"Update available from {CurrentVersion} to {LatestUpdate.Version} ({Constants.CHANNEL})",
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Question,
