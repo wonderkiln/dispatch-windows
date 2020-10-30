@@ -27,7 +27,7 @@ namespace Dispatch.Updater
                 switch (Constants.CHANNEL)
                 {
                     case Constants.Channel.Nightly:
-                        return "https://dispatch-api-dev.herokuapp.com/release/nighly";
+                        return "https://dispatch-api-dev.herokuapp.com/release/nightly";
                     case Constants.Channel.Beta:
                         return "https://dispatch-api-dev.herokuapp.com/release/beta";
                     case Constants.Channel.Stable:
