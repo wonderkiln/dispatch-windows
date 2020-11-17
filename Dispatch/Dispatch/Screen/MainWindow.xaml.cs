@@ -1,69 +1,56 @@
-﻿using ByteSizeLib;
-using Dispatch.Updater;
+﻿using Dispatch.Updater;
 using Dispatch.ViewModel;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 
 namespace Dispatch.Screen
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        public ObservableCollection<TabViewModel> Tabs { get; set; } = new ObservableCollection<TabViewModel>() { new TabViewModel() };
+        public ObservableCollection<TabViewModel> Tabs { get; } = new ObservableCollection<TabViewModel>() { new TabViewModel() };
 
-        public QueueViewModel QueueViewModel { get; set; } = new QueueViewModel();
+        public QueueViewModel QueueViewModel { get; } = new QueueViewModel();
 
         private ApplicationUpdater updater = new ApplicationUpdater(new AzureUpdateProvider());
 
         public MainWindow()
         {
             InitializeComponent();
-            _ = updater.CheckForUpdate();
+            //_ = updater.CheckForUpdate();
         }
 
-        private void TabView_OnConnected(object sender, TabViewModel e)
+        private void NewTabButton_Click(object sender, RoutedEventArgs e)
         {
-            Tabs.Add(new TabViewModel());
+            var model = new TabViewModel();
+            Tabs.Add(model);
+            TabsListBox.SelectedItem = model;
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void CloseTabButton_Click(object sender, RoutedEventArgs e)
         {
-            _ = updater.CheckForUpdate(false);
+            var button = e.OriginalSource as Button;
+            var model = button.DataContext as TabViewModel;
+            Tabs.Remove(model);
+
+            if (Tabs.Count == 0)
+            {
+                Tabs.Add(new TabViewModel());
+            }
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void TabListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var item = (TabViewModel)TabControl.SelectedItem;
-            await item.RightViewModel.Disconnect();
+            var listBox = sender as ListBox;
 
-            Tabs.Remove(item);
-        }
-
-        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
-        {
-            var window = new QueueWindow();
-            window.QueueViewModel = QueueViewModel;
-            window.Show();
+            if (e.AddedItems.Count == 0)
+            {
+                listBox.SelectedIndex = 0;
+            }
+            else
+            {
+                listBox.ScrollIntoView(e.AddedItems[0]);
+            }
         }
     }
 }

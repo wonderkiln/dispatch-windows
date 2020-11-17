@@ -4,52 +4,48 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Dispatch.Screen"
+        xmlns:controls="clr-namespace:Dispatch.Controls"
         xmlns:view="clr-namespace:Dispatch.View"
-        xmlns:vm="clr-namespace:Dispatch.ViewModel"
-        xmlns:helpers="clr-namespace:Dispatch.Helpers"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
-        WindowStartupLocation="CenterScreen">
-    <Window.Resources>
-        <helpers:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    </Window.Resources>
+        Title="Dispatch" Height="450" Width="800" WindowStartupLocation="CenterScreen"
+        Style="{StaticResource ChromelessWindow}">
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Menu>
-            <MenuItem Header="Help">
-                <MenuItem Header="Check for updates" Click="MenuItem_Click" />
-            </MenuItem>
-            <MenuItem Header="Queue" Click="MenuItem_Click_1" />
-        </Menu>
-        <TabControl x:Name="TabControl" Grid.Row="1" SelectedIndex="0" ItemsSource="{Binding Tabs, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
-            <TabControl.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Title}" />
-                </DataTemplate>
-            </TabControl.ItemTemplate>
-            <TabControl.ContentTemplate>
-                <DataTemplate>
-                    <view:TabView ViewModel="{Binding}" OnConnected="TabView_OnConnected" />
-                </DataTemplate>
-            </TabControl.ContentTemplate>
-        </TabControl>
-        <StatusBar Grid.Row="2">
-            <StatusBarItem Visibility="{Binding SelectedItem.RightViewModel, Mode=OneWay, Source={x:Reference TabControl}, Converter={StaticResource NullToVisibilityConverter}}">
-                <TextBlock>
-                    Connected to <Run Text="{Binding SelectedItem.Title, Mode=OneWay, Source={x:Reference TabControl}}" />
-                </TextBlock>
-            </StatusBarItem>
-            <StatusBarItem Visibility="{Binding SelectedItem.RightViewModel, Mode=OneWay, Source={x:Reference TabControl}, Converter={StaticResource NullToVisibilityConverter}}">
-                <Button Content="Disconnect" Click="Button_Click" />
-            </StatusBarItem>
-            <StatusBarItem Visibility="{Binding SelectedItem.RightViewModel.IsBusy, Mode=OneWay, Source={x:Reference TabControl}, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <ProgressBar IsIndeterminate="True" Width="60" Height="8" />
-            </StatusBarItem>
-        </StatusBar>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ListBox x:Name="TabsListBox"
+                     SelectedIndex="0"
+                     Style="{StaticResource ChromeTabListBox}"
+                     ButtonBase.Click="CloseTabButton_Click"
+                     SelectionChanged="TabListBox_SelectionChanged"
+                     ItemsSource="{Binding Tabs, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="15" Foreground="#FFC200" Text="&#xE945;" VerticalAlignment="Center" />
+                            <TextBlock Margin="6,0,0,0" Text="{Binding Title}" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <StackPanel Margin="24,0" Orientation="Horizontal" Grid.Column="1">
+                <Button Style="{StaticResource ChromeButtonStyle}" Content="&#xE710;" FontSize="14" Click="NewTabButton_Click" />
+                <Button Style="{StaticResource ChromeButtonStyle}" Content="&#xE896;" FontSize="14" />
+                <Button Style="{StaticResource ChromeButtonStyle}" Content="&#xE895;" FontSize="14" />
+                <Button Style="{StaticResource ChromeButtonStyle}" Content="&#xE712;" FontSize="14" />
+            </StackPanel>
+            <controls:ChromeButtons Grid.Column="2" />
+        </Grid>
+        <Border BorderThickness="0,1,0,0" BorderBrush="#EBEBEB" Background="White" Grid.Row="1">
+            <view:TabView ViewModel="{Binding SelectedItem, ElementName=TabsListBox}" />
+        </Border>
     </Grid>
 </Window>
