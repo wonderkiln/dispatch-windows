@@ -9,8 +9,8 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
                     <Grid Background="Transparent">
-                        <Grid Margin="6,0">
-                            <Border x:Name="Border" Height="3" VerticalAlignment="Bottom" CornerRadius="1,1,0,0" />
+                        <Grid Margin="8,0">
+                            <Border x:Name="Border" Height="3" VerticalAlignment="Bottom" CornerRadius="1.5,1.5,0,0" />
                             <ContentPresenter VerticalAlignment="Center" Margin="4,0,24,0" />
                             <Button x:Name="Close" Style="{StaticResource FramelessButtonStyle}" FontSize="8" Content="&#xE8BB;" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,4,0" />
                         </Grid>
@@ -38,6 +38,132 @@
                     <ScrollViewer Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
                         <StackPanel Orientation="Horizontal" IsItemsHost="True" />
                     </ScrollViewer>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="GridViewColumnHeaderGripper" TargetType="Thumb">
+        <Setter Property="Width" Value="18" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Border Background="Transparent">
+                        <Rectangle HorizontalAlignment="Center" Width="1" Fill="#EBEBEB" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="GridViewColumnHeader">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="6,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="GridViewColumnHeader">
+                    <Grid Margin="{TemplateBinding Padding}">
+                        <ContentPresenter x:Name="HeaderContent"
+                                          RecognizesAccessKey="True"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        <Thumb x:Name="PART_HeaderGripper" HorizontalAlignment="Right" Margin="0,0,-9,0" Style="{StaticResource GridViewColumnHeaderGripper}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="{x:Static GridView.GridViewScrollViewerStyleKey}" TargetType="ScrollViewer">
+        <Setter Property="Padding" Value="12" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollViewer">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <DockPanel Margin="{TemplateBinding Padding}">
+                            <ScrollViewer DockPanel.Dock="Top" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Focusable="False">
+                                <GridViewHeaderRowPresenter Columns="{Binding Path=TemplatedParent.View.Columns, RelativeSource={RelativeSource TemplatedParent}}"
+                                          ColumnHeaderContainerStyle="{Binding Path=TemplatedParent.View.ColumnHeaderContainerStyle, RelativeSource={RelativeSource TemplatedParent}}"
+                                          ColumnHeaderTemplate="{Binding Path=TemplatedParent.View.ColumnHeaderTemplate, RelativeSource={RelativeSource TemplatedParent}}"
+                                          ColumnHeaderTemplateSelector="{Binding Path=TemplatedParent.View.ColumnHeaderTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}"
+                                          AllowsColumnReorder="{Binding Path=TemplatedParent.View.AllowsColumnReorder, RelativeSource={RelativeSource TemplatedParent}}"
+                                          ColumnHeaderContextMenu="{Binding Path=TemplatedParent.View.ColumnHeaderContextMenu, RelativeSource={RelativeSource TemplatedParent}}"
+                                          ColumnHeaderToolTip="{Binding Path=TemplatedParent.View.ColumnHeaderToolTip, RelativeSource={RelativeSource TemplatedParent}}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </ScrollViewer>
+                            <ScrollContentPresenter Name="PART_ScrollContentPresenter"
+                                                    KeyboardNavigation.DirectionalNavigation="Local"
+                                                    CanContentScroll="True"
+                                                    CanHorizontallyScroll="False"
+                                                    CanVerticallyScroll="False"
+                                                    Margin="0,12,0,0" />
+                        </DockPanel>
+                        <ScrollBar Name="PART_HorizontalScrollBar"
+                                   Orientation="Horizontal"
+                                   Grid.Row="1"
+                                   Maximum="{TemplateBinding ScrollableWidth}"
+                                   ViewportSize="{TemplateBinding ViewportWidth}"
+                                   Value="{TemplateBinding HorizontalOffset}"
+                                   Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
+                        <ScrollBar Name="PART_VerticalScrollBar"
+                                   Grid.Column="1"
+                                   Maximum="{TemplateBinding ScrollableHeight}"
+                                   ViewportSize="{TemplateBinding ViewportHeight}"
+                                   Value="{TemplateBinding VerticalOffset}"
+                                   Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ListView">
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListView">
+                    <ScrollViewer Style="{DynamicResource {x:Static GridView.GridViewScrollViewerStyleKey}}">
+                        <ItemsPresenter />
+                    </ScrollViewer>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ListViewItem">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border x:Name="Border" Background="Transparent" CornerRadius="3">
+                        <GridViewRowPresenter VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#5F017AFF" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#017AFF" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

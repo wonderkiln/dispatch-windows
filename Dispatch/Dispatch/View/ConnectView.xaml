@@ -6,15 +6,84 @@
              xmlns:local="clr-namespace:Dispatch.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock>Connect View</TextBlock>
-            <TextBox x:Name="Host" Text="waws-prod-blu-141.ftp.azurewebsites.windows.net" />
-            <TextBox x:Name="Port" Text="21" />
-            <TextBox x:Name="Username" Text="app-dispatch-dev\$app-dispatch-dev" />
-            <PasswordBox x:Name="Password" Password="3oFcevTBlRmrvJpojRn5kb3PnzzKeazPmjmrpPnMEmvFWu2xhYrmPiz2Rt3X" />
-            <TextBox x:Name="Root" Text="/site/wwwroot" />
-            <Button Content="Connect" Click="Button_Click" />
+
+    <UserControl.Resources>
+        <Style x:Key="PlaceholderTextBlock" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#5FFFFFFF" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="TextAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0,0,12,0" />
+        </Style>
+        <Style x:Key="ConnectTextBox" TargetType="TextBox">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="ConnectPasswordBox" TargetType="PasswordBox">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="RowBorder" TargetType="Border">
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="BorderBrush" Value="#5FFFFFFF" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Margin" Value="0,0,0,12" />
+        </Style>
+    </UserControl.Resources>
+    
+    <ScrollViewer Background="#191919" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="64" MaxWidth="380" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Border Style="{StaticResource RowBorder}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="40" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Address" Style="{StaticResource PlaceholderTextBlock}" />
+                    <TextBox x:Name="Host" Text="waws-prod-blu-141.ftp.azurewebsites.windows.net" Grid.Column="1" Style="{StaticResource ConnectTextBox}" />
+                    <TextBlock Text="Port" Style="{StaticResource PlaceholderTextBlock}" Grid.Column="2" />
+                    <TextBox x:Name="Port" Text="21" Grid.Column="3" Style="{StaticResource ConnectTextBox}" />
+                </Grid>
+            </Border>
+            <Border Style="{StaticResource RowBorder}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Username" Style="{StaticResource PlaceholderTextBlock}" />
+                    <TextBox x:Name="Username" Text="app-dispatch-dev\$app-dispatch-dev" Grid.Column="1" Style="{StaticResource ConnectTextBox}" />
+                </Grid>
+            </Border>
+            <Border Style="{StaticResource RowBorder}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Password" Style="{StaticResource PlaceholderTextBlock}" />
+                    <PasswordBox x:Name="Password" Password="3oFcevTBlRmrvJpojRn5kb3PnzzKeazPmjmrpPnMEmvFWu2xhYrmPiz2Rt3X" Grid.Column="1" Style="{StaticResource ConnectPasswordBox}" />
+                </Grid>
+            </Border>
+            <Border Style="{StaticResource RowBorder}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Root" Style="{StaticResource PlaceholderTextBlock}" />
+                    <TextBox x:Name="Root" Text="/site/wwwroot" Grid.Column="1" Style="{StaticResource ConnectTextBox}" />
+                </Grid>
+            </Border>
+            <Button Content="Connect" Click="Button_Click" HorizontalAlignment="Right" Margin="0,12,0,0" />
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </UserControl>

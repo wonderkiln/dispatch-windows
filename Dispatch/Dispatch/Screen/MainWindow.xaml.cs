@@ -14,12 +14,6 @@ namespace Dispatch.Screen
 
         private ApplicationUpdater updater = new ApplicationUpdater(new AzureUpdateProvider());
 
-        public MainWindow()
-        {
-            InitializeComponent();
-            //_ = updater.CheckForUpdate();
-        }
-
         private void NewTabButton_Click(object sender, RoutedEventArgs e)
         {
             var model = new TabViewModel();
@@ -51,6 +45,11 @@ namespace Dispatch.Screen
             {
                 listBox.ScrollIntoView(e.AddedItems[0]);
             }
+        }
+
+        private void UpdatesButton_Click(object sender, RoutedEventArgs e)
+        {
+            _ = updater.CheckForUpdate();
         }
     }
 }

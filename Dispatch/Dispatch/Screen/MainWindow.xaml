@@ -7,8 +7,8 @@
         xmlns:controls="clr-namespace:Dispatch.Controls"
         xmlns:view="clr-namespace:Dispatch.View"
         mc:Ignorable="d"
-        Title="Dispatch" Height="450" Width="800" WindowStartupLocation="CenterScreen"
-        Style="{StaticResource ChromelessWindow}">
+        Title="Dispatch" Width="1366" Height="768" WindowStartupLocation="CenterScreen" UseLayoutRounding="True"
+        Style="{StaticResource ChromelessWindow}" Icon="../Resources/Icon.ico">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -21,6 +21,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
+            <Rectangle Fill="#EBEBEB" Height="1" VerticalAlignment="Bottom" Grid.ColumnSpan="3" />
             <ListBox x:Name="TabsListBox"
                      SelectedIndex="0"
                      Style="{StaticResource ChromeTabListBox}"
@@ -38,13 +39,22 @@
             </ListBox>
             <StackPanel Margin="24,0" Orientation="Horizontal" Grid.Column="1">
                 <Button Style="{StaticResource ChromeButtonStyle}" Content="&#xE710;" FontSize="14" Click="NewTabButton_Click" />
-                <Button Style="{StaticResource ChromeButtonStyle}" Content="&#xE896;" FontSize="14" />
-                <Button Style="{StaticResource ChromeButtonStyle}" Content="&#xE895;" FontSize="14" />
-                <Button Style="{StaticResource ChromeButtonStyle}" Content="&#xE712;" FontSize="14" />
+                <ToggleButton x:Name="Transfers" Style="{StaticResource ChromeToggleButtonStyle}" Content="&#xE896;" FontSize="14" />
+                <ToggleButton x:Name="Menu" Style="{StaticResource ChromeToggleButtonStyle}" Content="&#xE712;" FontSize="14" />
             </StackPanel>
+            <Popup IsOpen="{Binding IsChecked, ElementName=Transfers}" Placement="Bottom" PlacementTarget="{Binding ElementName=Transfers}" StaysOpen="False">
+                <Border Background="White" Width="300" Height="300" />
+            </Popup>
+            <Popup IsOpen="{Binding IsChecked, ElementName=Menu}" Placement="Bottom" PlacementTarget="{Binding ElementName=Menu}" StaysOpen="False">
+                <Border Background="Black">
+                    <StackPanel>
+                        <Button Content="Check for Updates" Click="UpdatesButton_Click" />
+                    </StackPanel>
+                </Border>
+            </Popup>
             <controls:ChromeButtons Grid.Column="2" />
         </Grid>
-        <Border BorderThickness="0,1,0,0" BorderBrush="#EBEBEB" Background="White" Grid.Row="1">
+        <Border Background="White" Grid.Row="1">
             <view:TabView ViewModel="{Binding SelectedItem, ElementName=TabsListBox}" />
         </Border>
     </Grid>

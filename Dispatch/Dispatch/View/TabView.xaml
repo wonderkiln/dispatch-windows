@@ -17,13 +17,12 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <local:ListView ViewModel="{Binding ViewModel.LeftViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:TabView}}}" />
-        <GridSplitter Grid.Column="1" Width="12" ResizeBehavior="PreviousAndNext" ResizeDirection="Columns" />
-        <ContentPresenter Grid.Column="2" Content="{Binding ViewModel.RightViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:TabView}}}"
+        <GridSplitter Width="16" ResizeBehavior="CurrentAndNext" ResizeDirection="Columns" HorizontalAlignment="Right" />
+        <ContentPresenter Grid.Column="1" Content="{Binding ViewModel.RightViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:TabView}}}"
                           ContentTemplateSelector="{StaticResource ViewSelector}" />
     </Grid>
 </UserControl>
