@@ -12,6 +12,8 @@ namespace Dispatch.Client
 {
     public class FTPResource : IResource
     {
+        public char PathSeparator { get; } = '/';
+
         public string Path { get; set; }
 
         public string Name { get; set; }

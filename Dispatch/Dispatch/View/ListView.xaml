@@ -9,6 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <helpers:BytesToStringConverter x:Key="BytesToStringConverter" />
+        <helpers:PathToPathComponentsConverter x:Key="PathToPathComponentsConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
     <Grid>
@@ -46,7 +47,9 @@
                 </ListBoxItem>
             </ListBox>
         </Border>
-        <ListBox Grid.Row="1" Style="{StaticResource ChromeTabListBox}" Margin="8,0">
+        <ListBox Grid.Row="1" Style="{StaticResource ChromeTabListBox}" Margin="8,0"
+                 ItemsSource="{Binding ViewModel.CurrentResource, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}, Converter={StaticResource PathToPathComponentsConverter}}"
+                 SelectionChanged="ListBox_SelectionChanged">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="FontSize" Value="13" />
@@ -69,10 +72,11 @@
                     </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
-            <ListBoxItem>Documents</ListBoxItem>
-            <ListBoxItem>Music</ListBoxItem>
-            <ListBoxItem>Private</ListBoxItem>
-            <ListBoxItem>Account</ListBoxItem>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
         <ListView x:Name="List" Margin="0,0,16,0" AllowDrop="True" DragEnter="List_DragEnter" DragOver="List_DragOver" Drop="List_Drop" Grid.Row="2" SelectionMode="Extended" ItemsSource="{Binding ViewModel.List, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}">
             <ListView.ItemContainerStyle>

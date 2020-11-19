@@ -48,7 +48,7 @@
                         <ColumnDefinition Width="40" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Address" Style="{StaticResource PlaceholderTextBlock}" />
-                    <TextBox x:Name="Host" Text="waws-prod-blu-141.ftp.azurewebsites.windows.net" Grid.Column="1" Style="{StaticResource ConnectTextBox}" />
+                    <TextBox x:Name="Host" Text="waws-prod-dm1-173.ftp.azurewebsites.windows.net" Grid.Column="1" Style="{StaticResource ConnectTextBox}" />
                     <TextBlock Text="Port" Style="{StaticResource PlaceholderTextBlock}" Grid.Column="2" />
                     <TextBox x:Name="Port" Text="21" Grid.Column="3" Style="{StaticResource ConnectTextBox}" />
                 </Grid>
@@ -60,7 +60,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Username" Style="{StaticResource PlaceholderTextBlock}" />
-                    <TextBox x:Name="Username" Text="app-dispatch-dev\$app-dispatch-dev" Grid.Column="1" Style="{StaticResource ConnectTextBox}" />
+                    <TextBox x:Name="Username" Text="$app-dispatchftp-dev" Grid.Column="1" Style="{StaticResource ConnectTextBox}" />
                 </Grid>
             </Border>
             <Border Style="{StaticResource RowBorder}">
@@ -70,7 +70,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Password" Style="{StaticResource PlaceholderTextBlock}" />
-                    <PasswordBox x:Name="Password" Password="3oFcevTBlRmrvJpojRn5kb3PnzzKeazPmjmrpPnMEmvFWu2xhYrmPiz2Rt3X" Grid.Column="1" Style="{StaticResource ConnectPasswordBox}" />
+                    <PasswordBox x:Name="Password" Password="w2yZ0XW2PvDtDrnvzcyS6Zmj6B9uMxEvCkdP5Jo1jxgxKH7h9uYadcmEivlx" Grid.Column="1" Style="{StaticResource ConnectPasswordBox}" />
                 </Grid>
             </Border>
             <Border Style="{StaticResource RowBorder}">

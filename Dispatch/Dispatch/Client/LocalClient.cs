@@ -10,6 +10,8 @@ namespace Dispatch.Client
 {
     public class LocalResource : IResource
     {
+        public char PathSeparator { get; } = System.IO.Path.DirectorySeparatorChar;
+
         public string Path { get; set; }
 
         public string Name { get; set; }

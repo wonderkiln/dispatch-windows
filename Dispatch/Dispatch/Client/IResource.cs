@@ -8,6 +8,8 @@ namespace Dispatch.Client
 {
     public interface IResource
     {
+        char PathSeparator { get; }
+
         string Path { get; }
 
         string Name { get; }

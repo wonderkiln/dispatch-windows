@@ -169,5 +169,17 @@ namespace Dispatch.View
         {
             ViewModel.GoBack();
         }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                var list = sender as ListBox;
+                var item = e.AddedItems[0] as PathToPathComponentsConverter.PathComponent;
+
+                ViewModel.Load(item.Path);
+                list.SelectedItem = null;
+            }
+        }
     }
 }

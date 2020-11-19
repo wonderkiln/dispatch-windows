@@ -86,6 +86,7 @@
     <Compile Include="Helpers\NullToVisibilityConverter.cs" />
     <Compile Include="Helpers\Observable.cs" />
     <Compile Include="Helpers\ObjectQueue.cs" />
+    <Compile Include="Helpers\PathToPathComponentsConverter.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Helpers\ResourceWatcher.cs" />
     <Compile Include="Screen\ProgressWindow.xaml.cs">

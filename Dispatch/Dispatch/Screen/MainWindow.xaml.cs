@@ -51,5 +51,10 @@ namespace Dispatch.Screen
         {
             _ = updater.CheckForUpdate();
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            p.IsOpen = true;
+        }
     }
 }
