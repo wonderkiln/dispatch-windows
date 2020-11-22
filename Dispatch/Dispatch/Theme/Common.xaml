@@ -4,7 +4,7 @@
         <Setter Property="Background" Value="#F7F7F7" />
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
-                <WindowChrome CaptionHeight="28" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="4" />
+                <WindowChrome CaptionHeight="28" CornerRadius="0" GlassFrameThickness="-1" ResizeBorderThickness="4" />
             </Setter.Value>
         </Setter>
     </Style>
