@@ -10,10 +10,11 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Border Background="#F7F7F7" BorderBrush="#EBEBEB" BorderThickness="0,0,0,1">
-            <ListBox Margin="8,0" Style="{StaticResource ChromeTabListBox}">
+            <ListBox Margin="8,0" AllowDrop="True" DragOver="ListBox_DragOver" DragEnter="ListBox_DragOver" Drop="ListBox_Drop" SelectionChanged="ListBox_SelectionChanged" Style="{StaticResource ChromeTabListBox}">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="FontSize" Value="13" />
+                        <Setter Property="MaxWidth" Value="220" />
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">
@@ -30,15 +31,25 @@
                         </Setter>
                     </Style>
                 </ListBox.ItemContainerStyle>
-                <ListBoxItem>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="15" Text="&#xE8B7;" />
-                        <TextBlock Margin="4,0,0,0" VerticalAlignment="Center" Text="Hello" />
-                    </StackPanel>
-                </ListBoxItem>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="15" Text="&#xE8B7;" />
+                            <TextBlock Margin="4,0,0,0" VerticalAlignment="Center" Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
             </ListBox>
         </Border>
-        <ListBox Grid.Row="1" Margin="8,0" Style="{StaticResource ChromeTabListBox}">
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="42" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button VerticalAlignment="Center" Command="{Binding ViewModel.BackCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}" Content="&#xE72B;" FontSize="14" Style="{StaticResource ChromeButtonStyle}" />
+            <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding ViewModel.Current.Path, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}" />
+        </Grid>
+        <!--<ListBox Grid.Row="1" Margin="8,0" Style="{StaticResource ChromeTabListBox}">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="FontSize" Value="13" />
@@ -66,11 +77,12 @@
                     <TextBlock Text="{Binding Name}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
-        </ListBox>
+        </ListBox>-->
         <ListView x:Name="List" Grid.Row="2" Margin="0,0,16,0" ItemsSource="{Binding ViewModel.Resources, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}" SelectionMode="Extended">
             <ListView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource {x:Type ListViewItem}}" TargetType="ListViewItem">
                     <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
+                    <EventSetter Event="PreviewMouseMove" Handler="ListViewItem_PreviewMouseMove" />
                     <Setter Property="ContextMenu">
                         <Setter.Value>
                             <ContextMenu>

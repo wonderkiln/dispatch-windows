@@ -18,7 +18,6 @@ namespace Dispatch.ViewModel
         public void CloseTab(TabViewModel tab)
         {
             // TODO: tab.Disconnect();
-
             Tabs.Remove(tab);
 
             if (Tabs.Count == 0)

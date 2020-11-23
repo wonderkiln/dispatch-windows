@@ -7,10 +7,13 @@ namespace Dispatch.Helpers
     {
         public event EventHandler CanExecuteChanged;
 
-        private bool _isExecutable = true;
+        private bool _isExecutable;
         public bool IsExecutable
         {
-            get { return _isExecutable; }
+            get
+            {
+                return _isExecutable;
+            }
             set
             {
                 _isExecutable = value;

@@ -19,7 +19,11 @@ namespace Dispatch.Service.Client
 
         private Resource MakeResource(string path)
         {
-            if (File.Exists(path))
+            if (path == AllDrivesPathKey)
+            {
+                return new Resource(this, AllDrivesPathKey, "My Computer");
+            }
+            else if (File.Exists(path))
             {
                 var fileInfo = new FileInfo(path);
                 return new Resource(this, fileInfo.FullName, fileInfo.Name)
@@ -34,7 +38,12 @@ namespace Dispatch.Service.Client
                 if (directoryInfo.Parent == null)
                 {
                     var driveInfo = new DriveInfo(path);
-                    return new Resource(this, driveInfo.Name, !string.IsNullOrEmpty(driveInfo.VolumeLabel) ? driveInfo.VolumeLabel : driveInfo.Name)
+
+                    var name = !string.IsNullOrEmpty(driveInfo.VolumeLabel) ?
+                        $"{driveInfo.VolumeLabel} ({driveInfo.Name})" :
+                        driveInfo.Name;
+
+                    return new Resource(this, driveInfo.Name, name)
                     {
                         Type = ResourceType.Drive,
                         Size = driveInfo.TotalSize,
@@ -56,11 +65,6 @@ namespace Dispatch.Service.Client
 
         public Task<Resource> FetchResource(string path)
         {
-            if (path == AllDrivesPathKey)
-            {
-                return Task.FromResult<Resource>(null);
-            }
-
             return Task.FromResult(MakeResource(path));
         }
 

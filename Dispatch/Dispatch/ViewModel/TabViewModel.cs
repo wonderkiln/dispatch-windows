@@ -11,7 +11,7 @@ namespace Dispatch.ViewModel
             {
                 if (RightViewModel != null)
                 {
-                    return RightViewModel.Current?.Path ?? "-";
+                    return RightViewModel.Current.Name;
                 }
 
                 return "New Connection";

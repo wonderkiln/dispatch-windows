@@ -82,7 +82,7 @@
     <Compile Include="Helpers\Observable.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Helpers\ResourceWatcher.cs" />
-    <Compile Include="Controls\ChromeButtons.xaml.cs">
+    <Compile Include="View\Controls\ChromeButtons.xaml.cs">
       <DependentUpon>ChromeButtons.xaml</DependentUpon>
     </Compile>
     <Compile Include="Service\Client\LocalClient.cs" />
@@ -96,16 +96,16 @@
     <Compile Include="ViewModel\TabsViewModel.cs" />
     <Compile Include="ViewModel\ListViewModel.cs" />
     <Compile Include="ViewModel\TabViewModel.cs" />
-    <Compile Include="View\ConnectView.xaml.cs">
+    <Compile Include="View\Fragments\ConnectView.xaml.cs">
       <DependentUpon>ConnectView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ListView.xaml.cs">
+    <Compile Include="View\Fragments\ListView.xaml.cs">
       <DependentUpon>ListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\TabView.xaml.cs">
+    <Compile Include="View\Fragments\TabView.xaml.cs">
       <DependentUpon>TabView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Screen\MainWindow.xaml">
+    <Page Include="View\Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -113,11 +113,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Screen\MainWindow.xaml.cs">
+    <Compile Include="View\Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Controls\ChromeButtons.xaml">
+    <Page Include="View\Controls\ChromeButtons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -133,15 +133,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ConnectView.xaml">
+    <Page Include="View\Fragments\ConnectView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ListView.xaml">
+    <Page Include="View\Fragments\ListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\TabView.xaml">
+    <Page Include="View\Fragments\TabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
