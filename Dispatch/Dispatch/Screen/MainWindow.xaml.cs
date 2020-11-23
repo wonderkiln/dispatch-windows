@@ -1,6 +1,5 @@
 ﻿using Dispatch.Updater;
 using Dispatch.ViewModel;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -8,29 +7,21 @@ namespace Dispatch.Screen
 {
     public partial class MainWindow : Window
     {
-        public ObservableCollection<TabViewModel> Tabs { get; } = new ObservableCollection<TabViewModel>() { new TabViewModel() };
-
-        public QueueViewModel QueueViewModel { get; } = new QueueViewModel();
 
         private ApplicationUpdater updater = new ApplicationUpdater(new AzureUpdateProvider());
 
-        private void NewTabButton_Click(object sender, RoutedEventArgs e)
+        public TabsViewModel ViewModel { get; } = new TabsViewModel();
+
+        private async void NewTabButton_Click(object sender, RoutedEventArgs e)
         {
-            var model = new TabViewModel();
-            Tabs.Add(model);
-            TabsListBox.SelectedItem = model;
+            TabsListBox.SelectedItem = ViewModel.NewTab();
         }
 
         private void CloseTabButton_Click(object sender, RoutedEventArgs e)
         {
             var button = e.OriginalSource as Button;
             var model = button.DataContext as TabViewModel;
-            Tabs.Remove(model);
-
-            if (Tabs.Count == 0)
-            {
-                Tabs.Add(new TabViewModel());
-            }
+            ViewModel.CloseTab(model);
         }
 
         private void TabListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

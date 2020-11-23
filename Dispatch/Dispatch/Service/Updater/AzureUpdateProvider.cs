@@ -1,46 +1,45 @@
-﻿using Newtonsoft.Json;
+﻿using Dispatch.Helpers;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Dispatch.Updater
 {
-    public class GithubUpdateProvider : IUpdateProvider
+    public class AzureUpdateProvider : IUpdateProvider
     {
-        class Release
+        class LatestRelease
         {
-            public class Asset
-            {
-                public string url { get; set; }
-                public long size { get; set; }
-                public string browser_download_url { get; set; }
-            }
-
-            public string tag_name { get; set; }
-            public string body { get; set; }
-            public Asset[] assets { get; set; }
+            public string url { get; set; }
+            public long fileSize { get; set; }
+            public string versionCode { get; set; }
+            public string releaseDate { get; set; }
         }
 
-        private string url;
-        private string token;
-
-        public GithubUpdateProvider(string url, string token)
+        private string BaseUrl
         {
-            this.url = url;
-            this.token = token;
+            get
+            {
+                switch (Constants.CHANNEL)
+                {
+                    case Constants.Channel.Nightly:
+                        return "https://dispatch-api-dev.herokuapp.com/release/nightly";
+                    case Constants.Channel.Beta:
+                        return "https://dispatch-api-dev.herokuapp.com/release/beta";
+                    case Constants.Channel.Stable:
+                        return "https://dispatch-api-dev.herokuapp.com/release/stable";
+                    default:
+                        throw new Exception("Unhandled channel");
+                }
+            }
         }
 
         public event EventHandler<double> DownloadProgressChanged;
-
         private WebClient GetWebClient()
         {
             var client = new WebClient();
             client.Headers.Add(HttpRequestHeader.UserAgent, "Dispatch");
-            client.Headers.Add(HttpRequestHeader.Authorization, $"token {token}");
 
             return client;
         }
@@ -48,18 +47,17 @@ namespace Dispatch.Updater
         public async Task<UpdateInfo> GetLatestUpdate()
         {
             var client = GetWebClient();
+            client.Headers.Add(HttpRequestHeader.Accept, "application/json");
 
-            var data = await client.DownloadStringTaskAsync(new Uri(url));
-            var json = JsonConvert.DeserializeObject<Release>(data);
-
-            var asset = json.assets.First(e => e.browser_download_url.Contains(".exe"));
+            var data = await client.DownloadStringTaskAsync(BaseUrl);
+            var json = JsonConvert.DeserializeObject<LatestRelease>(data);
 
             return new UpdateInfo()
             {
-                Version = new Version(json.tag_name),
-                ReleaseNotes = json.body,
-                DownloadSize = asset.size,
-                DownloadUrl = asset.url
+                Version = new Version(json.versionCode),
+                ReleaseNotes = "",
+                DownloadSize = json.fileSize,
+                DownloadUrl = json.url
             };
         }
 

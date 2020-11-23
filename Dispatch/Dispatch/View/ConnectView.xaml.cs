@@ -1,18 +1,7 @@
-﻿using Dispatch.Client;
+﻿using Dispatch.Service.Client;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Dispatch.View
 {
@@ -28,10 +17,9 @@ namespace Dispatch.View
             InitializeComponent();
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var client = new FTPClient();
-            await client.Connect(Host.Text, int.Parse(Port.Text), Username.Text, Password.Password, Root.Text);
+            var client = new LocalClient();
 
             OnConnected?.Invoke(this, client);
         }

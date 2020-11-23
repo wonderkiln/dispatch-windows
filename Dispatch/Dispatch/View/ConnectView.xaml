@@ -1,11 +1,4 @@
-﻿<UserControl x:Class="Dispatch.View.ConnectView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Dispatch.View"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+﻿<UserControl x:Class="Dispatch.View.ConnectView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:Dispatch.View" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="450" d:DesignWidth="800" mc:Ignorable="d">
 
     <UserControl.Resources>
         <Style x:Key="PlaceholderTextBlock" TargetType="TextBlock">
@@ -36,9 +29,9 @@
             <Setter Property="Margin" Value="0,0,0,12" />
         </Style>
     </UserControl.Resources>
-    
-    <ScrollViewer Background="#191919" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Margin="64" MaxWidth="380" VerticalAlignment="Center" HorizontalAlignment="Center">
+
+    <ScrollViewer Background="#191919" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel MaxWidth="380" Margin="64" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Border Style="{StaticResource RowBorder}">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -47,10 +40,10 @@
                         <ColumnDefinition Width="60" />
                         <ColumnDefinition Width="40" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Address" Style="{StaticResource PlaceholderTextBlock}" />
-                    <TextBox x:Name="Host" Text="waws-prod-dm1-173.ftp.azurewebsites.windows.net" Grid.Column="1" Style="{StaticResource ConnectTextBox}" />
-                    <TextBlock Text="Port" Style="{StaticResource PlaceholderTextBlock}" Grid.Column="2" />
-                    <TextBox x:Name="Port" Text="21" Grid.Column="3" Style="{StaticResource ConnectTextBox}" />
+                    <TextBlock Style="{StaticResource PlaceholderTextBlock}" Text="Address" />
+                    <TextBox x:Name="Host" Grid.Column="1" Style="{StaticResource ConnectTextBox}" Text="waws-prod-dm1-173.ftp.azurewebsites.windows.net" />
+                    <TextBlock Grid.Column="2" Style="{StaticResource PlaceholderTextBlock}" Text="Port" />
+                    <TextBox x:Name="Port" Grid.Column="3" Style="{StaticResource ConnectTextBox}" Text="21" />
                 </Grid>
             </Border>
             <Border Style="{StaticResource RowBorder}">
@@ -59,8 +52,8 @@
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Username" Style="{StaticResource PlaceholderTextBlock}" />
-                    <TextBox x:Name="Username" Text="$app-dispatchftp-dev" Grid.Column="1" Style="{StaticResource ConnectTextBox}" />
+                    <TextBlock Style="{StaticResource PlaceholderTextBlock}" Text="Username" />
+                    <TextBox x:Name="Username" Grid.Column="1" Style="{StaticResource ConnectTextBox}" Text="$app-dispatchftp-dev" />
                 </Grid>
             </Border>
             <Border Style="{StaticResource RowBorder}">
@@ -69,8 +62,8 @@
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Password" Style="{StaticResource PlaceholderTextBlock}" />
-                    <PasswordBox x:Name="Password" Password="w2yZ0XW2PvDtDrnvzcyS6Zmj6B9uMxEvCkdP5Jo1jxgxKH7h9uYadcmEivlx" Grid.Column="1" Style="{StaticResource ConnectPasswordBox}" />
+                    <TextBlock Style="{StaticResource PlaceholderTextBlock}" Text="Password" />
+                    <PasswordBox x:Name="Password" Grid.Column="1" Password="w2yZ0XW2PvDtDrnvzcyS6Zmj6B9uMxEvCkdP5Jo1jxgxKH7h9uYadcmEivlx" Style="{StaticResource ConnectPasswordBox}" />
                 </Grid>
             </Border>
             <Border Style="{StaticResource RowBorder}">
@@ -79,11 +72,11 @@
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Root" Style="{StaticResource PlaceholderTextBlock}" />
-                    <TextBox x:Name="Root" Text="/site/wwwroot" Grid.Column="1" Style="{StaticResource ConnectTextBox}" />
+                    <TextBlock Style="{StaticResource PlaceholderTextBlock}" Text="Root" />
+                    <TextBox x:Name="Root" Grid.Column="1" Style="{StaticResource ConnectTextBox}" Text="/site/wwwroot" />
                 </Grid>
             </Border>
-            <Button Content="Connect" Click="Button_Click" HorizontalAlignment="Right" Margin="0,12,0,0" />
+            <Button Margin="0,12,0,0" HorizontalAlignment="Right" Click="Button_Click" Content="Connect" />
         </StackPanel>
     </ScrollViewer>
 </UserControl>

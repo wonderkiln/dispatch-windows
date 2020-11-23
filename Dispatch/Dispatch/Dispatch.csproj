@@ -77,34 +77,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Client\FTPClient.cs" />
-    <Compile Include="Client\IClient.cs" />
-    <Compile Include="Client\LocalClient.cs" />
-    <Compile Include="Client\IResource.cs" />
     <Compile Include="Helpers\BytesToStringConverter.cs" />
     <Compile Include="Helpers\Constants.cs" />
-    <Compile Include="Helpers\NullToVisibilityConverter.cs" />
     <Compile Include="Helpers\Observable.cs" />
-    <Compile Include="Helpers\ObjectQueue.cs" />
-    <Compile Include="Helpers\PathToPathComponentsConverter.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Helpers\ResourceWatcher.cs" />
-    <Compile Include="Screen\ProgressWindow.xaml.cs">
-      <DependentUpon>ProgressWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Screen\QueueWindow.xaml.cs">
-      <DependentUpon>QueueWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\ChromeButtons.xaml.cs">
       <DependentUpon>ChromeButtons.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Updater\ApplicationUpdater.cs" />
-    <Compile Include="Updater\AzureUpdateProvider.cs" />
-    <Compile Include="Updater\GithubUpdateProvider.cs" />
-    <Compile Include="Updater\IUpdateProvider.cs" />
-    <Compile Include="Updater\UpdateInfo.cs" />
+    <Compile Include="Service\Client\LocalClient.cs" />
+    <Compile Include="Service\Client\IClient.cs" />
+    <Compile Include="Service\Model\Resource.cs" />
+    <Compile Include="Service\Updater\ApplicationUpdater.cs" />
+    <Compile Include="Service\Updater\AzureUpdateProvider.cs" />
+    <Compile Include="Service\Updater\GithubUpdateProvider.cs" />
+    <Compile Include="Service\Updater\IUpdateProvider.cs" />
+    <Compile Include="Service\Updater\UpdateInfo.cs" />
+    <Compile Include="ViewModel\TabsViewModel.cs" />
     <Compile Include="ViewModel\ListViewModel.cs" />
-    <Compile Include="ViewModel\QueueViewModel.cs" />
     <Compile Include="ViewModel\TabViewModel.cs" />
     <Compile Include="View\ConnectView.xaml.cs">
       <DependentUpon>ConnectView.xaml</DependentUpon>
@@ -127,14 +117,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Screen\ProgressWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Screen\QueueWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\ChromeButtons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

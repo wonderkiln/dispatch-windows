@@ -1,10 +1,5 @@
-﻿using Dispatch.Client;
-using Dispatch.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Dispatch.Helpers;
+using Dispatch.Service.Client;
 
 namespace Dispatch.ViewModel
 {
@@ -16,7 +11,7 @@ namespace Dispatch.ViewModel
             {
                 if (RightViewModel != null)
                 {
-                    return RightViewModel.Client.ToString();
+                    return RightViewModel.Current?.Path ?? "-";
                 }
 
                 return "New Connection";
@@ -35,8 +30,17 @@ namespace Dispatch.ViewModel
             set
             {
                 _rightViewModel = value;
+                _rightViewModel.PropertyChanged += _rightViewModel_PropertyChanged;
 
                 Notify();
+                Notify("Title");
+            }
+        }
+
+        private void _rightViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Current")
+            {
                 Notify("Title");
             }
         }

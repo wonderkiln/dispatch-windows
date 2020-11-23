@@ -1,12 +1,8 @@
-﻿using Dispatch.Client;
-using Dispatch.Helpers;
+﻿using Dispatch.Helpers;
+using Dispatch.Service.Client;
+using Dispatch.Service.Model;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using System.Windows;
 
 namespace Dispatch.ViewModel
 {
@@ -17,41 +13,25 @@ namespace Dispatch.ViewModel
         public ListViewModel(IClient client)
         {
             Client = client;
-            Load(client.RootPath);
+            Load(client.InitialPath);
         }
 
-        private ObservableCollection<IResource> History { get; set; } = new ObservableCollection<IResource>();
-
-        private bool _isBusy = false;
-        public bool IsBusy
+        private Resource _current;
+        public Resource Current
         {
             get
             {
-                return _isBusy;
+                return _current;
             }
             private set
             {
-                _isBusy = value;
+                _current = value;
                 Notify();
             }
         }
 
-        private IResource _currentResource;
-        public IResource CurrentResource
-        {
-            get
-            {
-                return _currentResource;
-            }
-            private set
-            {
-                _currentResource = value;
-                Notify();
-            }
-        }
-
-        private List<IResource> _list;
-        public List<IResource> List
+        private Resource[] _list;
+        public Resource[] Resources
         {
             get
             {
@@ -66,59 +46,16 @@ namespace Dispatch.ViewModel
 
         public async void Load(string path)
         {
-            IsBusy = true;
-
-            CurrentResource = await Client.Resource(path);
-            List = await Client.Resources(path);
-            History.Add(CurrentResource);
-
-            IsBusy = false;
-        }
-
-        public async void Refresh()
-        {
-            IsBusy = true;
-
-            if (CurrentResource != null)
+            try
             {
-                List = await Client.Resources(CurrentResource.Path);
+                Current = await Client.FetchResource(path);
+                Resources = await Client.FetchResources(path);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            IsBusy = false;
-        }
-
-        public async void GoBack()
-        {
-            IsBusy = true;
-
-            if (History.Count > 1)
-            {
-                History.RemoveAt(History.Count - 1);
-                CurrentResource = History[History.Count - 1];
-                List = await Client.Resources(CurrentResource.Path);
-            }
-
-            IsBusy = false;
-        }
-
-        public async Task Disconnect()
-        {
-            IsBusy = true;
-
-            await Client.Disconnect();
-
-            IsBusy = false;
-        }
-
-        public async void Delete(string path)
-        {
-            IsBusy = true;
-
-            await Client.Delete(path);
-
-            IsBusy = false;
-
-            Refresh();
         }
     }
 }

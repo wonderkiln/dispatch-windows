@@ -28,13 +28,17 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Rectangle Grid.ColumnSpan="3" Height="1" VerticalAlignment="Bottom" Fill="#EBEBEB" />
-            <ListBox x:Name="TabsListBox" ButtonBase.Click="CloseTabButton_Click" ItemsSource="{Binding Tabs, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" SelectedIndex="0" SelectionChanged="TabListBox_SelectionChanged" Style="{StaticResource ChromeTabListBox}">
+            <ListBox x:Name="TabsListBox" ButtonBase.Click="CloseTabButton_Click" ItemsSource="{Binding ViewModel.Tabs, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" SelectedIndex="0" SelectionChanged="TabListBox_SelectionChanged" Style="{StaticResource ChromeTabListBox}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="24" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
                             <TextBlock VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="15" Foreground="#FFC200" Text="&#xE945;" />
-                            <TextBlock Margin="6,0,0,0" VerticalAlignment="Center" Text="{Binding Title}" />
-                        </StackPanel>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -74,10 +78,10 @@
                     </MenuItem>
                 </Menu>
             </StackPanel>
-            <Popup x:Name="p" Placement="Bottom" PlacementTarget="{Binding ElementName=Transfers}" StaysOpen="False">
-                <Border Width="300" Height="300" Background="White" />
+            <Popup x:Name="p" AllowsTransparency="True" Placement="Bottom" PlacementTarget="{Binding ElementName=Transfers}" PopupAnimation="Fade" StaysOpen="False">
+                <Border Width="300" Height="300" Style="{StaticResource PopupContainerBorder}" />
             </Popup>
-            <controls:ChromeButtons Grid.Column="2" />
+            <controls:ChromeButtons Grid.Column="2" VerticalAlignment="Top" />
         </Grid>
         <Border Grid.Row="1" Background="White">
             <view:TabView ViewModel="{Binding SelectedItem, ElementName=TabsListBox}" />
