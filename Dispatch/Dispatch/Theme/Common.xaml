@@ -43,18 +43,19 @@
         </Setter>
     </Style>
 
-    <Style TargetType="TextBox">
+    <!--<Style TargetType="TextBox">
         <Setter Property="Foreground" Value="White" />
         <Setter Property="CaretBrush" Value="White" />
         <Setter Property="SelectionBrush" Value="White" />
         <Setter Property="SelectionOpacity" Value="0.5" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="Padding" Value="0,8" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
                     <Border
-                        Background="Transparent"
+                        Background="{TemplateBinding Background}"
                         BorderBrush="#5FFFFFFF"
                         BorderThickness="0,0,0,1">
                         <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" />
@@ -62,7 +63,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
 
     <Style TargetType="PasswordBox">
         <Setter Property="Foreground" Value="White" />

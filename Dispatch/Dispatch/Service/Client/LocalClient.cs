@@ -8,7 +8,7 @@ namespace Dispatch.Service.Client
 {
     public class LocalClient : IClient
     {
-        private static readonly string AllDrivesPathKey = "_AllDrivesPathKey";
+        private static readonly string AllDrivesPathKey = "";
 
         public string InitialPath { get; } = AllDrivesPathKey;
 
@@ -21,7 +21,7 @@ namespace Dispatch.Service.Client
         {
             if (path == AllDrivesPathKey)
             {
-                return new Resource(this, AllDrivesPathKey, "My Computer");
+                return new Resource(this, AllDrivesPathKey, "All Drives");
             }
             else if (File.Exists(path))
             {
@@ -59,7 +59,7 @@ namespace Dispatch.Service.Client
             }
             else
             {
-                throw new Exception("File or directory not found");
+                throw new Exception($"File or directory not found at path: {path}");
             }
         }
 
@@ -86,7 +86,7 @@ namespace Dispatch.Service.Client
             }
             else
             {
-                throw new Exception("File or directory not found");
+                throw new Exception($"File or directory not found at path: {path}");
             }
         }
     }

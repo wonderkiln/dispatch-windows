@@ -87,5 +87,14 @@ namespace Dispatch.View.Fragments
             var resource = item.DataContext as Resource;
             ViewModel.Load(resource.Path);
         }
+
+        private void TextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var textBox = sender as TextBox;
+                textBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+            }
+        }
     }
 }

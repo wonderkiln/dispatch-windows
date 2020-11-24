@@ -73,11 +73,17 @@
                     Content="&#xE80F;"
                     FontSize="14"
                     Style="{StaticResource ChromeButtonStyle}" />
+                <Button
+                    Command="{Binding ViewModel.RefreshCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
+                    Content="&#xE72C;"
+                    FontSize="14"
+                    Style="{StaticResource ChromeButtonStyle}" />
             </StackPanel>
-            <TextBlock
+            <TextBox
                 Grid.Column="1"
-                VerticalAlignment="Center"
-                Text="{Binding ViewModel.Current.Path, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}" />
+                VerticalContentAlignment="Center"
+                KeyUp="TextBox_KeyUp"
+                Text="{Binding ViewModel.Path, UpdateSourceTrigger=Explicit, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}" />
         </Grid>
         <ListView
             x:Name="List"

@@ -68,6 +68,12 @@ namespace Dispatch.Service.Client
         public async Task<Resource> FetchResource(string path)
         {
             var item = await Client.GetObjectInfoAsync(path);
+
+            if (item == null)
+            {
+                throw new Exception($"Resource not found at path: {path}");
+            }
+
             return MakeResource(item);
         }
 

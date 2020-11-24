@@ -39,11 +39,40 @@ namespace Dispatch.ViewModel
             }
         }
 
+        private RelayCommand _refreshCommand;
+        public RelayCommand RefreshCommand
+        {
+            get
+            {
+                return _refreshCommand;
+            }
+            private set
+            {
+                _refreshCommand = value;
+                Notify();
+            }
+        }
+
+        private string _temporaryPath;
+        public string Path
+        {
+            get
+            {
+                return _temporaryPath ?? Current?.Path ?? "";
+            }
+            set
+            {
+                _temporaryPath = value;
+                Load(value);
+            }
+        }
+
         public ListViewModel(IClient client)
         {
             Client = client;
             BackCommand = new RelayCommand(BackCommandAction, false);
             HomeCommand = new RelayCommand(HomeCommandAction);
+            RefreshCommand = new RelayCommand(RefreshCommandAction);
 
             Load(client.InitialPath);
         }
@@ -58,6 +87,14 @@ namespace Dispatch.ViewModel
             Load(Client.InitialPath);
         }
 
+        private void RefreshCommandAction(object parameter)
+        {
+            if (Current != null)
+            {
+                Load(Current.Path);
+            }
+        }
+
         private readonly Stack<Resource> History = new Stack<Resource>();
 
         private Resource _current;
@@ -69,9 +106,12 @@ namespace Dispatch.ViewModel
             }
             private set
             {
-                
+
                 _current = value;
                 Notify();
+                Notify("Path");
+
+                RefreshCommand.IsExecutable = _current != null;
             }
         }
 
@@ -104,6 +144,8 @@ namespace Dispatch.ViewModel
                 Current = current;
                 Resources = resources;
                 BackCommand.IsExecutable = History.Count > 0;
+
+                _temporaryPath = null;
             }
             catch (Exception ex)
             {
@@ -120,11 +162,8 @@ namespace Dispatch.ViewModel
 
             try
             {
-                var current = History.Pop();
-                var resources = await Client.FetchResources(current.Path);
-
-                Current = current;
-                Resources = resources;
+                Current = History.Pop();
+                Resources = await Client.FetchResources(Current.Path);
                 BackCommand.IsExecutable = History.Count > 0;
             }
             catch (Exception ex)
