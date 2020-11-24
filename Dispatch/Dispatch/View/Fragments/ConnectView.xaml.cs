@@ -5,9 +5,6 @@ using System.Windows.Controls;
 
 namespace Dispatch.View
 {
-    /// <summary>
-    /// Interaction logic for ConnectView.xaml
-    /// </summary>
     public partial class ConnectView : UserControl
     {
         public event EventHandler<IClient> OnConnected;
@@ -17,11 +14,19 @@ namespace Dispatch.View
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            var client = new LocalClient();
+            try
+            {
+                var client = new FTPClient(Root.Text);
+                await client.Connect(Host.Text, int.Parse(Port.Text), Username.Text, Password.Password);
 
-            OnConnected?.Invoke(this, client);
+                OnConnected?.Invoke(this, client);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

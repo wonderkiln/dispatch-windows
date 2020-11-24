@@ -60,21 +60,9 @@ namespace Dispatch.View
 
                 if (resource.Client == ViewModel.Client)
                 {
-                    var list = sender as ListBox;
+                    var list = sender as Menu;
                     list.Items.Add(resource);
                 }
-            }
-        }
-
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.AddedItems.Count > 0)
-            {
-                var resource = e.AddedItems[0] as Resource;
-                ViewModel.Load(resource.Path);
-
-                var list = sender as ListBox;
-                list.SelectedItem = null;
             }
         }
 
@@ -86,11 +74,18 @@ namespace Dispatch.View
             {
                 var resource = (Resource)e.Data.GetData(typeof(Resource));
 
-                if (resource.Client == ViewModel.Client)
+                if (resource.Client == ViewModel.Client && resource.Type != ResourceType.File)
                 {
                     e.Effects = e.AllowedEffects;
                 }
             }
+        }
+
+        private void ShortcutsMenu_Click(object sender, RoutedEventArgs e)
+        {
+            var item = e.OriginalSource as FrameworkElement;
+            var resource = item.DataContext as Resource;
+            ViewModel.Load(resource.Path);
         }
     }
 }

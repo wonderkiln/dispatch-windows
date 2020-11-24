@@ -25,17 +25,37 @@ namespace Dispatch.ViewModel
             }
         }
 
+        private RelayCommand _homeCommand;
+        public RelayCommand HomeCommand
+        {
+            get
+            {
+                return _homeCommand;
+            }
+            private set
+            {
+                _homeCommand = value;
+                Notify();
+            }
+        }
+
         public ListViewModel(IClient client)
         {
             Client = client;
             BackCommand = new RelayCommand(BackCommandAction, false);
-            
+            HomeCommand = new RelayCommand(HomeCommandAction);
+
             Load(client.InitialPath);
         }
 
         private void BackCommandAction(object parameter)
         {
             Back();
+        }
+
+        private void HomeCommandAction(object parameter)
+        {
+            Load(Client.InitialPath);
         }
 
         private readonly Stack<Resource> History = new Stack<Resource>();
@@ -76,7 +96,7 @@ namespace Dispatch.ViewModel
                 var current = await Client.FetchResource(path);
                 var resources = await Client.FetchResources(path);
 
-                if (Current != null)
+                if (Current != null && current.Path != Current.Path)
                 {
                     History.Push(Current);
                 }

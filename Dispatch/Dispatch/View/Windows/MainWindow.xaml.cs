@@ -12,7 +12,7 @@ namespace Dispatch.Screen
 
         public TabsViewModel ViewModel { get; } = new TabsViewModel();
 
-        private async void NewTabButton_Click(object sender, RoutedEventArgs e)
+        private void NewTabButton_Click(object sender, RoutedEventArgs e)
         {
             TabsListBox.SelectedItem = ViewModel.NewTab();
         }
@@ -21,6 +21,7 @@ namespace Dispatch.Screen
         {
             var button = e.OriginalSource as Button;
             var model = button.DataContext as TabViewModel;
+            model.Disconnect();
             ViewModel.CloseTab(model);
         }
 

@@ -11,7 +11,7 @@ namespace Dispatch.ViewModel
             {
                 if (RightViewModel != null)
                 {
-                    return RightViewModel.Current.Name;
+                    return RightViewModel.Current?.Name ?? "-";
                 }
 
                 return "New Connection";
@@ -29,8 +29,17 @@ namespace Dispatch.ViewModel
             }
             set
             {
+                if (_rightViewModel != null)
+                {
+                    _rightViewModel.PropertyChanged -= _rightViewModel_PropertyChanged;
+                }
+
                 _rightViewModel = value;
-                _rightViewModel.PropertyChanged += _rightViewModel_PropertyChanged;
+
+                if (_rightViewModel != null)
+                {
+                    _rightViewModel.PropertyChanged += _rightViewModel_PropertyChanged;
+                }
 
                 Notify();
                 Notify("Title");
@@ -42,6 +51,15 @@ namespace Dispatch.ViewModel
             if (e.PropertyName == "Current")
             {
                 Notify("Title");
+            }
+        }
+
+        public async void Disconnect()
+        {
+            if (RightViewModel != null)
+            {
+                await RightViewModel.Client.Diconnect();
+                RightViewModel = null;
             }
         }
     }
