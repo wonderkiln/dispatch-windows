@@ -3,7 +3,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Dispatch.View
+namespace Dispatch.View.Fragments
 {
     public partial class ConnectView : UserControl
     {

@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Dispatch.Controls
+namespace Dispatch.View.Controls
 {
     public partial class ChromeButtons : UserControl
     {

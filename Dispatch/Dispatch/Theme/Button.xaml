@@ -58,7 +58,10 @@
         </Setter>
     </Style>
 
-    <Style x:Key="CloseChromeButtonStyle" BasedOn="{StaticResource ChromeButtonStyle}" TargetType="Button">
+    <Style
+        x:Key="CloseChromeButtonStyle"
+        BasedOn="{StaticResource ChromeButtonStyle}"
+        TargetType="Button">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -107,7 +110,11 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="Transparent" BorderBrush="White" BorderThickness="1" CornerRadius="2">
+                    <Border
+                        Background="Transparent"
+                        BorderBrush="White"
+                        BorderThickness="1"
+                        CornerRadius="2">
                         <ContentPresenter Margin="{TemplateBinding Padding}" />
                     </Border>
                     <ControlTemplate.Triggers>

@@ -1,15 +1,13 @@
-﻿using Dispatch.Updater;
+﻿using Dispatch.Helpers;
+using Dispatch.Updater;
 using Dispatch.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Dispatch.Screen
+namespace Dispatch.View.Windows
 {
     public partial class MainWindow : Window
     {
-
-        private ApplicationUpdater updater = new ApplicationUpdater(new AzureUpdateProvider());
-
         public TabsViewModel ViewModel { get; } = new TabsViewModel();
 
         private void NewTabButton_Click(object sender, RoutedEventArgs e)
@@ -39,14 +37,20 @@ namespace Dispatch.Screen
             }
         }
 
-        private void UpdatesButton_Click(object sender, RoutedEventArgs e)
+        private async void UpdateMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            _ = updater.CheckForUpdate();
+            var updater = new ApplicationUpdater(new AzureUpdateProvider());
+            await updater.CheckForUpdate();
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void TransfersMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            p.IsOpen = true;
+            TransfersPopup.IsOpen = true;
+        }
+
+        private void AboutMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show($"You have version {Constants.VERSION} ({Constants.CHANNEL})", "About", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

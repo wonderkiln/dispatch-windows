@@ -3,7 +3,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Dispatch.Helpers
+namespace Dispatch.Helpers.Converters
 {
     public class BytesToStringConverter : IValueConverter
     {

@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Dispatch.View
+namespace Dispatch.View.Fragments
 {
     /// <summary>
     /// Interaction logic for ListView.xaml

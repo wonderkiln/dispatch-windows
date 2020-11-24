@@ -4,27 +4,8 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Dispatch.View
+namespace Dispatch.View.Fragments
 {
-    public class ViewSelector : DataTemplateSelector
-    {
-        public DataTemplate ListTemplate { get; set; }
-        public DataTemplate ConnectTemplate { get; set; }
-
-        public override DataTemplate SelectTemplate(object item, DependencyObject container)
-        {
-            if (item is ListViewModel)
-            {
-                return ListTemplate;
-            }
-
-            return ConnectTemplate;
-        }
-    }
-
-    /// <summary>
-    /// Interaction logic for TabView.xaml
-    /// </summary>
     public partial class TabView : UserControl
     {
         public event EventHandler<TabViewModel> OnConnected;

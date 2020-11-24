@@ -1,4 +1,14 @@
-﻿<UserControl x:Class="Dispatch.View.ListView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:helpers="clr-namespace:Dispatch.Helpers" xmlns:local="clr-namespace:Dispatch.View" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="450" d:DesignWidth="800" mc:Ignorable="d">
+﻿<UserControl
+    x:Class="Dispatch.View.Fragments.ListView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="clr-namespace:Dispatch.Helpers.Converters"
+    xmlns:local="clr-namespace:Dispatch.View.Fragments"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
     <UserControl.Resources>
         <helpers:BytesToStringConverter x:Key="BytesToStringConverter" />
         <helpers:ResourceToIconConverter x:Key="ResourceToIconConverter" />
@@ -10,8 +20,17 @@
             <RowDefinition Height="40" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Border Background="#F7F7F7" BorderBrush="#EBEBEB" BorderThickness="0,0,0,1">
-            <Menu x:Name="ShortcutsMenu" AllowDrop="True" DragEnter="ListBox_DragOver" DragOver="ListBox_DragOver" Drop="ListBox_Drop" MenuItem.Click="ShortcutsMenu_Click">
+        <Border
+            Background="#F7F7F7"
+            BorderBrush="#EBEBEB"
+            BorderThickness="0,0,0,1">
+            <Menu
+                x:Name="ShortcutsMenu"
+                AllowDrop="True"
+                DragEnter="ListBox_DragOver"
+                DragOver="ListBox_DragOver"
+                Drop="ListBox_Drop"
+                MenuItem.Click="ShortcutsMenu_Click">
                 <Menu.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" />
@@ -24,8 +43,15 @@
                                 <ColumnDefinition Width="24" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="15" Text="&#xE8B7;" />
-                            <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding Name}" />
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontFamily="Segoe MDL2 Assets"
+                                FontSize="15"
+                                Text="&#xE8B7;" />
+                            <TextBlock
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Text="{Binding Name}" />
                         </Grid>
                     </DataTemplate>
                 </Menu.ItemTemplate>
@@ -37,12 +63,28 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Horizontal">
-                <Button Command="{Binding ViewModel.BackCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}" Content="&#xE72B;" FontSize="14" Style="{StaticResource ChromeButtonStyle}" />
-                <Button Command="{Binding ViewModel.HomeCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}" Content="&#xE80F;" FontSize="14" Style="{StaticResource ChromeButtonStyle}" />
+                <Button
+                    Command="{Binding ViewModel.BackCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
+                    Content="&#xE72B;"
+                    FontSize="14"
+                    Style="{StaticResource ChromeButtonStyle}" />
+                <Button
+                    Command="{Binding ViewModel.HomeCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
+                    Content="&#xE80F;"
+                    FontSize="14"
+                    Style="{StaticResource ChromeButtonStyle}" />
             </StackPanel>
-            <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding ViewModel.Current.Path, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}" />
+            <TextBlock
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Text="{Binding ViewModel.Current.Path, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}" />
         </Grid>
-        <ListView x:Name="List" Grid.Row="2" Margin="0,0,16,0" ItemsSource="{Binding ViewModel.Resources, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}" SelectionMode="Extended">
+        <ListView
+            x:Name="List"
+            Grid.Row="2"
+            Margin="0,0,16,0"
+            ItemsSource="{Binding ViewModel.Resources, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
+            SelectionMode="Extended">
             <ListView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource {x:Type ListViewItem}}" TargetType="ListViewItem">
                     <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
@@ -70,8 +112,15 @@
                                         <ColumnDefinition Width="22" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" FontSize="15" Text="{Binding Converter={StaticResource ResourceToIconConverter}}" />
-                                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding Name}" />
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        FontFamily="Segoe MDL2 Assets"
+                                        FontSize="15"
+                                        Text="{Binding Converter={StaticResource ResourceToIconConverter}}" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Name}" />
                                 </Grid>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>

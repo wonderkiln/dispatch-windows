@@ -1,4 +1,7 @@
-﻿namespace Dispatch.Helpers
+﻿using System;
+using System.Reflection;
+
+namespace Dispatch.Helpers
 {
     public class Constants
     {
@@ -11,5 +14,13 @@
 #else
         public static Channel CHANNEL = Channel.Stable;
 #endif
+
+        public static Version VERSION
+        {
+            get
+            {
+                return Assembly.GetExecutingAssembly().GetName().Version;
+            }
+        }
     }
 }
