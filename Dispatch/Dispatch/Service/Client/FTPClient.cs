@@ -12,6 +12,8 @@ namespace Dispatch.Service.Client
     {
         private readonly FtpClient Client = new FtpClient();
 
+        public string Title { get; private set; } = "";
+
         public string InitialPath { get; private set; } = "/";
 
         public FTPClient(string path)
@@ -27,6 +29,8 @@ namespace Dispatch.Service.Client
             Client.DataConnectionConnectTimeout = 2000;
             Client.DataConnectionReadTimeout = 2000;
 
+            FtpTrace.EnableTracing = false;
+
             if (!string.IsNullOrEmpty(path))
             {
                 InitialPath = path;
@@ -40,6 +44,8 @@ namespace Dispatch.Service.Client
             Client.Credentials = new NetworkCredential(username, password);
 
             await Client.ConnectAsync();
+
+            Title = $"{host}:{port}";
         }
 
         public async Task Diconnect()

@@ -5,6 +5,8 @@ namespace Dispatch.Service.Client
 {
     public interface IClient
     {
+        string Title { get; }
+
         string InitialPath { get; }
 
         Task Diconnect();

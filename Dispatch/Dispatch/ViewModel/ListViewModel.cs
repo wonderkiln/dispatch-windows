@@ -144,12 +144,15 @@ namespace Dispatch.ViewModel
                 Current = current;
                 Resources = resources;
                 BackCommand.IsExecutable = History.Count > 0;
-
-                _temporaryPath = null;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                _temporaryPath = null;
+                Notify("Path");
             }
         }
 

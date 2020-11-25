@@ -10,6 +10,8 @@ namespace Dispatch.Service.Client
     {
         private static readonly string AllDrivesPathKey = "";
 
+        public string Title { get; } = "";
+
         public string InitialPath { get; } = AllDrivesPathKey;
 
         public Task Diconnect()

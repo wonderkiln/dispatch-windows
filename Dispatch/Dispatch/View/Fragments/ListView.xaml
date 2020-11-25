@@ -17,8 +17,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
-            <RowDefinition Height="40" />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Border
             Background="#F7F7F7"
@@ -57,33 +57,51 @@
                 </Menu.ItemTemplate>
             </Menu>
         </Border>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                 <Button
                     Command="{Binding ViewModel.BackCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
                     Content="&#xE72B;"
-                    FontSize="14"
-                    Style="{StaticResource ChromeButtonStyle}" />
+                    Style="{StaticResource IconButtonStyle}" />
                 <Button
                     Command="{Binding ViewModel.HomeCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
                     Content="&#xE80F;"
-                    FontSize="14"
-                    Style="{StaticResource ChromeButtonStyle}" />
-                <Button
-                    Command="{Binding ViewModel.RefreshCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
-                    Content="&#xE72C;"
-                    FontSize="14"
-                    Style="{StaticResource ChromeButtonStyle}" />
+                    FontSize="15"
+                    Style="{StaticResource IconButtonStyle}" />
             </StackPanel>
-            <TextBox
+            <Border
                 Grid.Column="1"
-                VerticalContentAlignment="Center"
-                KeyUp="TextBox_KeyUp"
-                Text="{Binding ViewModel.Path, UpdateSourceTrigger=Explicit, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}" />
+                Margin="4,0"
+                VerticalAlignment="Center"
+                BorderBrush="#1F000000"
+                BorderThickness="1"
+                CornerRadius="2">
+                <Grid Margin="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox
+                        Margin="4,0"
+                        VerticalContentAlignment="Center"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        FontSize="13"
+                        KeyDown="TextBox_KeyUp"
+                        Text="{Binding ViewModel.Path, UpdateSourceTrigger=Explicit, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}" />
+                    <Button
+                        Grid.Column="1"
+                        Padding="6"
+                        Command="{Binding ViewModel.RefreshCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
+                        Content="&#xE72C;"
+                        FontSize="13"
+                        Style="{StaticResource IconButtonStyle}" />
+                </Grid>
+            </Border>
         </Grid>
         <ListView
             x:Name="List"
@@ -109,11 +127,11 @@
                 <GridView>
                     <GridViewColumn Width="300">
                         <GridViewColumn.Header>
-                            <TextBlock Margin="28,0,0,0" Text="Name" />
+                            <TextBlock Margin="24,0,0,0" Text="Name" />
                         </GridViewColumn.Header>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Grid Margin="6,0,0,0">
+                                <Grid Margin="2,0,0,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="22" />
                                         <ColumnDefinition Width="*" />
@@ -133,11 +151,11 @@
                     </GridViewColumn>
                     <GridViewColumn Width="120">
                         <GridViewColumn.Header>
-                            <TextBlock Margin="6,0,0,0" Text="Size" />
+                            <TextBlock Margin="2,0,0,0" Text="Size" />
                         </GridViewColumn.Header>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Margin="6,0,0,0" Text="{Binding Size, Converter={StaticResource BytesToStringConverter}}" />
+                                <TextBlock Margin="2,0,0,0" Text="{Binding Size, Converter={StaticResource BytesToStringConverter}}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

@@ -104,13 +104,18 @@
                             HorizontalAlignment="Right"
                             Style="{StaticResource GridViewColumnHeaderGripper}" />
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Content" Value="{x:Null}">
+                            <Setter TargetName="PART_HeaderGripper" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
     <Style x:Key="{x:Static GridView.GridViewScrollViewerStyleKey}" TargetType="ScrollViewer">
-        <Setter Property="Padding" Value="12" />
+        <Setter Property="Padding" Value="8" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ScrollViewer">
@@ -141,7 +146,7 @@
                             </ScrollViewer>
                             <ScrollContentPresenter
                                 Name="PART_ScrollContentPresenter"
-                                Margin="0,12,0,0"
+                                Margin="0,8,0,0"
                                 CanContentScroll="True"
                                 CanHorizontallyScroll="False"
                                 CanVerticallyScroll="False"
