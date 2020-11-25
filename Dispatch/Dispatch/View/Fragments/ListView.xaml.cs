@@ -94,6 +94,8 @@ namespace Dispatch.View.Fragments
             {
                 var textBox = sender as TextBox;
                 textBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+                
+                Keyboard.ClearFocus();
             }
         }
     }
