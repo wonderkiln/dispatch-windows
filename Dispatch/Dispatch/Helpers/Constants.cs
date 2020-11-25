@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace Dispatch.Helpers
 {
@@ -17,5 +14,13 @@ namespace Dispatch.Helpers
 #else
         public static Channel CHANNEL = Channel.Stable;
 #endif
+
+        public static Version VERSION
+        {
+            get
+            {
+                return Assembly.GetExecutingAssembly().GetName().Version;
+            }
+        }
     }
 }

@@ -1,12 +1,9 @@
-﻿using Dispatch.Client;
-using Dispatch.Helpers;
+﻿using Dispatch.Helpers;
+using Dispatch.Service.Client;
+using Dispatch.Service.Model;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using System.Windows;
 
 namespace Dispatch.ViewModel
 {
@@ -14,111 +11,168 @@ namespace Dispatch.ViewModel
     {
         public IClient Client { get; private set; }
 
+        private RelayCommand _backCommand;
+        public RelayCommand BackCommand
+        {
+            get
+            {
+                return _backCommand;
+            }
+            private set
+            {
+                _backCommand = value;
+                Notify();
+            }
+        }
+
+        private RelayCommand _homeCommand;
+        public RelayCommand HomeCommand
+        {
+            get
+            {
+                return _homeCommand;
+            }
+            private set
+            {
+                _homeCommand = value;
+                Notify();
+            }
+        }
+
+        private RelayCommand _refreshCommand;
+        public RelayCommand RefreshCommand
+        {
+            get
+            {
+                return _refreshCommand;
+            }
+            private set
+            {
+                _refreshCommand = value;
+                Notify();
+            }
+        }
+
+        private string _temporaryPath;
+        public string Path
+        {
+            get
+            {
+                return _temporaryPath ?? Current?.Path ?? "";
+            }
+            set
+            {
+                _temporaryPath = value;
+                Load(value);
+            }
+        }
+
         public ListViewModel(IClient client)
         {
             Client = client;
-            Load(client.RootPath);
+            BackCommand = new RelayCommand(BackCommandAction, false);
+            HomeCommand = new RelayCommand(HomeCommandAction);
+            RefreshCommand = new RelayCommand(RefreshCommandAction);
+
+            Load(client.InitialPath);
         }
 
-        private ObservableCollection<IResource> History { get; set; } = new ObservableCollection<IResource>();
+        private void BackCommandAction(object parameter)
+        {
+            Back();
+        }
 
-        private bool _isBusy = false;
-        public bool IsBusy
+        private void HomeCommandAction(object parameter)
+        {
+            Load(Client.InitialPath);
+        }
+
+        private void RefreshCommandAction(object parameter)
+        {
+            if (Current != null)
+            {
+                Load(Current.Path);
+            }
+        }
+
+        private readonly Stack<Resource> History = new Stack<Resource>();
+
+        private Resource _current;
+        public Resource Current
         {
             get
             {
-                return _isBusy;
+                return _current;
             }
             private set
             {
-                _isBusy = value;
+
+                _current = value;
                 Notify();
+                Notify("Path");
+
+                RefreshCommand.IsExecutable = _current != null;
             }
         }
 
-        private IResource _currentResource;
-        public IResource CurrentResource
+        private Resource[] _resources;
+        public Resource[] Resources
         {
             get
             {
-                return _currentResource;
+                return _resources;
             }
             private set
             {
-                _currentResource = value;
-                Notify();
-            }
-        }
-
-        private List<IResource> _list;
-        public List<IResource> List
-        {
-            get
-            {
-                return _list;
-            }
-            private set
-            {
-                _list = value;
+                _resources = value;
                 Notify();
             }
         }
 
         public async void Load(string path)
         {
-            IsBusy = true;
+            try
+            {
+                var current = await Client.FetchResource(path);
+                var resources = await Client.FetchResources(path);
 
-            CurrentResource = await Client.Resource(path);
-            List = await Client.Resources(path);
-            History.Add(CurrentResource);
+                if (Current != null && current.Path != Current.Path)
+                {
+                    History.Push(Current);
+                }
 
-            IsBusy = false;
+                Current = current;
+                Resources = resources;
+                BackCommand.IsExecutable = History.Count > 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                _temporaryPath = null;
+                Notify("Path");
+            }
         }
 
-        public async void Refresh()
+        public async void Back()
         {
-            IsBusy = true;
-
-            if (CurrentResource != null)
+            if (History.Count == 0)
             {
-                List = await Client.Resources(CurrentResource.Path);
+                return;
             }
 
-            IsBusy = false;
-        }
-
-        public async void GoBack()
-        {
-            IsBusy = true;
-
-            if (History.Count > 1)
+            try
             {
-                History.RemoveAt(History.Count - 1);
-                CurrentResource = History[History.Count - 1];
-                List = await Client.Resources(CurrentResource.Path);
+                Current = History.Pop();
+                Resources = await Client.FetchResources(Current.Path);
+                BackCommand.IsExecutable = History.Count > 0;
             }
-
-            IsBusy = false;
-        }
-
-        public async Task Disconnect()
-        {
-            IsBusy = true;
-
-            await Client.Disconnect();
-
-            IsBusy = false;
-        }
-
-        public async void Delete(string path)
-        {
-            IsBusy = true;
-
-            await Client.Delete(path);
-
-            IsBusy = false;
-
-            Refresh();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

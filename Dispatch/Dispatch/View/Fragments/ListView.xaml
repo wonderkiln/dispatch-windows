@@ -1,0 +1,166 @@
+﻿<UserControl
+    x:Class="Dispatch.View.Fragments.ListView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="clr-namespace:Dispatch.Helpers.Converters"
+    xmlns:local="clr-namespace:Dispatch.View.Fragments"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <helpers:BytesToStringConverter x:Key="BytesToStringConverter" />
+        <helpers:ResourceToIconConverter x:Key="ResourceToIconConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border
+            Background="#F7F7F7"
+            BorderBrush="#EBEBEB"
+            BorderThickness="0,0,0,1">
+            <Menu
+                x:Name="ShortcutsMenu"
+                AllowDrop="True"
+                DragEnter="ListBox_DragOver"
+                DragOver="ListBox_DragOver"
+                Drop="ListBox_Drop"
+                MenuItem.Click="ShortcutsMenu_Click">
+                <Menu.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </Menu.ItemsPanel>
+                <Menu.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="24" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontFamily="Segoe MDL2 Assets"
+                                FontSize="15"
+                                Text="&#xE8B7;" />
+                            <TextBlock
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Text="{Binding Name}" />
+                        </Grid>
+                    </DataTemplate>
+                </Menu.ItemTemplate>
+            </Menu>
+        </Border>
+        <Grid Grid.Row="1" Margin="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                <Button
+                    Command="{Binding ViewModel.BackCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
+                    Content="&#xE72B;"
+                    Style="{StaticResource IconButtonStyle}" />
+                <Button
+                    Command="{Binding ViewModel.HomeCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
+                    Content="&#xE80F;"
+                    FontSize="15"
+                    Style="{StaticResource IconButtonStyle}" />
+            </StackPanel>
+            <Border
+                Grid.Column="1"
+                Margin="4,0"
+                VerticalAlignment="Center"
+                BorderBrush="#1F000000"
+                BorderThickness="1"
+                CornerRadius="2">
+                <Grid Margin="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox
+                        Margin="4,0"
+                        VerticalContentAlignment="Center"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        FontSize="13"
+                        KeyDown="TextBox_KeyUp"
+                        Text="{Binding ViewModel.Path, UpdateSourceTrigger=Explicit, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}" />
+                    <Button
+                        Grid.Column="1"
+                        Padding="6"
+                        Command="{Binding ViewModel.RefreshCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
+                        Content="&#xE72C;"
+                        FontSize="13"
+                        Style="{StaticResource IconButtonStyle}" />
+                </Grid>
+            </Border>
+        </Grid>
+        <ListView
+            x:Name="List"
+            Grid.Row="2"
+            Margin="0,0,16,0"
+            ItemsSource="{Binding ViewModel.Resources, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
+            SelectionMode="Extended">
+            <ListView.ItemContainerStyle>
+                <Style BasedOn="{StaticResource {x:Type ListViewItem}}" TargetType="ListViewItem">
+                    <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
+                    <EventSetter Event="PreviewMouseMove" Handler="ListViewItem_PreviewMouseMove" />
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu>
+                                <MenuItem Header="Transfer" />
+                                <MenuItem Header="Add to Favorites" />
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="300">
+                        <GridViewColumn.Header>
+                            <TextBlock Margin="24,0,0,0" Text="Name" />
+                        </GridViewColumn.Header>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Margin="2,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="22" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        FontFamily="Segoe MDL2 Assets"
+                                        FontSize="15"
+                                        Text="{Binding Converter={StaticResource ResourceToIconConverter}}" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Name}" />
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="120">
+                        <GridViewColumn.Header>
+                            <TextBlock Margin="2,0,0,0" Text="Size" />
+                        </GridViewColumn.Header>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="2,0,0,0" Text="{Binding Size, Converter={StaticResource BytesToStringConverter}}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>

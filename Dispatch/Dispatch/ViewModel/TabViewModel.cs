@@ -1,10 +1,5 @@
-﻿using Dispatch.Client;
-using Dispatch.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Dispatch.Helpers;
+using Dispatch.Service.Client;
 
 namespace Dispatch.ViewModel
 {
@@ -16,7 +11,7 @@ namespace Dispatch.ViewModel
             {
                 if (RightViewModel != null)
                 {
-                    return RightViewModel.Client.ToString();
+                    return RightViewModel.Client.Title;
                 }
 
                 return "New Connection";
@@ -38,6 +33,15 @@ namespace Dispatch.ViewModel
 
                 Notify();
                 Notify("Title");
+            }
+        }
+
+        public async void Disconnect()
+        {
+            if (RightViewModel != null)
+            {
+                await RightViewModel.Client.Diconnect();
+                RightViewModel = null;
             }
         }
     }
