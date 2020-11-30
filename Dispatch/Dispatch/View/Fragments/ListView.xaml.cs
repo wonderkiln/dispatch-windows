@@ -1,4 +1,5 @@
-﻿using Dispatch.Service.Model;
+﻿using Dispatch.Helpers;
+using Dispatch.Service.Model;
 using Dispatch.ViewModel;
 using System;
 using System.Windows;
@@ -94,8 +95,22 @@ namespace Dispatch.View.Fragments
             {
                 var textBox = sender as TextBox;
                 textBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-                
+
                 Keyboard.ClearFocus();
+            }
+        }
+
+        private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var item = sender as FrameworkElement;
+            var resource = item.DataContext as Resource;
+
+            if (MessageBox.Show($"Are you sure you want to delete '{resource.Name}'?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                ResourceQueue.Shared.Add(QueueItem.ItemType.Delete, resource, null, (source, destination) =>
+                {
+                    ViewModel.Refresh();
+                });
             }
         }
     }

@@ -83,6 +83,7 @@
     <Compile Include="Helpers\Observable.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Helpers\Converters\ResourceToIconConverter.cs" />
+    <Compile Include="Helpers\ResourceQueue.cs" />
     <Compile Include="Helpers\ResourceWatcher.cs" />
     <Compile Include="Service\Client\FTPClient.cs" />
     <Compile Include="View\Controls\ChromeButtons.xaml.cs">
@@ -105,9 +106,16 @@
     <Compile Include="View\Fragments\ListView.xaml.cs">
       <DependentUpon>ListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Fragments\QueueView.xaml.cs">
+      <DependentUpon>QueueView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Fragments\TabView.xaml.cs">
       <DependentUpon>TabView.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\Fragments\QueueView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -88,5 +88,19 @@ namespace Dispatch.Service.Client
             var items = await Client.GetListingAsync(path);
             return items.Select(MakeResource).ToArray();
         }
+
+        public async Task Delete(string path)
+        {
+            var resource = await FetchResource(path);
+
+            if (resource.Type == ResourceType.Directory)
+            {
+                await Client.DeleteDirectoryAsync(path);
+            }
+            else
+            {
+                await Client.DeleteFileAsync(path);
+            }
+        }
     }
 }

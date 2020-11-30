@@ -14,5 +14,7 @@ namespace Dispatch.Service.Client
         Task<Resource> FetchResource(string path);
 
         Task<Resource[]> FetchResources(string path);
+
+        Task Delete(string path);
     }
 }

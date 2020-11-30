@@ -89,6 +89,11 @@ namespace Dispatch.ViewModel
 
         private void RefreshCommandAction(object parameter)
         {
+            Refresh();
+        }
+
+        public void Refresh()
+        {
             if (Current != null)
             {
                 Load(Current.Path);

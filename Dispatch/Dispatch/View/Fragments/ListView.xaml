@@ -109,18 +109,16 @@
             Margin="0,0,16,0"
             ItemsSource="{Binding ViewModel.Resources, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
             SelectionMode="Extended">
+            <ListView.Resources>
+                <ContextMenu x:Key="Context">
+                    <MenuItem Foreground="Red" Header="Delete" Click="DeleteMenuItem_Click" />
+                </ContextMenu>
+            </ListView.Resources>
             <ListView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource {x:Type ListViewItem}}" TargetType="ListViewItem">
                     <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
                     <EventSetter Event="PreviewMouseMove" Handler="ListViewItem_PreviewMouseMove" />
-                    <Setter Property="ContextMenu">
-                        <Setter.Value>
-                            <ContextMenu>
-                                <MenuItem Header="Transfer" />
-                                <MenuItem Header="Add to Favorites" />
-                            </ContextMenu>
-                        </Setter.Value>
-                    </Setter>
+                    <Setter Property="ContextMenu" Value="{StaticResource Context}" />
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.View>

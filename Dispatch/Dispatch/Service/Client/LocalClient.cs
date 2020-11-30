@@ -91,5 +91,23 @@ namespace Dispatch.Service.Client
                 throw new Exception($"File or directory not found at path: {path}");
             }
         }
+
+        public Task Delete(string path)
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            else if (Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
+            else
+            {
+                throw new Exception($"File or directory not found at path: {path}");
+            }
+
+            return Task.CompletedTask;
+        }
     }
 }

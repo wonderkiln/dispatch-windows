@@ -212,7 +212,15 @@
                         VerticalAlignment="Center"
                         DockPanel.Dock="Right"
                         Text="{TemplateBinding InputGestureText}" />
-                    <Rectangle Grid.Column="3" Fill="Red" />
+                    <Path
+                        Grid.Column="3"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Data="M 0 0 L 4 4 L 0 8"
+                        Stroke="#3F000000"
+                        StrokeEndLineCap="Round"
+                        StrokeLineJoin="Round"
+                        StrokeThickness="1.5" />
                 </Grid>
                 <Popup
                     Focusable="False"
