@@ -111,7 +111,10 @@
             SelectionMode="Extended">
             <ListView.Resources>
                 <ContextMenu x:Key="Context">
-                    <MenuItem Foreground="Red" Header="Delete" Click="DeleteMenuItem_Click" />
+                    <MenuItem
+                        Click="DeleteMenuItem_Click"
+                        Foreground="Red"
+                        Header="Delete" />
                 </ContextMenu>
             </ListView.Resources>
             <ListView.ItemContainerStyle>

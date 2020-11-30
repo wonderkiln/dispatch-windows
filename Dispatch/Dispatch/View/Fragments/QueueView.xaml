@@ -8,10 +8,20 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
-        <TextBlock
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Text="Queue" />
-    </Grid>
+    <ListBox ItemsSource="{Binding ViewModel.Items, RelativeSource={RelativeSource AncestorType={x:Type local:QueueView}}}">
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <StackPanel>
+                    <TextBlock Text="{Binding Type}" />
+                    <TextBlock>
+                        From:<Run Text="{Binding Source.Path}" />
+                    </TextBlock>
+                    <TextBlock>
+                        To:<Run Text="{Binding Destination.Path}" />
+                    </TextBlock>
+                    <Button Content="Cancel" />
+                </StackPanel>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
 </UserControl>

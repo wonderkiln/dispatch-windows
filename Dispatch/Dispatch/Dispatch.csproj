@@ -86,6 +86,7 @@
     <Compile Include="Helpers\ResourceQueue.cs" />
     <Compile Include="Helpers\ResourceWatcher.cs" />
     <Compile Include="Service\Client\FTPClient.cs" />
+    <Compile Include="ViewModel\QueueViewModel.cs" />
     <Compile Include="View\Controls\ChromeButtons.xaml.cs">
       <DependentUpon>ChromeButtons.xaml</DependentUpon>
     </Compile>

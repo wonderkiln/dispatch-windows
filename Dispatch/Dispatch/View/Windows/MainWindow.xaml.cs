@@ -40,7 +40,7 @@ namespace Dispatch.View.Windows
         private async void UpdateMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var updater = new ApplicationUpdater(new AzureUpdateProvider());
-            await updater.CheckForUpdate();
+            await updater.CheckForUpdate(false);
         }
 
         private void TransfersMenuItem_Click(object sender, RoutedEventArgs e)
