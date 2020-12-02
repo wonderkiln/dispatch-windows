@@ -94,10 +94,9 @@
     <Compile Include="Service\Client\IClient.cs" />
     <Compile Include="Service\Model\Resource.cs" />
     <Compile Include="Service\Updater\ApplicationUpdater.cs" />
-    <Compile Include="Service\Updater\AzureUpdateProvider.cs" />
-    <Compile Include="Service\Updater\GithubUpdateProvider.cs" />
+    <Compile Include="Service\Updater\UpdateProvider.cs" />
     <Compile Include="Service\Updater\IUpdateProvider.cs" />
-    <Compile Include="Service\Updater\UpdateInfo.cs" />
+    <Compile Include="Service\Model\UpdateInfo.cs" />
     <Compile Include="ViewModel\TabsViewModel.cs" />
     <Compile Include="ViewModel\ListViewModel.cs" />
     <Compile Include="ViewModel\TabViewModel.cs" />

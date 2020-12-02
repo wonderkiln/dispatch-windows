@@ -1,15 +1,16 @@
 ﻿using Dispatch.Helpers;
+using Dispatch.Service.Model;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Dispatch.Updater
+namespace Dispatch.Service.Updater
 {
-    public class AzureUpdateProvider : IUpdateProvider
+    public class UpdateProvider : IUpdateProvider
     {
-        class LatestRelease
+        class Release
         {
             public string url { get; set; }
             public long fileSize { get; set; }
@@ -50,7 +51,7 @@ namespace Dispatch.Updater
             client.Headers.Add(HttpRequestHeader.Accept, "application/json");
 
             var data = await client.DownloadStringTaskAsync(BaseUrl);
-            var json = JsonConvert.DeserializeObject<LatestRelease>(data);
+            var json = JsonConvert.DeserializeObject<Release>(data);
 
             return new UpdateInfo()
             {

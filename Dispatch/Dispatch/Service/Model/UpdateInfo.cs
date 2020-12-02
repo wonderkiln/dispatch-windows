@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dispatch.Updater
+namespace Dispatch.Service.Model
 {
     public class UpdateInfo
     {

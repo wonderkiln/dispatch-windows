@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Dispatch.Service.Model;
+using System;
 using System.Threading.Tasks;
 
-namespace Dispatch.Updater
+namespace Dispatch.Service.Updater
 {
     public interface IUpdateProvider
     {

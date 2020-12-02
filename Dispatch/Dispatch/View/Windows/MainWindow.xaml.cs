@@ -1,5 +1,5 @@
 ﻿using Dispatch.Helpers;
-using Dispatch.Updater;
+using Dispatch.Service.Updater;
 using Dispatch.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,8 +39,8 @@ namespace Dispatch.View.Windows
 
         private async void UpdateMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var updater = new ApplicationUpdater(new AzureUpdateProvider());
-            await updater.CheckForUpdate(false);
+            var updater = new ApplicationUpdater(new UpdateProvider());
+            await updater.CheckForUpdate();
         }
 
         private void TransfersMenuItem_Click(object sender, RoutedEventArgs e)
