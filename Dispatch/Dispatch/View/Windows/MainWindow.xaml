@@ -83,22 +83,17 @@
                 Grid.Column="1"
                 Margin="24,0"
                 Orientation="Horizontal">
-                <Menu>
-                    <Menu.Style>
-                        <Style TargetType="Menu">
-                            <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Menu">
-                                        <StackPanel
-                                            ClipToBounds="True"
-                                            IsItemsHost="True"
-                                            Orientation="Horizontal" />
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
+                <Menu WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Menu.ItemContainerStyle>
+                        <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
+                            <Setter Property="Padding" Value="12,6" />
                         </Style>
-                    </Menu.Style>
+                    </Menu.ItemContainerStyle>
+                    <Menu.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </Menu.ItemsPanel>
                     <MenuItem Click="NewTabButton_Click">
                         <MenuItem.Header>
                             <TextBlock

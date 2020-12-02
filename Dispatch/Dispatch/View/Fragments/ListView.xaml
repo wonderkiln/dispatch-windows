@@ -41,7 +41,7 @@
                     </ContextMenu>
                 </Menu.Resources>
                 <Menu.ItemContainerStyle>
-                    <Style TargetType="MenuItem">
+                    <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
                         <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}" />
                     </Style>
                 </Menu.ItemContainerStyle>

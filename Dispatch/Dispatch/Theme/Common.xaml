@@ -109,8 +109,22 @@
         </Setter>
     </Style>
 
+    <Style TargetType="Menu">
+        <Setter Property="Padding" Value="4" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Menu">
+                    <ItemsPresenter Margin="{TemplateBinding Padding}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <ControlTemplate x:Key="{x:Static MenuItem.TopLevelHeaderTemplateKey}" TargetType="MenuItem">
-        <Border x:Name="Border" Background="Transparent">
+        <Border
+            x:Name="Border"
+            Background="Transparent"
+            CornerRadius="2">
             <Grid>
                 <ContentPresenter
                     Margin="{TemplateBinding Padding}"
@@ -140,7 +154,10 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="{x:Static MenuItem.TopLevelItemTemplateKey}" TargetType="MenuItem">
-        <Border x:Name="Border" Background="Transparent">
+        <Border
+            x:Name="Border"
+            Background="Transparent"
+            CornerRadius="2">
             <ContentPresenter
                 Margin="{TemplateBinding Padding}"
                 VerticalAlignment="Center"
@@ -248,7 +265,7 @@
     </ControlTemplate>
 
     <Style TargetType="MenuItem">
-        <Setter Property="Padding" Value="12,6" />
+        <Setter Property="Padding" Value="8,6" />
         <Setter Property="FontSize" Value="13" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Style.Triggers>
