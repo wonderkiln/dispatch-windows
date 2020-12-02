@@ -11,7 +11,7 @@ namespace Dispatch.ViewModel
             {
                 if (RightViewModel != null)
                 {
-                    return RightViewModel.Client.Title;
+                    return RightViewModel.Client.Name;
                 }
 
                 return "New Connection";

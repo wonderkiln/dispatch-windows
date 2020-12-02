@@ -8,9 +8,6 @@ using System.Windows.Input;
 
 namespace Dispatch.View.Fragments
 {
-    /// <summary>
-    /// Interaction logic for ListView.xaml
-    /// </summary>
     public partial class ListView : UserControl
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register("ViewModel", typeof(ListViewModel), typeof(ListView));
@@ -61,8 +58,7 @@ namespace Dispatch.View.Fragments
 
                 if (resource.Client == ViewModel.Client)
                 {
-                    var list = sender as Menu;
-                    list.Items.Add(resource);
+                    ViewModel.Favorites.Add(new FavoriteItem(resource.Name, resource.Path));
                 }
             }
         }
@@ -85,8 +81,8 @@ namespace Dispatch.View.Fragments
         private void ShortcutsMenu_Click(object sender, RoutedEventArgs e)
         {
             var item = e.OriginalSource as FrameworkElement;
-            var resource = item.DataContext as Resource;
-            ViewModel.Load(resource.Path);
+            var favorite = item.DataContext as FavoriteItem;
+            ViewModel.Load(favorite.Path);
         }
 
         private void TextBox_KeyUp(object sender, KeyEventArgs e)
@@ -112,6 +108,14 @@ namespace Dispatch.View.Fragments
                     ViewModel.Refresh();
                 });
             }
+        }
+
+        private void DeleteFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var item = sender as FrameworkElement;
+            var favorite = item.DataContext as FavoriteItem;
+
+            ViewModel.Favorites.Remove(favorite);
         }
     }
 }

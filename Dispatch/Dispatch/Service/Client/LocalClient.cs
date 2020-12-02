@@ -10,7 +10,7 @@ namespace Dispatch.Service.Client
     {
         private static readonly string AllDrivesPathKey = "";
 
-        public string Title { get; } = "";
+        public string Name { get; } = "Local";
 
         public string InitialPath { get; } = AllDrivesPathKey;
 

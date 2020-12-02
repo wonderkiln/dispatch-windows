@@ -1,6 +1,7 @@
 ﻿using Dispatch.Helpers;
 using Dispatch.Service.Client;
 using Dispatch.Service.Model;
+using Dispatch.Service.Storage;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -67,12 +68,16 @@ namespace Dispatch.ViewModel
             }
         }
 
+        public FavoritesStorage Favorites { get; private set; }
+
         public ListViewModel(IClient client)
         {
             Client = client;
             BackCommand = new RelayCommand(BackCommandAction, false);
             HomeCommand = new RelayCommand(HomeCommandAction);
             RefreshCommand = new RelayCommand(RefreshCommandAction);
+
+            Favorites = new FavoritesStorage(client.Name);
 
             Load(client.InitialPath);
         }

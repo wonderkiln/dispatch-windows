@@ -5,7 +5,7 @@ namespace Dispatch.Service.Client
 {
     public interface IClient
     {
-        string Title { get; }
+        string Name { get; }
 
         string InitialPath { get; }
 

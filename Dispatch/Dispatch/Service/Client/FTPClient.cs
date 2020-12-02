@@ -12,7 +12,7 @@ namespace Dispatch.Service.Client
     {
         private readonly FtpClient Client = new FtpClient();
 
-        public string Title { get; private set; } = "";
+        public string Name { get; private set; } = "";
 
         public string InitialPath { get; private set; } = "/";
 
@@ -45,7 +45,7 @@ namespace Dispatch.Service.Client
 
             await Client.ConnectAsync();
 
-            Title = $"{host}:{port}";
+            Name = $"{host}:{port}";
         }
 
         public async Task Diconnect()

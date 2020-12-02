@@ -30,7 +30,21 @@
                 DragEnter="ListBox_DragOver"
                 DragOver="ListBox_DragOver"
                 Drop="ListBox_Drop"
+                ItemsSource="{Binding ViewModel.Favorites.Items, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
                 MenuItem.Click="ShortcutsMenu_Click">
+                <Menu.Resources>
+                    <ContextMenu x:Key="ContextMenu">
+                        <MenuItem
+                            Click="DeleteFavoriteMenuItem_Click"
+                            Foreground="Red"
+                            Header="Delete" />
+                    </ContextMenu>
+                </Menu.Resources>
+                <Menu.ItemContainerStyle>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}" />
+                    </Style>
+                </Menu.ItemContainerStyle>
                 <Menu.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" />
