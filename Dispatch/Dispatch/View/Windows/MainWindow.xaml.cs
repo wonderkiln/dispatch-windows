@@ -10,6 +10,8 @@ namespace Dispatch.View.Windows
     {
         public TabsViewModel ViewModel { get; } = new TabsViewModel();
 
+        public QueueViewModel QueueViewModel { get; } = new QueueViewModel();
+
         private void NewTabButton_Click(object sender, RoutedEventArgs e)
         {
             TabsListBox.SelectedItem = ViewModel.NewTab();

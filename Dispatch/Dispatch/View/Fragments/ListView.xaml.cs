@@ -98,15 +98,15 @@ namespace Dispatch.View.Fragments
 
         private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var item = sender as FrameworkElement;
-            var resource = item.DataContext as Resource;
-
-            if (MessageBox.Show($"Are you sure you want to delete '{resource.Name}'?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (MessageBox.Show($"Are you sure you want to delete {List.SelectedItems.Count} item(s)?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                ResourceQueue.Shared.Add(QueueItem.ItemType.Delete, resource, null, (source, destination) =>
+                foreach (Resource resource in List.SelectedItems)
                 {
-                    ViewModel.Refresh();
-                });
+                    ResourceQueue.Shared.Add(QueueItem.ItemType.Delete, resource, null, (source, destination) =>
+                    {
+                        ViewModel.Refresh();
+                    });
+                }
             }
         }
 

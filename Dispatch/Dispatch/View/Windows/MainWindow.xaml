@@ -104,10 +104,28 @@
                     </MenuItem>
                     <MenuItem x:Name="Transfers" Click="TransfersMenuItem_Click">
                         <MenuItem.Header>
-                            <TextBlock
-                                FontFamily="Segoe MDL2 Assets"
-                                FontSize="14"
-                                Text="&#xE896;" />
+                            <Grid>
+                                <TextBlock
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="14"
+                                    Text="&#xE896;" />
+                                <Border
+                                    Width="14"
+                                    Height="14"
+                                    Margin="0,0,-6,-6"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Background="Red"
+                                    CornerRadius="7">
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="10"
+                                        FontWeight="SemiBold"
+                                        Foreground="White"
+                                        Text="{Binding QueueViewModel.Items.Count, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" />
+                                </Border>
+                            </Grid>
                         </MenuItem.Header>
                     </MenuItem>
                     <MenuItem>
@@ -134,7 +152,7 @@
                     Width="300"
                     Height="300"
                     Style="{StaticResource PopupContainerBorder}">
-                    <fragments:QueueView />
+                    <fragments:QueueView ViewModel="{Binding QueueViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" />
                 </Border>
             </Popup>
             <controls:ChromeButtons Grid.Column="2" VerticalAlignment="Top" />

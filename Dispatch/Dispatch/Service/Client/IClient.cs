@@ -11,6 +11,8 @@ namespace Dispatch.Service.Client
 
         string InitialPath { get; }
 
+        Task<IClient> Clone();
+
         Task Diconnect();
 
         Task<Resource> FetchResource(string path);

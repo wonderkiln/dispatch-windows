@@ -15,6 +15,11 @@ namespace Dispatch.Service.Client
 
         public string InitialPath { get; } = AllDrivesPathKey;
 
+        public Task<IClient> Clone()
+        {
+            return Task.FromResult<IClient>(this);
+        }
+
         public Task Diconnect()
         {
             return Task.CompletedTask;

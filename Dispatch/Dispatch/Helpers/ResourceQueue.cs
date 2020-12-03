@@ -114,19 +114,24 @@ namespace Dispatch.Helpers
                 switch (item.Type)
                 {
                     case QueueItem.ItemType.Upload:
-                        await item.Destination.Client.Upload(item.Destination.Path, item.Source.Path, new XXX(item), item.Token);
+                        // Create separate session for upload
+                        var client1 = await item.Destination.Client.Clone();
+                        await client1.Upload(item.Destination.Path, item.Source.Path, new XXX(item), item.Token);
 
                         break;
 
                     case QueueItem.ItemType.Delete:
-                        await item.Source.Client.Delete(item.Source.Path);
+                        // Create separate session for deletion
+                        var client2 = await item.Source.Client.Clone();
+                        await client2.Delete(item.Source.Path);
 
                         break;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                // TODO:
+                Console.WriteLine(ex);
             }
             finally
             {
