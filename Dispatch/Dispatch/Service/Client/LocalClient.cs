@@ -109,5 +109,10 @@ namespace Dispatch.Service.Client
 
             return Task.CompletedTask;
         }
+
+        public Task Upload(string path, string fileOrDirectory, IProgress<double> progress = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

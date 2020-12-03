@@ -28,7 +28,7 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <local:ListView ViewModel="{Binding ViewModel.LeftViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:TabView}}}" />
+        <local:ListView BeginUpload="ListView_BeginUpload" ViewModel="{Binding ViewModel.LeftViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:TabView}}}" />
         <GridSplitter
             Width="16"
             HorizontalAlignment="Right"

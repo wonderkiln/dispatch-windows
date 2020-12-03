@@ -125,6 +125,7 @@
             SelectionMode="Extended">
             <ListView.Resources>
                 <ContextMenu x:Key="Context">
+                    <MenuItem Click="UploadMenuItem_Click" Header="Upload" />
                     <MenuItem
                         Click="DeleteMenuItem_Click"
                         Foreground="Red"

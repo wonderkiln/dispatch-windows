@@ -1,6 +1,7 @@
 ﻿using Dispatch.Service.Model;
 using FluentFTP;
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Authentication;
@@ -74,7 +75,7 @@ namespace Dispatch.Service.Client
         public async Task<Resource> FetchResource(string path)
         {
             var item = await Client.GetObjectInfoAsync(path);
-            
+
             if (item == null)
             {
                 throw new Exception($"Resource not found at path: {path}");
@@ -100,6 +101,42 @@ namespace Dispatch.Service.Client
             else
             {
                 await Client.DeleteFileAsync(path);
+            }
+        }
+
+        private class XXX : IProgress<FtpProgress>
+        {
+            private IProgress<double> progress;
+
+            public XXX(IProgress<double> progress)
+            {
+                this.progress = progress;
+            }
+
+            public void Report(FtpProgress value)
+            {
+                var newValue = (value.Progress + 100 * value.FileIndex) / value.FileCount;
+                progress?.Report(newValue);
+            }
+        }
+
+        public async Task Upload(string path, string fileOrDirectory, IProgress<double> progress = null)
+        {
+            var normalizedPath = path.EndsWith("/") ? path.Substring(0, path.Length - 1) : path;
+
+            if (File.Exists(fileOrDirectory))
+            {
+                var destination = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
+                await Client.UploadFileAsync(fileOrDirectory, destination, FtpRemoteExists.Overwrite, false, FtpVerify.None, new XXX(progress));
+            }
+            else if (Directory.Exists(fileOrDirectory))
+            {
+                var destination = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
+                await Client.UploadDirectoryAsync(fileOrDirectory, destination, FtpFolderSyncMode.Update, FtpRemoteExists.Skip, FtpVerify.None, null, new XXX(progress));
+            }
+            else
+            {
+                throw new Exception($"File or directory not found at path: {fileOrDirectory}");
             }
         }
     }

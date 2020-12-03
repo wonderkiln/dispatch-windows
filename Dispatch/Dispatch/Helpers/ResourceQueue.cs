@@ -5,9 +5,9 @@ using System.Windows;
 
 namespace Dispatch.Helpers
 {
-    public class QueueItem
+    public class QueueItem : Observable
     {
-        public enum ItemType { Delete }
+        public enum ItemType { Upload, Delete }
 
         public ItemType Type { get; set; }
 
@@ -16,10 +16,14 @@ namespace Dispatch.Helpers
         public Resource Destination { get; set; }
 
         public Action<Resource, Resource> OnComplete { get; set; }
+
+        public double Progress { get; set; }
     }
 
     public class ResourceQueue
     {
+        public event EventHandler OnComplete;
+
         public static ResourceQueue Shared = new ResourceQueue();
 
         private readonly Queue<QueueItem> items = new Queue<QueueItem>();
@@ -44,9 +48,27 @@ namespace Dispatch.Helpers
                 OnComplete = onComplete,
             });
 
+            OnComplete?.Invoke(this, new EventArgs());
+
             if (!Working)
             {
                 Dequeue();
+            }
+        }
+
+        private class XXX : IProgress<double>
+        {
+            private QueueItem item;
+
+            public XXX(QueueItem item)
+            {
+                this.item = item;
+            }
+
+            public void Report(double value)
+            {
+                item.Progress = value;
+                item.Notify("Progress");
             }
         }
 
@@ -65,6 +87,11 @@ namespace Dispatch.Helpers
             {
                 switch (item.Type)
                 {
+                    case QueueItem.ItemType.Upload:
+                        await item.Destination.Client.Upload(item.Destination.Path, item.Source.Path, new XXX(item));
+
+                        break;
+
                     case QueueItem.ItemType.Delete:
                         await item.Source.Client.Delete(item.Source.Path);
 
@@ -77,6 +104,8 @@ namespace Dispatch.Helpers
             }
             finally
             {
+                OnComplete?.Invoke(this, new EventArgs());
+
                 if (item.OnComplete != null)
                 {
                     item.OnComplete(item.Source, item.Destination);

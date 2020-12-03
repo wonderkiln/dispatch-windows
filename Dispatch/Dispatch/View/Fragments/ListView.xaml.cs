@@ -117,5 +117,15 @@ namespace Dispatch.View.Fragments
 
             ViewModel.Favorites.Remove(favorite);
         }
+
+        public event EventHandler<Resource> BeginUpload;
+
+        private void UploadMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var item = sender as FrameworkElement;
+            var resource = item.DataContext as Resource;
+
+            BeginUpload?.Invoke(this, resource);
+        }
     }
 }

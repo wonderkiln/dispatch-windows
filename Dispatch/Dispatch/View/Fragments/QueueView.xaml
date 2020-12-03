@@ -12,14 +12,18 @@
         <ListBox.ItemTemplate>
             <DataTemplate>
                 <StackPanel>
-                    <TextBlock Text="{Binding Type}" />
+                    <TextBlock Text="{Binding Type, Mode=OneWay}" />
                     <TextBlock>
-                        From:<Run Text="{Binding Source.Path}" />
+                        From:<Run Text="{Binding Source.Path, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock>
-                        To:<Run Text="{Binding Destination.Path}" />
+                        To:<Run Text="{Binding Destination.Path, Mode=OneWay}" />
                     </TextBlock>
-                    <Button Content="Cancel" />
+                    <ProgressBar
+                        Maximum="100"
+                        Minimum="0"
+                        Height="12"
+                        Value="{Binding Progress, Mode=OneWay}" />
                 </StackPanel>
             </DataTemplate>
         </ListBox.ItemTemplate>
