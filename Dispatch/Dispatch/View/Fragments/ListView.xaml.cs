@@ -122,10 +122,10 @@ namespace Dispatch.View.Fragments
 
         private void UploadMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var item = sender as FrameworkElement;
-            var resource = item.DataContext as Resource;
-
-            BeginUpload?.Invoke(this, resource);
+            foreach (Resource resource in List.SelectedItems)
+            {
+                BeginUpload?.Invoke(this, resource);
+            }
         }
     }
 }

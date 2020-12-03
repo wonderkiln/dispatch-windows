@@ -45,7 +45,8 @@ namespace Dispatch.Helpers
 
     public class ResourceQueue
     {
-        public event EventHandler OnComplete;
+        public event EventHandler<QueueItem> OnAddedItem;
+        public event EventHandler<QueueItem> OnFinishedItem;
 
         public static ResourceQueue Shared = new ResourceQueue();
 
@@ -63,15 +64,17 @@ namespace Dispatch.Helpers
 
         public void Add(QueueItem.ItemType type, Resource source, Resource destination, Action<Resource, Resource> onComplete)
         {
-            items.Enqueue(new QueueItem()
+            var item = new QueueItem()
             {
                 Type = type,
                 Source = source,
                 Destination = destination,
                 OnComplete = onComplete,
-            });
+            };
 
-            OnComplete?.Invoke(this, new EventArgs());
+            items.Enqueue(item);
+
+            OnAddedItem?.Invoke(this, item);
 
             if (!Working)
             {
@@ -127,7 +130,7 @@ namespace Dispatch.Helpers
             }
             finally
             {
-                OnComplete?.Invoke(this, new EventArgs());
+                OnFinishedItem?.Invoke(this, item);
 
                 if (item.OnComplete != null)
                 {

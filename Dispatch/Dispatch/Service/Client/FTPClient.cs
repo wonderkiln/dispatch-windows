@@ -24,13 +24,13 @@ namespace Dispatch.Service.Client
             Client.ValidateAnyCertificate = true;
             Client.DataConnectionType = FtpDataConnectionType.PASV;
             Client.DownloadDataType = FtpDataType.Binary;
-            Client.RetryAttempts = 5;
-            Client.SocketPollInterval = 1000;
-            Client.ConnectTimeout = 2000;
-            Client.ReadTimeout = 2000;
-            Client.DataConnectionConnectTimeout = 2000;
-            Client.DataConnectionReadTimeout = 2000;
-
+            //Client.RetryAttempts = 5;
+            //Client.SocketPollInterval = 1000;
+            //Client.ConnectTimeout = 2000;
+            //Client.ReadTimeout = 2000;
+            //Client.DataConnectionConnectTimeout = 2000;
+            //Client.DataConnectionReadTimeout = 2000;
+            
             FtpTrace.EnableTracing = false;
 
             if (!string.IsNullOrEmpty(path))
@@ -122,22 +122,33 @@ namespace Dispatch.Service.Client
 
         public async Task Upload(string path, string fileOrDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
         {
+            // Create a new connection for this upload
+            var client = new FtpClient(Client.Host, Client.Port, Client.Credentials);
+            client.SslProtocols = SslProtocols.Tls;
+            client.ValidateAnyCertificate = true;
+            client.DataConnectionType = FtpDataConnectionType.PASV;
+            client.DownloadDataType = FtpDataType.Binary;
+
+            await client.ConnectAsync();
+            
             var normalizedPath = path.EndsWith("/") ? path.Substring(0, path.Length - 1) : path;
 
             if (File.Exists(fileOrDirectory))
             {
                 var destination = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
-                await Client.UploadFileAsync(fileOrDirectory, destination, FtpRemoteExists.Overwrite, false, FtpVerify.None, new FtpProgressConverter(progress), token);
+                await client.UploadFileAsync(fileOrDirectory, destination, FtpRemoteExists.Overwrite, false, FtpVerify.None, new FtpProgressConverter(progress), token);
             }
             else if (Directory.Exists(fileOrDirectory))
             {
                 var destination = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
-                await Client.UploadDirectoryAsync(fileOrDirectory, destination, FtpFolderSyncMode.Update, FtpRemoteExists.Skip, FtpVerify.None, null, new FtpProgressConverter(progress), token);
+                await client.UploadDirectoryAsync(fileOrDirectory, destination, FtpFolderSyncMode.Update, FtpRemoteExists.Skip, FtpVerify.None, null, new FtpProgressConverter(progress), token);
             }
             else
             {
                 throw new Exception($"File or directory not found at path: {fileOrDirectory}");
             }
+
+            client.Dispose();
         }
     }
 }

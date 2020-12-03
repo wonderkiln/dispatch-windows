@@ -1,25 +1,26 @@
 ﻿using Dispatch.Helpers;
+using System.Collections.ObjectModel;
 
 namespace Dispatch.ViewModel
 {
     public class QueueViewModel : Observable
     {
-        public QueueItem[] Items
-        {
-            get
-            {
-                return ResourceQueue.Shared.Items;
-            }
-        }
+        public ObservableCollection<QueueItem> Items { get; } = new ObservableCollection<QueueItem>();
 
         public QueueViewModel()
         {
-            ResourceQueue.Shared.OnComplete += Shared_OnComplete;
+            ResourceQueue.Shared.OnAddedItem += Shared_OnAddedItem;
+            ResourceQueue.Shared.OnFinishedItem += Shared_OnFinishedItem;
         }
 
-        private void Shared_OnComplete(object sender, System.EventArgs e)
+        private void Shared_OnAddedItem(object sender, QueueItem e)
         {
-            Notify("Items");
+            Items.Add(e);
+        }
+
+        private void Shared_OnFinishedItem(object sender, QueueItem e)
+        {
+            Items.Remove(e);
         }
     }
 }
