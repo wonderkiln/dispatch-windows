@@ -10,9 +10,10 @@
     mc:Ignorable="d">
     <ListBox
         Padding="0"
+        Background="Transparent"
         BorderThickness="0"
-        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-        ItemsSource="{Binding ViewModel.Items, RelativeSource={RelativeSource AncestorType={x:Type local:QueueView}}}">
+        ItemsSource="{Binding ViewModel.Items, RelativeSource={RelativeSource AncestorType={x:Type local:QueueView}}}"
+        ScrollViewer.HorizontalScrollBarVisibility="Disabled">
         <ListBox.ItemContainerStyle>
             <Style TargetType="ListBoxItem">
                 <Setter Property="Template">

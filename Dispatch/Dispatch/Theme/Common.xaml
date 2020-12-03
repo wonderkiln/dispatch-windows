@@ -4,6 +4,7 @@
     xmlns:local="clr-namespace:Dispatch.Theme">
 
     <Style x:Key="ChromelessWindow" TargetType="Window">
+        <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="Background" Value="#F7F7F7" />
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
@@ -93,6 +94,7 @@
     <Style x:Key="PopupContainerBorder" TargetType="Border">
         <Setter Property="Background" Value="White" />
         <Setter Property="Margin" Value="6,3,6,9" />
+        <Setter Property="CornerRadius" Value="4" />
         <Setter Property="Effect">
             <Setter.Value>
                 <DropShadowEffect
@@ -134,13 +136,15 @@
                     IsOpen="{TemplateBinding IsSubmenuOpen}"
                     Placement="Bottom"
                     PopupAnimation="Fade">
-                    <ScrollViewer
-                        Background="White"
-                        CanContentScroll="True"
-                        HorizontalScrollBarVisibility="Disabled"
-                        VerticalScrollBarVisibility="Auto">
-                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
-                    </ScrollViewer>
+                    <Border Style="{StaticResource PopupContainerBorder}" MinWidth="120">
+                        <ScrollViewer
+                            Margin="2"
+                            CanContentScroll="True"
+                            HorizontalScrollBarVisibility="Disabled"
+                            VerticalScrollBarVisibility="Auto">
+                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
+                        </ScrollViewer>
+                    </Border>
                 </Popup>
             </Grid>
         </Border>
@@ -170,7 +174,10 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="{x:Static MenuItem.SubmenuItemTemplateKey}" TargetType="MenuItem">
-        <Border x:Name="Border" Background="Transparent">
+        <Border
+            x:Name="Border"
+            Background="Transparent"
+            CornerRadius="2">
             <Grid Margin="{TemplateBinding Padding}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" SharedSizeGroup="Icon" />
@@ -204,7 +211,10 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="{x:Static MenuItem.SubmenuHeaderTemplateKey}" TargetType="MenuItem">
-        <Border x:Name="Border" Background="Transparent">
+        <Border
+            x:Name="Border"
+            Background="Transparent"
+            CornerRadius="2">
             <Grid>
                 <Grid Margin="{TemplateBinding Padding}">
                     <Grid.ColumnDefinitions>
@@ -242,13 +252,15 @@
                     IsOpen="{TemplateBinding IsSubmenuOpen}"
                     Placement="Right"
                     PopupAnimation="Fade">
-                    <ScrollViewer
-                        Background="White"
-                        CanContentScroll="True"
-                        HorizontalScrollBarVisibility="Disabled"
-                        VerticalScrollBarVisibility="Auto">
-                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
-                    </ScrollViewer>
+                    <Border Style="{StaticResource PopupContainerBorder}" MinWidth="120">
+                        <ScrollViewer
+                            Margin="2"
+                            CanContentScroll="True"
+                            HorizontalScrollBarVisibility="Disabled"
+                            VerticalScrollBarVisibility="Auto">
+                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
+                        </ScrollViewer>
+                    </Border>
                 </Popup>
             </Grid>
         </Border>
@@ -287,19 +299,13 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="OverridesDefaultStyle" Value="False" />
         <Setter Property="Grid.IsSharedSizeScope" Value="True" />
-        <Setter Property="HasDropShadow" Value="True" />
+        <Setter Property="HasDropShadow" Value="False" />
+        <Setter Property="MinWidth" Value="120" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ContextMenu">
-                    <Border Margin="6,3,6,9" Background="White">
-                        <Border.Effect>
-                            <DropShadowEffect
-                                BlurRadius="6"
-                                Direction="270"
-                                Opacity="0.1"
-                                ShadowDepth="3" />
-                        </Border.Effect>
-                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
+                    <Border Style="{StaticResource PopupContainerBorder}">
+                        <StackPanel Margin="2" IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

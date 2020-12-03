@@ -14,7 +14,6 @@
     Height="600"
     Icon="../../Resources/Icon.ico"
     Style="{StaticResource ChromelessWindow}"
-    UseLayoutRounding="True"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>
@@ -127,7 +126,6 @@
             </StackPanel>
             <Popup
                 x:Name="TransfersPopup"
-                AllowsTransparency="True"
                 Placement="Bottom"
                 PlacementTarget="{Binding ElementName=Transfers}"
                 PopupAnimation="Fade"
