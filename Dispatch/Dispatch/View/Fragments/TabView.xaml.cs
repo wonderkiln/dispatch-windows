@@ -38,9 +38,9 @@ namespace Dispatch.View.Fragments
             OnConnected?.Invoke(this, ViewModel);
         }
 
-        private async void ListView_BeginUpload(object sender, Resource e)
+        private void ListView_BeginUpload(object sender, Resource e)
         {
-            var resource = await ViewModel.RightViewModel.Client.FetchResource(ViewModel.RightViewModel.CurrentPath);
+            var resource = new Resource(ViewModel.RightViewModel.Client, ViewModel.RightViewModel.CurrentPath, "");
 
             ResourceQueue.Shared.Add(QueueItem.ItemType.Upload, e, resource, (source, destination) =>
             {

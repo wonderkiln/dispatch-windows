@@ -1,5 +1,6 @@
 ﻿using Dispatch.Service.Model;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Dispatch.Service.Client
@@ -16,8 +17,8 @@ namespace Dispatch.Service.Client
 
         Task<Resource[]> FetchResources(string path);
 
-        Task Delete(string path);
+        Task Delete(string path, CancellationToken token = default);
 
-        Task Upload(string path, string fileOrDirectory, IProgress<double> progress = null);
+        Task Upload(string path, string fileOrDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default);
     }
 }

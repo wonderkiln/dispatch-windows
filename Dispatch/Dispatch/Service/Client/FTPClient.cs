@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Authentication;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Dispatch.Service.Client
@@ -90,49 +91,48 @@ namespace Dispatch.Service.Client
             return items.Select(MakeResource).ToArray();
         }
 
-        public async Task Delete(string path)
+        public async Task Delete(string path, CancellationToken token = default)
         {
             var resource = await FetchResource(path);
 
             if (resource.Type == ResourceType.Directory)
             {
-                await Client.DeleteDirectoryAsync(path);
+                await Client.DeleteDirectoryAsync(path, token);
             }
             else
             {
-                await Client.DeleteFileAsync(path);
+                await Client.DeleteFileAsync(path, token);
             }
         }
 
-        private class XXX : IProgress<FtpProgress>
+        private class FtpProgressConverter : IProgress<FtpProgress>
         {
-            private IProgress<double> progress;
+            private readonly IProgress<ProgressStatus> progress;
 
-            public XXX(IProgress<double> progress)
+            public FtpProgressConverter(IProgress<ProgressStatus> progress)
             {
                 this.progress = progress;
             }
 
             public void Report(FtpProgress value)
             {
-                var newValue = (value.Progress + 100 * value.FileIndex) / value.FileCount;
-                progress?.Report(newValue);
+                progress?.Report(new ProgressStatus(value.FileIndex, value.FileCount, value.Progress));
             }
         }
 
-        public async Task Upload(string path, string fileOrDirectory, IProgress<double> progress = null)
+        public async Task Upload(string path, string fileOrDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
         {
             var normalizedPath = path.EndsWith("/") ? path.Substring(0, path.Length - 1) : path;
 
             if (File.Exists(fileOrDirectory))
             {
                 var destination = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
-                await Client.UploadFileAsync(fileOrDirectory, destination, FtpRemoteExists.Overwrite, false, FtpVerify.None, new XXX(progress));
+                await Client.UploadFileAsync(fileOrDirectory, destination, FtpRemoteExists.Overwrite, false, FtpVerify.None, new FtpProgressConverter(progress), token);
             }
             else if (Directory.Exists(fileOrDirectory))
             {
                 var destination = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
-                await Client.UploadDirectoryAsync(fileOrDirectory, destination, FtpFolderSyncMode.Update, FtpRemoteExists.Skip, FtpVerify.None, null, new XXX(progress));
+                await Client.UploadDirectoryAsync(fileOrDirectory, destination, FtpFolderSyncMode.Update, FtpRemoteExists.Skip, FtpVerify.None, null, new FtpProgressConverter(progress), token);
             }
             else
             {

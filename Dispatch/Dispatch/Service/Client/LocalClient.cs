@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Dispatch.Service.Client
@@ -92,7 +93,7 @@ namespace Dispatch.Service.Client
             }
         }
 
-        public Task Delete(string path)
+        public Task Delete(string path, CancellationToken token = default)
         {
             if (File.Exists(path))
             {
@@ -110,7 +111,7 @@ namespace Dispatch.Service.Client
             return Task.CompletedTask;
         }
 
-        public Task Upload(string path, string fileOrDirectory, IProgress<double> progress = null)
+        public Task Upload(string path, string fileOrDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
         {
             throw new NotImplementedException();
         }

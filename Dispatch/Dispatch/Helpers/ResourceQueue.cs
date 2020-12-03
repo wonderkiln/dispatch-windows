@@ -1,6 +1,7 @@
 ﻿using Dispatch.Service.Model;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows;
 
 namespace Dispatch.Helpers
@@ -17,7 +18,29 @@ namespace Dispatch.Helpers
 
         public Action<Resource, Resource> OnComplete { get; set; }
 
-        public double Progress { get; set; }
+        public ProgressStatus Progress { get; set; }
+
+        private CancellationTokenSource tokenSource = new CancellationTokenSource();
+
+        public CancellationToken Token
+        {
+            get
+            {
+                return tokenSource.Token;
+            }
+        }
+
+        public RelayCommand CancelCommand { get; private set; }
+
+        public QueueItem()
+        {
+            CancelCommand = new RelayCommand(CancelCommandAction);
+        }
+
+        private void CancelCommandAction(object parameters)
+        {
+            tokenSource.Cancel();
+        }
     }
 
     public class ResourceQueue
@@ -56,16 +79,16 @@ namespace Dispatch.Helpers
             }
         }
 
-        private class XXX : IProgress<double>
+        private class XXX : IProgress<ProgressStatus>
         {
-            private QueueItem item;
+            private readonly QueueItem item;
 
             public XXX(QueueItem item)
             {
                 this.item = item;
             }
 
-            public void Report(double value)
+            public void Report(ProgressStatus value)
             {
                 item.Progress = value;
                 item.Notify("Progress");
@@ -88,7 +111,7 @@ namespace Dispatch.Helpers
                 switch (item.Type)
                 {
                     case QueueItem.ItemType.Upload:
-                        await item.Destination.Client.Upload(item.Destination.Path, item.Source.Path, new XXX(item));
+                        await item.Destination.Client.Upload(item.Destination.Path, item.Source.Path, new XXX(item), item.Token);
 
                         break;
 
