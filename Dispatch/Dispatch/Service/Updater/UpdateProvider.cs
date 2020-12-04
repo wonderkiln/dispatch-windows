@@ -25,11 +25,11 @@ namespace Dispatch.Service.Updater
                 switch (Constants.CHANNEL)
                 {
                     case Constants.Channel.Nightly:
-                        return "https://dispatch-api-dev.herokuapp.com/release/nightly";
+                        return "https://api.dispatch.wonderkiln.com/release/nightly";
                     case Constants.Channel.Beta:
-                        return "https://dispatch-api-dev.herokuapp.com/release/beta";
+                        return "https://api.dispatch.wonderkiln.com/release/beta";
                     case Constants.Channel.Stable:
-                        return "https://dispatch-api-dev.herokuapp.com/release/stable";
+                        return "https://api.dispatch.wonderkiln.com/release/stable";
                     default:
                         throw new Exception("Unhandled channel");
                 }
@@ -37,6 +37,7 @@ namespace Dispatch.Service.Updater
         }
 
         public event EventHandler<double> DownloadProgressChanged;
+        
         private WebClient GetWebClient()
         {
             var client = new WebClient();
