@@ -3,11 +3,13 @@ using Dispatch.Service.Client;
 using Dispatch.Service.Model;
 using Dispatch.ViewModel;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Linq;
 
 namespace Dispatch.View.Fragments
 {
@@ -103,7 +105,9 @@ namespace Dispatch.View.Fragments
         {
             if (MessageBox.Show($"Are you sure you want to delete {List.SelectedItems.Count} item(s)?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                foreach (Resource resource in List.SelectedItems)
+                var resources = new List<Resource>(List.SelectedItems.Cast<Resource>());
+
+                foreach (var resource in resources)
                 {
                     ResourceQueue.Shared.Add(QueueItem.ItemType.Delete, resource, null, (source, destination) =>
                     {
@@ -134,9 +138,9 @@ namespace Dispatch.View.Fragments
         private void List_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             OpenMenuItem.Visibility = List.SelectedItems.Count == 1 ? Visibility.Visible : Visibility.Collapsed;
-            EditMenuItem.Visibility = List.SelectedItems.Count == 1 ? Visibility.Visible : Visibility.Collapsed;
-            UploadMenuItem.Visibility = List.SelectedItems.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
-            DeleteMenuItem.Visibility = List.SelectedItems.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            EditMenuItem.Visibility = !(ViewModel.Client is LocalClient) && List.SelectedItems.Count == 1 ? Visibility.Visible : Visibility.Collapsed;
+            UploadMenuItem.Visibility = ViewModel.Client is LocalClient && List.SelectedItems.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            DeleteMenuItem.Visibility = List.SelectedItems.Count > 0 && ((Resource)List.SelectedItem).Type != ResourceType.Drive ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void OpenMenuItem_Click(object sender, RoutedEventArgs e)
@@ -160,6 +164,44 @@ namespace Dispatch.View.Fragments
                     ResourceQueue.Shared.Add(QueueItem.ItemType.Download, resource, destination, (source, destination2) =>
                     {
                         Process.Start(Path.Combine(destination2.Path, resource.Name));
+                    });
+                }
+            }
+        }
+
+        private void List_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effects = DragDropEffects.None;
+
+            if (e.Data.GetDataPresent(typeof(Resource)))
+            {
+                var resource = (Resource)e.Data.GetData(typeof(Resource));
+
+                if (resource.Client != ViewModel.Client && resource.Type != ResourceType.Drive)
+                {
+                    e.Effects = e.AllowedEffects;
+                }
+            }
+        }
+
+        private void List_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(Resource)))
+            {
+                var resource = (Resource)e.Data.GetData(typeof(Resource));
+
+                if (ViewModel.Client is LocalClient && !(resource.Client is LocalClient))
+                {
+                    ResourceQueue.Shared.Add(QueueItem.ItemType.Download, resource, new Resource(ViewModel.Client, ViewModel.CurrentPath, ""), (a, b) =>
+                    {
+                        ViewModel.Refresh();
+                    });
+                }
+                else if (!(ViewModel.Client is LocalClient) && resource.Client is LocalClient)
+                {
+                    ResourceQueue.Shared.Add(QueueItem.ItemType.Upload, resource, new Resource(ViewModel.Client, ViewModel.CurrentPath, ""), (a, b) =>
+                    {
+                        ViewModel.Refresh();
                     });
                 }
             }

@@ -121,7 +121,11 @@
             x:Name="List"
             Grid.Row="2"
             Margin="0,0,16,0"
+            AllowDrop="True"
             ContextMenuOpening="List_ContextMenuOpening"
+            DragEnter="List_DragEnter"
+            DragOver="List_DragEnter"
+            Drop="List_Drop"
             ItemsSource="{Binding ViewModel.Resources, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
             SelectionMode="Extended">
             <ListView.ContextMenu>

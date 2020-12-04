@@ -93,6 +93,8 @@ namespace Dispatch.Service.Client
 
         public async Task Delete(string path, CancellationToken token = default)
         {
+            token.ThrowIfCancellationRequested();
+
             var resource = await FetchResource(path);
 
             if (resource.Type == ResourceType.Directory)
@@ -122,6 +124,8 @@ namespace Dispatch.Service.Client
 
         public async Task Upload(string path, string fileOrDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
         {
+            token.ThrowIfCancellationRequested();
+
             var normalizedPath = path.EndsWith("/") ? path.Substring(0, path.Length - 1) : path;
 
             if (File.Exists(fileOrDirectory))
@@ -142,6 +146,8 @@ namespace Dispatch.Service.Client
 
         public async Task Download(string path, string toDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
         {
+            token.ThrowIfCancellationRequested();
+
             var resource = await FetchResource(path);
 
             var localPath = Path.Combine(toDirectory, resource.Name);
