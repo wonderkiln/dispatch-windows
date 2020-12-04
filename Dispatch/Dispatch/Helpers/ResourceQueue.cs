@@ -8,7 +8,7 @@ namespace Dispatch.Helpers
 {
     public class QueueItem : Observable
     {
-        public enum ItemType { Upload, Delete }
+        public enum ItemType { Download, Upload, Delete }
 
         public ItemType Type { get; set; }
 
@@ -113,17 +113,27 @@ namespace Dispatch.Helpers
             {
                 switch (item.Type)
                 {
+                    case QueueItem.ItemType.Download:
+                        // Create separate session for download
+                        var client1 = await item.Source.Client.Clone();
+                        await client1.Download(item.Source.Path, item.Destination.Path, new XXX(item), item.Token);
+                        await client1.Diconnect();
+
+                        break;
+
                     case QueueItem.ItemType.Upload:
                         // Create separate session for upload
-                        var client1 = await item.Destination.Client.Clone();
-                        await client1.Upload(item.Destination.Path, item.Source.Path, new XXX(item), item.Token);
+                        var client2 = await item.Destination.Client.Clone();
+                        await client2.Upload(item.Destination.Path, item.Source.Path, new XXX(item), item.Token);
+                        await client2.Diconnect();
 
                         break;
 
                     case QueueItem.ItemType.Delete:
                         // Create separate session for deletion
-                        var client2 = await item.Source.Client.Clone();
-                        await client2.Delete(item.Source.Path);
+                        var client3 = await item.Source.Client.Clone();
+                        await client3.Delete(item.Source.Path);
+                        await client3.Diconnect();
 
                         break;
                 }

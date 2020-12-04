@@ -7,10 +7,6 @@ namespace Dispatch.Service.Client
 {
     public interface IClient
     {
-        string Name { get; }
-
-        string InitialPath { get; }
-
         Task<IClient> Clone();
 
         Task Diconnect();
@@ -22,5 +18,7 @@ namespace Dispatch.Service.Client
         Task Delete(string path, CancellationToken token = default);
 
         Task Upload(string path, string fileOrDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default);
+
+        Task Download(string path, string toDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default);
     }
 }

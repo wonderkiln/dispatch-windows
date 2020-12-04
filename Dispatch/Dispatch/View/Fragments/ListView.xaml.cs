@@ -1,7 +1,10 @@
 ﻿using Dispatch.Helpers;
+using Dispatch.Service.Client;
 using Dispatch.Service.Model;
 using Dispatch.ViewModel;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -125,6 +128,40 @@ namespace Dispatch.View.Fragments
             foreach (Resource resource in List.SelectedItems)
             {
                 BeginUpload?.Invoke(this, resource);
+            }
+        }
+
+        private void List_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            OpenMenuItem.Visibility = List.SelectedItems.Count == 1 ? Visibility.Visible : Visibility.Collapsed;
+            EditMenuItem.Visibility = List.SelectedItems.Count == 1 ? Visibility.Visible : Visibility.Collapsed;
+            UploadMenuItem.Visibility = List.SelectedItems.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            DeleteMenuItem.Visibility = List.SelectedItems.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void OpenMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var resource = List.SelectedItem as Resource;
+
+            if (resource.Type != ResourceType.File)
+            {
+                ViewModel.Load(resource.Path);
+            }
+            else
+            {
+                if (ViewModel.Client is LocalClient)
+                {
+                    Process.Start(resource.Path);
+                }
+                else
+                {
+                    var destination = new Resource(null, Path.GetTempPath(), "");
+
+                    ResourceQueue.Shared.Add(QueueItem.ItemType.Download, resource, destination, (source, destination2) =>
+                    {
+                        Process.Start(Path.Combine(destination2.Path, resource.Name));
+                    });
+                }
             }
         }
     }

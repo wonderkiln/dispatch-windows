@@ -70,16 +70,24 @@ namespace Dispatch.ViewModel
 
         public FavoritesStorage Favorites { get; private set; }
 
-        public ListViewModel(IClient client)
+        private string InitialPath;
+
+        public string Title { get; private set; }
+
+        public ListViewModel(IClient client, string initialPath, string title)
         {
             Client = client;
             BackCommand = new RelayCommand(BackCommandAction, false);
             HomeCommand = new RelayCommand(HomeCommandAction);
             RefreshCommand = new RelayCommand(RefreshCommandAction);
 
-            Favorites = new FavoritesStorage(client.Name);
+            InitialPath = initialPath;
 
-            Load(client.InitialPath);
+            Favorites = new FavoritesStorage(title);
+
+            Title = title;
+
+            Load(InitialPath);
         }
 
         private void BackCommandAction(object parameter)
@@ -89,7 +97,7 @@ namespace Dispatch.ViewModel
 
         private void HomeCommandAction(object parameter)
         {
-            Load(Client.InitialPath);
+            Load(InitialPath);
         }
 
         private void RefreshCommandAction(object parameter)

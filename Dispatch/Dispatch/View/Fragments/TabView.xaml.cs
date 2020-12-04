@@ -31,9 +31,9 @@ namespace Dispatch.View.Fragments
             InitializeComponent();
         }
 
-        private void ConnectView_OnConnected(object sender, IClient e)
+        private void ConnectView_OnConnected(object sender, ConnectV e)
         {
-            ViewModel.RightViewModel = new ListViewModel(e);
+            ViewModel.RightViewModel = new ListViewModel(e.Client, e.InitialPath, e.Name);
 
             OnConnected?.Invoke(this, ViewModel);
         }

@@ -4,7 +4,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,38 +13,27 @@ namespace Dispatch.Service.Client
     {
         private readonly FtpClient Client = new FtpClient();
 
-        public string Name { get; private set; } = "";
-
-        public string InitialPath { get; private set; } = "/";
-
-        public FTPClient(FtpClient client, string path)
+        public FTPClient(FtpClient client)
         {
             Client = client;
-
-            Name = $"{client.Host}:{client.Port}";
-
-            if (!string.IsNullOrEmpty(path))
-            {
-                InitialPath = path;
-            }
         }
 
-        public static async Task<FTPClient> Create(string host, int port, string username, string password, string path = null)
+        public static async Task<FTPClient> Create(string host, int port, string username, string password)
         {
             FtpTrace.EnableTracing = false;
 
             var client = new FtpClient();
 
-            client.SslProtocols = SslProtocols.Tls;
+            //client.SslProtocols = SslProtocols.Tls;
             client.ValidateAnyCertificate = true;
             client.DataConnectionType = FtpDataConnectionType.PASV;
-            client.DownloadDataType = FtpDataType.Binary;
-            //Client.RetryAttempts = 5;
-            //Client.SocketPollInterval = 1000;
-            //Client.ConnectTimeout = 2000;
-            //Client.ReadTimeout = 2000;
-            //Client.DataConnectionConnectTimeout = 2000;
-            //Client.DataConnectionReadTimeout = 2000;
+            //client.DownloadDataType = FtpDataType.Binary;
+            //client.RetryAttempts = 5;
+            //client.SocketPollInterval = 1000;
+            //client.ConnectTimeout = 2000;
+            //client.ReadTimeout = 2000;
+            //client.DataConnectionConnectTimeout = 2000;
+            //client.DataConnectionReadTimeout = 2000;
 
             client.Host = host;
             client.Port = port;
@@ -53,7 +41,7 @@ namespace Dispatch.Service.Client
 
             await client.ConnectAsync();
 
-            return new FTPClient(client, path);
+            return new FTPClient(client);
         }
 
         public async Task<IClient> Clone()
@@ -149,6 +137,22 @@ namespace Dispatch.Service.Client
             else
             {
                 throw new Exception($"File or directory not found at path: {fileOrDirectory}");
+            }
+        }
+
+        public async Task Download(string path, string toDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
+        {
+            var resource = await FetchResource(path);
+
+            var localPath = Path.Combine(toDirectory, resource.Name);
+
+            if (resource.Type == ResourceType.File)
+            {
+                await Client.DownloadFileAsync(localPath, path, FtpLocalExists.Overwrite, FtpVerify.None, new FtpProgressConverter(progress), token);
+            }
+            else if (resource.Type == ResourceType.Directory)
+            {
+                await Client.DownloadDirectoryAsync(localPath, path, FtpFolderSyncMode.Update, FtpLocalExists.Skip, FtpVerify.None, null, new FtpProgressConverter(progress), token);
             }
         }
     }

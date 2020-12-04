@@ -9,11 +9,7 @@ namespace Dispatch.Service.Client
 {
     public class LocalClient : IClient
     {
-        private static readonly string AllDrivesPathKey = "";
-
-        public string Name { get; } = "Local";
-
-        public string InitialPath { get; } = AllDrivesPathKey;
+        public static readonly string AllDrivesPathKey = "";
 
         public Task<IClient> Clone()
         {
@@ -117,6 +113,11 @@ namespace Dispatch.Service.Client
         }
 
         public Task Upload(string path, string fileOrDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Download(string path, string toDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
         {
             throw new NotImplementedException();
         }
