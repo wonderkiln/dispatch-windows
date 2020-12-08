@@ -2,17 +2,19 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Dispatch.Service.Client
 {
     public class LocalClient : IClient
     {
-        private static readonly string AllDrivesPathKey = "";
+        public static readonly string AllDrivesPathKey = "";
 
-        public string Title { get; } = "";
-
-        public string InitialPath { get; } = AllDrivesPathKey;
+        public Task<IClient> Clone()
+        {
+            return Task.FromResult<IClient>(this);
+        }
 
         public Task Diconnect()
         {
@@ -90,6 +92,34 @@ namespace Dispatch.Service.Client
             {
                 throw new Exception($"File or directory not found at path: {path}");
             }
+        }
+
+        public Task Delete(string path, CancellationToken token = default)
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            else if (Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
+            else
+            {
+                throw new Exception($"File or directory not found at path: {path}");
+            }
+
+            return Task.CompletedTask;
+        }
+
+        public Task Upload(string path, string fileOrDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Download(string path, string toDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
+        {
+            throw new NotImplementedException();
         }
     }
 }

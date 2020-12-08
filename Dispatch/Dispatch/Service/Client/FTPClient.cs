@@ -1,9 +1,10 @@
 ﻿using Dispatch.Service.Model;
 using FluentFTP;
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Authentication;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Dispatch.Service.Client
@@ -12,45 +13,46 @@ namespace Dispatch.Service.Client
     {
         private readonly FtpClient Client = new FtpClient();
 
-        public string Title { get; private set; } = "";
-
-        public string InitialPath { get; private set; } = "/";
-
-        public FTPClient(string path)
+        public FTPClient(FtpClient client)
         {
-            Client.SslProtocols = SslProtocols.Tls;
-            Client.ValidateAnyCertificate = true;
-            Client.DataConnectionType = FtpDataConnectionType.PASV;
-            Client.DownloadDataType = FtpDataType.Binary;
-            Client.RetryAttempts = 5;
-            Client.SocketPollInterval = 1000;
-            Client.ConnectTimeout = 2000;
-            Client.ReadTimeout = 2000;
-            Client.DataConnectionConnectTimeout = 2000;
-            Client.DataConnectionReadTimeout = 2000;
-
-            FtpTrace.EnableTracing = false;
-
-            if (!string.IsNullOrEmpty(path))
-            {
-                InitialPath = path;
-            }
+            Client = client;
         }
 
-        public async Task Connect(string host, int port, string username, string password)
+        public static async Task<FTPClient> Create(string host, int port, string username, string password)
         {
-            Client.Host = host;
-            Client.Port = port;
-            Client.Credentials = new NetworkCredential(username, password);
+            FtpTrace.EnableTracing = false;
 
-            await Client.ConnectAsync();
+            var client = new FtpClient();
 
-            Title = $"{host}:{port}";
+            //client.SslProtocols = SslProtocols.Tls;
+            client.ValidateAnyCertificate = true;
+            client.DataConnectionType = FtpDataConnectionType.PASV;
+            //client.DownloadDataType = FtpDataType.Binary;
+            //client.RetryAttempts = 5;
+            //client.SocketPollInterval = 1000;
+            //client.ConnectTimeout = 2000;
+            //client.ReadTimeout = 2000;
+            //client.DataConnectionConnectTimeout = 2000;
+            //client.DataConnectionReadTimeout = 2000;
+
+            client.Host = host;
+            client.Port = port;
+            client.Credentials = new NetworkCredential(username, password);
+
+            await client.ConnectAsync();
+
+            return new FTPClient(client);
+        }
+
+        public async Task<IClient> Clone()
+        {
+            return await FTPClient.Create(Client.Host, Client.Port, Client.Credentials.UserName, Client.Credentials.Password);
         }
 
         public async Task Diconnect()
         {
             await Client.DisconnectAsync();
+            Client.Dispose();
         }
 
         private Resource MakeResource(FtpListItem item)
@@ -87,6 +89,77 @@ namespace Dispatch.Service.Client
         {
             var items = await Client.GetListingAsync(path);
             return items.Select(MakeResource).ToArray();
+        }
+
+        public async Task Delete(string path, CancellationToken token = default)
+        {
+            token.ThrowIfCancellationRequested();
+
+            var resource = await FetchResource(path);
+
+            if (resource.Type == ResourceType.Directory)
+            {
+                await Client.DeleteDirectoryAsync(path, token);
+            }
+            else
+            {
+                await Client.DeleteFileAsync(path, token);
+            }
+        }
+
+        private class FtpProgressConverter : IProgress<FtpProgress>
+        {
+            private readonly IProgress<ProgressStatus> progress;
+
+            public FtpProgressConverter(IProgress<ProgressStatus> progress)
+            {
+                this.progress = progress;
+            }
+
+            public void Report(FtpProgress value)
+            {
+                progress?.Report(new ProgressStatus(value.FileIndex, value.FileCount, value.Progress));
+            }
+        }
+
+        public async Task Upload(string path, string fileOrDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
+        {
+            token.ThrowIfCancellationRequested();
+
+            var normalizedPath = path.EndsWith("/") ? path.Substring(0, path.Length - 1) : path;
+
+            if (File.Exists(fileOrDirectory))
+            {
+                var destination = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
+                await Client.UploadFileAsync(fileOrDirectory, destination, FtpRemoteExists.Overwrite, false, FtpVerify.None, new FtpProgressConverter(progress), token);
+            }
+            else if (Directory.Exists(fileOrDirectory))
+            {
+                var destination = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
+                await Client.UploadDirectoryAsync(fileOrDirectory, destination, FtpFolderSyncMode.Update, FtpRemoteExists.Skip, FtpVerify.None, null, new FtpProgressConverter(progress), token);
+            }
+            else
+            {
+                throw new Exception($"File or directory not found at path: {fileOrDirectory}");
+            }
+        }
+
+        public async Task Download(string path, string toDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
+        {
+            token.ThrowIfCancellationRequested();
+
+            var resource = await FetchResource(path);
+
+            var localPath = Path.Combine(toDirectory, resource.Name);
+
+            if (resource.Type == ResourceType.File)
+            {
+                await Client.DownloadFileAsync(localPath, path, FtpLocalExists.Overwrite, FtpVerify.None, new FtpProgressConverter(progress), token);
+            }
+            else if (resource.Type == ResourceType.Directory)
+            {
+                await Client.DownloadDirectoryAsync(localPath, path, FtpFolderSyncMode.Update, FtpLocalExists.Skip, FtpVerify.None, null, new FtpProgressConverter(progress), token);
+            }
         }
     }
 }

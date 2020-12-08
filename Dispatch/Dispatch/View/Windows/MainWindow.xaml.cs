@@ -1,5 +1,5 @@
 ﻿using Dispatch.Helpers;
-using Dispatch.Updater;
+using Dispatch.Service.Updater;
 using Dispatch.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,6 +9,8 @@ namespace Dispatch.View.Windows
     public partial class MainWindow : Window
     {
         public TabsViewModel ViewModel { get; } = new TabsViewModel();
+
+        public QueueViewModel QueueViewModel { get; } = new QueueViewModel();
 
         private void NewTabButton_Click(object sender, RoutedEventArgs e)
         {
@@ -39,7 +41,7 @@ namespace Dispatch.View.Windows
 
         private async void UpdateMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var updater = new ApplicationUpdater(new AzureUpdateProvider());
+            var updater = new ApplicationUpdater(new UpdateProvider());
             await updater.CheckForUpdate();
         }
 

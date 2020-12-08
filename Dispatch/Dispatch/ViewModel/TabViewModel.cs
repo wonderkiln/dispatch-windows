@@ -11,14 +11,14 @@ namespace Dispatch.ViewModel
             {
                 if (RightViewModel != null)
                 {
-                    return RightViewModel.Client.Title;
+                    return RightViewModel.Title;
                 }
 
                 return "New Connection";
             }
         }
 
-        public ListViewModel LeftViewModel { get; } = new ListViewModel(new LocalClient());
+        public ListViewModel LeftViewModel { get; } = new ListViewModel(new LocalClient(), LocalClient.AllDrivesPathKey, "Local");
 
         private ListViewModel _rightViewModel;
         public ListViewModel RightViewModel

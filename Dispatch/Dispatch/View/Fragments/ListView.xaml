@@ -30,7 +30,21 @@
                 DragEnter="ListBox_DragOver"
                 DragOver="ListBox_DragOver"
                 Drop="ListBox_Drop"
+                ItemsSource="{Binding ViewModel.Favorites.Items, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
                 MenuItem.Click="ShortcutsMenu_Click">
+                <Menu.Resources>
+                    <ContextMenu x:Key="ContextMenu">
+                        <MenuItem
+                            Click="DeleteFavoriteMenuItem_Click"
+                            Foreground="Red"
+                            Header="Delete" />
+                    </ContextMenu>
+                </Menu.Resources>
+                <Menu.ItemContainerStyle>
+                    <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
+                        <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}" />
+                    </Style>
+                </Menu.ItemContainerStyle>
                 <Menu.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" />
@@ -107,20 +121,37 @@
             x:Name="List"
             Grid.Row="2"
             Margin="0,0,16,0"
+            AllowDrop="True"
+            ContextMenuOpening="List_ContextMenuOpening"
+            DragEnter="List_DragEnter"
+            DragOver="List_DragEnter"
+            Drop="List_Drop"
             ItemsSource="{Binding ViewModel.Resources, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
             SelectionMode="Extended">
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem
+                        Name="OpenMenuItem"
+                        Click="OpenMenuItem_Click"
+                        Header="Open" />
+                    <MenuItem Name="EditMenuItem" Header="Edit" />
+                    <MenuItem
+                        Name="UploadMenuItem"
+                        Click="UploadMenuItem_Click"
+                        Header="Upload" />
+                    <MenuItem
+                        Name="DeleteMenuItem"
+                        Click="DeleteMenuItem_Click"
+                        Foreground="Red"
+                        Header="Delete..." />
+                    <Separator />
+                    <MenuItem Header="New Folder..." />
+                </ContextMenu>
+            </ListView.ContextMenu>
             <ListView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource {x:Type ListViewItem}}" TargetType="ListViewItem">
                     <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
                     <EventSetter Event="PreviewMouseMove" Handler="ListViewItem_PreviewMouseMove" />
-                    <Setter Property="ContextMenu">
-                        <Setter.Value>
-                            <ContextMenu>
-                                <MenuItem Header="Transfer" />
-                                <MenuItem Header="Add to Favorites" />
-                            </ContextMenu>
-                        </Setter.Value>
-                    </Setter>
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.View>

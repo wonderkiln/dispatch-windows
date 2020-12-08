@@ -127,18 +127,6 @@
         </Setter>
     </Style>
 
-
-
-
-
-
-
-
-
-
-
-
-
     <Style x:Key="IconButtonStyle" TargetType="Button">
         <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
         <Setter Property="Foreground" Value="Black" />

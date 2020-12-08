@@ -1,15 +1,16 @@
 ﻿using Dispatch.Helpers;
+using Dispatch.Service.Model;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Dispatch.Updater
+namespace Dispatch.Service.Updater
 {
-    public class AzureUpdateProvider : IUpdateProvider
+    public class UpdateProvider : IUpdateProvider
     {
-        class LatestRelease
+        class Release
         {
             public string url { get; set; }
             public long fileSize { get; set; }
@@ -24,11 +25,11 @@ namespace Dispatch.Updater
                 switch (Constants.CHANNEL)
                 {
                     case Constants.Channel.Nightly:
-                        return "https://dispatch-api-dev.herokuapp.com/release/nightly";
+                        return "https://api.dispatch.wonderkiln.com/release/nightly";
                     case Constants.Channel.Beta:
-                        return "https://dispatch-api-dev.herokuapp.com/release/beta";
+                        return "https://api.dispatch.wonderkiln.com/release/beta";
                     case Constants.Channel.Stable:
-                        return "https://dispatch-api-dev.herokuapp.com/release/stable";
+                        return "https://api.dispatch.wonderkiln.com/release/stable";
                     default:
                         throw new Exception("Unhandled channel");
                 }
@@ -36,6 +37,7 @@ namespace Dispatch.Updater
         }
 
         public event EventHandler<double> DownloadProgressChanged;
+        
         private WebClient GetWebClient()
         {
             var client = new WebClient();
@@ -50,7 +52,7 @@ namespace Dispatch.Updater
             client.Headers.Add(HttpRequestHeader.Accept, "application/json");
 
             var data = await client.DownloadStringTaskAsync(BaseUrl);
-            var json = JsonConvert.DeserializeObject<LatestRelease>(data);
+            var json = JsonConvert.DeserializeObject<Release>(data);
 
             return new UpdateInfo()
             {

@@ -5,9 +5,18 @@ using System.Windows.Controls;
 
 namespace Dispatch.View.Fragments
 {
+    public class ConnectV
+    {
+        public IClient Client { get; set; }
+
+        public string InitialPath { get; set; }
+
+        public string Name { get; set; }
+    }
+
     public partial class ConnectView : UserControl
     {
-        public event EventHandler<IClient> OnConnected;
+        public event EventHandler<ConnectV> OnConnected;
 
         public ConnectView()
         {
@@ -18,10 +27,9 @@ namespace Dispatch.View.Fragments
         {
             try
             {
-                var client = new FTPClient(Root.Text);
-                await client.Connect(Host.Text, int.Parse(Port.Text), Username.Text, Password.Password);
+                var client = await FTPClient.Create(Host.Text, int.Parse(Port.Text), Username.Text, Password.Password);
 
-                OnConnected?.Invoke(this, client);
+                OnConnected?.Invoke(this, new ConnectV() { Client = client, InitialPath = Root.Text, Name = $"{Host.Text}:{Port.Text}" });
             }
             catch (Exception ex)
             {

@@ -1,6 +1,7 @@
 ﻿using Dispatch.Helpers;
 using Dispatch.Service.Client;
 using Dispatch.Service.Model;
+using Dispatch.Service.Storage;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -58,7 +59,7 @@ namespace Dispatch.ViewModel
         {
             get
             {
-                return _temporaryPath ?? Current?.Path ?? "";
+                return _temporaryPath ?? CurrentPath ?? "";
             }
             set
             {
@@ -67,14 +68,26 @@ namespace Dispatch.ViewModel
             }
         }
 
-        public ListViewModel(IClient client)
+        public FavoritesStorage Favorites { get; private set; }
+
+        private string InitialPath;
+
+        public string Title { get; private set; }
+
+        public ListViewModel(IClient client, string initialPath, string title)
         {
             Client = client;
             BackCommand = new RelayCommand(BackCommandAction, false);
             HomeCommand = new RelayCommand(HomeCommandAction);
             RefreshCommand = new RelayCommand(RefreshCommandAction);
 
-            Load(client.InitialPath);
+            InitialPath = initialPath;
+
+            Favorites = new FavoritesStorage(title);
+
+            Title = title;
+
+            Load(InitialPath);
         }
 
         private void BackCommandAction(object parameter)
@@ -84,34 +97,39 @@ namespace Dispatch.ViewModel
 
         private void HomeCommandAction(object parameter)
         {
-            Load(Client.InitialPath);
+            Load(InitialPath);
         }
 
         private void RefreshCommandAction(object parameter)
         {
-            if (Current != null)
+            Refresh();
+        }
+
+        public void Refresh()
+        {
+            if (CurrentPath != null)
             {
-                Load(Current.Path);
+                Load(CurrentPath);
             }
         }
 
-        private readonly Stack<Resource> History = new Stack<Resource>();
+        private readonly Stack<string> History = new Stack<string>();
 
-        private Resource _current;
-        public Resource Current
+        private string _currentPath;
+        public string CurrentPath
         {
             get
             {
-                return _current;
+                return _currentPath;
             }
             private set
             {
+                _currentPath = value;
 
-                _current = value;
                 Notify();
                 Notify("Path");
 
-                RefreshCommand.IsExecutable = _current != null;
+                RefreshCommand.IsExecutable = _currentPath != null;
             }
         }
 
@@ -133,15 +151,14 @@ namespace Dispatch.ViewModel
         {
             try
             {
-                var current = await Client.FetchResource(path);
                 var resources = await Client.FetchResources(path);
 
-                if (Current != null && current.Path != Current.Path)
+                if (CurrentPath != null && path != CurrentPath)
                 {
-                    History.Push(Current);
+                    History.Push(CurrentPath);
                 }
 
-                Current = current;
+                CurrentPath = path;
                 Resources = resources;
                 BackCommand.IsExecutable = History.Count > 0;
             }
@@ -165,8 +182,8 @@ namespace Dispatch.ViewModel
 
             try
             {
-                Current = History.Pop();
-                Resources = await Client.FetchResources(Current.Path);
+                CurrentPath = History.Pop();
+                Resources = await Client.FetchResources(CurrentPath);
                 BackCommand.IsExecutable = History.Count > 0;
             }
             catch (Exception ex)

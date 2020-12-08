@@ -83,8 +83,13 @@
     <Compile Include="Helpers\Observable.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Helpers\Converters\ResourceToIconConverter.cs" />
+    <Compile Include="Helpers\ResourceQueue.cs" />
     <Compile Include="Helpers\ResourceWatcher.cs" />
     <Compile Include="Service\Client\FTPClient.cs" />
+    <Compile Include="Service\Model\FavoriteItem.cs" />
+    <Compile Include="Service\Model\ProgressStatus.cs" />
+    <Compile Include="Service\Storage\FavoritesStorage.cs" />
+    <Compile Include="ViewModel\QueueViewModel.cs" />
     <Compile Include="View\Controls\ChromeButtons.xaml.cs">
       <DependentUpon>ChromeButtons.xaml</DependentUpon>
     </Compile>
@@ -92,10 +97,9 @@
     <Compile Include="Service\Client\IClient.cs" />
     <Compile Include="Service\Model\Resource.cs" />
     <Compile Include="Service\Updater\ApplicationUpdater.cs" />
-    <Compile Include="Service\Updater\AzureUpdateProvider.cs" />
-    <Compile Include="Service\Updater\GithubUpdateProvider.cs" />
+    <Compile Include="Service\Updater\UpdateProvider.cs" />
     <Compile Include="Service\Updater\IUpdateProvider.cs" />
-    <Compile Include="Service\Updater\UpdateInfo.cs" />
+    <Compile Include="Service\Model\UpdateInfo.cs" />
     <Compile Include="ViewModel\TabsViewModel.cs" />
     <Compile Include="ViewModel\ListViewModel.cs" />
     <Compile Include="ViewModel\TabViewModel.cs" />
@@ -105,9 +109,16 @@
     <Compile Include="View\Fragments\ListView.xaml.cs">
       <DependentUpon>ListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Fragments\QueueView.xaml.cs">
+      <DependentUpon>QueueView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Fragments\TabView.xaml.cs">
       <DependentUpon>TabView.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\Fragments\QueueView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -22,5 +22,20 @@ namespace Dispatch.Helpers
                 return Assembly.GetExecutingAssembly().GetName().Version;
             }
         }
+
+        public static string APP_NAME
+        {
+            get
+            {
+                var name = "Dispatch";
+
+                if (CHANNEL != Channel.Stable)
+                {
+                    return $"{name} ({CHANNEL})";
+                }
+
+                return name;
+            }
+        }
     }
 }

@@ -1,49 +1,35 @@
 ﻿using ByteSizeLib;
 using Dispatch.Helpers;
+using Dispatch.Service.Model;
 using System;
 using System.Diagnostics;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Dispatch.Updater
+namespace Dispatch.Service.Updater
 {
     public class ApplicationUpdater
     {
-        public static Version CurrentVersion
-        {
-            get
-            {
-                return Assembly.GetExecutingAssembly().GetName().Version;
-            }
-        }
-
-        private IUpdateProvider updater;
+        private readonly IUpdateProvider updater;
 
         public UpdateInfo LatestUpdate { get; set; }
 
         public ApplicationUpdater(IUpdateProvider updater)
         {
             this.updater = updater;
-            this.updater.DownloadProgressChanged += Updater_DownloadProgressChanged;
         }
 
-        private void Updater_DownloadProgressChanged(object sender, double e)
-        {
-            Console.WriteLine($"Downloading... {e}%");
-        }
-
-        public async Task CheckForUpdate(bool silent = true)
+        public async Task CheckForUpdate()
         {
             try
             {
                 LatestUpdate = await updater.GetLatestUpdate();
 
-                if (LatestUpdate.Version > CurrentVersion)
+                if (LatestUpdate.Version > Constants.VERSION)
                 {
                     if (MessageBox.Show(
                         $"Do you want to download and install it now ({ByteSize.FromBytes(LatestUpdate.DownloadSize)})?",
-                        $"Update available from {CurrentVersion} to {LatestUpdate.Version} ({Constants.CHANNEL})",
+                        $"Update available from {Constants.VERSION} to {LatestUpdate.Version} ({Constants.CHANNEL})",
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Question,
                         MessageBoxResult.Yes) == MessageBoxResult.Yes)
@@ -53,24 +39,17 @@ namespace Dispatch.Updater
                 }
                 else
                 {
-                    if (!silent)
-                    {
-                        MessageBox.Show(
-                            $"You already have the latest version ({CurrentVersion})",
-                            $"No update available ({Constants.CHANNEL})",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information);
-                    }
+                    MessageBox.Show(
+                        $"You already have the latest version ({Constants.VERSION})",
+                        $"No update available ({Constants.CHANNEL})",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
                 }
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Console.Error.WriteLine(ex);
-
-                if (!silent)
-                {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
             }
         }
 

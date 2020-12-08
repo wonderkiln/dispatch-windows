@@ -1,4 +1,6 @@
-﻿using Dispatch.Service.Client;
+﻿using Dispatch.Helpers;
+using Dispatch.Service.Client;
+using Dispatch.Service.Model;
 using Dispatch.ViewModel;
 using System;
 using System.Windows;
@@ -29,11 +31,21 @@ namespace Dispatch.View.Fragments
             InitializeComponent();
         }
 
-        private void ConnectView_OnConnected(object sender, IClient e)
+        private void ConnectView_OnConnected(object sender, ConnectV e)
         {
-            ViewModel.RightViewModel = new ListViewModel(e);
+            ViewModel.RightViewModel = new ListViewModel(e.Client, e.InitialPath, e.Name);
 
             OnConnected?.Invoke(this, ViewModel);
+        }
+
+        private void ListView_BeginUpload(object sender, Resource e)
+        {
+            var resource = new Resource(ViewModel.RightViewModel.Client, ViewModel.RightViewModel.CurrentPath, "");
+
+            ResourceQueue.Shared.Add(QueueItem.ItemType.Upload, e, resource, (source, destination) =>
+            {
+                ViewModel.RightViewModel.Refresh();
+            });
         }
     }
 }
