@@ -46,7 +46,7 @@ namespace Dispatch.Service.Client
 
         public async Task<IClient> Clone()
         {
-            return await FTPClient.Create(Client.Host, Client.Port, Client.Credentials.UserName, Client.Credentials.Password);
+            return await Create(Client.Host, Client.Port, Client.Credentials.UserName, Client.Credentials.Password);
         }
 
         public async Task Diconnect()

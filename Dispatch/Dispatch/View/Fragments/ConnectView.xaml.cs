@@ -27,7 +27,8 @@ namespace Dispatch.View.Fragments
         {
             try
             {
-                var client = await FTPClient.Create(Host.Text, int.Parse(Port.Text), Username.Text, Password.Password);
+                //var client = await FTPClient.Create(Host.Text, int.Parse(Port.Text), Username.Text, Password.Password);
+                var client = await SFTPClient.Create(Host.Text, int.Parse(Port.Text), Username.Text, Password.Password);
 
                 OnConnected?.Invoke(this, new ConnectV() { Client = client, InitialPath = Root.Text, Name = $"{Host.Text}:{Port.Text}" });
             }

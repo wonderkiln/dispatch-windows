@@ -49,11 +49,14 @@
     <Reference Include="ByteSize, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ByteSize.2.0.0\lib\net45\ByteSize.dll</HintPath>
     </Reference>
-    <Reference Include="FluentFTP, Version=33.0.2.0, Culture=neutral, PublicKeyToken=f4af092b1d8df44f, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentFTP.33.0.2\lib\net45\FluentFTP.dll</HintPath>
+    <Reference Include="FluentFTP, Version=33.0.3.0, Culture=neutral, PublicKeyToken=f4af092b1d8df44f, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentFTP.33.0.3\lib\net45\FluentFTP.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Renci.SshNet, Version=2020.0.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <HintPath>..\packages\SSH.NET.2020.0.0\lib\net40\Renci.SshNet.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -86,6 +89,7 @@
     <Compile Include="Helpers\ResourceQueue.cs" />
     <Compile Include="Helpers\ResourceWatcher.cs" />
     <Compile Include="Service\Client\FTPClient.cs" />
+    <Compile Include="Service\Client\SFTPClient.cs" />
     <Compile Include="Service\Model\FavoriteItem.cs" />
     <Compile Include="Service\Model\ProgressStatus.cs" />
     <Compile Include="Service\Storage\FavoritesStorage.cs" />

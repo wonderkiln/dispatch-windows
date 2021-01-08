@@ -48,6 +48,10 @@
             Margin="64"
             HorizontalAlignment="Center"
             VerticalAlignment="Center">
+            <ComboBox>
+                <ComboBoxItem Content="FTP" />
+                <ComboBoxItem Content="SFTP" />
+            </ComboBox>
             <Border Style="{StaticResource RowBorder}">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -61,7 +65,7 @@
                         x:Name="Host"
                         Grid.Column="1"
                         Style="{StaticResource ConnectTextBox}"
-                        Text="waws-prod-dm1-173.ftp.azurewebsites.windows.net" />
+                        Text="test.rebex.net" />
                     <TextBlock
                         Grid.Column="2"
                         Style="{StaticResource PlaceholderTextBlock}"
@@ -70,7 +74,7 @@
                         x:Name="Port"
                         Grid.Column="3"
                         Style="{StaticResource ConnectTextBox}"
-                        Text="21" />
+                        Text="22" />
                 </Grid>
             </Border>
             <Border Style="{StaticResource RowBorder}">
@@ -84,7 +88,7 @@
                         x:Name="Username"
                         Grid.Column="1"
                         Style="{StaticResource ConnectTextBox}"
-                        Text="$app-dispatchftp-dev" />
+                        Text="demo" />
                 </Grid>
             </Border>
             <Border Style="{StaticResource RowBorder}">
@@ -97,7 +101,7 @@
                     <PasswordBox
                         x:Name="Password"
                         Grid.Column="1"
-                        Password="w2yZ0XW2PvDtDrnvzcyS6Zmj6B9uMxEvCkdP5Jo1jxgxKH7h9uYadcmEivlx"
+                        Password="password"
                         Style="{StaticResource ConnectPasswordBox}" />
                 </Grid>
             </Border>
@@ -112,7 +116,7 @@
                         x:Name="Root"
                         Grid.Column="1"
                         Style="{StaticResource ConnectTextBox}"
-                        Text="/site/wwwroot" />
+                        Text="/" />
                 </Grid>
             </Border>
             <Button
