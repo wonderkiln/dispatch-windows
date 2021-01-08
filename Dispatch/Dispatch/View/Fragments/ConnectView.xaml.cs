@@ -14,6 +14,24 @@ namespace Dispatch.View.Fragments
         public string Name { get; set; }
     }
 
+    public class ConnectViewDataTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate FTPDataTemplate { get; set; }
+        public DataTemplate SFTPDataTemplate { get; set; }
+
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        {
+            var index = (int)item;
+
+            switch (index)
+            {
+                case 0: return FTPDataTemplate;
+                case 1: return SFTPDataTemplate;
+                default: return null;
+            }
+        }
+    }
+
     public partial class ConnectView : UserControl
     {
         public event EventHandler<ConnectV> OnConnected;
@@ -23,19 +41,9 @@ namespace Dispatch.View.Fragments
             InitializeComponent();
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void ConnectView_OnConnected(object sender, ConnectV e)
         {
-            try
-            {
-                //var client = await FTPClient.Create(Host.Text, int.Parse(Port.Text), Username.Text, Password.Password);
-                var client = await SFTPClient.Create(Host.Text, int.Parse(Port.Text), Username.Text, Password.Password);
-
-                OnConnected?.Invoke(this, new ConnectV() { Client = client, InitialPath = Root.Text, Name = $"{Host.Text}:{Port.Text}" });
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            OnConnected?.Invoke(this, e);
         }
     }
 }

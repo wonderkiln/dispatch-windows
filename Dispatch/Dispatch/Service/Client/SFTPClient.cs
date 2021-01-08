@@ -102,11 +102,11 @@ namespace Dispatch.Service.Client
                 {
                     using (var stream = new StreamWriter(localPath))
                     {
-                        Client.DownloadFile(path, stream.BaseStream, new Action<ulong>((length) =>
+                        Client.DownloadFile(path, stream.BaseStream, (length) =>
                         {
                             var value = 100 * length / (double)resource.Size;
                             progress?.Report(new ProgressStatus(0, 1, value));
-                        }));
+                        });
                     }
                 },
                 token);
@@ -124,11 +124,11 @@ namespace Dispatch.Service.Client
 
                         using (var stream = new StreamWriter(item.Key))
                         {
-                            Client.DownloadFile(item.Value.Path, stream.BaseStream, new Action<ulong>((length) =>
+                            Client.DownloadFile(item.Value.Path, stream.BaseStream, (length) =>
                             {
                                 var value = 100 * length / (double)item.Value.Size;
                                 progress?.Report(new ProgressStatus(index, items.Count, value));
-                            }));
+                            });
                         }
                     },
                     token);
@@ -174,9 +174,44 @@ namespace Dispatch.Service.Client
             });
         }
 
-        public Task Upload(string path, string fileOrDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
+        public async Task Upload(string path, string fileOrDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            token.ThrowIfCancellationRequested();
+
+            var normalizedPath = path.EndsWith("/") ? path.Substring(0, path.Length - 1) : path;
+
+            if (File.Exists(fileOrDirectory))
+            {
+                var destination = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
+
+                await Task.Run(() =>
+                {
+                    using (var stream = new StreamReader(fileOrDirectory))
+                    {
+                        Client.UploadFile(stream.BaseStream, destination, (length) =>
+                        {
+                            var size = new FileInfo(fileOrDirectory).Length;
+                            var value = 100 * length / (double)size;
+                            progress?.Report(new ProgressStatus(0, 1, value));
+                        });
+                    }
+                });
+            }
+            else if (Directory.Exists(fileOrDirectory))
+            {
+                // TODO: get all the files
+                var destination = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
+
+                var files = Directory.GetFiles(fileOrDirectory);
+                
+                var directories = Directory.GetDirectories(fileOrDirectory);
+
+                // D:/x/xx/xxx.txt -> {path}/x/xx/xxx.txt
+            }
+            else
+            {
+                throw new Exception($"File or directory not found at path: {fileOrDirectory}");
+            }
         }
     }
 }

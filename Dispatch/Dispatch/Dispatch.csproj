@@ -110,16 +110,30 @@
     <Compile Include="View\Fragments\ConnectView.xaml.cs">
       <DependentUpon>ConnectView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Fragments\FTPConnectView.xaml.cs">
+      <DependentUpon>FTPConnectView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Fragments\ListView.xaml.cs">
       <DependentUpon>ListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Fragments\QueueView.xaml.cs">
       <DependentUpon>QueueView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Fragments\SFTPConnectView.xaml.cs">
+      <DependentUpon>SFTPConnectView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Fragments\TabView.xaml.cs">
       <DependentUpon>TabView.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\Fragments\FTPConnectView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\Fragments\QueueView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Fragments\SFTPConnectView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -136,7 +136,7 @@
                     IsOpen="{TemplateBinding IsSubmenuOpen}"
                     Placement="Bottom"
                     PopupAnimation="Fade">
-                    <Border Style="{StaticResource PopupContainerBorder}" MinWidth="120">
+                    <Border MinWidth="120" Style="{StaticResource PopupContainerBorder}">
                         <ScrollViewer
                             Margin="2"
                             CanContentScroll="True"
@@ -252,7 +252,7 @@
                     IsOpen="{TemplateBinding IsSubmenuOpen}"
                     Placement="Right"
                     PopupAnimation="Fade">
-                    <Border Style="{StaticResource PopupContainerBorder}" MinWidth="120">
+                    <Border MinWidth="120" Style="{StaticResource PopupContainerBorder}">
                         <ScrollViewer
                             Margin="2"
                             CanContentScroll="True"
@@ -305,7 +305,10 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ContextMenu">
                     <Border Style="{StaticResource PopupContainerBorder}">
-                        <StackPanel Margin="2" IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
+                        <StackPanel
+                            Margin="2"
+                            IsItemsHost="True"
+                            KeyboardNavigation.DirectionalNavigation="Cycle" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
