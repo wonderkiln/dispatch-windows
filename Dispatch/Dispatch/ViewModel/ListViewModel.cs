@@ -5,6 +5,7 @@ using Dispatch.Service.Storage;
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Dispatch.ViewModel
 {
@@ -72,9 +73,11 @@ namespace Dispatch.ViewModel
 
         private string InitialPath;
 
+        public ImageSource Icon { get; private set; }
+
         public string Title { get; private set; }
 
-        public ListViewModel(IClient client, string initialPath, string title)
+        public ListViewModel(IClient client, string initialPath, ImageSource icon, string title)
         {
             Client = client;
             BackCommand = new RelayCommand(BackCommandAction, false);
@@ -85,6 +88,7 @@ namespace Dispatch.ViewModel
 
             Favorites = new FavoritesStorage(title);
 
+            Icon = icon;
             Title = title;
 
             Load(InitialPath);

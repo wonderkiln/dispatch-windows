@@ -25,18 +25,19 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" MinWidth="100" />
+            <ColumnDefinition Width="*" MinWidth="100" />
         </Grid.ColumnDefinitions>
         <local:ListView BeginUpload="ListView_BeginUpload" ViewModel="{Binding ViewModel.LeftViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:TabView}}}" />
-        <GridSplitter
-            Width="16"
-            HorizontalAlignment="Right"
-            ResizeBehavior="CurrentAndNext"
-            ResizeDirection="Columns" />
         <ContentPresenter
             Grid.Column="1"
             Content="{Binding ViewModel.RightViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:TabView}}}"
             ContentTemplateSelector="{StaticResource ViewSelector}" />
+        <GridSplitter
+            Grid.Column="1"
+            Margin="-12,0,0,0"
+            HorizontalAlignment="Left"
+            ResizeBehavior="PreviousAndCurrent"
+            ResizeDirection="Columns" />
     </Grid>
 </UserControl>

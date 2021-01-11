@@ -5,6 +5,8 @@ using Dispatch.ViewModel;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Dispatch.View.Fragments
 {
@@ -33,7 +35,18 @@ namespace Dispatch.View.Fragments
 
         private void ConnectView_OnConnected(object sender, ConnectV e)
         {
-            ViewModel.RightViewModel = new ListViewModel(e.Client, e.InitialPath, e.Name);
+            ImageSource source = null;
+
+            if (e.Client is FTPClient)
+            {
+                source = new BitmapImage(new Uri("/Resources/ic_ftp.png", UriKind.Relative));
+            }
+            else if (e.Client is SFTPClient)
+            {
+                source = new BitmapImage(new Uri("/Resources/ic_sftp.png", UriKind.Relative));
+            }
+
+            ViewModel.RightViewModel = new ListViewModel(e.Client, e.InitialPath, source, e.Name);
 
             OnConnected?.Invoke(this, ViewModel);
         }

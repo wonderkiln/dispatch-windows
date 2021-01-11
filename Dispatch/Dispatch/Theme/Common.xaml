@@ -5,7 +5,7 @@
 
     <Style x:Key="ChromelessWindow" TargetType="Window">
         <Setter Property="UseLayoutRounding" Value="True" />
-        <Setter Property="Background" Value="#F7F7F7" />
+        <Setter Property="Background" Value="{StaticResource PrimaryBackgroundColor}" />
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
                 <WindowChrome
@@ -18,26 +18,42 @@
     </Style>
 
     <Style TargetType="GridSplitter">
+        <Setter Property="Width" Value="24" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="GridSplitter">
                     <Grid Background="Transparent">
-                        <StackPanel
+                        <Border
+                            Width="1"
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Orientation="Horizontal">
-                            <Line
-                                Stroke="Black"
-                                StrokeEndLineCap="Round"
-                                StrokeThickness="1"
-                                Y2="16" />
-                            <Line
-                                Margin="2,0,0,0"
-                                Stroke="Black"
-                                StrokeEndLineCap="Round"
-                                StrokeThickness="1"
-                                Y2="16" />
-                        </StackPanel>
+                            Background="{StaticResource SeparatorColor}" />
+                        <Grid
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Width}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                            <Ellipse
+                                x:Name="Ellipse"
+                                Fill="{StaticResource PrimaryBackgroundColor}"
+                                Stroke="{StaticResource SeparatorColor}"
+                                StrokeThickness="1" />
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                                <Path
+                                    x:Name="Arrow1"
+                                    Data="M 4,0 L 0,4 L 4,8"
+                                    Stroke="{StaticResource NormalTextColor}"
+                                    StrokeThickness="1" />
+                                <Path
+                                    x:Name="Arrow2"
+                                    Margin="3,0,0,0"
+                                    Data="M 0,0 L 4,4 L 0,8"
+                                    Stroke="{StaticResource NormalTextColor}"
+                                    StrokeThickness="1" />
+                            </StackPanel>
+                        </Grid>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

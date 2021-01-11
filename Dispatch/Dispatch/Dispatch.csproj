@@ -80,6 +80,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\DPTextBox.cs" />
     <Compile Include="Helpers\Converters\BytesToStringConverter.cs" />
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\Converters\ListViewModelToViewSelector.cs" />
@@ -88,6 +89,8 @@
     <Compile Include="Helpers\Converters\ResourceToIconConverter.cs" />
     <Compile Include="Helpers\ResourceQueue.cs" />
     <Compile Include="Helpers\ResourceWatcher.cs" />
+    <Compile Include="Helpers\Validators\RegexValidator.cs" />
+    <Compile Include="Helpers\Validators\RequiredValidator.cs" />
     <Compile Include="Service\Client\FTPClient.cs" />
     <Compile Include="Service\Client\SFTPClient.cs" />
     <Compile Include="Service\Model\FavoriteItem.cs" />
@@ -125,6 +128,14 @@
     <Compile Include="View\Fragments\TabView.xaml.cs">
       <DependentUpon>TabView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Theme\Colors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Theme\Base.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Fragments\FTPConnectView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -209,7 +220,15 @@
   <ItemGroup>
     <Resource Include="Resources\Icon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\ic_bolt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ic_ftp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ic_sftp.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

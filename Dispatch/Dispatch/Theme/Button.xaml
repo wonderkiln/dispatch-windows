@@ -103,7 +103,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="Button">
+    <!--<Style TargetType="Button">
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontSize" Value="15" />
         <Setter Property="Padding" Value="12,8" />
@@ -125,7 +125,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
 
     <Style x:Key="IconButtonStyle" TargetType="Button">
         <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />

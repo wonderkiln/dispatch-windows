@@ -38,6 +38,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid>
@@ -46,11 +47,11 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Rectangle
+            <!--<Rectangle
                 Grid.ColumnSpan="3"
                 Height="1"
                 VerticalAlignment="Bottom"
-                Fill="#EBEBEB" />
+                Fill="#EBEBEB" />-->
             <ListBox
                 x:Name="TabsListBox"
                 ButtonBase.Click="CloseTabButton_Click"
@@ -65,10 +66,15 @@
                                 <ColumnDefinition Width="24" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <ContentPresenter
+                            <Image
+                                Width="16"
+                                Height="16"
+                                VerticalAlignment="Center"
+                                Source="{Binding Icon}" />
+                            <!--<ContentPresenter
                                 VerticalAlignment="Center"
                                 Content="{Binding RightViewModel}"
-                                ContentTemplateSelector="{StaticResource IconSelector}" />
+                                ContentTemplateSelector="{StaticResource IconSelector}" />-->
                             <TextBlock
                                 Grid.Column="1"
                                 VerticalAlignment="Center"
@@ -79,85 +85,94 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <StackPanel
-                Grid.Column="1"
-                Margin="24,0"
-                Orientation="Horizontal">
-                <Menu WindowChrome.IsHitTestVisibleInChrome="True">
-                    <Menu.ItemContainerStyle>
-                        <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
-                            <Setter Property="Padding" Value="12,6" />
-                        </Style>
-                    </Menu.ItemContainerStyle>
-                    <Menu.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </Menu.ItemsPanel>
-                    <MenuItem Click="NewTabButton_Click">
-                        <MenuItem.Header>
-                            <TextBlock
-                                FontFamily="Segoe MDL2 Assets"
-                                FontSize="14"
-                                Text="&#xE710;" />
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="Transfers" Click="TransfersMenuItem_Click">
-                        <MenuItem.Header>
-                            <Grid>
+            <controls:ChromeButtons Grid.Column="2" VerticalAlignment="Top" />
+        </Grid>
+        <Border
+            Grid.Row="1"
+            Background="{StaticResource SecondaryBackgroundColor}"
+            BorderBrush="{StaticResource SeparatorColor}"
+            BorderThickness="0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Menu>
+                        <Menu.ItemContainerStyle>
+                            <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
+                                <Setter Property="Padding" Value="12,6" />
+                            </Style>
+                        </Menu.ItemContainerStyle>
+                        <Menu.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </Menu.ItemsPanel>
+                        <MenuItem Click="NewTabButton_Click">
+                            <MenuItem.Header>
                                 <TextBlock
                                     FontFamily="Segoe MDL2 Assets"
                                     FontSize="14"
-                                    Text="&#xE896;" />
-                                <Border
-                                    Width="14"
-                                    Height="14"
-                                    Margin="0,0,-6,-6"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Bottom"
-                                    Background="Red"
-                                    CornerRadius="7">
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        FontSize="10"
-                                        FontWeight="SemiBold"
-                                        Foreground="White"
-                                        Text="{Binding QueueViewModel.Items.Count, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" />
-                                </Border>
-                            </Grid>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem>
-                        <MenuItem.Header>
-                            <TextBlock
-                                FontFamily="Segoe MDL2 Assets"
-                                FontSize="14"
-                                Text="&#xE712;" />
-                        </MenuItem.Header>
-                        <MenuItem Click="UpdateMenuItem_Click" Header="Check for Updates" />
-                        <MenuItem Header="More">
-                            <MenuItem Click="AboutMenuItem_Click" Header="About" />
+                                    Text="&#xE710;" />
+                            </MenuItem.Header>
                         </MenuItem>
-                    </MenuItem>
-                </Menu>
-            </StackPanel>
-            <Popup
-                x:Name="TransfersPopup"
-                Placement="Bottom"
-                PlacementTarget="{Binding ElementName=Transfers}"
-                PopupAnimation="Fade"
-                StaysOpen="False">
-                <Border
-                    Width="300"
-                    Height="300"
-                    Style="{StaticResource PopupContainerBorder}">
-                    <fragments:QueueView ViewModel="{Binding QueueViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" />
-                </Border>
-            </Popup>
-            <controls:ChromeButtons Grid.Column="2" VerticalAlignment="Top" />
-        </Grid>
-        <Border Grid.Row="1" Background="White">
+                        <MenuItem x:Name="Transfers" Click="TransfersMenuItem_Click">
+                            <MenuItem.Header>
+                                <Grid>
+                                    <TextBlock
+                                        FontFamily="Segoe MDL2 Assets"
+                                        FontSize="14"
+                                        Text="&#xE896;" />
+                                    <Border
+                                        Width="14"
+                                        Height="14"
+                                        Margin="0,0,-6,-6"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom"
+                                        Background="Red"
+                                        CornerRadius="7">
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="10"
+                                            FontWeight="SemiBold"
+                                            Foreground="White"
+                                            Text="{Binding QueueViewModel.Items.Count, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" />
+                                    </Border>
+                                </Grid>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <MenuItem>
+                            <MenuItem.Header>
+                                <TextBlock
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="14"
+                                    Text="&#xE712;" />
+                            </MenuItem.Header>
+                            <MenuItem Click="UpdateMenuItem_Click" Header="Check for Updates" />
+                            <MenuItem Header="More">
+                                <MenuItem Click="AboutMenuItem_Click" Header="About" />
+                            </MenuItem>
+                        </MenuItem>
+                    </Menu>
+                </StackPanel>
+                <Popup
+                    x:Name="TransfersPopup"
+                    Placement="Bottom"
+                    PlacementTarget="{Binding ElementName=Transfers}"
+                    PopupAnimation="Fade"
+                    StaysOpen="False">
+                    <Border
+                        Width="300"
+                        Height="300"
+                        Style="{StaticResource PopupContainerBorder}">
+                        <fragments:QueueView ViewModel="{Binding QueueViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" />
+                    </Border>
+                </Popup>
+            </Grid>
+        </Border>
+        <Border Grid.Row="2" Background="White">
             <fragments:TabView ViewModel="{Binding SelectedItem, ElementName=TabsListBox}" />
         </Border>
     </Grid>

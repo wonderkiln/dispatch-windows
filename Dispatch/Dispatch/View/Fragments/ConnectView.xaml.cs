@@ -21,7 +21,7 @@ namespace Dispatch.View.Fragments
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            var index = (int)item;
+            var index = item as int?;
 
             switch (index)
             {
@@ -34,6 +34,13 @@ namespace Dispatch.View.Fragments
 
     public partial class ConnectView : UserControl
     {
+        public static readonly DependencyProperty PasswordMaskProperty = DependencyProperty.Register("PasswordMask", typeof(string), typeof(ConnectView), new PropertyMetadata(""));
+        public string PasswordMask
+        {
+            get { return (string)GetValue(PasswordMaskProperty); }
+            set { SetValue(PasswordMaskProperty, value); }
+        }
+
         public event EventHandler<ConnectV> OnConnected;
 
         public ConnectView()
