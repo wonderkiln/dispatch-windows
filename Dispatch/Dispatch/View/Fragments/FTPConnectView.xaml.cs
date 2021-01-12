@@ -13,7 +13,13 @@ namespace Dispatch.View.Fragments
         public string Password { get; set; } = "w2yZ0XW2PvDtDrnvzcyS6Zmj6B9uMxEvCkdP5Jo1jxgxKH7h9uYadcmEivlx";
         public string Root { get; set; } = "/site";
 
-        public event EventHandler<ConnectV> OnConnected;
+        public static readonly DependencyProperty ConnectViewProperty = DependencyProperty.Register("ConnectView", typeof(IConnectView), typeof(FTPConnectView));
+
+        public IConnectView ConnectView
+        {
+            get { return (IConnectView)GetValue(ConnectViewProperty); }
+            set { SetValue(ConnectViewProperty, value); }
+        }
 
         public FTPConnectView()
         {
@@ -37,14 +43,18 @@ namespace Dispatch.View.Fragments
                 return;
             }
 
+            ConnectView.OnBeginConnecting();
+
             try
             {
                 var client = await FTPClient.Create(Address, Port.Value, User, Password);
-                OnConnected?.Invoke(this, new ConnectV() { Client = client, InitialPath = Root ?? "/", Name = $"{Address}:{Port}" });
+                
+                var args = new ConnectViewArgs() { Client = client, InitialPath = Root ?? "/", Name = $"{Address}:{Port}" };
+                ConnectView.OnSuccess(args);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ConnectView.OnException(ex);
             }
         }
     }

@@ -5,15 +5,6 @@ using System.Windows.Controls;
 
 namespace Dispatch.View.Fragments
 {
-    public class ConnectV
-    {
-        public IClient Client { get; set; }
-
-        public string InitialPath { get; set; }
-
-        public string Name { get; set; }
-    }
-
     public class ConnectViewDataTemplateSelector : DataTemplateSelector
     {
         public DataTemplate FTPDataTemplate { get; set; }
@@ -32,25 +23,55 @@ namespace Dispatch.View.Fragments
         }
     }
 
-    public partial class ConnectView : UserControl
+    public class ConnectViewArgs
     {
-        public static readonly DependencyProperty PasswordMaskProperty = DependencyProperty.Register("PasswordMask", typeof(string), typeof(ConnectView), new PropertyMetadata(""));
-        public string PasswordMask
+        public IClient Client { get; set; }
+
+        public string InitialPath { get; set; }
+
+        public string Name { get; set; }
+    }
+
+    public interface IConnectView
+    {
+        void OnBeginConnecting();
+
+        void OnSuccess(ConnectViewArgs e);
+
+        void OnException(Exception ex);
+    }
+
+    public partial class ConnectView : UserControl, IConnectView
+    {
+        public static readonly DependencyProperty IsConnectingProperty = DependencyProperty.Register("IsConnecting", typeof(bool), typeof(ConnectView), new PropertyMetadata(false));
+
+        public bool IsConnecting
         {
-            get { return (string)GetValue(PasswordMaskProperty); }
-            set { SetValue(PasswordMaskProperty, value); }
+            get { return (bool)GetValue(IsConnectingProperty); }
+            set { SetValue(IsConnectingProperty, value); }
         }
 
-        public event EventHandler<ConnectV> OnConnected;
+        public event EventHandler<ConnectViewArgs> OnConnected;
 
         public ConnectView()
         {
             InitializeComponent();
         }
 
-        private void ConnectView_OnConnected(object sender, ConnectV e)
+        public void OnBeginConnecting()
+        {
+            IsConnecting = true;
+        }
+
+        public void OnSuccess(ConnectViewArgs e)
         {
             OnConnected?.Invoke(this, e);
+        }
+
+        public void OnException(Exception ex)
+        {
+            IsConnecting = false;
+            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Dispatch.View.Fragments
             InitializeComponent();
         }
 
-        private void ConnectView_OnConnected(object sender, ConnectV e)
+        private void ConnectView_OnConnected(object sender, ConnectViewArgs e)
         {
             ImageSource source = null;
 
