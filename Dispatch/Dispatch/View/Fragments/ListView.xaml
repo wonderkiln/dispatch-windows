@@ -41,9 +41,6 @@
                 Grid.Column="1"
                 Margin="4,0"
                 VerticalContentAlignment="Center"
-                Background="Transparent"
-                BorderThickness="0"
-                FontSize="13"
                 KeyDown="TextBox_KeyUp"
                 Style="{StaticResource FramelessTextBox}"
                 Text="{Binding ViewModel.Path, UpdateSourceTrigger=Explicit, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}" />
@@ -58,7 +55,6 @@
         <ListView
             x:Name="List"
             Grid.Row="1"
-            Margin="0,0,16,0"
             AllowDrop="True"
             ContextMenuOpening="List_ContextMenuOpening"
             DragEnter="List_DragEnter"

@@ -5,14 +5,13 @@
 
     <Style x:Key="ChromelessWindow" TargetType="Window">
         <Setter Property="UseLayoutRounding" Value="True" />
-        <Setter Property="Background" Value="{StaticResource PrimaryBackgroundColor}" />
+        <!--<Setter Property="Background" Value="{StaticResource PrimaryBackgroundColor}" />-->
+        <Setter Property="AllowsTransparency" Value="True" />
+        <Setter Property="WindowStyle" Value="None" />
+        <Setter Property="Background" Value="{StaticResource WindowBlurBackgroundColor}" />
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
-                <WindowChrome
-                    CaptionHeight="28"
-                    CornerRadius="0"
-                    GlassFrameThickness="-1"
-                    ResizeBorderThickness="4" />
+                <WindowChrome CaptionHeight="28" />
             </Setter.Value>
         </Setter>
     </Style>
@@ -22,7 +21,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="GridSplitter">
-                    <Grid Background="Transparent">
+                    <Grid>
                         <Border
                             Width="1"
                             HorizontalAlignment="Center"
