@@ -1,17 +1,18 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <SolidColorBrush x:Key="PrimaryAccentColor" Color="#017AFF" />
-    <SolidColorBrush x:Key="ErrorColor" Color="#FF0138" />
+    <Color x:Key="PrimaryAccentColor">#017AFF</Color>
+    <Color x:Key="ErrorColor">#FF0138</Color>
 
-    <SolidColorBrush x:Key="PrimaryBackgroundColor" Color="#202020" />
-    <SolidColorBrush x:Key="SecondaryBackgroundColor" Color="#181818" />
-    <SolidColorBrush x:Key="PanelBackgroundColor" Color="#333333" />
-    <SolidColorBrush x:Key="WindowBlurBackgroundColor" Color="#B21B1B1B" />
+    <Color x:Key="PrimaryBackgroundColor">#202020</Color>
+    <Color x:Key="SecondaryBackgroundColor">#181818</Color>
+    <Color x:Key="PanelBackgroundColor">#333333</Color>
+    <Color x:Key="WindowBlurBackgroundColor">#B21B1B1B</Color>
 
-    <SolidColorBrush x:Key="SeparatorColor" Color="#484848" />
+    <Color x:Key="SeparatorColor">#484848</Color>
+    <Color x:Key="WindowBlurSeparatorColor">#3FFFFFFF</Color>
 
-    <SolidColorBrush x:Key="DisabledTextColor" Color="#99FFFFFF" />
-    <SolidColorBrush x:Key="NormalTextColor" Color="#FFFFFF" />
-    <SolidColorBrush x:Key="SelectedTextColor" Color="#FFFFFF" />
+    <Color x:Key="DisabledTextColor">#99FFFFFF</Color>
+    <Color x:Key="NormalTextColor">#FFFFFF</Color>
+    <Color x:Key="SelectedTextColor">#FFFFFF</Color>
 
 </ResourceDictionary>

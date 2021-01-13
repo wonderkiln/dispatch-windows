@@ -1,0 +1,114 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Dispatch.Controls">
+
+    <Style TargetType="controls:DPSideView">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:DPSideView">
+                    <Grid ClipToBounds="True">
+                        <ContentPresenter />
+                        <Border
+                            x:Name="Overlay"
+                            Background="{StaticResource PrimaryBackgroundSolidColorBrush}"
+                            Opacity="0"
+                            Visibility="Collapsed" />
+                        <Border
+                            x:Name="Border"
+                            Width="300"
+                            HorizontalAlignment="Right"
+                            Background="{StaticResource PanelBackgroundSolidColorBrush}"
+                            BorderBrush="{StaticResource SeparatorSolidColorBrush}"
+                            BorderThickness="1,0,0,0">
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="24"
+                                    Direction="180"
+                                    Opacity="0"
+                                    ShadowDepth="4"
+                                    Color="{StaticResource SeparatorColor}" />
+                            </Border.Effect>
+                            <Border.RenderTransform>
+                                <TranslateTransform X="300" />
+                            </Border.RenderTransform>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Button
+                                    Name="PART_CloseButton"
+                                    Margin="8"
+                                    Padding="8"
+                                    HorizontalAlignment="Right"
+                                    Content="&#xE8BB;"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="10"
+                                    Style="{StaticResource SimpleButtonStyle}" />
+                                <ScrollViewer
+                                    x:Name="PART_ScrollViewer"
+                                    Grid.Row="1"
+                                    HorizontalScrollBarVisibility="Disabled"
+                                    VerticalScrollBarVisibility="Auto" />
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsOpen" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="Border"
+                                            Storyboard.TargetProperty="(Border.RenderTransform).(TranslateTransform.X)"
+                                            To="0"
+                                            Duration="0:0:0.400" />
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="Border"
+                                            Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
+                                            To="0.5"
+                                            Duration="0:0:0.400" />
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="Overlay"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0.5"
+                                            Duration="0:0:0.400" />
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Overlay" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="Border"
+                                            Storyboard.TargetProperty="(Border.RenderTransform).(TranslateTransform.X)"
+                                            To="300"
+                                            Duration="0:0:0.400" />
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="Border"
+                                            Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
+                                            To="0"
+                                            Duration="0:0:0.400" />
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="Overlay"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0"
+                                            Duration="0:0:0.400" />
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Overlay" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0.400" Value="{x:Static Visibility.Collapsed}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

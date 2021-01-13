@@ -1,0 +1,88 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Dispatch.Controls">
+
+    <Style TargetType="controls:DPTabListBox">
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:DPTabListBox">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ItemsPresenter />
+                        <Button
+                            Name="PART_AddButton"
+                            Grid.Column="1"
+                            Margin="8,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="&#xE710;"
+                            FontFamily="Segoe MDL2 Assets"
+                            Style="{StaticResource SimpleButtonStyle}"
+                            WindowChrome.IsHitTestVisibleInChrome="True" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="controls:DPTabListBoxItem">
+                    <Setter Property="FontSize" Value="13" />
+                    <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
+                    <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="controls:DPTabListBoxItem">
+                                <Grid Background="Transparent">
+                                    <Border
+                                        Width="1"
+                                        Height="16"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Background="{StaticResource WindowBlurSeparatorSolidColorBrush}" />
+                                    <Grid Margin="16,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border
+                                            x:Name="Indicator"
+                                            Grid.ColumnSpan="2"
+                                            Height="3"
+                                            VerticalAlignment="Bottom"
+                                            Background="{StaticResource PrimaryAccentSolidColorBrush}"
+                                            CornerRadius="1.5,1.5,0,0" />
+                                        <ContentPresenter Margin="0,0,4,0" VerticalAlignment="Center" />
+                                        <Button
+                                            Name="PART_CloseButton"
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            Content="&#xE8BB;"
+                                            FontFamily="Segoe MDL2 Assets"
+                                            FontSize="8"
+                                            Style="{StaticResource SimpleButtonStyle}" />
+                                    </Grid>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter TargetName="Indicator" Property="Visibility" Value="Collapsed" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

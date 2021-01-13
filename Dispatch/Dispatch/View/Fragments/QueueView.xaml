@@ -8,7 +8,15 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <ListBox
+
+    <Grid>
+        <Label
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Content="Queue View" />
+    </Grid>
+
+    <!--<ListBox
         Padding="0"
         Background="Transparent"
         BorderThickness="0"
@@ -55,10 +63,9 @@
                         Margin="8,0,0,0"
                         VerticalAlignment="Center"
                         Command="{Binding CancelCommand, Mode=OneWay}"
-                        Content="&#xE711;"
-                        Style="{StaticResource IconButtonStyle}" />
+                        Content="&#xE711;" />
                 </Grid>
             </DataTemplate>
         </ListBox.ItemTemplate>
-    </ListBox>
+    </ListBox>-->
 </UserControl>
