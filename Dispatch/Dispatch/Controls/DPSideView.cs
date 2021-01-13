@@ -3,6 +3,7 @@ using System.Windows.Controls;
 
 namespace Dispatch.Controls
 {
+    [TemplatePart(Name = "PART_CloseButton", Type = typeof(Button))]
     public class DPSideView : ContentControl
     {
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(DPSideView), new PropertyMetadata("Panel"));
@@ -36,6 +37,19 @@ namespace Dispatch.Controls
         public DPSideView()
         {
             DefaultStyleKey = typeof(DPSideView);
+        }
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            var button = (Button)GetTemplateChild("PART_CloseButton");
+            button.Click += CloseButton_Click;
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            IsOpen = false;
         }
     }
 }

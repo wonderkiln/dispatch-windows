@@ -45,7 +45,10 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource WindowBlurSeparatorSolidColorBrush}" />
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource SelectionOnPanelBackgroundSolidColorBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -68,7 +71,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource WindowBlurSeparatorSolidColorBrush}" />
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource SelectionOnPanelBackgroundSolidColorBrush}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="Border" Property="Background" Value="{StaticResource PrimaryAccentSolidColorBrush}" />

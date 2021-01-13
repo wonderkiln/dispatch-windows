@@ -17,7 +17,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="#2F000000" />
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource SelectionOnPanelBackgroundSolidColorBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -59,6 +59,7 @@
                             VerticalAlignment="Center"
                             Content="&#xE710;"
                             FontFamily="Segoe MDL2 Assets"
+                            FontSize="10"
                             Style="{StaticResource SimpleButtonStyle}"
                             WindowChrome.IsHitTestVisibleInChrome="True" />
                     </Grid>

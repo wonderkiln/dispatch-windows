@@ -50,6 +50,12 @@ namespace Dispatch.View.Windows
 
         private void TransfersButton_Click(object sender, RoutedEventArgs e)
         {
+            if (SideView.IsOpen && SideView.PanelContent is QueueView)
+            {
+                SideView.IsOpen = false;
+                return;
+            }
+
             SideView.Title = "Transfers";
             SideView.PanelContent = new QueueView();
             SideView.IsOpen = true;
@@ -57,6 +63,12 @@ namespace Dispatch.View.Windows
 
         private void AboutButton_Click(object sender, RoutedEventArgs e)
         {
+            if (SideView.IsOpen && SideView.PanelContent is AboutView)
+            {
+                SideView.IsOpen = false;
+                return;
+            }
+
             SideView.Title = "About Dispatch";
             SideView.PanelContent = new AboutView();
             SideView.IsOpen = true;

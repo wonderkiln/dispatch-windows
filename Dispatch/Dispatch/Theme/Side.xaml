@@ -57,7 +57,7 @@
                                             VerticalAlignment="Center"
                                             Content="&#xE8BB;"
                                             FontFamily="Segoe MDL2 Assets"
-                                            FontSize="10"
+                                            FontSize="12"
                                             Style="{StaticResource SimpleButtonStyle}" />
                                     </Grid>
                                 </Border>
@@ -74,17 +74,21 @@
                                             Storyboard.TargetName="Border"
                                             Storyboard.TargetProperty="(Border.RenderTransform).(TranslateTransform.X)"
                                             To="0"
-                                            Duration="0:0:0.400" />
+                                            Duration="0:0:0.300">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
                                         <!--<DoubleAnimation
                                             Storyboard.TargetName="Border"
                                             Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
                                             To="0.5"
-                                            Duration="0:0:0.400" />-->
+                                            Duration="0:0:0.300" />-->
                                         <DoubleAnimation
                                             Storyboard.TargetName="Overlay"
                                             Storyboard.TargetProperty="Opacity"
                                             To="0.5"
-                                            Duration="0:0:0.400" />
+                                            Duration="0:0:0.300" />
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Overlay" Storyboard.TargetProperty="Visibility">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
                                         </ObjectAnimationUsingKeyFrames>
@@ -98,19 +102,23 @@
                                             Storyboard.TargetName="Border"
                                             Storyboard.TargetProperty="(Border.RenderTransform).(TranslateTransform.X)"
                                             To="320"
-                                            Duration="0:0:0.400" />
+                                            Duration="0:0:0.300">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseIn" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
                                         <!--<DoubleAnimation
                                             Storyboard.TargetName="Border"
                                             Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
                                             To="0"
-                                            Duration="0:0:0.400" />-->
+                                            Duration="0:0:0.300" />-->
                                         <DoubleAnimation
                                             Storyboard.TargetName="Overlay"
                                             Storyboard.TargetProperty="Opacity"
                                             To="0"
-                                            Duration="0:0:0.400" />
+                                            Duration="0:0:0.300" />
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Overlay" Storyboard.TargetProperty="Visibility">
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:0.400" Value="{x:Static Visibility.Collapsed}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0.300" Value="{x:Static Visibility.Collapsed}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </BeginStoryboard>

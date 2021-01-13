@@ -20,42 +20,46 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Margin="4">
+        <Grid Margin="6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal">
                 <Button
+                    Width="32"
                     Command="{Binding ViewModel.BackCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
                     Content="&#xE72B;"
-                    Style="{StaticResource IconButtonStyle}" />
+                    FontFamily="Segoe MDL2 Assets"
+                    Style="{StaticResource SimpleButtonStyle}" />
                 <Button
+                    Width="32"
                     Command="{Binding ViewModel.HomeCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
                     Content="&#xE80F;"
-                    FontSize="15"
-                    Style="{StaticResource IconButtonStyle}" />
+                    FontFamily="Segoe MDL2 Assets"
+                    Style="{StaticResource SimpleButtonStyle}" />
             </StackPanel>
             <TextBox
                 Grid.Column="1"
                 Margin="4,0"
                 VerticalContentAlignment="Center"
                 KeyDown="TextBox_KeyUp"
-                Style="{StaticResource FramelessTextBox}"
                 Text="{Binding ViewModel.Path, UpdateSourceTrigger=Explicit, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}" />
             <Button
                 Grid.Column="2"
-                Padding="6"
+                Width="32"
                 Command="{Binding ViewModel.RefreshCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ListView}}}"
                 Content="&#xE72C;"
-                FontSize="13"
-                Style="{StaticResource IconButtonStyle}" />
+                FontFamily="Segoe MDL2 Assets"
+                Style="{StaticResource SimpleButtonStyle}" />
         </Grid>
         <ListView
             x:Name="List"
             Grid.Row="1"
             AllowDrop="True"
+            Background="Transparent"
+            BorderThickness="0"
             ContextMenuOpening="List_ContextMenuOpening"
             DragEnter="List_DragEnter"
             DragOver="List_DragEnter"
@@ -83,7 +87,7 @@
                 </ContextMenu>
             </ListView.ContextMenu>
             <ListView.ItemContainerStyle>
-                <Style BasedOn="{StaticResource {x:Type ListViewItem}}" TargetType="ListViewItem">
+                <Style TargetType="ListViewItem">
                     <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
                     <EventSetter Event="PreviewMouseMove" Handler="ListViewItem_PreviewMouseMove" />
                 </Style>

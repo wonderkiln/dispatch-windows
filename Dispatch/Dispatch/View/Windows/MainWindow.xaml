@@ -12,6 +12,8 @@
     Title="{x:Static helpers:Constants.APP_NAME}"
     Width="1000"
     Height="600"
+    MinWidth="200"
+    MinHeight="200"
     Icon="../../Resources/Icon.ico"
     Loaded="Window_Loaded"
     Style="{StaticResource ChromelessWindowStyle}"
@@ -96,10 +98,7 @@
             Grid.ColumnSpan="2"
             Style="{StaticResource PrimaryBackgroundBorderStyle}">
             <controls:DPSideView x:Name="SideView">
-                <Label
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Content="{Binding SelectedIndex, ElementName=TabListBox}" />
+                <fragments:TabView ViewModel="{Binding SelectedItem, ElementName=TabListBox}" />
             </controls:DPSideView>
         </Border>
         <Border

@@ -38,8 +38,31 @@
         <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
     </Style>
 
+    <Style TargetType="TextBox">
+        <Setter Property="Background" Value="{StaticResource PrimaryBackgroundSolidColorBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
+        <Setter Property="CaretBrush" Value="{StaticResource NormalTextSolidColorBrush}" />
+        <Setter Property="SelectionBrush" Value="{StaticResource SelectionOnPrimaryBackgroundSolidColorBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SeparatorSolidColorBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="2">
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="0" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="ProgressBar">
-        <Setter Property="Background" Value="#2F000000" />
+        <Setter Property="Background" Value="{StaticResource SelectionOnPanelBackgroundSolidColorBrush}" />
         <Setter Property="Foreground" Value="{StaticResource PrimaryAccentSolidColorBrush}" />
         <Setter Property="Height" Value="6" />
         <Setter Property="Template">
@@ -56,6 +79,23 @@
                             Background="{TemplateBinding Foreground}"
                             CornerRadius="3" />
                     </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="GridSplitter">
+        <Setter Property="Width" Value="16" />
+        <Setter Property="Background" Value="{StaticResource SeparatorSolidColorBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="GridSplitter">
+                    <Grid Background="Transparent">
+                        <Border
+                            Width="1"
+                            HorizontalAlignment="Center"
+                            Background="{TemplateBinding Background}" />
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

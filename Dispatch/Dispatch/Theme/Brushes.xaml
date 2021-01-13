@@ -15,4 +15,8 @@
     <SolidColorBrush x:Key="NormalTextSolidColorBrush" Color="{DynamicResource NormalTextColor}" />
     <SolidColorBrush x:Key="SelectedTextSolidColorBrush" Color="{DynamicResource SelectedTextColor}" />
 
+    <SolidColorBrush x:Key="SelectionOnPrimaryBackgroundSolidColorBrush" Color="{DynamicResource SelectionOnPrimaryBackgroundColor}" />
+    <SolidColorBrush x:Key="SelectionOnSecondaryBackgroundSolidColorBrush" Color="{DynamicResource SelectionOnSecondaryBackgroundColor}" />
+    <SolidColorBrush x:Key="SelectionOnPanelBackgroundSolidColorBrush" Color="{DynamicResource SelectionOnPanelBackgroundColor}" />
+
 </ResourceDictionary>

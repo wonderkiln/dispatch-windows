@@ -9,6 +9,7 @@
     xmlns:validators="clr-namespace:Dispatch.Helpers.Validators"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Background="{StaticResource SecondaryBackgroundSolidColorBrush}"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -25,12 +26,12 @@
         <Style TargetType="controls:DPTextBox">
             <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Background" Value="Transparent" />
-            <!--<Setter Property="BorderBrush" Value="{StaticResource SeparatorColor}" />-->
+            <Setter Property="Background" Value="{StaticResource PrimaryBackgroundSolidColorBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource SeparatorSolidColorBrush}" />
             <Setter Property="CornerRadius" Value="4" />
             <Setter Property="Padding" Value="8,6" />
             <Setter Property="FontSize" Value="13" />
-            <!--<Setter Property="Foreground" Value="{StaticResource NormalTextColor}" />-->
+            <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="controls:DPTextBox">

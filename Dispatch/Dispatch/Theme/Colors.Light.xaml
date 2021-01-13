@@ -15,4 +15,8 @@
     <Color x:Key="NormalTextColor">#000000</Color>
     <Color x:Key="SelectedTextColor">#FFFFFF</Color>
 
+    <Color x:Key="SelectionOnPrimaryBackgroundColor">#19000000</Color>
+    <Color x:Key="SelectionOnSecondaryBackgroundColor">#19000000</Color>
+    <Color x:Key="SelectionOnPanelBackgroundColor">#19000000</Color>
+
 </ResourceDictionary>
