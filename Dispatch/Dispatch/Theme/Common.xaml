@@ -38,4 +38,27 @@
         <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
     </Style>
 
+    <Style TargetType="ProgressBar">
+        <Setter Property="Background" Value="#2F000000" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryAccentSolidColorBrush}" />
+        <Setter Property="Height" Value="6" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ProgressBar">
+                    <Border
+                        x:Name="PART_Track"
+                        Background="{TemplateBinding Background}"
+                        BorderThickness="1"
+                        CornerRadius="3">
+                        <Border
+                            x:Name="PART_Indicator"
+                            HorizontalAlignment="Left"
+                            Background="{TemplateBinding Foreground}"
+                            CornerRadius="3" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

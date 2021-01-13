@@ -77,21 +77,14 @@
                         Style="{StaticResource SimpleButtonStyle}" />
                     <Button
                         Width="32"
-                        Click="Button_Click"
+                        Click="TransfersButton_Click"
                         Content="&#xE896;"
                         FontFamily="Segoe MDL2 Assets"
                         Style="{StaticResource SimpleButtonStyle}" />
                     <Button
                         Width="32"
                         Margin="4,0,0,0"
-                        Click="Button_Click"
-                        Content="&#xE946;"
-                        FontFamily="Segoe MDL2 Assets"
-                        Style="{StaticResource SimpleButtonStyle}" />
-                    <Button
-                        Width="32"
-                        Margin="4,0,0,0"
-                        Click="Button_Click"
+                        Click="AboutButton_Click"
                         Content="&#xE712;"
                         FontFamily="Segoe MDL2 Assets"
                         Style="{StaticResource SimpleButtonStyle}" />

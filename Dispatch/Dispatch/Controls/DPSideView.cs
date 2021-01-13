@@ -3,10 +3,15 @@ using System.Windows.Controls;
 
 namespace Dispatch.Controls
 {
-    [TemplatePart(Name = "PART_CloseButton", Type = typeof(Button))]
-    [TemplatePart(Name = "PART_ScrollViewer", Type = typeof(ScrollViewer))]
     public class DPSideView : ContentControl
     {
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(DPSideView), new PropertyMetadata("Panel"));
+        public string Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+
         public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register("IsOpen", typeof(bool), typeof(DPSideView), new PropertyMetadata(false));
         public bool IsOpen
         {
@@ -21,7 +26,7 @@ namespace Dispatch.Controls
             set { SetValue(PanelWidthProperty, value); }
         }
 
-        public static readonly DependencyProperty PanelContentProperty = DependencyProperty.Register("PanelContent", typeof(object), typeof(DPSideView), new PropertyMetadata(new PropertyChangedCallback(OnChangePanelContent)));
+        public static readonly DependencyProperty PanelContentProperty = DependencyProperty.Register("PanelContent", typeof(object), typeof(DPSideView));
         public object PanelContent
         {
             get { return GetValue(PanelContentProperty); }
@@ -31,34 +36,6 @@ namespace Dispatch.Controls
         public DPSideView()
         {
             DefaultStyleKey = typeof(DPSideView);
-        }
-
-        internal ScrollViewer PanelScrollViewer;
-
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-
-            var closeButton = (Button)GetTemplateChild("PART_CloseButton");
-            closeButton.Click += CloseButton_Click;
-
-            PanelScrollViewer = (ScrollViewer)GetTemplateChild("PART_ScrollViewer");
-            PanelScrollViewer.Content = PanelContent;
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            IsOpen = false;
-        }
-
-        private static void OnChangePanelContent(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var item = (DPSideView)d;
-
-            if (item.PanelScrollViewer != null)
-            {
-                item.PanelScrollViewer.Content = e.NewValue;
-            }
         }
     }
 }

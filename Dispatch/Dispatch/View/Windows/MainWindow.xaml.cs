@@ -48,9 +48,17 @@ namespace Dispatch.View.Windows
             App.ChangeTheme(App.Theme.Light);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void TransfersButton_Click(object sender, RoutedEventArgs e)
         {
+            SideView.Title = "Transfers";
             SideView.PanelContent = new QueueView();
+            SideView.IsOpen = true;
+        }
+
+        private void AboutButton_Click(object sender, RoutedEventArgs e)
+        {
+            SideView.Title = "About Dispatch";
+            SideView.PanelContent = new AboutView();
             SideView.IsOpen = true;
         }
     }

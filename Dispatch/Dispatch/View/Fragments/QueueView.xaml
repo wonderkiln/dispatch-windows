@@ -9,12 +9,59 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <Grid>
-        <Label
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Content="Queue View" />
-    </Grid>
+    <ListBox>
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="28" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="24" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label
+                        Grid.RowSpan="3"
+                        VerticalAlignment="Center"
+                        Content="&#xE896;"
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="16" />
+                    <TextBlock
+                        Grid.Column="1"
+                        FontSize="14"
+                        Text="presentation_of_the_website_only_new.mp4"
+                        TextWrapping="Wrap" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        FontSize="11"
+                        Opacity="0.5"
+                        Text="3.54 KB of 12.68 MB" />
+                    <Button
+                        Grid.RowSpan="3"
+                        Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Content="&#xE8BB;"
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="10"
+                        Style="{StaticResource SimpleButtonStyle}" />
+                    <ProgressBar
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Margin="0,4,0,0"
+                        Maximum="100"
+                        Value="25" />
+                </Grid>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+        <Grid />
+        <Grid />
+        <Grid />
+    </ListBox>
 
     <!--<ListBox
         Padding="0"

@@ -16,41 +16,52 @@
                             Visibility="Collapsed" />
                         <Border
                             x:Name="Border"
-                            Width="300"
+                            Width="320"
                             HorizontalAlignment="Right"
                             Background="{StaticResource PanelBackgroundSolidColorBrush}"
                             BorderBrush="{StaticResource SeparatorSolidColorBrush}"
                             BorderThickness="1,0,0,0">
-                            <Border.Effect>
+                            <!--<Border.Effect>
                                 <DropShadowEffect
                                     BlurRadius="24"
                                     Direction="180"
                                     Opacity="0"
                                     ShadowDepth="4"
                                     Color="{StaticResource SeparatorColor}" />
-                            </Border.Effect>
+                            </Border.Effect>-->
                             <Border.RenderTransform>
-                                <TranslateTransform X="300" />
+                                <TranslateTransform X="320" />
                             </Border.RenderTransform>
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="80" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <Button
-                                    Name="PART_CloseButton"
-                                    Margin="8"
-                                    Padding="8"
-                                    HorizontalAlignment="Right"
-                                    Content="&#xE8BB;"
-                                    FontFamily="Segoe MDL2 Assets"
-                                    FontSize="10"
-                                    Style="{StaticResource SimpleButtonStyle}" />
-                                <ScrollViewer
-                                    x:Name="PART_ScrollViewer"
-                                    Grid.Row="1"
-                                    HorizontalScrollBarVisibility="Disabled"
-                                    VerticalScrollBarVisibility="Auto" />
+                                <Border
+                                    Margin="8,8,8,0"
+                                    BorderBrush="{StaticResource SeparatorSolidColorBrush}"
+                                    BorderThickness="0,0,0,1">
+                                    <Grid Margin="8,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="24" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label
+                                            VerticalAlignment="Center"
+                                            Content="{TemplateBinding Title}"
+                                            FontSize="24" />
+                                        <Button
+                                            x:Name="PART_CloseButton"
+                                            Grid.Column="1"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Center"
+                                            Content="&#xE8BB;"
+                                            FontFamily="Segoe MDL2 Assets"
+                                            FontSize="10"
+                                            Style="{StaticResource SimpleButtonStyle}" />
+                                    </Grid>
+                                </Border>
+                                <ContentPresenter Grid.Row="1" Content="{TemplateBinding PanelContent}" />
                             </Grid>
                         </Border>
                     </Grid>
@@ -64,11 +75,11 @@
                                             Storyboard.TargetProperty="(Border.RenderTransform).(TranslateTransform.X)"
                                             To="0"
                                             Duration="0:0:0.400" />
-                                        <DoubleAnimation
+                                        <!--<DoubleAnimation
                                             Storyboard.TargetName="Border"
                                             Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
                                             To="0.5"
-                                            Duration="0:0:0.400" />
+                                            Duration="0:0:0.400" />-->
                                         <DoubleAnimation
                                             Storyboard.TargetName="Overlay"
                                             Storyboard.TargetProperty="Opacity"
@@ -86,13 +97,13 @@
                                         <DoubleAnimation
                                             Storyboard.TargetName="Border"
                                             Storyboard.TargetProperty="(Border.RenderTransform).(TranslateTransform.X)"
-                                            To="300"
+                                            To="320"
                                             Duration="0:0:0.400" />
-                                        <DoubleAnimation
+                                        <!--<DoubleAnimation
                                             Storyboard.TargetName="Border"
                                             Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
                                             To="0"
-                                            Duration="0:0:0.400" />
+                                            Duration="0:0:0.400" />-->
                                         <DoubleAnimation
                                             Storyboard.TargetName="Overlay"
                                             Storyboard.TargetProperty="Opacity"
