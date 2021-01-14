@@ -12,6 +12,7 @@
                         <Border
                             x:Name="Overlay"
                             Background="{StaticResource PrimaryBackgroundSolidColorBrush}"
+                            IsHitTestVisible="False"
                             Opacity="0"
                             Visibility="Collapsed" />
                         <Border

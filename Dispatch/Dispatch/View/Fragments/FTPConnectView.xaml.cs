@@ -48,7 +48,7 @@ namespace Dispatch.View.Fragments
             try
             {
                 var client = await FTPClient.Create(Address, Port.Value, User, Password);
-                
+
                 var args = new ConnectViewArgs() { Client = client, InitialPath = Root ?? "/", Name = $"{Address}:{Port}" };
                 ConnectView.OnSuccess(args);
             }

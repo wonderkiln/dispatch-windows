@@ -74,10 +74,10 @@ namespace Dispatch.View.Fragments
 
                 foreach (var resource in resources)
                 {
-                    ResourceQueue.Shared.Add(QueueItem.ItemType.Delete, resource, null, (source, destination) =>
-                    {
-                        ViewModel.Refresh();
-                    });
+                    //ResourceQueue.Shared.Add(QueueItem.ItemType.Delete, resource, null, (source, destination) =>
+                    //{
+                    //    ViewModel.Refresh();
+                    //});
                 }
             }
         }
@@ -118,10 +118,10 @@ namespace Dispatch.View.Fragments
                 {
                     var destination = new Resource(null, Path.GetTempPath(), "");
 
-                    ResourceQueue.Shared.Add(QueueItem.ItemType.Download, resource, destination, (source, destination2) =>
-                    {
-                        Process.Start(Path.Combine(destination2.Path, resource.Name));
-                    });
+                    //ResourceQueue.Shared.Add(QueueItem.ItemType.Download, resource, destination, (source, destination2) =>
+                    //{
+                    //    Process.Start(Path.Combine(destination2.Path, resource.Name));
+                    //});
                 }
             }
         }
@@ -149,17 +149,11 @@ namespace Dispatch.View.Fragments
 
                 if (ViewModel.Client is LocalClient && !(resource.Client is LocalClient))
                 {
-                    ResourceQueue.Shared.Add(QueueItem.ItemType.Download, resource, new Resource(ViewModel.Client, ViewModel.CurrentPath, ""), (a, b) =>
-                    {
-                        ViewModel.Refresh();
-                    });
+                    ResourceQueue.Shared.Enqueue(new ResourceQueue.Item(ResourceQueue.Item.ActionType.Download, resource, new Resource(ViewModel.Client, ViewModel.CurrentPath, "")));
                 }
                 else if (!(ViewModel.Client is LocalClient) && resource.Client is LocalClient)
                 {
-                    ResourceQueue.Shared.Add(QueueItem.ItemType.Upload, resource, new Resource(ViewModel.Client, ViewModel.CurrentPath, ""), (a, b) =>
-                    {
-                        ViewModel.Refresh();
-                    });
+                    ResourceQueue.Shared.Enqueue(new ResourceQueue.Item(ResourceQueue.Item.ActionType.Upload, resource, new Resource(ViewModel.Client, ViewModel.CurrentPath, "")));
                 }
             }
         }

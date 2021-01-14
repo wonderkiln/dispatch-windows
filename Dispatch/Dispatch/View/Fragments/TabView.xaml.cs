@@ -1,5 +1,4 @@
-﻿using Dispatch.Helpers;
-using Dispatch.Service.Client;
+﻿using Dispatch.Service.Client;
 using Dispatch.Service.Model;
 using Dispatch.ViewModel;
 using System;
@@ -55,10 +54,10 @@ namespace Dispatch.View.Fragments
         {
             var resource = new Resource(ViewModel.RightViewModel.Client, ViewModel.RightViewModel.CurrentPath, "");
 
-            ResourceQueue.Shared.Add(QueueItem.ItemType.Upload, e, resource, (source, destination) =>
-            {
-                ViewModel.RightViewModel.Refresh();
-            });
+            //ResourceQueue.Shared.Add(QueueItem.ItemType.Upload, e, resource, (source, destination) =>
+            //{
+            //    ViewModel.RightViewModel.Refresh();
+            //});
         }
     }
 }
