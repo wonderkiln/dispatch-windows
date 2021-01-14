@@ -64,20 +64,19 @@
     <Style TargetType="ProgressBar">
         <Setter Property="Background" Value="{StaticResource SelectionOnPanelBackgroundSolidColorBrush}" />
         <Setter Property="Foreground" Value="{StaticResource PrimaryAccentSolidColorBrush}" />
-        <Setter Property="Height" Value="6" />
+        <Setter Property="Height" Value="5" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ProgressBar">
                     <Border
                         x:Name="PART_Track"
                         Background="{TemplateBinding Background}"
-                        BorderThickness="1"
-                        CornerRadius="3">
+                        CornerRadius="2.5">
                         <Border
                             x:Name="PART_Indicator"
                             HorizontalAlignment="Left"
                             Background="{TemplateBinding Foreground}"
-                            CornerRadius="3" />
+                            CornerRadius="2.5" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -85,16 +84,40 @@
     </Style>
 
     <Style TargetType="GridSplitter">
-        <Setter Property="Width" Value="16" />
-        <Setter Property="Background" Value="{StaticResource SeparatorSolidColorBrush}" />
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Background" Value="{StaticResource PrimaryBackgroundSolidColorBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SeparatorSolidColorBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="GridSplitter">
-                    <Grid Background="Transparent">
+                    <Grid>
                         <Border
                             Width="1"
                             HorizontalAlignment="Center"
-                            Background="{TemplateBinding Background}" />
+                            Background="{TemplateBinding BorderBrush}" />
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Ellipse
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Width}"
+                                Fill="{TemplateBinding Background}"
+                                Stroke="{TemplateBinding BorderBrush}"
+                                StrokeThickness="1" />
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                                <Path
+                                    Data="M 4,0 L 0,4 L 4,8"
+                                    Stroke="{TemplateBinding Foreground}"
+                                    StrokeThickness="1" />
+                                <Path
+                                    Margin="3,0,0,0"
+                                    Data="M 0,0 L 4,4 L 0,8"
+                                    Stroke="{TemplateBinding Foreground}"
+                                    StrokeThickness="1" />
+                            </StackPanel>
+                        </Grid>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

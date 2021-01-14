@@ -11,9 +11,21 @@
     mc:Ignorable="d">
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="8">
+        <StackPanel Margin="16">
+            <Grid Margin="0,0,0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Click="LightThemeButton_Click" Content="Light" />
+                <Button
+                    Grid.Column="2"
+                    Click="DarkThemeButton_Click"
+                    Content="Dark" />
+            </Grid>
             <Label Content="{x:Static helpers:Constants.APP_NAME}" />
-            <Label>
+            <Label Opacity="0.5">
                 <TextBlock>
                     <Run Text="Version " /><Run Text="{x:Static helpers:Constants.VERSION_STRING}" />
                 </TextBlock>

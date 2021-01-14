@@ -20,7 +20,7 @@ namespace Dispatch.ViewModel
 
         private void Shared_OnFinishedItem(object sender, QueueItem e)
         {
-            Items.Remove(e);
+            //Items.Remove(e);
         }
     }
 }

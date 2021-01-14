@@ -73,6 +73,11 @@ namespace Dispatch.Controls
             SetValue(IsPlaceholderShownPropertyKey, Text.Length == 0);
         }
 
+        public DPTextBox()
+        {
+            DefaultStyleKey = typeof(DPTextBox);
+        }
+
         private ScrollViewer PART_ContentHost;
 
         public override void OnApplyTemplate()

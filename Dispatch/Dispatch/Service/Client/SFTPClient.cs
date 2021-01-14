@@ -1,5 +1,6 @@
 ﻿using Dispatch.Service.Model;
 using Renci.SshNet;
+using Renci.SshNet.Common;
 using Renci.SshNet.Sftp;
 using System;
 using System.Collections.Generic;
@@ -22,12 +23,18 @@ namespace Dispatch.Service.Client
         private static Task<SFTPClient> Create(ConnectionInfo connectionInfo)
         {
             var client = new SftpClient(connectionInfo);
+            client.HostKeyReceived += Client_HostKeyReceived;
 
             return Task.Run(() =>
             {
                 client.Connect();
                 return new SFTPClient(client);
             });
+        }
+
+        private static void Client_HostKeyReceived(object sender, HostKeyEventArgs e)
+        {
+            e.CanTrust = true;
         }
 
         public static Task<SFTPClient> Create(string host, int port, string username, string password)
@@ -203,7 +210,7 @@ namespace Dispatch.Service.Client
                 var destination = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
 
                 var files = Directory.GetFiles(fileOrDirectory);
-                
+
                 var directories = Directory.GetDirectories(fileOrDirectory);
 
                 // D:/x/xx/xxx.txt -> {path}/x/xx/xxx.txt

@@ -7,11 +7,11 @@ namespace Dispatch.View.Fragments
 {
     public partial class SFTPConnectView : UserControl
     {
-        public string Address { get; set; } = "test.rebex.net";
+        public string Address { get; set; } = "127.0.0.1";
         public int? Port { get; set; } = 22;
-        public string User { get; set; } = "demo";
-        public string Password { get; set; } = "password";
-        public string Root { get; set; } = "/";
+        public string User { get; set; } = "Adrian";
+        public string Password { get; set; } = "root";
+        public string Root { get; set; } = "/Downloads";
 
         public static readonly DependencyProperty ConnectViewProperty = DependencyProperty.Register("ConnectView", typeof(IConnectView), typeof(SFTPConnectView));
 
@@ -47,7 +47,7 @@ namespace Dispatch.View.Fragments
 
             try
             {
-                var client = await FTPClient.Create(Address, Port.Value, User, Password);
+                var client = await SFTPClient.Create(Address, Port.Value, User, Password);
 
                 var args = new ConnectViewArgs() { Client = client, InitialPath = Root ?? "/", Name = $"{Address}:{Port}" };
                 ConnectView.OnSuccess(args);

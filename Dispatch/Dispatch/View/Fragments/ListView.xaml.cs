@@ -6,10 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Linq;
 
 namespace Dispatch.View.Fragments
 {
@@ -55,41 +55,6 @@ namespace Dispatch.View.Fragments
             }
         }
 
-        private void ListBox_Drop(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(typeof(Resource)))
-            {
-                var resource = (Resource)e.Data.GetData(typeof(Resource));
-
-                if (resource.Client == ViewModel.Client)
-                {
-                    ViewModel.Favorites.Add(new FavoriteItem(resource.Name, resource.Path));
-                }
-            }
-        }
-
-        private void ListBox_DragOver(object sender, DragEventArgs e)
-        {
-            e.Effects = DragDropEffects.None;
-
-            if (e.Data.GetDataPresent(typeof(Resource)))
-            {
-                var resource = (Resource)e.Data.GetData(typeof(Resource));
-
-                if (resource.Client == ViewModel.Client && resource.Type != ResourceType.File)
-                {
-                    e.Effects = e.AllowedEffects;
-                }
-            }
-        }
-
-        private void ShortcutsMenu_Click(object sender, RoutedEventArgs e)
-        {
-            var item = e.OriginalSource as FrameworkElement;
-            var favorite = item.DataContext as FavoriteItem;
-            ViewModel.Load(favorite.Path);
-        }
-
         private void TextBox_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -115,14 +80,6 @@ namespace Dispatch.View.Fragments
                     });
                 }
             }
-        }
-
-        private void DeleteFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            var item = sender as FrameworkElement;
-            var favorite = item.DataContext as FavoriteItem;
-
-            ViewModel.Favorites.Remove(favorite);
         }
 
         public event EventHandler<Resource> BeginUpload;

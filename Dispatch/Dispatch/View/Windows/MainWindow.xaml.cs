@@ -57,7 +57,7 @@ namespace Dispatch.View.Windows
             }
 
             SideView.Title = "Transfers";
-            SideView.PanelContent = new QueueView();
+            SideView.PanelContent = new QueueView { ViewModel = QueueViewModel };
             SideView.IsOpen = true;
         }
 

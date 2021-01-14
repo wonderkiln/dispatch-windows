@@ -35,7 +35,7 @@
             ContentTemplateSelector="{StaticResource ViewSelector}" />
         <GridSplitter
             Grid.Column="1"
-            Margin="-8,0,0,0"
+            Margin="-12,0,0,0"
             HorizontalAlignment="Left"
             ResizeBehavior="PreviousAndCurrent"
             ResizeDirection="Columns" />

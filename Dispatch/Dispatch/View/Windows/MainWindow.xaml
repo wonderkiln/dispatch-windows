@@ -67,18 +67,6 @@
                     Orientation="Horizontal">
                     <Button
                         Width="32"
-                        Click="DarkButton_Click"
-                        Content="&#xF137;"
-                        FontFamily="Segoe MDL2 Assets"
-                        Style="{StaticResource SimpleButtonStyle}" />
-                    <Button
-                        Width="32"
-                        Click="LightButton_Click"
-                        Content="&#xF138;"
-                        FontFamily="Segoe MDL2 Assets"
-                        Style="{StaticResource SimpleButtonStyle}" />
-                    <Button
-                        Width="32"
                         Click="TransfersButton_Click"
                         Content="&#xE896;"
                         FontFamily="Segoe MDL2 Assets"

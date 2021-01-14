@@ -7,11 +7,11 @@ namespace Dispatch.View.Fragments
 {
     public partial class FTPConnectView : UserControl
     {
-        public string Address { get; set; } = "waws-prod-dm1-173.ftp.azurewebsites.windows.net";
+        public string Address { get; set; } = "127.0.0.1";
         public int? Port { get; set; } = 21;
-        public string User { get; set; } = "$app-dispatchftp-dev";
-        public string Password { get; set; } = "w2yZ0XW2PvDtDrnvzcyS6Zmj6B9uMxEvCkdP5Jo1jxgxKH7h9uYadcmEivlx";
-        public string Root { get; set; } = "/site";
+        public string User { get; set; } = "Adrian";
+        public string Password { get; set; } = "root";
+        public string Root { get; set; } = "/Downloads";
 
         public static readonly DependencyProperty ConnectViewProperty = DependencyProperty.Register("ConnectView", typeof(IConnectView), typeof(FTPConnectView));
 

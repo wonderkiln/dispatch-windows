@@ -6,7 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Dispatch.View.Fragments"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:validators="clr-namespace:Dispatch.Helpers.Validators"
     d:DesignHeight="450"
     d:DesignWidth="800"
     Background="{StaticResource SecondaryBackgroundSolidColorBrush}"
@@ -82,16 +81,16 @@
                                     <Condition Property="IsFocused" Value="True" />
                                     <Condition Property="Validation.HasError" Value="False" />
                                 </MultiTrigger.Conditions>
-                                <!--<Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource PrimaryAccentColor}" />
-                                <Setter TargetName="Label" Property="Foreground" Value="{StaticResource PrimaryAccentColor}" />-->
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource PrimaryAccentSolidColorBrush}" />
+                                <Setter TargetName="Label" Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
                             </MultiTrigger>
                             <Trigger Property="IsFocused" Value="True">
-                                <!--<Setter Property="Background" Value="{StaticResource PrimaryBackgroundColor}" />-->
+                                <Setter Property="Background" Value="{StaticResource PrimaryBackgroundSolidColorBrush}" />
                                 <Setter TargetName="Label" Property="Opacity" Value="1" />
                             </Trigger>
                             <Trigger Property="Validation.HasError" Value="True">
-                                <!--<Setter Property="Foreground" Value="{StaticResource ErrorColor}" />-->
-                                <!--<Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource ErrorColor}" />-->
+                                <Setter Property="Foreground" Value="{StaticResource ErrorSolidColorBrush}" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource ErrorSolidColorBrush}" />
                                 <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -125,10 +124,6 @@
                     Margin="60"
                     Content="{Binding SelectedIndex, ElementName=ComboBox}"
                     ContentTemplateSelector="{StaticResource ConnectViewDataTemplateSelector}" />
-                <TextBlock>
-                    <Run Text="Loading: " />
-                    <Run Text="{Binding IsConnecting, RelativeSource={RelativeSource AncestorType={x:Type local:ConnectView}}}" />
-                </TextBlock>
             </StackPanel>
         </ScrollViewer>
     </Grid>

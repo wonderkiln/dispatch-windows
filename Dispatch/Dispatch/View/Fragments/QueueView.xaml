@@ -9,7 +9,7 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <ListBox>
+    <ListBox ItemsSource="{Binding ViewModel.Items, RelativeSource={RelativeSource AncestorType={x:Type local:QueueView}}}">
         <ListBox.ItemTemplate>
             <DataTemplate>
                 <Grid>
@@ -32,19 +32,21 @@
                     <TextBlock
                         Grid.Column="1"
                         FontSize="14"
-                        Text="presentation_of_the_website_only_new.mp4"
+                        Text="{Binding Source.Name}"
                         TextWrapping="Wrap" />
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="1"
                         FontSize="11"
-                        Opacity="0.5"
-                        Text="3.54 KB of 12.68 MB" />
+                        Opacity="0.5">
+                        <Run Text="{Binding Progress.FileIndex}" /><Run Text=" of " /><Run Text="{Binding Progress.FileCount}" />
+                    </TextBlock>
                     <Button
                         Grid.RowSpan="3"
                         Grid.Column="2"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
+                        Command="{Binding CancelCommand}"
                         Content="&#xE8BB;"
                         FontFamily="Segoe MDL2 Assets"
                         FontSize="10"
@@ -54,71 +56,9 @@
                         Grid.Column="1"
                         Margin="0,4,0,0"
                         Maximum="100"
-                        Value="25" />
+                        Value="{Binding Progress.TotalProgress, Mode=OneWay}" />
                 </Grid>
             </DataTemplate>
         </ListBox.ItemTemplate>
-        <Grid />
-        <Grid />
-        <Grid />
-        <Grid />
-        <Grid />
-        <Grid />
-        <Grid />
-        <Grid />
-        <Grid />
     </ListBox>
-
-    <!--<ListBox
-        Padding="0"
-        Background="Transparent"
-        BorderThickness="0"
-        ItemsSource="{Binding ViewModel.Items, RelativeSource={RelativeSource AncestorType={x:Type local:QueueView}}}"
-        ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-        <ListBox.ItemContainerStyle>
-            <Style TargetType="ListBoxItem">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="ListBoxItem">
-                            <Border>
-                                <ContentPresenter Margin="{TemplateBinding Padding}" />
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </ListBox.ItemContainerStyle>
-        <ListBox.ItemTemplate>
-            <DataTemplate>
-                <Grid Margin="6">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel>
-                        <TextBlock TextWrapping="Wrap">
-                            <Run FontWeight="SemiBold" Text="{Binding Source.Path, Mode=OneWay}" />
-                            <Run
-                                FontFamily="Segoe MDL2 Assets"
-                                FontSize="9"
-                                Text="&#xEBE7;" />
-                            <Run FontWeight="SemiBold" Text="{Binding Destination.Path, Mode=OneWay}" />
-                        </TextBlock>
-                        <ProgressBar
-                            Height="14"
-                            Margin="0,4,0,0"
-                            Maximum="100"
-                            Minimum="0"
-                            Value="{Binding Progress.TotalProgress, Mode=OneWay}" />
-                    </StackPanel>
-                    <Button
-                        Grid.Column="1"
-                        Margin="8,0,0,0"
-                        VerticalAlignment="Center"
-                        Command="{Binding CancelCommand, Mode=OneWay}"
-                        Content="&#xE711;" />
-                </Grid>
-            </DataTemplate>
-        </ListBox.ItemTemplate>
-    </ListBox>-->
 </UserControl>

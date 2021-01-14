@@ -69,8 +69,6 @@ namespace Dispatch.ViewModel
             }
         }
 
-        public FavoritesStorage Favorites { get; private set; }
-
         private string InitialPath;
 
         public ImageSource Icon { get; private set; }
@@ -85,8 +83,6 @@ namespace Dispatch.ViewModel
             RefreshCommand = new RelayCommand(RefreshCommandAction);
 
             InitialPath = initialPath;
-
-            Favorites = new FavoritesStorage(title);
 
             Icon = icon;
             Title = title;

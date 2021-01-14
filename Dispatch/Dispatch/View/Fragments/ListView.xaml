@@ -58,8 +58,6 @@
             x:Name="List"
             Grid.Row="1"
             AllowDrop="True"
-            Background="Transparent"
-            BorderThickness="0"
             ContextMenuOpening="List_ContextMenuOpening"
             DragEnter="List_DragEnter"
             DragOver="List_DragEnter"
@@ -87,7 +85,7 @@
                 </ContextMenu>
             </ListView.ContextMenu>
             <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
+                <Style BasedOn="{StaticResource {x:Type ListViewItem}}" TargetType="ListViewItem">
                     <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
                     <EventSetter Event="PreviewMouseMove" Handler="ListViewItem_PreviewMouseMove" />
                 </Style>
@@ -96,11 +94,11 @@
                 <GridView>
                     <GridViewColumn Width="300">
                         <GridViewColumn.Header>
-                            <TextBlock Margin="24,0,0,0" Text="Name" />
+                            <TextBlock Text="Name" />
                         </GridViewColumn.Header>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Grid Margin="2,0,0,0">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="22" />
                                         <ColumnDefinition Width="*" />
@@ -120,11 +118,11 @@
                     </GridViewColumn>
                     <GridViewColumn Width="120">
                         <GridViewColumn.Header>
-                            <TextBlock Margin="2,0,0,0" Text="Size" />
+                            <TextBlock Text="Size" />
                         </GridViewColumn.Header>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Margin="2,0,0,0" Text="{Binding Size, Converter={StaticResource BytesToStringConverter}}" />
+                                <TextBlock Text="{Binding Size, Converter={StaticResource BytesToStringConverter}}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
