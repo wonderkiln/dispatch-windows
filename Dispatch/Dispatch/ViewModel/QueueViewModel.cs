@@ -1,14 +1,16 @@
 ﻿using Dispatch.Helpers;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace Dispatch.ViewModel
 {
-    public class QueueViewModel
+    public class QueueViewModel : Observable
     {
         public class QueueItem : Observable
         {
-            public enum StatusType { Pending, Working, Done, Error }
+            public enum StatusType { Pending = 0, Working = 1, Done = 2, Error = 3 }
 
             private StatusType status = StatusType.Pending;
             public StatusType Status
@@ -52,6 +54,20 @@ namespace Dispatch.ViewModel
                 }
             }
 
+            private string destination;
+            public string Destination
+            {
+                get
+                {
+                    return destination;
+                }
+                set
+                {
+                    destination = value;
+                    Notify();
+                }
+            }
+
             private string error;
             public string Error
             {
@@ -70,21 +86,54 @@ namespace Dispatch.ViewModel
 
             public RelayCommand CancelCommand { get; set; }
 
+            public RelayCommand OpenDestinationCommand { get; set; }
+
             public QueueViewModel ViewModel { get; private set; }
 
             public QueueItem(QueueViewModel viewModel)
             {
                 ViewModel = viewModel;
                 CancelCommand = new RelayCommand(Cancel);
+                OpenDestinationCommand = new RelayCommand(OpenDestination);
             }
 
             private void Cancel(object arg)
             {
                 ViewModel.Cancel(this);
             }
+
+            private void OpenDestination(object arg)
+            {
+                if (Directory.Exists(Destination))
+                {
+                    Process.Start(Destination);
+                }
+            }
         }
 
         public ObservableCollection<QueueItem> Items { get; } = new ObservableCollection<QueueItem>();
+
+        public bool IsBusy
+        {
+            get
+            {
+                return Items.FirstOrDefault(e => e.Status < QueueItem.StatusType.Done) != null;
+            }
+        }
+
+        public double Progress
+        {
+            get
+            {
+                var total = Items.Count;
+                var done = Items.Count(e => e.Status >= QueueItem.StatusType.Done);
+
+                var current = Items.FirstOrDefault(e => e.Status == QueueItem.StatusType.Working);
+                var progress = current?.Progress ?? 0;
+
+                return (100 * done + progress) / total;
+            }
+        }
 
         public QueueViewModel()
         {
@@ -93,6 +142,8 @@ namespace Dispatch.ViewModel
                 Items.Add(Convert(item));
             }
 
+            Items.CollectionChanged += Items_CollectionChanged;
+
             ResourceQueue.Shared.OnEnqueue += Shared_OnEnqueue;
             ResourceQueue.Shared.OnStart += Shared_OnStart;
             ResourceQueue.Shared.OnProgress += Shared_OnProgress;
@@ -100,9 +151,20 @@ namespace Dispatch.ViewModel
             ResourceQueue.Shared.OnError += Shared_OnError;
         }
 
+        private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            Notify("IsBusy");
+            Notify("Progress");
+        }
+
         private QueueItem Convert(ResourceQueue.Item e)
         {
-            return new QueueItem(this) { Tag = e, Name = e.Source.Name };
+            string destination;
+
+            if (e.Destination != null) destination = e.Destination.Path;
+            else destination = e.Source.Path;
+
+            return new QueueItem(this) { Tag = e, Name = e.Source.Name, Destination = destination };
         }
 
         private void Shared_OnEnqueue(object sender, ResourceQueue.Item e)
@@ -122,6 +184,8 @@ namespace Dispatch.ViewModel
         {
             var item = Items.First(i => i.Tag == e.Item);
             item.Progress = e.Progress.TotalProgress;
+
+            Notify("Progress");
         }
 
         private void Shared_OnFinish(object sender, ResourceQueue.Item e)

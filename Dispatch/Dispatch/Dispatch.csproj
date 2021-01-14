@@ -122,8 +122,8 @@
     <Compile Include="View\Fragments\FTPConnectView.xaml.cs">
       <DependentUpon>FTPConnectView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Fragments\ListView.xaml.cs">
-      <DependentUpon>ListView.xaml</DependentUpon>
+    <Compile Include="View\Fragments\ResourceView.xaml.cs">
+      <DependentUpon>ResourceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Fragments\QueueView.xaml.cs">
       <DependentUpon>QueueView.xaml</DependentUpon>
@@ -190,7 +190,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Fragments\ListView.xaml">
+    <Page Include="View\Fragments\ResourceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -76,9 +76,12 @@
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="1"
-                    FontSize="11"
-                    Opacity="0.5"
-                    Text="{Binding Progress, StringFormat={}{0:#0.00'%'}}" />
+                    FontSize="11">
+                    <Run Text="Destination: " />
+                    <Hyperlink Command="{Binding OpenDestinationCommand}">
+                        <Run Text="{Binding Destination}" />
+                    </Hyperlink>
+                </TextBlock>
                 <Button
                     Grid.RowSpan="3"
                     Grid.Column="2"

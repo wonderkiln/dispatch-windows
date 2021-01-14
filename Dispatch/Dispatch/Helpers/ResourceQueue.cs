@@ -61,7 +61,7 @@ namespace Dispatch.Helpers
             }
         }
 
-        private class WorkerProgressReporter : IProgress<ProgressStatus>
+        private class WorkerProgressReporter : System.IProgress<ProgressStatus>
         {
             public Item Item { get; private set; }
 

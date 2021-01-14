@@ -20,6 +20,10 @@
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -67,10 +71,23 @@
                     Orientation="Horizontal">
                     <Button
                         Width="32"
+                        Padding="0"
                         Click="TransfersButton_Click"
-                        Content="&#xE896;"
-                        FontFamily="Segoe MDL2 Assets"
-                        Style="{StaticResource SimpleButtonStyle}" />
+                        Style="{StaticResource SimpleButtonStyle}">
+                        <StackPanel>
+                            <Label
+                                HorizontalAlignment="Center"
+                                Content="&#xE896;"
+                                FontFamily="Segoe MDL2 Assets" />
+                            <ProgressBar
+                                Width="20"
+                                Height="4"
+                                Margin="0,2,0,0"
+                                Maximum="100"
+                                Visibility="{Binding QueueViewModel.IsBusy, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                Value="{Binding QueueViewModel.Progress, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}, Mode=OneWay}" />
+                        </StackPanel>
+                    </Button>
                     <Button
                         Width="32"
                         Margin="4,0,0,0"

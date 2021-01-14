@@ -38,6 +38,11 @@
         <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
     </Style>
 
+    <Style TargetType="Hyperlink">
+        <Setter Property="TextDecorations" Value="None" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryAccentSolidColorBrush}" />
+    </Style>
+
     <Style TargetType="TextBox">
         <Setter Property="Background" Value="{StaticResource PrimaryBackgroundSolidColorBrush}" />
         <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
