@@ -43,5 +43,10 @@ namespace Dispatch.View.Fragments
         {
             InitializeComponent();
         }
+
+        private void ClearButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ClearCompleted();
+        }
     }
 }

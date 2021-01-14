@@ -182,6 +182,8 @@ namespace Dispatch.Helpers
                     await client3.Diconnect();
                     break;
             }
+
+            tokenSource.Token.ThrowIfCancellationRequested();
         }
 
         public void Cancel(Item item)

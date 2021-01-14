@@ -195,6 +195,13 @@ namespace Dispatch.Service.Client
                 {
                     using (var stream = new StreamReader(fileOrDirectory))
                     {
+                        // TODO:
+                        token.Register(() =>
+                        {
+                            stream.Close();
+                        });
+
+                        // TODO: CancellationToken
                         Client.UploadFile(stream.BaseStream, destination, (length) =>
                         {
                             var size = new FileInfo(fileOrDirectory).Length;
@@ -202,7 +209,8 @@ namespace Dispatch.Service.Client
                             progress?.Report(new ProgressStatus(0, 1, value));
                         });
                     }
-                });
+                },
+                token);
             }
             else if (Directory.Exists(fileOrDirectory))
             {
@@ -214,6 +222,8 @@ namespace Dispatch.Service.Client
                 var directories = Directory.GetDirectories(fileOrDirectory);
 
                 // D:/x/xx/xxx.txt -> {path}/x/xx/xxx.txt
+
+                throw new NotImplementedException();
             }
             else
             {

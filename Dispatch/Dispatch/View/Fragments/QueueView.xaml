@@ -188,5 +188,21 @@
             WorkingDataTemplate="{StaticResource WorkingItemTemplate}" />
     </UserControl.Resources>
 
-    <ListBox ItemTemplateSelector="{StaticResource QueueItemDataTemplateSelector}" ItemsSource="{Binding ViewModel.Items, RelativeSource={RelativeSource AncestorType={x:Type local:QueueView}}}" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Button
+            Margin="8,8,8,0"
+            Padding="8,4"
+            HorizontalAlignment="Right"
+            Click="ClearButton_Click"
+            Content="Clear"
+            Style="{StaticResource SimpleButtonStyle}" />
+        <ListBox
+            Grid.Row="1"
+            ItemTemplateSelector="{StaticResource QueueItemDataTemplateSelector}"
+            ItemsSource="{Binding ViewModel.Items, RelativeSource={RelativeSource AncestorType={x:Type local:QueueView}}}" />
+    </Grid>
 </UserControl>

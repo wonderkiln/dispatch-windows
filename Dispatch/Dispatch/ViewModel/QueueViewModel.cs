@@ -224,5 +224,15 @@ namespace Dispatch.ViewModel
                     break;
             }
         }
+
+        public void ClearCompleted()
+        {
+            var completed = Items.Where(e => e.Status > QueueItem.StatusType.Working).ToArray();
+
+            foreach (var item in completed)
+            {
+                Items.Remove(item);
+            }
+        }
     }
 }
