@@ -4,8 +4,6 @@ using Dispatch.Service.Model;
 using Dispatch.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -131,7 +129,7 @@ namespace Dispatch.View.Fragments
             }
         }
 
-        private Resource[] selectedItems;
+        private Resource[] selectedItems = new Resource[] { };
         private Point startDragPosition;
 
         private void List_PreviewMouseMove(object sender, MouseEventArgs e)
@@ -141,27 +139,42 @@ namespace Dispatch.View.Fragments
                 var position = e.GetPosition((IInputElement)sender);
                 var distance = Point.Subtract(position, startDragPosition).Length;
 
-                if (Math.Abs(distance) > 10 && selectedItems != null && selectedItems.Length > 0)
+                if (Math.Abs(distance) > 10)
                 {
                     var listView = sender as ListView;
-                    listView.SelectedItems.Clear();
+                    var selectedItem = listView.SelectedItem as Resource;
 
-                    foreach (var item in selectedItems)
+                    if (selectedItems.Contains(selectedItem))
                     {
-                        listView.SelectedItems.Add(item);
+                        listView.SelectedItems.Clear();
+
+                        foreach (var item in selectedItems)
+                        {
+                            listView.SelectedItems.Add(item);
+                        }
+                    }
+                    else if (selectedItem != null)
+                    {
+                        selectedItems = new Resource[] { selectedItem };
                     }
 
-                    var data = new ResourceDragData(selectedItems);
-                    DragDrop.DoDragDrop(listView, data, DragDropEffects.Link);
+                    if (selectedItems.Length > 0)
+                    {
+                        var data = new ResourceDragData(selectedItems);
+                        DragDrop.DoDragDrop(listView, data, DragDropEffects.Link);
+                    }
                 }
             }
         }
 
         private void List_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var listView = sender as ListView;
-            selectedItems = listView.SelectedItems.Cast<Resource>().ToArray();
-            startDragPosition = e.GetPosition(listView);
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                var listView = sender as ListView;
+                selectedItems = listView.SelectedItems.Cast<Resource>().ToArray();
+                startDragPosition = e.GetPosition(listView);
+            }
         }
     }
 }
