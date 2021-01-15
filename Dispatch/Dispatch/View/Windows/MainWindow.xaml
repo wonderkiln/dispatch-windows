@@ -109,6 +109,15 @@
         <Border
             Grid.Row="3"
             Grid.ColumnSpan="2"
-            Style="{StaticResource StatusBarBackgroundBorderStyle}" />
+            Padding="8,0"
+            Style="{StaticResource StatusBarBackgroundBorderStyle}">
+            <Button
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Command="{Binding UpdateViewModel.UpdateCommand, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
+                Content="New Update"
+                Style="{StaticResource SimpleButtonStyle}"
+                Visibility="{Binding UpdateViewModel.HasUpdate, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        </Border>
     </Grid>
 </Window>

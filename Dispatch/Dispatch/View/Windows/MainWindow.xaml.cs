@@ -14,6 +14,8 @@ namespace Dispatch.View.Windows
 
         public QueueViewModel QueueViewModel { get; } = new QueueViewModel();
 
+        public UpdateViewModel UpdateViewModel { get; } = new UpdateViewModel();
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             WindowHelper.EnableBlurForWindow(this);
