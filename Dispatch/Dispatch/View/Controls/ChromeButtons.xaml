@@ -30,7 +30,7 @@
             x:Name="Close"
             Click="Close_Click"
             Content="&#xE8BB;"
-            Style="{StaticResource CloseChromeButtonStyle}" />
+            Style="{StaticResource ChromeButtonStyle}" />
     </StackPanel>
 
 </UserControl>

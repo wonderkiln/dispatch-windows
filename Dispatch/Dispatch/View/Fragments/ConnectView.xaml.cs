@@ -5,7 +5,25 @@ using System.Windows.Controls;
 
 namespace Dispatch.View.Fragments
 {
-    public class ConnectV
+    public class ConnectViewDataTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate FTPDataTemplate { get; set; }
+        public DataTemplate SFTPDataTemplate { get; set; }
+
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        {
+            var index = item as int?;
+
+            switch (index)
+            {
+                case 0: return FTPDataTemplate;
+                case 1: return SFTPDataTemplate;
+                default: return null;
+            }
+        }
+    }
+
+    public class ConnectViewArgs
     {
         public IClient Client { get; set; }
 
@@ -14,27 +32,46 @@ namespace Dispatch.View.Fragments
         public string Name { get; set; }
     }
 
-    public partial class ConnectView : UserControl
+    public interface IConnectView
     {
-        public event EventHandler<ConnectV> OnConnected;
+        void OnBeginConnecting();
+
+        void OnSuccess(ConnectViewArgs e);
+
+        void OnException(Exception ex);
+    }
+
+    public partial class ConnectView : UserControl, IConnectView
+    {
+        public static readonly DependencyProperty IsConnectingProperty = DependencyProperty.Register("IsConnecting", typeof(bool), typeof(ConnectView), new PropertyMetadata(false));
+
+        public bool IsConnecting
+        {
+            get { return (bool)GetValue(IsConnectingProperty); }
+            set { SetValue(IsConnectingProperty, value); }
+        }
+
+        public event EventHandler<ConnectViewArgs> OnConnected;
 
         public ConnectView()
         {
             InitializeComponent();
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        public void OnBeginConnecting()
         {
-            try
-            {
-                var client = await FTPClient.Create(Host.Text, int.Parse(Port.Text), Username.Text, Password.Password);
+            IsConnecting = true;
+        }
 
-                OnConnected?.Invoke(this, new ConnectV() { Client = client, InitialPath = Root.Text, Name = $"{Host.Text}:{Port.Text}" });
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+        public void OnSuccess(ConnectViewArgs e)
+        {
+            OnConnected?.Invoke(this, e);
+        }
+
+        public void OnException(Exception ex)
+        {
+            IsConnecting = false;
+            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

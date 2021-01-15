@@ -2,13 +2,18 @@
     x:Class="Dispatch.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Startup="Application_Startup"
     StartupUri="View/Windows/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!--  This can be changed in runtime  -->
+                <ResourceDictionary Source="Theme/Colors.Light.xaml" />
+                <ResourceDictionary Source="Theme/Brushes.xaml" />
                 <ResourceDictionary Source="Theme/Common.xaml" />
-                <ResourceDictionary Source="Theme/Button.xaml" />
-                <ResourceDictionary Source="Theme/List.xaml" />
+                <ResourceDictionary Source="Theme/Buttons.xaml" />
+                <ResourceDictionary Source="Theme/Lists.xaml" />
+                <ResourceDictionary Source="Theme/Side.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

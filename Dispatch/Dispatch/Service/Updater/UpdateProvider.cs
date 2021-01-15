@@ -37,7 +37,7 @@ namespace Dispatch.Service.Updater
         }
 
         public event EventHandler<double> DownloadProgressChanged;
-        
+
         private WebClient GetWebClient()
         {
             var client = new WebClient();

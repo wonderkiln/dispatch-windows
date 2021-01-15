@@ -1,52 +1,89 @@
-﻿namespace Dispatch.Helpers
+﻿using Dispatch.Service.Model;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
+
+namespace Dispatch.Helpers
 {
-    public class ResourceWatcher
+    public class ResourceWatcher : IProgress<ProgressStatus>
     {
-        //public static ResourceWatcher Instance = new ResourceWatcher();
+        public class Item
+        {
+            public string Path { get; private set; }
 
-        //public Dictionary<string, IResource> Resources { get; set; } = new Dictionary<string, IResource>();
+            public FileSystemWatcher Watcher { get; private set; }
 
-        //public IResource Find(IResource resource)
-        //{
-        //    return Resources.Values.FirstOrDefault(e => e.Path == resource.Path && e.Client == resource.Client);
-        //}
+            public Resource Resource { get; private set; }
 
-        //public IResource Find(string localPath)
-        //{
-        //    return Resources[localPath];
-        //}
+            public CancellationTokenSource TokenSource { get; } = new CancellationTokenSource();
 
-        //public void Watch(IResource resource, string localPath)
-        //{
-        //    if (Find(resource) == null)
-        //    {
-        //        Resources.Add(localPath, resource);
+            public Item(string path, FileSystemWatcher watcher, Resource resource)
+            {
+                Path = path;
+                Watcher = watcher;
+                Resource = resource;
+            }
+        }
 
-        //        var watcher = new FileSystemWatcher();
-        //        watcher.Changed += Watcher_Changed;
-        //        watcher.Deleted += Watcher_Deleted;
-        //        watcher.NotifyFilter = NotifyFilters.LastWrite;
-        //        watcher.IncludeSubdirectories = false;
-        //        watcher.Filter = Path.GetFileName(localPath);
-        //        watcher.Path = Path.GetDirectoryName(localPath);
-        //        watcher.EnableRaisingEvents = true;
-        //    }
-        //}
+        public static ResourceWatcher Shared = new ResourceWatcher();
 
-        //private void Watcher_Deleted(object sender, FileSystemEventArgs e)
-        //{
-        //    var watcher = (FileSystemWatcher)sender;
-        //    watcher.Dispose();
-        //}
+        private List<Item> resources = new List<Item>();
 
-        //private async void Watcher_Changed(object sender, FileSystemEventArgs e)
-        //{
-        //    var resource = Find(e.FullPath);
+        public void Watch(Resource resource, string path)
+        {
+            if (resources.Find(e => e.Path == path) == null)
+            {
+                var watcher = new FileSystemWatcher();
+                watcher.Changed += Watcher_Changed;
+                watcher.Deleted += Watcher_Deleted;
+                watcher.NotifyFilter = NotifyFilters.LastWrite;
+                watcher.IncludeSubdirectories = false;
+                watcher.Filter = Path.GetFileName(path);
+                watcher.Path = Path.GetDirectoryName(path);
+                watcher.EnableRaisingEvents = true;
 
-        //    if (resource != null)
-        //    {
-        //        await resource.Client.UploadFile(e.FullPath, resource.Path);
-        //    }
-        //}
+                resources.Add(new Item(path, watcher, resource));
+            }
+        }
+
+        public void Unwatch(string path)
+        {
+            var item = resources.Find(e => e.Path == path);
+
+            if (item != null)
+            {
+                item.Watcher.Dispose();
+                item.TokenSource.Cancel();
+                resources.Remove(item);
+            }
+        }
+
+        private async void Watcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            var item = resources.Find(i => i.Path == e.FullPath);
+
+            if (item != null)
+            {
+                try
+                {
+                    await item.Resource.Client.Upload(item.Resource.Path, item.Path, this, item.TokenSource.Token);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+        }
+
+        private void Watcher_Deleted(object sender, FileSystemEventArgs e)
+        {
+            Unwatch(e.FullPath);
+        }
+
+        public void Report(ProgressStatus value)
+        {
+            Console.WriteLine(value.TotalProgress);
+        }
     }
 }

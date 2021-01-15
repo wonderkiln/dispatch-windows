@@ -1,161 +1,208 @@
 ﻿using Dispatch.Service.Model;
+using Dispatch.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Windows;
+using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace Dispatch.Helpers
 {
-    public class QueueItem : Observable
-    {
-        public enum ItemType { Download, Upload, Delete }
-
-        public ItemType Type { get; set; }
-
-        public Resource Source { get; set; }
-
-        public Resource Destination { get; set; }
-
-        public Action<Resource, Resource> OnComplete { get; set; }
-
-        public ProgressStatus Progress { get; set; }
-
-        private CancellationTokenSource tokenSource = new CancellationTokenSource();
-
-        public CancellationToken Token
-        {
-            get
-            {
-                return tokenSource.Token;
-            }
-        }
-
-        public RelayCommand CancelCommand { get; private set; }
-
-        public QueueItem()
-        {
-            CancelCommand = new RelayCommand(CancelCommandAction);
-        }
-
-        private void CancelCommandAction(object parameters)
-        {
-            tokenSource.Cancel();
-        }
-    }
-
     public class ResourceQueue
     {
-        public event EventHandler<QueueItem> OnAddedItem;
-        public event EventHandler<QueueItem> OnFinishedItem;
-
-        public static ResourceQueue Shared = new ResourceQueue();
-
-        private readonly Queue<QueueItem> items = new Queue<QueueItem>();
-
-        public bool Working { get; private set; } = false;
-
-        public QueueItem[] Items
+        public class Item
         {
-            get
+            public enum ActionType { Upload, Download, Delete }
+
+            public ActionType Action { get; private set; }
+
+            public Resource Source { get; private set; }
+
+            public Resource Destination { get; private set; }
+
+            public ListViewModel ViewModel { get; private set; }
+
+            public Item(ActionType action, Resource source, Resource destination, ListViewModel viewModel)
             {
-                return items.ToArray();
+                Action = action;
+                Source = source;
+                Destination = destination;
+                ViewModel = viewModel;
             }
         }
 
-        public void Add(QueueItem.ItemType type, Resource source, Resource destination, Action<Resource, Resource> onComplete)
+        public class ProgressEventArgs
         {
-            var item = new QueueItem()
+            public Item Item { get; private set; }
+
+            public ProgressStatus Progress { get; private set; }
+
+            public ProgressEventArgs(Item item, ProgressStatus progress)
             {
-                Type = type,
-                Source = source,
-                Destination = destination,
-                OnComplete = onComplete,
-            };
-
-            items.Enqueue(item);
-
-            OnAddedItem?.Invoke(this, item);
-
-            if (!Working)
-            {
-                Dequeue();
+                Item = item;
+                Progress = progress;
             }
         }
 
-        private class XXX : IProgress<ProgressStatus>
+        public class ErrorEventArgs
         {
-            private readonly QueueItem item;
+            public Item Item { get; private set; }
 
-            public XXX(QueueItem item)
+            public Exception Error { get; private set; }
+
+            public string ErrorMessage
             {
-                this.item = item;
+                get
+                {
+                    return Error.Message;
+                }
+            }
+
+            public ErrorEventArgs(Item item, Exception error)
+            {
+                Item = item;
+                Error = error;
+            }
+        }
+
+        private class WorkerProgressReporter : System.IProgress<ProgressStatus>
+        {
+            public Item Item { get; private set; }
+
+            public ResourceQueue Queue { get; private set; }
+
+            public WorkerProgressReporter(Item item, ResourceQueue queue)
+            {
+                Item = item;
+                Queue = queue;
             }
 
             public void Report(ProgressStatus value)
             {
-                item.Progress = value;
-                item.Notify("Progress");
+                var args = new ProgressEventArgs(Item, value);
+
+                Queue.dispatcher.Invoke(() =>
+                {
+                    Queue.OnProgress?.Invoke(Queue, args);
+                });
             }
+        }
+
+        public static ResourceQueue Shared = new ResourceQueue();
+
+        private readonly Dispatcher dispatcher = Dispatcher.CurrentDispatcher;
+        private readonly List<Item> queue = new List<Item>();
+
+        private Item currentItem;
+        private CancellationTokenSource tokenSource;
+        private bool isBusy = false;
+
+        public event EventHandler<Item> OnEnqueue;
+        public event EventHandler<Item> OnStart;
+        public event EventHandler<ProgressEventArgs> OnProgress;
+        public event EventHandler<Item> OnFinish;
+        public event EventHandler<ErrorEventArgs> OnError;
+
+        public Item[] Queue
+        {
+            get
+            {
+                return queue.ToArray();
+            }
+        }
+
+        public void Enqueue(Item item)
+        {
+            queue.Add(item);
+            OnEnqueue?.Invoke(this, item);
+
+            var thread = new Thread(Dequeue);
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         private async void Dequeue()
         {
-            if (items.Count == 0 || Working)
+            if (isBusy || queue.Count == 0) return;
+
+            isBusy = true;
+
+            var item = queue[0];
+            queue.RemoveAt(0);
+
+            dispatcher.Invoke(() =>
             {
-                return;
-            }
+                OnStart?.Invoke(this, item);
+            });
 
-            Working = true;
-
-            var item = items.Dequeue();
+            currentItem = item;
+            tokenSource = new CancellationTokenSource();
 
             try
             {
-                switch (item.Type)
+                await Process(item);
+
+                dispatcher.Invoke(() =>
                 {
-                    case QueueItem.ItemType.Download:
-                        // Create separate session for download
-                        var client1 = await item.Source.Client.Clone();
-                        await client1.Download(item.Source.Path, item.Destination.Path, new XXX(item), item.Token);
-                        await client1.Diconnect();
-
-                        break;
-
-                    case QueueItem.ItemType.Upload:
-                        // Create separate session for upload
-                        var client2 = await item.Destination.Client.Clone();
-                        await client2.Upload(item.Destination.Path, item.Source.Path, new XXX(item), item.Token);
-                        await client2.Diconnect();
-
-                        break;
-
-                    case QueueItem.ItemType.Delete:
-                        // Create separate session for deletion
-                        var client3 = await item.Source.Client.Clone();
-                        await client3.Delete(item.Source.Path);
-                        await client3.Diconnect();
-
-                        break;
-                }
+                    OnFinish?.Invoke(this, item);
+                });
             }
             catch (Exception ex)
             {
-                // TODO:
-                Console.WriteLine(ex);
-            }
-            finally
-            {
-                OnFinishedItem?.Invoke(this, item);
-
-                if (item.OnComplete != null)
+                dispatcher.Invoke(() =>
                 {
-                    item.OnComplete(item.Source, item.Destination);
-                }
+                    OnError?.Invoke(this, new ErrorEventArgs(item, ex));
+                });
             }
 
-            Working = false;
+            currentItem = null;
+            tokenSource.Dispose();
+            tokenSource = null;
+
+            isBusy = false;
 
             Dequeue();
+        }
+
+        private async Task Process(Item item)
+        {
+            switch (item.Action)
+            {
+                case Item.ActionType.Download:
+                    var client1 = await item.Source.Client.Clone();
+                    await client1.Download(item.Source.Path, item.Destination.Path, new WorkerProgressReporter(item, this), tokenSource.Token);
+                    await client1.Diconnect();
+                    break;
+
+                case Item.ActionType.Upload:
+                    var client2 = await item.Destination.Client.Clone();
+                    await client2.Upload(item.Destination.Path, item.Source.Path, new WorkerProgressReporter(item, this), tokenSource.Token);
+                    await client2.Diconnect();
+                    break;
+
+                case Item.ActionType.Delete:
+                    var client3 = await item.Source.Client.Clone();
+                    await client3.Delete(item.Source.Path);
+                    await client3.Diconnect();
+                    break;
+            }
+
+            dispatcher.Invoke(() =>
+            {
+                item.ViewModel.Refresh();
+            });
+
+            tokenSource.Token.ThrowIfCancellationRequested();
+        }
+
+        public void Cancel(Item item)
+        {
+            queue.Remove(item);
+
+            if (currentItem == item && tokenSource != null)
+            {
+                tokenSource.Cancel();
+            }
         }
     }
 }

@@ -1,6 +1,8 @@
-﻿using Dispatch.Helpers;
-using Dispatch.Service.Updater;
+﻿using Dispatch.Controls;
+using Dispatch.Helpers;
+using Dispatch.View.Fragments;
 using Dispatch.ViewModel;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,47 +14,66 @@ namespace Dispatch.View.Windows
 
         public QueueViewModel QueueViewModel { get; } = new QueueViewModel();
 
-        private void NewTabButton_Click(object sender, RoutedEventArgs e)
+        public UpdateViewModel UpdateViewModel { get; } = new UpdateViewModel();
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            TabsListBox.SelectedItem = ViewModel.NewTab();
+            WindowHelper.EnableBlurForWindow(this);
         }
 
-        private void CloseTabButton_Click(object sender, RoutedEventArgs e)
+        private void TabListBox_OnAdd(object sender, EventArgs e)
         {
-            var button = e.OriginalSource as Button;
-            var model = button.DataContext as TabViewModel;
-            model.Disconnect();
-            ViewModel.CloseTab(model);
+            TabListBox.SelectedItem = ViewModel.NewTab();
+        }
+
+        private void TabListBox_OnClose(object sender, EventArgs e)
+        {
+            var item = (DPTabListBoxItem)sender;
+            ViewModel.CloseTab((TabViewModel)item.DataContext);
         }
 
         private void TabListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var listBox = sender as ListBox;
-
             if (e.AddedItems.Count == 0)
             {
-                listBox.SelectedIndex = 0;
+                ((DPTabListBox)sender).SelectedIndex = 0;
             }
-            else
+        }
+
+        private void DarkButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.ChangeTheme(App.Theme.Dark);
+        }
+
+        private void LightButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.ChangeTheme(App.Theme.Light);
+        }
+
+        private void TransfersButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (SideView.IsOpen && SideView.PanelContent is QueueView)
             {
-                listBox.ScrollIntoView(e.AddedItems[0]);
+                SideView.IsOpen = false;
+                return;
             }
+
+            SideView.Title = "Transfers";
+            SideView.PanelContent = new QueueView { ViewModel = QueueViewModel };
+            SideView.IsOpen = true;
         }
 
-        private async void UpdateMenuItem_Click(object sender, RoutedEventArgs e)
+        private void AboutButton_Click(object sender, RoutedEventArgs e)
         {
-            var updater = new ApplicationUpdater(new UpdateProvider());
-            await updater.CheckForUpdate();
-        }
+            if (SideView.IsOpen && SideView.PanelContent is AboutView)
+            {
+                SideView.IsOpen = false;
+                return;
+            }
 
-        private void TransfersMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            TransfersPopup.IsOpen = true;
-        }
-
-        private void AboutMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show($"You have version {Constants.VERSION} ({Constants.CHANNEL})", "About", MessageBoxButton.OK, MessageBoxImage.Information);
+            SideView.Title = "About Dispatch";
+            SideView.PanelContent = new AboutView();
+            SideView.IsOpen = true;
         }
     }
 }

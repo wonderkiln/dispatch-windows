@@ -5,6 +5,8 @@ using Dispatch.ViewModel;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Dispatch.View.Fragments
 {
@@ -31,21 +33,38 @@ namespace Dispatch.View.Fragments
             InitializeComponent();
         }
 
-        private void ConnectView_OnConnected(object sender, ConnectV e)
+        private void ConnectView_OnConnected(object sender, ConnectViewArgs e)
         {
-            ViewModel.RightViewModel = new ListViewModel(e.Client, e.InitialPath, e.Name);
+            ImageSource source = null;
+
+            if (e.Client is FTPClient)
+            {
+                source = new BitmapImage(new Uri("/Resources/ic_ftp.png", UriKind.Relative));
+            }
+            else if (e.Client is SFTPClient)
+            {
+                source = new BitmapImage(new Uri("/Resources/ic_sftp.png", UriKind.Relative));
+            }
+
+            ViewModel.RightViewModel = new ListViewModel(e.Client, e.InitialPath, source, e.Name);
 
             OnConnected?.Invoke(this, ViewModel);
         }
 
-        private void ListView_BeginUpload(object sender, Resource e)
+        private void ResourceView_BeginTransfer(object sender, Resource[] e)
         {
-            var resource = new Resource(ViewModel.RightViewModel.Client, ViewModel.RightViewModel.CurrentPath, "");
-
-            ResourceQueue.Shared.Add(QueueItem.ItemType.Upload, e, resource, (source, destination) =>
+            foreach (var resource in e)
             {
-                ViewModel.RightViewModel.Refresh();
-            });
+                // LocalClient is always on the left side
+                if (resource.Client is LocalClient)
+                {
+                    ResourceQueue.Shared.Enqueue(new ResourceQueue.Item(ResourceQueue.Item.ActionType.Upload, resource, new Resource(ViewModel.RightViewModel.Client, ViewModel.RightViewModel.CurrentPath, ""), ViewModel.RightViewModel));
+                }
+                else
+                {
+                    ResourceQueue.Shared.Enqueue(new ResourceQueue.Item(ResourceQueue.Item.ActionType.Download, resource, new Resource(ViewModel.LeftViewModel.Client, ViewModel.LeftViewModel.CurrentPath, ""), ViewModel.LeftViewModel));
+                }
+            }
         }
     }
 }

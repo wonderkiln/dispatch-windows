@@ -4,25 +4,49 @@ using System.Windows.Controls;
 
 namespace Dispatch.View.Fragments
 {
-    public partial class QueueView : UserControl
+    public class QueueItemDataTemplateSelector : DataTemplateSelector
     {
-        public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register("ViewModel", typeof(QueueViewModel), typeof(QueueView));
+        public DataTemplate PendingDataTemplate { get; set; }
+        public DataTemplate WorkingDataTemplate { get; set; }
+        public DataTemplate DoneDataTemplate { get; set; }
+        public DataTemplate ErrorDataTemplate { get; set; }
 
-        public QueueViewModel ViewModel
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            get
+            var queueItem = (QueueViewModel.QueueItem)item;
+
+            switch (queueItem.Status)
             {
-                return (QueueViewModel)GetValue(ViewModelProperty);
-            }
-            set
-            {
-                SetValue(ViewModelProperty, value);
+                case QueueViewModel.QueueItem.StatusType.Pending:
+                    return PendingDataTemplate;
+
+                case QueueViewModel.QueueItem.StatusType.Working:
+                    return WorkingDataTemplate;
+
+                case QueueViewModel.QueueItem.StatusType.Done:
+                    return DoneDataTemplate;
+
+                case QueueViewModel.QueueItem.StatusType.Error:
+                    return ErrorDataTemplate;
+
+                default:
+                    return null;
             }
         }
+    }
+
+    public partial class QueueView : UserControl
+    {
+        public QueueViewModel ViewModel { get; set; }
 
         public QueueView()
         {
             InitializeComponent();
+        }
+
+        private void ClearButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ClearCompleted();
         }
     }
 }

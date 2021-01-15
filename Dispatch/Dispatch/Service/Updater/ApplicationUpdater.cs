@@ -14,30 +14,39 @@ namespace Dispatch.Service.Updater
 
         public UpdateInfo LatestUpdate { get; set; }
 
+        public bool HasUpdate
+        {
+            get
+            {
+                if (LatestUpdate == null) return false;
+                return LatestUpdate.Version > Constants.VERSION;
+            }
+        }
+
         public ApplicationUpdater(IUpdateProvider updater)
         {
             this.updater = updater;
         }
 
-        public async Task CheckForUpdate()
+        public async Task CheckForUpdate(bool silent = false)
         {
             try
             {
                 LatestUpdate = await updater.GetLatestUpdate();
 
-                if (LatestUpdate.Version > Constants.VERSION)
+                if (HasUpdate)
                 {
-                    if (MessageBox.Show(
+                    if (!silent && MessageBox.Show(
                         $"Do you want to download and install it now ({ByteSize.FromBytes(LatestUpdate.DownloadSize)})?",
                         $"Update available from {Constants.VERSION} to {LatestUpdate.Version} ({Constants.CHANNEL})",
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Question,
                         MessageBoxResult.Yes) == MessageBoxResult.Yes)
                     {
-                        DownloadUpdate();
+                        DownloadAndInstall();
                     }
                 }
-                else
+                else if (!silent)
                 {
                     MessageBox.Show(
                         $"You already have the latest version ({Constants.VERSION})",
@@ -53,7 +62,7 @@ namespace Dispatch.Service.Updater
             }
         }
 
-        private async void DownloadUpdate()
+        public async void DownloadAndInstall()
         {
             try
             {

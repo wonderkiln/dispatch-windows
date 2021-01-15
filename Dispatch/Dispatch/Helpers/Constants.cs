@@ -15,6 +15,14 @@ namespace Dispatch.Helpers
         public static Channel CHANNEL = Channel.Stable;
 #endif
 
+        public static string CHANNEL_STRING
+        {
+            get
+            {
+                return CHANNEL.ToString();
+            }
+        }
+
         public static Version VERSION
         {
             get
@@ -22,6 +30,15 @@ namespace Dispatch.Helpers
                 return Assembly.GetExecutingAssembly().GetName().Version;
             }
         }
+
+        public static string VERSION_STRING
+        {
+            get
+            {
+                return VERSION.ToString();
+            }
+        }
+
 
         public static string APP_NAME
         {
