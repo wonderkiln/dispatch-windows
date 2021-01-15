@@ -75,11 +75,11 @@
                 <GridView>
                     <GridViewColumn Width="300">
                         <GridViewColumn.Header>
-                            <TextBlock Text="Name" />
+                            <TextBlock Margin="22,0,8,0" Text="Name" />
                         </GridViewColumn.Header>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Grid>
+                                <Grid Margin="-6,0,2,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="22" />
                                         <ColumnDefinition Width="*" />
@@ -99,11 +99,11 @@
                     </GridViewColumn>
                     <GridViewColumn Width="120">
                         <GridViewColumn.Header>
-                            <TextBlock Text="Size" />
+                            <TextBlock Margin="0,0,8,0" Text="Size" />
                         </GridViewColumn.Header>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Size, Converter={StaticResource BytesToStringConverter}}" />
+                                <TextBlock Margin="-6,0,2,0" Text="{Binding Size, Converter={StaticResource BytesToStringConverter}}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

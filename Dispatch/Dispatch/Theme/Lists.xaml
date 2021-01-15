@@ -68,6 +68,48 @@
         </Setter>
     </Style>
 
+    <Style x:Key="GridViewColumnHeaderGripperStyle" TargetType="Thumb">
+        <Setter Property="Width" Value="8" />
+        <Setter Property="Background" Value="{StaticResource SeparatorSolidColorBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Border
+                        x:Name="Border"
+                        Background="Transparent"
+                        BorderBrush="{TemplateBinding Background}"
+                        BorderThickness="1,0,0,0" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="GridViewColumnHeaderStyle" TargetType="GridViewColumnHeader">
+        <Setter Property="Padding" Value="0,8" />
+        <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="GridViewColumnHeader">
+                    <Grid Background="Transparent">
+                        <ContentPresenter Margin="{TemplateBinding Padding}" />
+                        <Thumb
+                            x:Name="PART_HeaderGripper"
+                            Height="16"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource GridViewColumnHeaderGripperStyle}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="False">
+                            <Setter TargetName="PART_HeaderGripper" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="{x:Static GridView.GridViewScrollViewerStyleKey}" TargetType="ScrollViewer">
         <Setter Property="Padding" Value="8,0" />
         <Setter Property="Template">
@@ -87,15 +129,20 @@
                             Focusable="False"
                             HorizontalScrollBarVisibility="Hidden"
                             VerticalScrollBarVisibility="Hidden">
-                            <GridViewHeaderRowPresenter
+                            <Border
                                 Margin="{TemplateBinding Padding}"
-                                AllowsColumnReorder="{Binding Path=TemplatedParent.View.AllowsColumnReorder, RelativeSource={RelativeSource TemplatedParent}}"
-                                ColumnHeaderContainerStyle="{Binding Path=TemplatedParent.View.ColumnHeaderContainerStyle, RelativeSource={RelativeSource TemplatedParent}}"
-                                ColumnHeaderContextMenu="{Binding Path=TemplatedParent.View.ColumnHeaderContextMenu, RelativeSource={RelativeSource TemplatedParent}}"
-                                ColumnHeaderTemplate="{Binding Path=TemplatedParent.View.ColumnHeaderTemplate, RelativeSource={RelativeSource TemplatedParent}}"
-                                ColumnHeaderTemplateSelector="{Binding Path=TemplatedParent.View.ColumnHeaderTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}"
-                                ColumnHeaderToolTip="{Binding Path=TemplatedParent.View.ColumnHeaderToolTip, RelativeSource={RelativeSource TemplatedParent}}"
-                                Columns="{Binding Path=TemplatedParent.View.Columns, RelativeSource={RelativeSource TemplatedParent}}" />
+                                BorderBrush="{StaticResource SeparatorSolidColorBrush}"
+                                BorderThickness="0,0,0,1">
+                                <GridViewHeaderRowPresenter
+                                    Margin="8,0"
+                                    AllowsColumnReorder="{Binding Path=TemplatedParent.View.AllowsColumnReorder, RelativeSource={RelativeSource TemplatedParent}}"
+                                    ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"
+                                    ColumnHeaderContextMenu="{Binding Path=TemplatedParent.View.ColumnHeaderContextMenu, RelativeSource={RelativeSource TemplatedParent}}"
+                                    ColumnHeaderTemplate="{Binding Path=TemplatedParent.View.ColumnHeaderTemplate, RelativeSource={RelativeSource TemplatedParent}}"
+                                    ColumnHeaderTemplateSelector="{Binding Path=TemplatedParent.View.ColumnHeaderTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}"
+                                    ColumnHeaderToolTip="{Binding Path=TemplatedParent.View.ColumnHeaderToolTip, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Columns="{Binding Path=TemplatedParent.View.Columns, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </Border>
                         </ScrollViewer>
                         <ScrollContentPresenter
                             Name="PART_ScrollContentPresenter"
