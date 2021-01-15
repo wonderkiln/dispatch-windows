@@ -1,4 +1,5 @@
-﻿using Dispatch.Service.Client;
+﻿using Dispatch.Helpers;
+using Dispatch.Service.Client;
 using Dispatch.Service.Model;
 using Dispatch.ViewModel;
 using System;
@@ -50,14 +51,20 @@ namespace Dispatch.View.Fragments
             OnConnected?.Invoke(this, ViewModel);
         }
 
-        private void ListView_BeginUpload(object sender, Resource e)
+        private void ResourceView_BeginTransfer(object sender, Resource[] e)
         {
-            var resource = new Resource(ViewModel.RightViewModel.Client, ViewModel.RightViewModel.CurrentPath, "");
-
-            //ResourceQueue.Shared.Add(QueueItem.ItemType.Upload, e, resource, (source, destination) =>
-            //{
-            //    ViewModel.RightViewModel.Refresh();
-            //});
+            foreach (var resource in e)
+            {
+                // LocalClient is always on the left side
+                if (resource.Client is LocalClient)
+                {
+                    ResourceQueue.Shared.Enqueue(new ResourceQueue.Item(ResourceQueue.Item.ActionType.Upload, resource, new Resource(ViewModel.RightViewModel.Client, ViewModel.RightViewModel.CurrentPath, ""), ViewModel.RightViewModel));
+                }
+                else
+                {
+                    ResourceQueue.Shared.Enqueue(new ResourceQueue.Item(ResourceQueue.Item.ActionType.Download, resource, new Resource(ViewModel.LeftViewModel.Client, ViewModel.LeftViewModel.CurrentPath, ""), ViewModel.LeftViewModel));
+                }
+            }
         }
     }
 }

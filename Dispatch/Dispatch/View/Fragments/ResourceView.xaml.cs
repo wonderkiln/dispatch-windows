@@ -50,8 +50,10 @@ namespace Dispatch.View.Fragments
         }
     }
 
-    public partial class ResourceView : UserControl
+    public partial class ResourceView : UserControl, IContextServiceActions
     {
+        public event EventHandler<Resource[]> BeginTransfer;
+
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register("ViewModel", typeof(ListViewModel), typeof(ResourceView));
         public ListViewModel ViewModel
         {
@@ -119,11 +121,11 @@ namespace Dispatch.View.Fragments
                 {
                     if (ViewModel.Client is LocalClient && !(resource.Client is LocalClient))
                     {
-                        ResourceQueue.Shared.Enqueue(new ResourceQueue.Item(ResourceQueue.Item.ActionType.Download, resource, new Resource(ViewModel.Client, ViewModel.CurrentPath, "")));
+                        ResourceQueue.Shared.Enqueue(new ResourceQueue.Item(ResourceQueue.Item.ActionType.Download, resource, new Resource(ViewModel.Client, ViewModel.CurrentPath, ""), ViewModel));
                     }
                     else if (!(ViewModel.Client is LocalClient) && resource.Client is LocalClient)
                     {
-                        ResourceQueue.Shared.Enqueue(new ResourceQueue.Item(ResourceQueue.Item.ActionType.Upload, resource, new Resource(ViewModel.Client, ViewModel.CurrentPath, "")));
+                        ResourceQueue.Shared.Enqueue(new ResourceQueue.Item(ResourceQueue.Item.ActionType.Upload, resource, new Resource(ViewModel.Client, ViewModel.CurrentPath, ""), ViewModel));
                     }
                 }
             }
@@ -174,6 +176,37 @@ namespace Dispatch.View.Fragments
                 var listView = sender as ListView;
                 selectedItems = listView.SelectedItems.Cast<Resource>().ToArray();
                 startDragPosition = e.GetPosition(listView);
+            }
+        }
+
+        private void List_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var listView = sender as ListView;
+            var resources = listView.SelectedItems.Cast<Resource>().ToArray();
+            ContextService.Show(resources, listView, this);
+        }
+
+        public void ContextServiceOpen(Resource resource)
+        {
+            if (resource.Type != ResourceType.File)
+            {
+                ViewModel.Load(resource.Path);
+            }
+        }
+
+        public void ContextServiceTransfer(Resource[] resources)
+        {
+            BeginTransfer?.Invoke(this, resources);
+        }
+
+        public void ContextServiceDelete(Resource[] resources)
+        {
+            if (MessageBox.Show("Are you sure you want to delete the selected items?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                foreach (var resource in resources)
+                {
+                    ResourceQueue.Shared.Enqueue(new ResourceQueue.Item(ResourceQueue.Item.ActionType.Delete, resource, null, ViewModel));
+                }
             }
         }
     }

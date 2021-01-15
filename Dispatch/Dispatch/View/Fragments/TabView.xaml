@@ -15,7 +15,7 @@
             <local:ConnectView OnConnected="ConnectView_OnConnected" />
         </DataTemplate>
         <DataTemplate x:Key="ListView">
-            <local:ResourceView ViewModel="{Binding}" />
+            <local:ResourceView BeginTransfer="ResourceView_BeginTransfer" ViewModel="{Binding}" />
         </DataTemplate>
         <converters:ListViewModelToViewSelector
             x:Key="ViewSelector"
@@ -28,7 +28,7 @@
             <ColumnDefinition Width="*" MinWidth="100" />
             <ColumnDefinition Width="*" MinWidth="100" />
         </Grid.ColumnDefinitions>
-        <local:ResourceView ViewModel="{Binding ViewModel.LeftViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:TabView}}}" />
+        <local:ResourceView BeginTransfer="ResourceView_BeginTransfer" ViewModel="{Binding ViewModel.LeftViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:TabView}}}" />
         <ContentPresenter
             Grid.Column="1"
             Content="{Binding ViewModel.RightViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:TabView}}}"

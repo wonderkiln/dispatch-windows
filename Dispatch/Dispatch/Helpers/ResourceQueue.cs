@@ -1,4 +1,5 @@
 ﻿using Dispatch.Service.Model;
+using Dispatch.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -19,11 +20,14 @@ namespace Dispatch.Helpers
 
             public Resource Destination { get; private set; }
 
-            public Item(ActionType action, Resource source, Resource destination = null)
+            public ListViewModel ViewModel { get; private set; }
+
+            public Item(ActionType action, Resource source, Resource destination, ListViewModel viewModel)
             {
                 Action = action;
                 Source = source;
                 Destination = destination;
+                ViewModel = viewModel;
             }
         }
 
@@ -182,6 +186,11 @@ namespace Dispatch.Helpers
                     await client3.Diconnect();
                     break;
             }
+
+            dispatcher.Invoke(() =>
+            {
+                item.ViewModel.Refresh();
+            });
 
             tokenSource.Token.ThrowIfCancellationRequested();
         }

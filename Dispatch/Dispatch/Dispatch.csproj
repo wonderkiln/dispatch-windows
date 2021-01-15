@@ -83,6 +83,7 @@
     <Compile Include="Controls\DPSideView.cs" />
     <Compile Include="Controls\DPTabListBox.cs" />
     <Compile Include="Controls\DPTextBox.cs" />
+    <Compile Include="Helpers\ContextService.cs" />
     <Compile Include="Helpers\Converters\BytesToStringConverter.cs" />
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\Converters\ListViewModelToViewSelector.cs" />

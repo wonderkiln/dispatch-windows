@@ -63,6 +63,7 @@
             DragOver="List_DragEnter"
             Drop="List_Drop"
             ItemsSource="{Binding ViewModel.Resources, RelativeSource={RelativeSource AncestorType={x:Type local:ResourceView}}}"
+            MouseRightButtonUp="List_MouseRightButtonUp"
             PreviewMouseDown="List_PreviewMouseDown"
             PreviewMouseMove="List_PreviewMouseMove"
             SelectionMode="Extended">
@@ -92,7 +93,8 @@
                                     <TextBlock
                                         Grid.Column="1"
                                         VerticalAlignment="Center"
-                                        Text="{Binding Name}" />
+                                        Text="{Binding Name}"
+                                        TextTrimming="CharacterEllipsis" />
                                 </Grid>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
