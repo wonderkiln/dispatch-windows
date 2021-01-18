@@ -1,37 +1,74 @@
 ﻿using Dispatch.Helpers;
 using Dispatch.Service.Updater;
+using System.Windows;
 
 namespace Dispatch.ViewModel
 {
     public class UpdateViewModel : Observable
     {
-        public bool HasUpdate
+        public enum StatusType { None, UpdateAvailable, Downloading }
+
+        private StatusType status = StatusType.None;
+        public StatusType Status
         {
             get
             {
-                return applicationUpdater.HasUpdate;
+                return status;
+            }
+            private set
+            {
+                status = value;
+                Notify();
             }
         }
 
-        public RelayCommand UpdateCommand { get; private set; }
+        private double progress = 0;
+        public double Progress
+        {
+            get
+            {
+                return progress;
+            }
+            private set
+            {
+                progress = value;
+                Notify();
+            }
+        }
 
-        private ApplicationUpdater applicationUpdater = new ApplicationUpdater(new UpdateProvider());
+        public RelayCommand DownloadAndInstallCommand { get; private set; }
+
+        private readonly ApplicationUpdater applicationUpdater = new ApplicationUpdater(new UpdateProvider());
 
         public UpdateViewModel()
         {
-            UpdateCommand = new RelayCommand(Update);
-            Check();
+            applicationUpdater.DownloadProgressChanged += ApplicationUpdater_DownloadProgressChanged;
+            DownloadAndInstallCommand = new RelayCommand(DownloadAndInstall);
+            CheckForUpdates();
         }
 
-        private async void Check()
+        private void ApplicationUpdater_DownloadProgressChanged(object sender, double e)
+        {
+            Progress = e;
+        }
+
+        private async void CheckForUpdates()
         {
             await applicationUpdater.CheckForUpdate(true);
-            Notify("HasUpdate ");
+
+            if (applicationUpdater.HasUpdate)
+            {
+                Status = StatusType.UpdateAvailable;
+            }
         }
 
-        private void Update(object arg)
+        private void DownloadAndInstall(object arg)
         {
-            applicationUpdater.DownloadAndInstall();
+            if (MessageBox.Show($"Do you want to update to the latest version now?\nYou have {Constants.VERSION} and the latest version is {applicationUpdater.LatestUpdate.Version}.", "New update available", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                Status = StatusType.Downloading;
+                applicationUpdater.DownloadAndInstall();
+            }
         }
     }
 }

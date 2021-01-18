@@ -22,6 +22,27 @@
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <DataTemplate x:Key="NoUpdateDataTemplate" />
+        <DataTemplate x:Key="NewUpdateDataTemplate">
+            <Button
+                Command="{Binding UpdateViewModel.DownloadAndInstallCommand, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
+                Content="New update"
+                Style="{StaticResource SimpleButtonStyle}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DownloadingUpdateDataTemplate">
+            <StackPanel>
+                <TextBlock>Downloading update...</TextBlock>
+                <ProgressBar
+                    Margin="0,4,0,0"
+                    Maximum="100"
+                    Value="{Binding UpdateViewModel.Progress, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}, Mode=OneWay}" />
+            </StackPanel>
+        </DataTemplate>
+        <local:UpdateStatusDataTemplateSelector
+            x:Key="UpdateStatusDataTemplateSelector"
+            DownloadingUpdate="{StaticResource DownloadingUpdateDataTemplate}"
+            NewUpdate="{StaticResource NewUpdateDataTemplate}"
+            NoUpdate="{StaticResource NoUpdateDataTemplate}" />
     </Window.Resources>
 
     <Grid>
@@ -109,15 +130,13 @@
         <Border
             Grid.Row="3"
             Grid.ColumnSpan="2"
-            Padding="8,0"
+            Padding="16,0"
             Style="{StaticResource StatusBarBackgroundBorderStyle}">
-            <Button
+            <ContentPresenter
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
-                Command="{Binding UpdateViewModel.UpdateCommand, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
-                Content="New Update"
-                Style="{StaticResource SimpleButtonStyle}"
-                Visibility="{Binding UpdateViewModel.HasUpdate, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                Content="{Binding UpdateViewModel.Status, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
+                ContentTemplateSelector="{StaticResource UpdateStatusDataTemplateSelector}" />
         </Border>
     </Grid>
 </Window>
