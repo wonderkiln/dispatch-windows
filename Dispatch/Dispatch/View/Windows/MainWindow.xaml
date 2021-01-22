@@ -11,7 +11,7 @@
     xmlns:vcontrols="clr-namespace:Dispatch.View.Controls"
     Title="{x:Static helpers:Constants.APP_NAME}"
     Width="1000"
-    Height="600"
+    Height="620"
     MinWidth="200"
     MinHeight="200"
     Icon="../../Resources/Icon.ico"

@@ -143,7 +143,6 @@
     </Style>
 
     <Style TargetType="GridSplitter">
-        <Setter Property="Width" Value="24" />
         <Setter Property="Background" Value="{StaticResource PrimaryBackgroundSolidColorBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource SeparatorSolidColorBrush}" />
         <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
@@ -152,20 +151,29 @@
                 <ControlTemplate TargetType="GridSplitter">
                     <Grid>
                         <Border
+                            x:Name="VerticalLine"
                             Width="1"
                             HorizontalAlignment="Center"
                             Background="{TemplateBinding BorderBrush}" />
+                        <Border
+                            x:Name="HorizontalLine"
+                            Height="1"
+                            VerticalAlignment="Center"
+                            Background="{TemplateBinding BorderBrush}"
+                            Visibility="Collapsed" />
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Ellipse
-                                Width="{TemplateBinding Width}"
-                                Height="{TemplateBinding Width}"
+                                Width="24"
+                                Height="24"
                                 Fill="{TemplateBinding Background}"
                                 Stroke="{TemplateBinding BorderBrush}"
                                 StrokeThickness="1" />
                             <StackPanel
+                                x:Name="Arrows"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Orientation="Horizontal">
+                                Orientation="Horizontal"
+                                RenderTransformOrigin="0.5,0.5">
                                 <Path
                                     Data="M 4,0 L 0,4 L 4,8"
                                     Stroke="{TemplateBinding Foreground}"
@@ -178,6 +186,21 @@
                             </StackPanel>
                         </Grid>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ResizeDirection" Value="Columns">
+                            <Setter Property="Width" Value="24" />
+                        </Trigger>
+                        <Trigger Property="ResizeDirection" Value="Rows">
+                            <Setter Property="Height" Value="24" />
+                            <Setter TargetName="VerticalLine" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="HorizontalLine" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="Arrows" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="90" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -201,6 +224,7 @@
                     ContentSource="Icon" />
                 <ContentPresenter
                     Grid.Column="1"
+                    Margin="0,0,12,0"
                     VerticalAlignment="Center"
                     ContentSource="Header"
                     RecognizesAccessKey="True" />
@@ -263,7 +287,6 @@
         <Setter Property="HasDropShadow" Value="True" />
         <Setter Property="Background" Value="{StaticResource PanelBackgroundSolidColorBrush}" />
         <Setter Property="Padding" Value="4" />
-        <Setter Property="MinWidth" Value="160" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ContextMenu">
@@ -357,6 +380,7 @@
                         <Ellipse Stroke="{TemplateBinding Background}" StrokeThickness="1.5" />
                         <Path
                             Name="Path"
+                            RenderTransformOrigin="0.5,0.5"
                             Stroke="{TemplateBinding Foreground}"
                             StrokeEndLineCap="Round"
                             StrokeThickness="1.5">
@@ -372,24 +396,26 @@
                                 </PathGeometry>
                             </Path.Data>
                             <Path.RenderTransform>
-                                <RotateTransform Angle="0" CenterX="6" CenterY="6" />
+                                <RotateTransform Angle="0" />
                             </Path.RenderTransform>
                         </Path>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <EventTrigger RoutedEvent="Loaded">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation
-                                        RepeatBehavior="Forever"
-                                        Storyboard.TargetName="Path"
-                                        Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
-                                        From="0"
-                                        To="360"
-                                        Duration="0:0:2" />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
+                        <Trigger Property="Visibility" Value="Visible">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            RepeatBehavior="Forever"
+                                            Storyboard.TargetName="Path"
+                                            Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
+                                            From="0"
+                                            To="360"
+                                            Duration="0:0:2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

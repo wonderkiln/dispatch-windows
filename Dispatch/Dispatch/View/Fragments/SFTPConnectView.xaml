@@ -5,6 +5,7 @@
     xmlns:controls="clr-namespace:Dispatch.Controls"
     xmlns:converters="clr-namespace:Dispatch.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="clr-namespace:Dispatch.Helpers"
     xmlns:local="clr-namespace:Dispatch.View.Fragments"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:validators="clr-namespace:Dispatch.Helpers.Validators"
@@ -128,16 +129,10 @@
         <CheckBox x:Name="PrivateKeyCheckBox">
             <TextBlock Text="Use private key" />
         </CheckBox>
-        <Button HorizontalAlignment="Right" Click="ButtonConnect_Click">
-            <StackPanel Orientation="Horizontal">
-                <controls:DPSpinner
-                    Margin="0,0,4,0"
-                    VerticalAlignment="Center"
-                    Background="Transparent"
-                    Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-                    Visibility="{Binding IsConnecting, RelativeSource={RelativeSource AncestorType=local:SFTPConnectView}, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                <TextBlock VerticalAlignment="Center" Text="Connect" />
-            </StackPanel>
-        </Button>
+        <Button
+            HorizontalAlignment="Right"
+            helpers:ButtonExtension.IsLoading="{Binding IsConnecting, RelativeSource={RelativeSource AncestorType={x:Type local:SFTPConnectView}}}"
+            Click="ButtonConnect_Click"
+            Content="Connect" />
     </StackPanel>
 </UserControl>
