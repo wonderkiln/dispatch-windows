@@ -5,7 +5,12 @@
 #define MyAppExeName "Dispatch.exe"
 #define MyAppVersion GetFileVersion(MyAppPath + "\" + MyAppExeName)
 
+#ifdef MyAppChannel
+#define MyAppName "Dispatch (" + MyAppChannel + ")"
+#else
 #define MyAppName "Dispatch"
+#endif        
+
 #define MyAppPublisher "WonderKiln Inc."
 #define MyAppURL "https://www.wonderkiln.com"
 
@@ -15,7 +20,7 @@
 AppId={{3178D37A-FBBE-472D-A1AA-CE8AC19AE1C7}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-;AppVerName={#MyAppName} {#MyAppVersion}
+AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
@@ -26,10 +31,11 @@ LicenseFile=LICENSE.txt
 ; Remove the following line to run in administrative install mode (install for all users.)
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-OutputBaseFilename=Dispatch Setup {#MyAppVersion}
+OutputBaseFilename={#MyAppName} Setup {#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+UninstallDisplayIcon={app}\{#MyAppExeName}
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
