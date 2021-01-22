@@ -87,7 +87,7 @@ jobs:
         run: |
           NAME=$(ls | grep '.exe' | head -1)
           VERSION=$(echo $NAME | egrep -o '[0-9]+.[0-9]+.[0-9]+.[0-9]+')
-          echo 'VERSION=$VERSION' >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
           URL="https://stwonderkilnprod.blob.core.windows.net/${{ env.CONTAINER_NAME }}/$NAME"
           SIZE=$(stat -c %s "$NAME")
           FORMAT='{ "url": "%s", "versionCode": "%s", "fileSize": %s, "channel": "%s" }\n'
@@ -98,6 +98,8 @@ jobs:
       - name: Create Release (Develop)
         if: github.ref == 'refs/heads/develop'
         uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.VERSION }}-${{ env.CONTAINER_NAME }}
           release_name: ${{ env.VERSION }}-${{ env.CONTAINER_NAME }}
