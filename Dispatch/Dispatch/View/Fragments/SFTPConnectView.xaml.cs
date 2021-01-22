@@ -5,13 +5,23 @@ using System.Windows.Controls;
 
 namespace Dispatch.View.Fragments
 {
+    public class SFTPConnectInfo
+    {
+        public string Address { get; set; }
+        public int? Port { get; set; } = 22;
+        public string User { get; set; }
+        public string Password { get; set; }
+        public string Root { get; set; }
+    }
+
     public partial class SFTPConnectView : UserControl
     {
-        public string Address { get; set; } = "127.0.0.1";
-        public int? Port { get; set; } = 22;
-        public string User { get; set; } = "Adrian";
-        public string Password { get; set; } = "root";
-        public string Root { get; set; } = "/Downloads";
+        public static SFTPConnectInfo ConnectInfo { get; }
+#if DEBUG
+            = new SFTPConnectInfo() { Address = "127.0.0.1", User = "Adrian", Password = "root", Root = "/Downloads" };
+#else
+            = new SFTPConnectInfo();
+#endif
 
         public static readonly DependencyProperty ConnectViewProperty = DependencyProperty.Register("ConnectView", typeof(IConnectView), typeof(SFTPConnectView));
 
@@ -47,9 +57,9 @@ namespace Dispatch.View.Fragments
 
             try
             {
-                var client = await SFTPClient.Create(Address, Port.Value, User, Password);
+                var client = await SFTPClient.Create(ConnectInfo.Address, ConnectInfo.Port.Value, ConnectInfo.User, ConnectInfo.Password);
 
-                var args = new ConnectViewArgs() { Client = client, InitialPath = Root ?? "/", Name = $"{Address}:{Port}" };
+                var args = new ConnectViewArgs() { Client = client, InitialPath = ConnectInfo.Root ?? "/", Name = $"{ConnectInfo.Address}:{ConnectInfo.Port}" };
                 ConnectView.OnSuccess(args);
             }
             catch (Exception ex)
