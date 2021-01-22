@@ -24,11 +24,17 @@ namespace Dispatch.View.Fragments
 #endif
 
         public static readonly DependencyProperty ConnectViewProperty = DependencyProperty.Register("ConnectView", typeof(IConnectView), typeof(FTPConnectView));
-
         public IConnectView ConnectView
         {
             get { return (IConnectView)GetValue(ConnectViewProperty); }
             set { SetValue(ConnectViewProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsConnectingProperty = DependencyProperty.Register("IsConnecting", typeof(bool), typeof(FTPConnectView), new PropertyMetadata(false));
+        public bool IsConnecting
+        {
+            get { return (bool)GetValue(IsConnectingProperty); }
+            set { SetValue(IsConnectingProperty, value); }
         }
 
         public FTPConnectView()
@@ -53,6 +59,7 @@ namespace Dispatch.View.Fragments
                 return;
             }
 
+            IsConnecting = true;
             ConnectView.OnBeginConnecting();
 
             try
@@ -65,6 +72,10 @@ namespace Dispatch.View.Fragments
             catch (Exception ex)
             {
                 ConnectView.OnException(ex);
+            }
+            finally
+            {
+                IsConnecting = false;
             }
         }
     }

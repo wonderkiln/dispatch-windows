@@ -43,11 +43,17 @@ namespace Dispatch.View.Fragments
 #endif
 
         public static readonly DependencyProperty ConnectViewProperty = DependencyProperty.Register("ConnectView", typeof(IConnectView), typeof(SFTPConnectView));
-
         public IConnectView ConnectView
         {
             get { return (IConnectView)GetValue(ConnectViewProperty); }
             set { SetValue(ConnectViewProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsConnectingProperty = DependencyProperty.Register("IsConnecting", typeof(bool), typeof(SFTPConnectView), new PropertyMetadata(false));
+        public bool IsConnecting
+        {
+            get { return (bool)GetValue(IsConnectingProperty); }
+            set { SetValue(IsConnectingProperty, value); }
         }
 
         public SFTPConnectView()
@@ -75,6 +81,7 @@ namespace Dispatch.View.Fragments
             var hasError = bindings.Aggregate(false, (prev, curr) => prev || curr.HasError);
             if (hasError) return;
 
+            IsConnecting = true;
             ConnectView.OnBeginConnecting();
 
             try
@@ -96,6 +103,10 @@ namespace Dispatch.View.Fragments
             catch (Exception ex)
             {
                 ConnectView.OnException(ex);
+            }
+            finally
+            {
+                IsConnecting = false;
             }
         }
 
