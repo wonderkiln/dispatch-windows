@@ -105,3 +105,25 @@ jobs:
           release_name: ${{ env.VERSION }}-${{ env.CONTAINER_NAME }}
           draft: false
           prerelease: true
+
+      - name: Create Release (Beta)
+        if: github.ref == 'refs/heads/beta'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.VERSION }}-${{ env.CONTAINER_NAME }}
+          release_name: ${{ env.VERSION }}-${{ env.CONTAINER_NAME }}
+          draft: false
+          prerelease: true
+
+      - name: Create Release (Master)
+        if: github.ref == 'refs/heads/master'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.VERSION }}
+          release_name: ${{ env.VERSION }}
+          draft: false
+          prerelease: false
