@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:Dispatch.Controls"
+    xmlns:converters="clr-namespace:Dispatch.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Dispatch.View.Fragments"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -10,6 +11,11 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+    </UserControl.Resources>
 
     <StackPanel Grid.IsSharedSizeScope="True">
         <Grid Margin="0,0,0,6">
@@ -73,13 +79,38 @@
             IsPassword="True"
             Label="Password:"
             LabelSharedSizeGroup="Label"
-            Placeholder="password">
+            Placeholder="password"
+            Visibility="{Binding IsChecked, Source={x:Reference PrivateKeyCheckBox}, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
             <controls:DPTextBox.Text>
                 <Binding
                     Path="Password"
                     Source="{x:Static local:SFTPConnectView.ConnectInfo}"
                     UpdateSourceTrigger="PropertyChanged" />
             </controls:DPTextBox.Text>
+        </controls:DPTextBox>
+        <controls:DPTextBox
+            x:Name="KeyTextBox"
+            Margin="0,0,0,6"
+            IsReadOnly="True"
+            Label="Key:"
+            LabelSharedSizeGroup="Label"
+            Placeholder="private.key"
+            Visibility="{Binding IsChecked, Source={x:Reference PrivateKeyCheckBox}, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <controls:DPTextBox.Text>
+                <Binding Path="Key" Source="{x:Static local:SFTPConnectView.ConnectInfo}">
+                    <Binding.ValidationRules>
+                        <validators:RequiredValidator />
+                    </Binding.ValidationRules>
+                </Binding>
+            </controls:DPTextBox.Text>
+            <controls:DPTextBox.Trailing>
+                <Button
+                    Padding="4,0"
+                    Click="BrowseButton_Click"
+                    Content="Browse"
+                    FontSize="11"
+                    Style="{StaticResource SimpleButtonStyle}" />
+            </controls:DPTextBox.Trailing>
         </controls:DPTextBox>
         <controls:DPTextBox
             x:Name="RootTextBox"
@@ -94,6 +125,9 @@
                     UpdateSourceTrigger="PropertyChanged" />
             </controls:DPTextBox.Text>
         </controls:DPTextBox>
+        <CheckBox x:Name="PrivateKeyCheckBox">
+            <TextBlock Text="Use private key" />
+        </CheckBox>
         <Button
             HorizontalAlignment="Right"
             Click="ButtonConnect_Click"

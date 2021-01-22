@@ -86,6 +86,7 @@
     <Compile Include="Helpers\ContextService.cs" />
     <Compile Include="Helpers\Converters\BytesToStringConverter.cs" />
     <Compile Include="Helpers\Constants.cs" />
+    <Compile Include="Helpers\Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Helpers\Converters\ListViewModelToViewSelector.cs" />
     <Compile Include="Helpers\Observable.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />

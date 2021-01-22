@@ -45,6 +45,7 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="{TemplateBinding LabelSharedSizeGroup}" />
                                         <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <Label
                                         x:Name="Label"
@@ -66,6 +67,10 @@
                                         x:Name="PART_ContentHost"
                                         Grid.Column="1"
                                         VerticalAlignment="Center" />
+                                    <ContentPresenter
+                                        x:Name="TrailingView"
+                                        Grid.Column="2"
+                                        ContentSource="Trailing" />
                                 </Grid>
                             </Border>
                         </Grid>
@@ -92,6 +97,12 @@
                                 <Setter Property="Foreground" Value="{StaticResource ErrorSolidColorBrush}" />
                                 <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource ErrorSolidColorBrush}" />
                                 <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
+                            </Trigger>
+                            <Trigger Property="Trailing" Value="{x:Null}">
+                                <Setter TargetName="TrailingView" Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                            <Trigger Property="IsReadOnly" Value="True">
+                                <Setter TargetName="PART_ContentHost" Property="Opacity" Value="0.6" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

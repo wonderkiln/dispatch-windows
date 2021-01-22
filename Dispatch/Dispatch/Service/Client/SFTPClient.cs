@@ -43,6 +43,12 @@ namespace Dispatch.Service.Client
             return Create(connectionInfo);
         }
 
+        public static Task<SFTPClient> CreateWithKey(string host, int port, string username, string privateKeyPath)
+        {
+            var connectionInfo = new ConnectionInfo(host, port, username, new PrivateKeyAuthenticationMethod(username, new PrivateKeyFile(privateKeyPath)));
+            return Create(connectionInfo);
+        }
+
         public async Task<IClient> Clone()
         {
             return await Create(Client.ConnectionInfo);

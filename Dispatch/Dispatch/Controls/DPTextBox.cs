@@ -67,6 +67,13 @@ namespace Dispatch.Controls
             set { SetValue(PasswordMaskProperty, value); }
         }
 
+        public static readonly DependencyProperty TrailingProperty = DependencyProperty.Register("Trailing", typeof(object), typeof(DPTextBox));
+        public object Trailing
+        {
+            get { return GetValue(TrailingProperty); }
+            set { SetValue(TrailingProperty, value); }
+        }
+
         protected override void OnTextChanged(TextChangedEventArgs e)
         {
             base.OnTextChanged(e);
