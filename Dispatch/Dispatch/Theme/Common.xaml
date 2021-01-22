@@ -1,4 +1,7 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Dispatch.Controls">
 
     <Style x:Key="ChromelessWindowStyle" TargetType="Window">
         <Setter Property="UseLayoutRounding" Value="True" />
@@ -332,6 +335,61 @@
                             <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource PrimaryAccentSolidColorBrush}" />
                             <Setter TargetName="Check" Property="Visibility" Value="Visible" />
                         </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="controls:DPSpinner">
+        <Setter Property="Width" Value="12" />
+        <Setter Property="Height" Value="12" />
+        <Setter Property="Background" Value="{StaticResource SeparatorSolidColorBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryAccentSolidColorBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:DPSpinner">
+                    <Grid
+                        Width="12"
+                        Height="12"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                        <Ellipse Stroke="{TemplateBinding Background}" StrokeThickness="1.5" />
+                        <Path
+                            Name="Path"
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeEndLineCap="Round"
+                            StrokeThickness="1.5">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathFigure StartPoint="1,6">
+                                        <ArcSegment
+                                            IsLargeArc="True"
+                                            Point="11,6"
+                                            Size="5,5"
+                                            SweepDirection="Clockwise" />
+                                    </PathFigure>
+                                </PathGeometry>
+                            </Path.Data>
+                            <Path.RenderTransform>
+                                <RotateTransform Angle="0" CenterX="6" CenterY="6" />
+                            </Path.RenderTransform>
+                        </Path>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        RepeatBehavior="Forever"
+                                        Storyboard.TargetName="Path"
+                                        Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
+                                        From="0"
+                                        To="360"
+                                        Duration="0:0:2" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

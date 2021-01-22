@@ -128,9 +128,16 @@
         <CheckBox x:Name="PrivateKeyCheckBox">
             <TextBlock Text="Use private key" />
         </CheckBox>
-        <Button
-            HorizontalAlignment="Right"
-            Click="ButtonConnect_Click"
-            Content="Connect" />
+        <Button HorizontalAlignment="Right" Click="ButtonConnect_Click">
+            <StackPanel Orientation="Horizontal">
+                <controls:DPSpinner
+                    Margin="0,0,4,0"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                    Visibility="{Binding IsConnecting, RelativeSource={RelativeSource AncestorType=local:SFTPConnectView}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBlock VerticalAlignment="Center" Text="Connect" />
+            </StackPanel>
+        </Button>
     </StackPanel>
 </UserControl>

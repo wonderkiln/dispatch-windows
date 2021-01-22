@@ -43,14 +43,6 @@ namespace Dispatch.View.Fragments
 
     public partial class ConnectView : UserControl, IConnectView
     {
-        public static readonly DependencyProperty IsConnectingProperty = DependencyProperty.Register("IsConnecting", typeof(bool), typeof(ConnectView), new PropertyMetadata(false));
-
-        public bool IsConnecting
-        {
-            get { return (bool)GetValue(IsConnectingProperty); }
-            set { SetValue(IsConnectingProperty, value); }
-        }
-
         public event EventHandler<ConnectViewArgs> OnConnected;
 
         public ConnectView()
@@ -60,7 +52,6 @@ namespace Dispatch.View.Fragments
 
         public void OnBeginConnecting()
         {
-            IsConnecting = true;
         }
 
         public void OnSuccess(ConnectViewArgs e)
@@ -70,7 +61,6 @@ namespace Dispatch.View.Fragments
 
         public void OnException(Exception ex)
         {
-            IsConnecting = false;
             MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }

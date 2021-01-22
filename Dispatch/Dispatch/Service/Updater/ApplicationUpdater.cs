@@ -38,6 +38,8 @@ namespace Dispatch.Service.Updater
 
         public async Task CheckForUpdate(bool silent = false)
         {
+#if DEBUG
+#else
             try
             {
                 LatestUpdate = await updater.GetLatestUpdate();
@@ -68,6 +70,7 @@ namespace Dispatch.Service.Updater
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Console.Error.WriteLine(ex);
             }
+#endif
         }
 
         public async void DownloadAndInstall()

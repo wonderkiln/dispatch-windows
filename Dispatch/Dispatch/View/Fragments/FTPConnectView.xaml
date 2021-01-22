@@ -11,6 +11,10 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
     <StackPanel Grid.IsSharedSizeScope="True">
         <Grid Margin="0,0,0,6">
             <Grid.ColumnDefinitions>
@@ -94,9 +98,16 @@
                     UpdateSourceTrigger="PropertyChanged" />
             </controls:DPTextBox.Text>
         </controls:DPTextBox>
-        <Button
-            HorizontalAlignment="Right"
-            Click="ButtonConnect_Click"
-            Content="Connect" />
+        <Button HorizontalAlignment="Right" Click="ButtonConnect_Click">
+            <StackPanel Orientation="Horizontal">
+                <controls:DPSpinner
+                    Margin="0,0,4,0"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                    Visibility="{Binding IsConnecting, RelativeSource={RelativeSource AncestorType=local:FTPConnectView}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBlock VerticalAlignment="Center" Text="Connect" />
+            </StackPanel>
+        </Button>
     </StackPanel>
 </UserControl>
