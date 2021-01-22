@@ -37,6 +37,7 @@
             Grid.Column="1"
             Margin="-12,0,0,0"
             HorizontalAlignment="Left"
+            VerticalAlignment="Stretch"
             ResizeBehavior="PreviousAndCurrent"
             ResizeDirection="Columns" />
     </Grid>

@@ -113,29 +113,120 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="140" />
         </Grid.RowDefinitions>
-        <ComboBox
-            x:Name="ComboBox"
-            Margin="16,0,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            SelectedIndex="1">
-            <ComboBoxItem Content="FTP" />
-            <ComboBoxItem Content="SFTP" />
-        </ComboBox>
-        <ScrollViewer
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ComboBox
+                x:Name="ComboBox"
+                Margin="16,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                SelectedIndex="1">
+                <ComboBoxItem Content="FTP" />
+                <ComboBoxItem Content="SFTP" />
+            </ComboBox>
+            <ScrollViewer
+                Grid.Row="1"
+                VerticalContentAlignment="Center"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <ContentPresenter
+                        Margin="60"
+                        Content="{Binding SelectedIndex, ElementName=ComboBox}"
+                        ContentTemplateSelector="{StaticResource ConnectViewDataTemplateSelector}" />
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+        <ListBox
             Grid.Row="1"
-            VerticalContentAlignment="Center"
-            HorizontalScrollBarVisibility="Disabled"
-            VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-                <ContentPresenter
-                    Margin="60"
-                    Content="{Binding SelectedIndex, ElementName=ComboBox}"
-                    ContentTemplateSelector="{StaticResource ConnectViewDataTemplateSelector}" />
-            </StackPanel>
-        </ScrollViewer>
+            Padding="12"
+            Background="Transparent"
+            BorderThickness="0">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu>
+                                <MenuItem Header="Edit">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE70F;" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Delete">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <StackPanel MaxWidth="64" Margin="12">
+                                    <Border
+                                        Width="48"
+                                        Height="48"
+                                        HorizontalAlignment="Center"
+                                        Background="{StaticResource PrimaryAccentSolidColorBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="3">
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="18"
+                                            FontWeight="SemiBold"
+                                            Foreground="{StaticResource SelectedTextSolidColorBrush}"
+                                            Text="S" />
+                                    </Border>
+                                    <TextBlock
+                                        Margin="0,6,0,0"
+                                        Text="Server"
+                                        TextAlignment="Center"
+                                        TextWrapping="Wrap" />
+                                    <TextBlock
+                                        FontSize="11"
+                                        Opacity="0.6"
+                                        Text="127.0.0.1:22"
+                                        TextAlignment="Center"
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <Rectangle
+                Width="10"
+                Height="10"
+                Fill="Red" />
+            <Rectangle
+                Width="10"
+                Height="10"
+                Fill="Red" />
+            <Rectangle
+                Width="10"
+                Height="10"
+                Fill="Red" />
+        </ListBox>
+        <GridSplitter
+            Grid.Row="1"
+            Margin="0,-12,0,0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top"
+            ResizeBehavior="PreviousAndCurrent"
+            ResizeDirection="Rows" />
     </Grid>
 </UserControl>

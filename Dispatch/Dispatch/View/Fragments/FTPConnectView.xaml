@@ -4,16 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:Dispatch.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="clr-namespace:Dispatch.Helpers"
     xmlns:local="clr-namespace:Dispatch.View.Fragments"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:validators="clr-namespace:Dispatch.Helpers.Validators"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-
-    <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    </UserControl.Resources>
 
     <StackPanel Grid.IsSharedSizeScope="True">
         <Grid Margin="0,0,0,6">
@@ -98,16 +95,10 @@
                     UpdateSourceTrigger="PropertyChanged" />
             </controls:DPTextBox.Text>
         </controls:DPTextBox>
-        <Button HorizontalAlignment="Right" Click="ButtonConnect_Click">
-            <StackPanel Orientation="Horizontal">
-                <controls:DPSpinner
-                    Margin="0,0,4,0"
-                    VerticalAlignment="Center"
-                    Background="Transparent"
-                    Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-                    Visibility="{Binding IsConnecting, RelativeSource={RelativeSource AncestorType=local:FTPConnectView}, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                <TextBlock VerticalAlignment="Center" Text="Connect" />
-            </StackPanel>
-        </Button>
+        <Button
+            HorizontalAlignment="Right"
+            helpers:ButtonExtension.IsLoading="{Binding IsConnecting, RelativeSource={RelativeSource AncestorType={x:Type local:FTPConnectView}}}"
+            Click="ButtonConnect_Click"
+            Content="Connect" />
     </StackPanel>
 </UserControl>
