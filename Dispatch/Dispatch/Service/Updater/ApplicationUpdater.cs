@@ -12,6 +12,8 @@ namespace Dispatch.Service.Updater
     {
         private readonly IUpdateProvider updater;
 
+        public event EventHandler<double> DownloadProgressChanged;
+
         public UpdateInfo LatestUpdate { get; set; }
 
         public bool HasUpdate
@@ -26,6 +28,12 @@ namespace Dispatch.Service.Updater
         public ApplicationUpdater(IUpdateProvider updater)
         {
             this.updater = updater;
+            this.updater.DownloadProgressChanged += Updater_DownloadProgressChanged;
+        }
+
+        private void Updater_DownloadProgressChanged(object sender, double e)
+        {
+            DownloadProgressChanged?.Invoke(this, e);
         }
 
         public async Task CheckForUpdate(bool silent = false)

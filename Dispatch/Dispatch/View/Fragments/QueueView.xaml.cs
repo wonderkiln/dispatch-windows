@@ -1,9 +1,25 @@
 ﻿using Dispatch.ViewModel;
+using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace Dispatch.View.Fragments
 {
+    public class IsIndeterminateProgressValueConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (double)value < 0;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class QueueItemDataTemplateSelector : DataTemplateSelector
     {
         public DataTemplate PendingDataTemplate { get; set; }

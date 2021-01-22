@@ -35,7 +35,16 @@ jobs:
       - name: Install Inno Setup
         run: choco install -y innosetup
 
-      - name: Package Setup
+      - name: Package Setup (Develop)
+        if: github.ref == 'refs/heads/develop'
+        run: iscc /DMyAppChannel=Nightly Setup\script.iss
+
+      - name: Package Setup (Beta)
+        if: github.ref == 'refs/heads/beta'
+        run: iscc /DMyAppChannel=Beta Setup\script.iss
+
+      - name: Package Setup (Master)
+        if: github.ref == 'refs/heads/master'
         run: iscc Setup\script.iss
 
       - name: Archive Setup

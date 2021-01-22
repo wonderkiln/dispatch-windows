@@ -73,16 +73,67 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ProgressBar">
-                    <Border
-                        x:Name="PART_Track"
-                        Background="{TemplateBinding Background}"
-                        CornerRadius="2.5">
+                    <Grid>
+                        <Border
+                            x:Name="PART_Track"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="2.5" />
                         <Border
                             x:Name="PART_Indicator"
                             HorizontalAlignment="Left"
                             Background="{TemplateBinding Foreground}"
+                            ClipToBounds="True"
                             CornerRadius="2.5" />
-                    </Border>
+                        <Border
+                            x:Name="Overlay"
+                            CornerRadius="2.5"
+                            Visibility="Collapsed">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Offset="0" Color="Transparent" />
+                                    <GradientStop x:Name="GradientStop" Offset="0" Color="{DynamicResource PrimaryAccentColor}" />
+                                    <GradientStop Offset="1" Color="Transparent" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+                        </Border>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Determinate" />
+                                <VisualState x:Name="Indeterminate">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="PART_Indicator"
+                                            Storyboard.TargetProperty="Background"
+                                            Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <SolidColorBrush>Transparent</SolidColorBrush>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="Overlay"
+                                            Storyboard.TargetProperty="Visibility"
+                                            Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <DoubleAnimation
+                                            AutoReverse="True"
+                                            RepeatBehavior="Forever"
+                                            Storyboard.TargetName="GradientStop"
+                                            Storyboard.TargetProperty="Offset"
+                                            From="0"
+                                            To="1"
+                                            Duration="0:0:3" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -235,6 +286,51 @@
                                         Color="{StaticResource SeparatorColor}" />
                                 </Setter.Value>
                             </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="CheckBox">
+        <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Grid Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="18" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border
+                            x:Name="Border"
+                            Width="14"
+                            Height="14"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Background="{StaticResource PrimaryBackgroundSolidColorBrush}"
+                            BorderBrush="{StaticResource SeparatorSolidColorBrush}"
+                            BorderThickness="1"
+                            CornerRadius="1.5">
+                            <Path
+                                x:Name="Check"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Data="M 0,2 L 3,6 L 8,0"
+                                Stroke="{StaticResource PrimaryAccentSolidColorBrush}"
+                                StrokeEndLineCap="Round"
+                                StrokeLineJoin="Round"
+                                StrokeThickness="1.5"
+                                Visibility="Collapsed" />
+                        </Border>
+                        <ContentPresenter Grid.Column="1" VerticalAlignment="Center" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource PrimaryAccentSolidColorBrush}" />
+                            <Setter TargetName="Check" Property="Visibility" Value="Visible" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
