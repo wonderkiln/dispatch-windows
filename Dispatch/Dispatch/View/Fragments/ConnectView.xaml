@@ -110,7 +110,7 @@
             Margin="16,0,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
-            SelectedIndex="0">
+            SelectedIndex="1">
             <ComboBoxItem Content="FTP" />
             <ComboBoxItem Content="SFTP" />
         </ComboBox>

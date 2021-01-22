@@ -10,6 +10,7 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
+        <local:IsIndeterminateProgressValueConverter x:Key="IsIndeterminateProgressValueConverter" />
         <DataTemplate x:Key="PendingItemTemplate">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -96,6 +97,7 @@
                     Grid.Row="2"
                     Grid.Column="1"
                     Margin="0,4,0,0"
+                    IsIndeterminate="{Binding Progress, Converter={StaticResource IsIndeterminateProgressValueConverter}}"
                     Maximum="100"
                     Value="{Binding Progress}" />
             </Grid>

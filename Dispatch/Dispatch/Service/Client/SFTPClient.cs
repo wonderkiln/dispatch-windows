@@ -48,13 +48,26 @@ namespace Dispatch.Service.Client
             return await Create(Client.ConnectionInfo);
         }
 
-        public Task Delete(string path, CancellationToken token = default)
+        public async Task Delete(string path, CancellationToken token = default)
         {
-            return Task.Run(() =>
+            var resource = await FetchResource(path);
+
+            if (resource.Type == ResourceType.File)
             {
                 Client.Delete(path);
-            },
-            token);
+            }
+            else
+            {
+                var resources = await FetchResources(path);
+
+                foreach (var item in resources)
+                {
+                    token.ThrowIfCancellationRequested();
+                    await Delete(item.Path, token);
+                }
+
+                Client.Delete(path);
+            }
         }
 
         public Task Diconnect()
@@ -191,44 +204,79 @@ namespace Dispatch.Service.Client
             {
                 var destination = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
 
-                await Task.Run(() =>
+                using (var stream = new StreamReader(fileOrDirectory))
                 {
-                    using (var stream = new StreamReader(fileOrDirectory))
+                    // Forcefully close the file stream when cancelled so the upload throws an error
+                    // TODO: Dispose
+                    token.Register(() =>
                     {
-                        // TODO:
-                        token.Register(() =>
-                        {
-                            stream.Close();
-                        });
+                        stream.Close();
+                    });
 
-                        // TODO: CancellationToken
-                        Client.UploadFile(stream.BaseStream, destination, (length) =>
-                        {
-                            var size = new FileInfo(fileOrDirectory).Length;
-                            var value = 100 * length / (double)size;
-                            progress?.Report(new ProgressStatus(0, 1, value));
-                        });
-                    }
-                },
-                token);
+                    Client.UploadFile(stream.BaseStream, destination, (length) =>
+                    {
+                        var size = new FileInfo(fileOrDirectory).Length;
+                        var value = 100 * length / (double)size;
+                        progress?.Report(new ProgressStatus(0, 1, value));
+                    });
+                }
             }
             else if (Directory.Exists(fileOrDirectory))
             {
-                // TODO: get all the files
-                var destination = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
+                var destinationDirectory = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
 
-                var files = Directory.GetFiles(fileOrDirectory);
+                if (!Client.Exists(destinationDirectory))
+                {
+                    Client.CreateDirectory(destinationDirectory);
+                }
+
+                var totalFiles = Directory.GetFiles(fileOrDirectory, "*", SearchOption.AllDirectories).Length;
 
                 var directories = Directory.GetDirectories(fileOrDirectory);
+                var files = Directory.GetFiles(fileOrDirectory);
 
-                // D:/x/xx/xxx.txt -> {path}/x/xx/xxx.txt
+                var newProgress = progress is SingleToMultiFileProgress ? (SingleToMultiFileProgress)progress : new SingleToMultiFileProgress(progress, 0, totalFiles);
 
-                throw new NotImplementedException();
+                foreach (var file in files)
+                {
+                    token.ThrowIfCancellationRequested();
+                    await Upload(destinationDirectory, file, newProgress, token);
+                    newProgress.IncrementIndex();
+                }
+                foreach (var directory in directories)
+                {
+                    token.ThrowIfCancellationRequested();
+                    await Upload(destinationDirectory, directory, newProgress, token);
+                }
             }
             else
             {
                 throw new Exception($"File or directory not found at path: {fileOrDirectory}");
             }
+        }
+    }
+
+    internal class SingleToMultiFileProgress : IProgress<ProgressStatus>
+    {
+        IProgress<ProgressStatus> progress;
+        int index;
+        readonly int count;
+
+        public SingleToMultiFileProgress(IProgress<ProgressStatus> progress, int index, int count)
+        {
+            this.progress = progress;
+            this.index = index;
+            this.count = count;
+        }
+
+        public void IncrementIndex()
+        {
+            index += 1;
+        }
+
+        public void Report(ProgressStatus value)
+        {
+            progress?.Report(new ProgressStatus(index, count, value.Progress));
         }
     }
 }

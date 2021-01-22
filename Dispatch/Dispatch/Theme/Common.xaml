@@ -73,16 +73,67 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ProgressBar">
-                    <Border
-                        x:Name="PART_Track"
-                        Background="{TemplateBinding Background}"
-                        CornerRadius="2.5">
+                    <Grid>
+                        <Border
+                            x:Name="PART_Track"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="2.5" />
                         <Border
                             x:Name="PART_Indicator"
                             HorizontalAlignment="Left"
                             Background="{TemplateBinding Foreground}"
+                            ClipToBounds="True"
                             CornerRadius="2.5" />
-                    </Border>
+                        <Border
+                            x:Name="Overlay"
+                            CornerRadius="2.5"
+                            Visibility="Collapsed">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Offset="0" Color="Transparent" />
+                                    <GradientStop x:Name="GradientStop" Offset="0" Color="{DynamicResource PrimaryAccentColor}" />
+                                    <GradientStop Offset="1" Color="Transparent" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+                        </Border>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Determinate" />
+                                <VisualState x:Name="Indeterminate">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="PART_Indicator"
+                                            Storyboard.TargetProperty="Background"
+                                            Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <SolidColorBrush>Transparent</SolidColorBrush>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames
+                                            Storyboard.TargetName="Overlay"
+                                            Storyboard.TargetProperty="Visibility"
+                                            Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <DoubleAnimation
+                                            AutoReverse="True"
+                                            RepeatBehavior="Forever"
+                                            Storyboard.TargetName="GradientStop"
+                                            Storyboard.TargetProperty="Offset"
+                                            From="0"
+                                            To="1"
+                                            Duration="0:0:3" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

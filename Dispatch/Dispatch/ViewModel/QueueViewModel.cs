@@ -26,7 +26,7 @@ namespace Dispatch.ViewModel
                 }
             }
 
-            private double progress = 0;
+            private double progress = -1;
             public double Progress
             {
                 get
