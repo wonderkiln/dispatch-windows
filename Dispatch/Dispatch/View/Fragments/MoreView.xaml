@@ -28,6 +28,20 @@
             <Button
                 Padding="8"
                 HorizontalContentAlignment="Left"
+                Style="{StaticResource SimpleButtonStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        Margin="0,0,4,0"
+                        VerticalAlignment="Center"
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="17"
+                        Text="&#xE715;" />
+                    <TextBlock VerticalAlignment="Center" Text="Send Feedback" />
+                </StackPanel>
+            </Button>
+            <Button
+                Padding="8"
+                HorizontalContentAlignment="Left"
                 Click="AboutButton_Click"
                 Style="{StaticResource SimpleButtonStyle}">
                 <StackPanel Orientation="Horizontal">

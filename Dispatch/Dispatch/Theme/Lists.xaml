@@ -6,7 +6,7 @@
     <Style TargetType="ListBoxItem">
         <Setter Property="Padding" Value="8" />
         <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
