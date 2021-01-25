@@ -76,20 +76,23 @@
                 <GridView>
                     <GridViewColumn Width="300">
                         <GridViewColumn.Header>
-                            <TextBlock Margin="22,0,8,0" Text="Name" />
+                            <TextBlock
+                                Margin="32,0,8,0"
+                                Text="Name"
+                                TextTrimming="CharacterEllipsis" />
                         </GridViewColumn.Header>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid Margin="-6,0,2,0">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="22" />
+                                        <ColumnDefinition Width="32" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock
+                                    <Image
+                                        Width="16"
+                                        Height="16"
                                         VerticalAlignment="Center"
-                                        FontFamily="Segoe MDL2 Assets"
-                                        FontSize="15"
-                                        Text="{Binding Converter={StaticResource ResourceToIconConverter}}" />
+                                        Source="{Binding Converter={StaticResource ResourceToIconConverter}}" />
                                     <TextBlock
                                         Grid.Column="1"
                                         VerticalAlignment="Center"
@@ -101,7 +104,10 @@
                     </GridViewColumn>
                     <GridViewColumn Width="120">
                         <GridViewColumn.Header>
-                            <TextBlock Margin="0,0,8,0" Text="Size" />
+                            <TextBlock
+                                Margin="0,0,8,0"
+                                Text="Size"
+                                TextTrimming="CharacterEllipsis" />
                         </GridViewColumn.Header>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>

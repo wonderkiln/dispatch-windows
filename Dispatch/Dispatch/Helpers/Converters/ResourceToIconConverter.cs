@@ -13,14 +13,14 @@ namespace Dispatch.Helpers.Converters
 
             switch (resource.Type)
             {
-                case ResourceType.Directory:
-                    return "\xE8B7";
-                case ResourceType.File:
-                    return "\xE7C3";
                 case ResourceType.Drive:
-                    return "\xEDA2";
+                    return FileIconHelper.GetDriveIcon();
+                case ResourceType.Directory:
+                    return FileIconHelper.GetDirectoryIcon();
+                case ResourceType.File:
+                    return FileIconHelper.GetFileIcon(resource.Path);
                 default:
-                    return "";
+                    return null;
             }
         }
 

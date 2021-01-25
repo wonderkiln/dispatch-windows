@@ -90,6 +90,7 @@
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Helpers\Converters\ListViewModelToViewSelector.cs" />
+    <Compile Include="Helpers\FileIconHelper.cs" />
     <Compile Include="Helpers\Observable.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Helpers\Converters\ResourceToIconConverter.cs" />
@@ -221,6 +222,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
@@ -251,6 +253,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ic_sftp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icons\ic_folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icons\ic_file.png" />
+    <Resource Include="Resources\icons\ic_image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icons\ic_video.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
