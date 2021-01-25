@@ -25,6 +25,14 @@ namespace Dispatch
             Settings.Default.Save();
         }
 
+        public static void ToggleTheme()
+        {
+            if (Settings.Default.DarkTheme)
+                ChangeTheme(Theme.Light);
+            else
+                ChangeTheme(Theme.Dark);
+        }
+
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             ChangeTheme(Settings.Default.DarkTheme ? Theme.Dark : Theme.Light);

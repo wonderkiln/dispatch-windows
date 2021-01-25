@@ -96,14 +96,14 @@ namespace Dispatch.View.Windows
 
         private void AboutButton_Click(object sender, RoutedEventArgs e)
         {
-            if (SideView.IsOpen && SideView.PanelContent is AboutView)
+            if (SideView.IsOpen && SideView.PanelContent is SettingsView)
             {
                 SideView.IsOpen = false;
                 return;
             }
 
-            SideView.Title = "About Dispatch";
-            SideView.PanelContent = new AboutView();
+            SideView.Title = "More";
+            SideView.PanelContent = new SettingsView(() => { SideView.IsOpen = false; });
             SideView.IsOpen = true;
         }
 

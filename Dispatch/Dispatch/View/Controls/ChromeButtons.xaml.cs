@@ -18,6 +18,13 @@ namespace Dispatch.View.Controls
             Restore.Visibility = window.WindowState != WindowState.Maximized ? Visibility.Collapsed : Visibility.Visible;
             Maximize.Visibility = window.WindowState == WindowState.Maximized ? Visibility.Collapsed : Visibility.Visible;
 
+            if (window.ResizeMode == ResizeMode.NoResize)
+            {
+                Minimize.Visibility = Visibility.Collapsed;
+                Restore.Visibility = Visibility.Collapsed;
+                Maximize.Visibility = Visibility.Collapsed;
+            }
+
             if (window.Content is FrameworkElement)
             {
                 (window.Content as FrameworkElement).Margin = new Thickness(window.WindowState == WindowState.Maximized ? 6 : 0);
