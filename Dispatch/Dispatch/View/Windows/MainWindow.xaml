@@ -14,10 +14,11 @@
     Height="620"
     MinWidth="200"
     MinHeight="200"
+    Closing="Window_Closing"
     Icon="../../Resources/Icon.ico"
     Loaded="Window_Loaded"
     Style="{StaticResource ChromelessWindowStyle}"
-    WindowStartupLocation="CenterScreen"
+    WindowStartupLocation="Manual"
     mc:Ignorable="d">
 
     <Window.Resources>

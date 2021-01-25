@@ -3,6 +3,7 @@ using Dispatch.Helpers;
 using Dispatch.View.Fragments;
 using Dispatch.ViewModel;
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -47,6 +48,7 @@ namespace Dispatch.View.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            WindowHelper.LoadWindowSettings(this);
             WindowHelper.EnableBlurForWindow(this);
         }
 
@@ -103,6 +105,11 @@ namespace Dispatch.View.Windows
             SideView.Title = "About Dispatch";
             SideView.PanelContent = new AboutView();
             SideView.IsOpen = true;
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            WindowHelper.SaveWindowSettings(this);
         }
     }
 }

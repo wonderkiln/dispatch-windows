@@ -66,5 +66,46 @@ namespace Dispatch.Helpers
 
             Marshal.FreeHGlobal(accentPtr);
         }
+
+        public static void LoadWindowSettings(Window window)
+        {
+            window.Width = Properties.Settings.Default.WindowSize.Width;
+            window.Height = Properties.Settings.Default.WindowSize.Height;
+
+            var x = Properties.Settings.Default.WindowPosition.X;
+            var y = Properties.Settings.Default.WindowPosition.Y;
+
+            if (x == -1 && y == -1)
+            {
+                window.Left = (SystemParameters.WorkArea.Width - window.Width) / 2;
+                window.Top = (SystemParameters.WorkArea.Height - window.Height) / 2;
+            }
+            else
+            {
+                window.Left = x;
+                window.Top = y;
+            }
+
+            if (Properties.Settings.Default.WindowMaximized)
+                window.WindowState = WindowState.Maximized;
+            else
+                window.WindowState = WindowState.Normal;
+        }
+
+        public static void SaveWindowSettings(Window window)
+        {
+            if (window.WindowState == WindowState.Maximized)
+            {
+                Properties.Settings.Default.WindowMaximized = true;
+            }
+            else
+            {
+                Properties.Settings.Default.WindowSize = new System.Drawing.Size((int)window.Width, (int)window.Height);
+                Properties.Settings.Default.WindowPosition = new System.Drawing.Point((int)window.Left, (int)window.Top);
+                Properties.Settings.Default.WindowMaximized = false;
+            }
+
+            Properties.Settings.Default.Save();
+        }
     }
 }
