@@ -1,5 +1,4 @@
-﻿using Dispatch.View.Windows;
-using System;
+﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -7,23 +6,19 @@ namespace Dispatch.View.Fragments
 {
     public partial class SettingsView : UserControl
     {
-        private Action closeSidebar;
-
-        public SettingsView(Action closeSidebar)
+        public SettingsView()
         {
             InitializeComponent();
-            this.closeSidebar = closeSidebar;
         }
 
         private void ChangeThemeButton_Click(object sender, RoutedEventArgs e)
         {
-            App.ToggleTheme();
-        }
-
-        private void AboutButton_Click(object sender, RoutedEventArgs e)
-        {
-            closeSidebar?.Invoke();
-            new AboutWindow() { Owner = Window.GetWindow(this) }.ShowDialog();
+            if (MessageBox.Show("Do you want to restart and apply the theme?", "Restart required", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                App.ToggleTheme();
+                Application.Current.Shutdown();
+                Process.Start(Application.ResourceAssembly.Location);
+            }
         }
     }
 }

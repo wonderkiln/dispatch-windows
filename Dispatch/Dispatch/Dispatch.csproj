@@ -119,8 +119,8 @@
     <Compile Include="ViewModel\TabsViewModel.cs" />
     <Compile Include="ViewModel\ListViewModel.cs" />
     <Compile Include="ViewModel\TabViewModel.cs" />
-    <Compile Include="View\Fragments\SettingsView.xaml.cs">
-      <DependentUpon>SettingsView.xaml</DependentUpon>
+    <Compile Include="View\Fragments\MoreView.xaml.cs">
+      <DependentUpon>MoreView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Fragments\ConnectView.xaml.cs">
       <DependentUpon>ConnectView.xaml</DependentUpon>
@@ -133,6 +133,9 @@
     </Compile>
     <Compile Include="View\Fragments\QueueView.xaml.cs">
       <DependentUpon>QueueView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Fragments\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Fragments\SFTPConnectView.xaml.cs">
       <DependentUpon>SFTPConnectView.xaml</DependentUpon>
@@ -152,7 +155,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Fragments\SettingsView.xaml">
+    <Page Include="View\Fragments\MoreView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -161,6 +164,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Fragments\QueueView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Fragments\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

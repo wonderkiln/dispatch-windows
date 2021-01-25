@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="Dispatch.View.Fragments.SettingsView"
+    x:Class="Dispatch.View.Fragments.MoreView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -13,7 +13,7 @@
             <Button
                 Padding="8"
                 HorizontalContentAlignment="Left"
-                Click="ChangeThemeButton_Click"
+                Click="SettingsButton_Click"
                 Style="{StaticResource SimpleButtonStyle}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock
@@ -21,8 +21,23 @@
                         VerticalAlignment="Center"
                         FontFamily="Segoe MDL2 Assets"
                         FontSize="17"
-                        Text="&#xE790;" />
-                    <TextBlock VerticalAlignment="Center" Text="Change Theme" />
+                        Text="&#xE713;" />
+                    <TextBlock VerticalAlignment="Center" Text="Settings" />
+                </StackPanel>
+            </Button>
+            <Button
+                Padding="8"
+                HorizontalContentAlignment="Left"
+                Click="AboutButton_Click"
+                Style="{StaticResource SimpleButtonStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        Margin="0,0,4,0"
+                        VerticalAlignment="Center"
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="17"
+                        Text="&#xE946;" />
+                    <TextBlock VerticalAlignment="Center" Text="About Dispatch" />
                 </StackPanel>
             </Button>
         </StackPanel>
