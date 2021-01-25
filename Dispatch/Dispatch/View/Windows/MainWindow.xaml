@@ -31,7 +31,7 @@
         </DataTemplate>
         <DataTemplate x:Key="DownloadingUpdateDataTemplate">
             <StackPanel>
-                <TextBlock>Downloading update...</TextBlock>
+                <Label Content="Downloading update..." />
                 <ProgressBar
                     Margin="0,4,0,0"
                     Maximum="100"
