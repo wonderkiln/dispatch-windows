@@ -8,7 +8,6 @@ using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace Dispatch.View.Windows
 {
@@ -137,6 +136,13 @@ namespace Dispatch.View.Windows
             var item = (FavoriteItem)menuItem.DataContext;
             var viewModel = (TabViewModel)TabListBox.SelectedItem;
             viewModel.LeftViewModel.Load(item.Path);
+        }
+
+        private void FavoriteDeleteMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var menuItem = (MenuItem)sender;
+            var item = (FavoriteItem)menuItem.DataContext;
+            FavoritesViewModel.Remove(item);
         }
     }
 }

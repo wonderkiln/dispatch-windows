@@ -44,6 +44,13 @@
             DownloadingUpdate="{StaticResource DownloadingUpdateDataTemplate}"
             NewUpdate="{StaticResource NewUpdateDataTemplate}"
             NoUpdate="{StaticResource NoUpdateDataTemplate}" />
+        <ContextMenu x:Key="FavoriteContextMenu">
+            <MenuItem Click="FavoriteDeleteMenuItem_Click" Header="Delete">
+                <MenuItem.Icon>
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
     </Window.Resources>
 
     <Grid>
@@ -93,6 +100,11 @@
                     Drop="FavoritesMenu_Drop"
                     ItemsSource="{Binding FavoritesViewModel.Items, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
                     MenuItem.Click="FavoriteMenuItem_Click">
+                    <Menu.ItemContainerStyle>
+                        <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
+                            <Setter Property="ContextMenu" Value="{StaticResource FavoriteContextMenu}" />
+                        </Style>
+                    </Menu.ItemContainerStyle>
                     <Menu.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
