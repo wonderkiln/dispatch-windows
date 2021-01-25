@@ -6,6 +6,17 @@
 
         public string Path { get; set; }
 
+        public FavoriteItem()
+        {
+            //
+        }
+
+        public FavoriteItem(Resource resource)
+        {
+            Name = resource.Name;
+            Path = resource.Path;
+        }
+
         public FavoriteItem(string name, string path)
         {
             Name = name;

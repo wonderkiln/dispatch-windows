@@ -246,7 +246,24 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style TargetType="{x:Type MenuItem}">
+    <ControlTemplate x:Key="{x:Static MenuItem.TopLevelItemTemplateKey}" TargetType="MenuItem">
+        <Border
+            x:Name="Border"
+            Background="Transparent"
+            CornerRadius="2">
+            <ContentPresenter
+                Margin="8,4"
+                ContentSource="Header"
+                RecognizesAccessKey="True" />
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Setter TargetName="Border" Property="Background" Value="{StaticResource SelectionOnPanelBackgroundSolidColorBrush}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style TargetType="MenuItem">
         <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
         <Setter Property="FontSize" Value="13" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -314,6 +331,22 @@
                             </Setter>
                         </Trigger>
                     </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Menu">
+        <Setter Property="Padding" Value="6" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Menu">
+                    <StackPanel
+                        Margin="{TemplateBinding Padding}"
+                        Background="{TemplateBinding Background}"
+                        IsItemsHost="True"
+                        Orientation="Horizontal" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

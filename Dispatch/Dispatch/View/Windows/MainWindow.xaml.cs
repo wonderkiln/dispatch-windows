@@ -1,11 +1,14 @@
 ﻿using Dispatch.Controls;
 using Dispatch.Helpers;
+using Dispatch.Service.Client;
+using Dispatch.Service.Model;
 using Dispatch.View.Fragments;
 using Dispatch.ViewModel;
 using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Dispatch.View.Windows
 {
@@ -46,6 +49,8 @@ namespace Dispatch.View.Windows
 
         public UpdateViewModel UpdateViewModel { get; } = new UpdateViewModel();
 
+        public FavoritesViewModel FavoritesViewModel { get; } = new FavoritesViewModel();
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             WindowHelper.LoadWindowSettings(this);
@@ -69,16 +74,6 @@ namespace Dispatch.View.Windows
             {
                 ((DPTabListBox)sender).SelectedIndex = 0;
             }
-        }
-
-        private void DarkButton_Click(object sender, RoutedEventArgs e)
-        {
-            App.ChangeTheme(App.Theme.Dark);
-        }
-
-        private void LightButton_Click(object sender, RoutedEventArgs e)
-        {
-            App.ChangeTheme(App.Theme.Light);
         }
 
         private void TransfersButton_Click(object sender, RoutedEventArgs e)
@@ -118,6 +113,30 @@ namespace Dispatch.View.Windows
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             WindowHelper.SaveWindowSettings(this);
+        }
+
+        private void FavoritesMenu_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ResourceDragData)))
+            {
+                var data = (ResourceDragData)e.Data.GetData(typeof(ResourceDragData));
+
+                foreach (var resource in data.Resources)
+                {
+                    if (resource.Type == ResourceType.Directory && resource.Client is LocalClient)
+                    {
+                        FavoritesViewModel.Items.Add(new FavoriteItem(resource));
+                    }
+                }
+            }
+        }
+
+        private void FavoriteMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var menuItem = (MenuItem)e.OriginalSource;
+            var item = (FavoriteItem)menuItem.DataContext;
+            var viewModel = (TabViewModel)TabListBox.SelectedItem;
+            viewModel.LeftViewModel.Load(item.Path);
         }
     }
 }

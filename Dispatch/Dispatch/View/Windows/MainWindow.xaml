@@ -87,6 +87,25 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
+                <Menu
+                    AllowDrop="True"
+                    Background="Transparent"
+                    Drop="FavoritesMenu_Drop"
+                    ItemsSource="{Binding FavoritesViewModel.Items, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
+                    MenuItem.Click="FavoriteMenuItem_Click">
+                    <Menu.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,0,4,0"
+                                    VerticalAlignment="Center"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    Text="&#xE8B7;" />
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </Menu.ItemTemplate>
+                </Menu>
                 <StackPanel
                     Grid.Column="1"
                     Margin="4"
