@@ -168,11 +168,12 @@
                 <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
                     <EventSetter Event="MouseDoubleClick" Handler="FavoriteListBoxItem_MouseDoubleClick" />
                     <Setter Property="ContextMenu" Value="{StaticResource SaveContextMenu}" />
+                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
                 </Style>
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel MaxWidth="64">
+                    <StackPanel MaxWidth="80">
                         <Border
                             Width="48"
                             Height="48"

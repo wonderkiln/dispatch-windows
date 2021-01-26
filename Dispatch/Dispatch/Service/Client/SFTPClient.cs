@@ -34,8 +34,18 @@ namespace Dispatch.Service.Client
             }
             else
             {
-                var authMethod = new PasswordAuthenticationMethod(connectionInfo.Username, connectionInfo.Password);
-                info = new ConnectionInfo(connectionInfo.Address, connectionInfo.Port, connectionInfo.Username, authMethod);
+                var authMethod1 = new PasswordAuthenticationMethod(connectionInfo.Username, connectionInfo.Password);
+                var authMethod2 = new KeyboardInteractiveAuthenticationMethod(connectionInfo.Username);
+                
+                authMethod2.AuthenticationPrompt += (sender, e) =>
+                {
+                    foreach (var prompt in e.Prompts)
+                    {
+                        prompt.Response = connectionInfo.Password;
+                    }
+                };
+
+                info = new ConnectionInfo(connectionInfo.Address, connectionInfo.Port, connectionInfo.Username, authMethod1, authMethod2);
             }
 
             var client = new SftpClient(info);
