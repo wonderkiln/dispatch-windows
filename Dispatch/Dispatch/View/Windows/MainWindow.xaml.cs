@@ -142,7 +142,7 @@ namespace Dispatch.View.Windows
         {
             var menuItem = (MenuItem)sender;
             var item = (FavoriteItem)menuItem.DataContext;
-            FavoritesViewModel.Remove(item);
+            FavoritesViewModel.Items.Remove(item);
         }
     }
 }

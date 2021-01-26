@@ -1,20 +1,86 @@
-﻿using Dispatch.Service.Client;
+﻿using Dispatch.Helpers;
+using Dispatch.Service.Client;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace Dispatch.View.Fragments
 {
-    public class FTPConnectInfo
+    public class FTPConnectInfo : Observable
     {
-        public string Address { get; set; }
-        public int? Port { get; set; } = 21;
-        public string User { get; set; }
-        public string Password { get; set; }
-        public string Root { get; set; }
+        private string address;
+        public string Address
+        {
+            get
+            {
+                return address;
+            }
+            set
+            {
+                address = value;
+                Notify();
+            }
+        }
+
+        private int? port = 21;
+        public int? Port
+        {
+            get
+            {
+                return port;
+            }
+            set
+            {
+                port = value;
+                Notify();
+            }
+        }
+
+        private string user;
+        public string User
+        {
+            get
+            {
+                return user;
+            }
+            set
+            {
+                user = value;
+                Notify();
+            }
+        }
+
+        private string password;
+        public string Password
+        {
+            get
+            {
+                return password;
+            }
+            set
+            {
+                password = value;
+                Notify();
+            }
+        }
+
+        private string root;
+        public string Root
+        {
+            get
+            {
+                return root;
+            }
+            set
+            {
+                root = value;
+                Notify();
+            }
+        }
     }
 
-    public partial class FTPConnectView : UserControl
+    public partial class FTPConnectView : UserControl, IConnectFragment
     {
         public static FTPConnectInfo ConnectInfo { get; }
 #if DEBUG
@@ -30,19 +96,12 @@ namespace Dispatch.View.Fragments
             set { SetValue(ConnectViewProperty, value); }
         }
 
-        public static readonly DependencyProperty IsConnectingProperty = DependencyProperty.Register("IsConnecting", typeof(bool), typeof(FTPConnectView), new PropertyMetadata(false));
-        public bool IsConnecting
-        {
-            get { return (bool)GetValue(IsConnectingProperty); }
-            set { SetValue(IsConnectingProperty, value); }
-        }
-
         public FTPConnectView()
         {
             InitializeComponent();
         }
 
-        private async void ButtonConnect_Click(object sender, RoutedEventArgs e)
+        public async void Connect()
         {
             AddressTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             PortTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
@@ -59,7 +118,6 @@ namespace Dispatch.View.Fragments
                 return;
             }
 
-            IsConnecting = true;
             ConnectView.OnBeginConnecting();
 
             try
@@ -73,10 +131,21 @@ namespace Dispatch.View.Fragments
             {
                 ConnectView.OnException(ex);
             }
-            finally
-            {
-                IsConnecting = false;
-            }
+        }
+
+        public void Load(object connectionInfo)
+        {
+            var connectInfo = JObject.FromObject(connectionInfo).ToObject<FTPConnectInfo>();
+            ConnectInfo.Address = connectInfo.Address;
+            ConnectInfo.Port = connectInfo.Port;
+            ConnectInfo.User = connectInfo.User;
+            ConnectInfo.Password = connectInfo.Password;
+            ConnectInfo.Root = connectInfo.Root;
+        }
+
+        public object GetConnectionInfo()
+        {
+            return ConnectInfo;
         }
     }
 }

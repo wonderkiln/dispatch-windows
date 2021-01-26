@@ -1,10 +1,16 @@
 ﻿using Dispatch.Service.Client;
+using Dispatch.Service.Model;
+using Dispatch.ViewModel;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Dispatch.View.Fragments
 {
+    public enum ConnectViewType { Sftp, Ftp }
+
     public class ConnectViewDataTemplateSelector : DataTemplateSelector
     {
         public DataTemplate FTPDataTemplate { get; set; }
@@ -12,12 +18,14 @@ namespace Dispatch.View.Fragments
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            var index = item as int?;
+            if (!(item is ConnectViewType)) return null;
 
-            switch (index)
+            var type = (ConnectViewType)item;
+
+            switch (type)
             {
-                case 0: return FTPDataTemplate;
-                case 1: return SFTPDataTemplate;
+                case ConnectViewType.Sftp: return SFTPDataTemplate;
+                case ConnectViewType.Ftp: return FTPDataTemplate;
                 default: return null;
             }
         }
@@ -41,27 +49,117 @@ namespace Dispatch.View.Fragments
         void OnException(Exception ex);
     }
 
+    public interface IConnectFragment
+    {
+        void Connect();
+        void Load(object connectionInfo);
+        object GetConnectionInfo();
+    }
+
     public partial class ConnectView : UserControl, IConnectView
     {
+        public SavedViewModel SavedViewModel { get; } = new SavedViewModel();
+
+        public static readonly DependencyProperty IsConnectingProperty = DependencyProperty.Register("IsConnecting", typeof(bool), typeof(ConnectView), new PropertyMetadata(false));
+        public bool IsConnecting
+        {
+            get { return (bool)GetValue(IsConnectingProperty); }
+            set { SetValue(IsConnectingProperty, value); }
+        }
+
         public event EventHandler<ConnectViewArgs> OnConnected;
 
         public ConnectView()
         {
             InitializeComponent();
+            ComboBox.SelectedItem = ConnectViewType.Sftp;
         }
 
         public void OnBeginConnecting()
         {
+            IsConnecting = true;
         }
 
         public void OnSuccess(ConnectViewArgs e)
         {
+            IsConnecting = false;
             OnConnected?.Invoke(this, e);
         }
 
         public void OnException(Exception ex)
         {
+            IsConnecting = false;
             MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private void ConnectButton_Click(object sender, RoutedEventArgs e)
+        {
+            var content = (IConnectFragment)VisualTreeHelper.GetChild(Presenter, 0);
+            content.Connect();
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            var content = (IConnectFragment)VisualTreeHelper.GetChild(Presenter, 0);
+            var connectionInfo = content.GetConnectionInfo();
+            var type = (ConnectViewType)ComboBox.SelectedItem;
+            SavedViewModel.Items.Add(new SaveItem() { Title = "Server", Type = type, ConnectionInfo = connectionInfo });
+        }
+
+        private void LoadSavedItem(SaveItem item, bool autoConnect)
+        {
+            ComboBox.SelectedItem = item.Type;
+
+            var content = (IConnectFragment)Presenter.Content;
+            content.Load(item.ConnectionInfo);
+
+            if (autoConnect)
+            {
+                content.Connect();
+            }
+        }
+
+        private void SavedListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var listItem = (ListBoxItem)sender;
+            var item = (SaveItem)listItem.DataContext;
+            LoadSavedItem(item, true);
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                var type = (ConnectViewType)e.AddedItems[0];
+
+                switch (type)
+                {
+                    case ConnectViewType.Sftp:
+                        Presenter.Content = new SFTPConnectView() { ConnectView = this };
+                        break;
+                    case ConnectViewType.Ftp:
+                        Presenter.Content = new FTPConnectView() { ConnectView = this };
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                var item = (SaveItem)e.AddedItems[0];
+                LoadSavedItem(item, false);
+            }
+        }
+
+        private void SaveDeleteMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var menuItem = (MenuItem)sender;
+            var item = (SaveItem)menuItem.DataContext;
+            SavedViewModel.Items.Remove(item);
         }
     }
 }

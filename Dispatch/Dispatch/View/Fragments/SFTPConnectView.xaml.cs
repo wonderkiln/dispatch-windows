@@ -1,6 +1,7 @@
 ﻿using Dispatch.Helpers;
 using Dispatch.Service.Client;
 using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,75 @@ namespace Dispatch.View.Fragments
 {
     public class SFTPConnectInfo : Observable
     {
-        public string Address { get; set; }
-        public int? Port { get; set; } = 22;
-        public string User { get; set; }
-        public string Password { get; set; }
-        public string Root { get; set; }
+        private string address;
+        public string Address
+        {
+            get
+            {
+                return address;
+            }
+            set
+            {
+                address = value;
+                Notify();
+            }
+        }
+
+        private int? port = 22;
+        public int? Port
+        {
+            get
+            {
+                return port;
+            }
+            set
+            {
+                port = value;
+                Notify();
+            }
+        }
+
+        private string user;
+        public string User
+        {
+            get
+            {
+                return user;
+            }
+            set
+            {
+                user = value;
+                Notify();
+            }
+        }
+
+        private string password;
+        public string Password
+        {
+            get
+            {
+                return password;
+            }
+            set
+            {
+                password = value;
+                Notify();
+            }
+        }
+
+        private string root;
+        public string Root
+        {
+            get
+            {
+                return root;
+            }
+            set
+            {
+                root = value;
+                Notify();
+            }
+        }
 
         private string key;
         public string Key
@@ -33,7 +98,7 @@ namespace Dispatch.View.Fragments
         }
     }
 
-    public partial class SFTPConnectView : UserControl
+    public partial class SFTPConnectView : UserControl, IConnectFragment
     {
         public static SFTPConnectInfo ConnectInfo { get; }
 #if DEBUG
@@ -49,19 +114,22 @@ namespace Dispatch.View.Fragments
             set { SetValue(ConnectViewProperty, value); }
         }
 
-        public static readonly DependencyProperty IsConnectingProperty = DependencyProperty.Register("IsConnecting", typeof(bool), typeof(SFTPConnectView), new PropertyMetadata(false));
-        public bool IsConnecting
-        {
-            get { return (bool)GetValue(IsConnectingProperty); }
-            set { SetValue(IsConnectingProperty, value); }
-        }
-
         public SFTPConnectView()
         {
             InitializeComponent();
         }
 
-        private async void ButtonConnect_Click(object sender, RoutedEventArgs e)
+        private void BrowseButton_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog();
+
+            if (dialog.ShowDialog() == true)
+            {
+                ConnectInfo.Key = dialog.FileName;
+            }
+        }
+
+        public async void Connect()
         {
             var bindings = new List<BindingExpression>()
             {
@@ -81,7 +149,6 @@ namespace Dispatch.View.Fragments
             var hasError = bindings.Aggregate(false, (prev, curr) => prev || curr.HasError);
             if (hasError) return;
 
-            IsConnecting = true;
             ConnectView.OnBeginConnecting();
 
             try
@@ -104,20 +171,22 @@ namespace Dispatch.View.Fragments
             {
                 ConnectView.OnException(ex);
             }
-            finally
-            {
-                IsConnecting = false;
-            }
         }
 
-        private void BrowseButton_Click(object sender, RoutedEventArgs e)
+        public void Load(object connectionInfo)
         {
-            var dialog = new OpenFileDialog();
+            var connectInfo = JObject.FromObject(connectionInfo).ToObject<SFTPConnectInfo>();
+            ConnectInfo.Address = connectInfo.Address;
+            ConnectInfo.Port = connectInfo.Port;
+            ConnectInfo.User = connectInfo.User;
+            ConnectInfo.Password = connectInfo.Password;
+            ConnectInfo.Root = connectInfo.Root;
+            ConnectInfo.Key = connectInfo.Key;
+        }
 
-            if (dialog.ShowDialog() == true)
-            {
-                ConnectInfo.Key = dialog.FileName;
-            }
+        public object GetConnectionInfo()
+        {
+            return ConnectInfo;
         }
     }
 }

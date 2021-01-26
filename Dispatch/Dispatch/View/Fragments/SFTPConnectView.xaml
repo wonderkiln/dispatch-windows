@@ -129,10 +129,5 @@
         <CheckBox x:Name="PrivateKeyCheckBox">
             <TextBlock Text="Use private key" />
         </CheckBox>
-        <Button
-            HorizontalAlignment="Right"
-            helpers:ButtonExtension.IsLoading="{Binding IsConnecting, RelativeSource={RelativeSource AncestorType={x:Type local:SFTPConnectView}}}"
-            Click="ButtonConnect_Click"
-            Content="Connect" />
     </StackPanel>
 </UserControl>

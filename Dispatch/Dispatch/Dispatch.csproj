@@ -103,8 +103,10 @@
     <Compile Include="Service\Client\SFTPClient.cs" />
     <Compile Include="Service\Model\FavoriteItem.cs" />
     <Compile Include="Service\Model\ProgressStatus.cs" />
+    <Compile Include="Service\Model\SaveItem.cs" />
     <Compile Include="Service\Storage\IStorage.cs" />
     <Compile Include="Service\Storage\Storage.cs" />
+    <Compile Include="ViewModel\SavedViewModel.cs" />
     <Compile Include="ViewModel\FavoritesViewModel.cs" />
     <Compile Include="ViewModel\QueueViewModel.cs" />
     <Compile Include="ViewModel\UpdateViewModel.cs" />

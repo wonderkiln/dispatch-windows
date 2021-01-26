@@ -8,15 +8,15 @@ using System.Linq;
 
 namespace Dispatch.ViewModel
 {
-    public class FavoritesViewModel : Observable
+    public class SavedViewModel : Observable
     {
-        private static readonly string PATH = "favorites.json";
+        private static readonly string PATH = "saved.json";
 
-        private readonly Storage<FavoriteItem[]> storage = new Storage<FavoriteItem[]>();
+        private readonly Storage<SaveItem[]> storage = new Storage<SaveItem[]>();
 
-        public ObservableCollection<FavoriteItem> Items { get; } = new ObservableCollection<FavoriteItem>();
+        public ObservableCollection<SaveItem> Items { get; } = new ObservableCollection<SaveItem>();
 
-        public FavoritesViewModel()
+        public SavedViewModel()
         {
             try
             {

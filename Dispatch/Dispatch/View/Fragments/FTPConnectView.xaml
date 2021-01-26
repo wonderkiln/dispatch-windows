@@ -95,10 +95,5 @@
                     UpdateSourceTrigger="PropertyChanged" />
             </controls:DPTextBox.Text>
         </controls:DPTextBox>
-        <Button
-            HorizontalAlignment="Right"
-            helpers:ButtonExtension.IsLoading="{Binding IsConnecting, RelativeSource={RelativeSource AncestorType={x:Type local:FTPConnectView}}}"
-            Click="ButtonConnect_Click"
-            Content="Connect" />
     </StackPanel>
 </UserControl>

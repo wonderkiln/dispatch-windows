@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:Dispatch.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="clr-namespace:Dispatch.Helpers"
     xmlns:local="clr-namespace:Dispatch.View.Fragments"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
@@ -12,16 +13,13 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
-        <DataTemplate x:Key="FTPConnectView">
-            <local:FTPConnectView ConnectView="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ConnectView}}}" />
-        </DataTemplate>
-        <DataTemplate x:Key="SFTPConnectView">
-            <local:SFTPConnectView ConnectView="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ConnectView}}}" />
-        </DataTemplate>
-        <local:ConnectViewDataTemplateSelector
-            x:Key="ConnectViewDataTemplateSelector"
-            FTPDataTemplate="{StaticResource FTPConnectView}"
-            SFTPDataTemplate="{StaticResource SFTPConnectView}" />
+        <ContextMenu x:Key="SaveContextMenu">
+            <MenuItem Click="SaveDeleteMenuItem_Click" Header="Delete">
+                <MenuItem.Icon>
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
         <Style TargetType="controls:DPTextBox">
             <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
             <Setter Property="BorderThickness" Value="1" />
@@ -126,100 +124,78 @@
                 Margin="16,0,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                SelectedIndex="1">
-                <ComboBoxItem Content="FTP" />
-                <ComboBoxItem Content="SFTP" />
+                SelectionChanged="ComboBox_SelectionChanged">
+                <local:ConnectViewType>Sftp</local:ConnectViewType>
+                <local:ConnectViewType>Ftp</local:ConnectViewType>
             </ComboBox>
             <ScrollViewer
                 Grid.Row="1"
                 VerticalContentAlignment="Center"
                 HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Auto">
-                <StackPanel>
-                    <ContentPresenter
-                        Margin="60"
-                        Content="{Binding SelectedIndex, ElementName=ComboBox}"
-                        ContentTemplateSelector="{StaticResource ConnectViewDataTemplateSelector}" />
+                <StackPanel Margin="60">
+                    <ContentPresenter x:Name="Presenter" />
+                    <StackPanel
+                        Margin="0,12,0,0"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                        <Button
+                            Margin="0,0,12,0"
+                            Padding="12,6"
+                            Background="{StaticResource SelectionOnSecondaryBackgroundSolidColorBrush}"
+                            Click="SaveButton_Click"
+                            Content="Add to favorites"
+                            Style="{StaticResource SimpleButtonStyle}" />
+                        <Button
+                            helpers:ButtonExtension.IsLoading="{Binding IsConnecting, RelativeSource={RelativeSource AncestorType={x:Type local:ConnectView}}}"
+                            Click="ConnectButton_Click"
+                            Content="Connect" />
+                    </StackPanel>
                 </StackPanel>
             </ScrollViewer>
         </Grid>
         <ListBox
             Grid.Row="1"
-            Padding="12"
-            Background="Transparent"
-            BorderThickness="0">
+            Padding="16"
+            ItemsSource="{Binding SavedViewModel.Items, RelativeSource={RelativeSource AncestorType={x:Type local:ConnectView}}}"
+            SelectionChanged="ListBox_SelectionChanged">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
-                    <Setter Property="ContextMenu">
-                        <Setter.Value>
-                            <ContextMenu>
-                                <MenuItem Header="Edit">
-                                    <MenuItem.Icon>
-                                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE70F;" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <MenuItem Header="Delete">
-                                    <MenuItem.Icon>
-                                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                            </ContextMenu>
-                        </Setter.Value>
-                    </Setter>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListBoxItem">
-                                <StackPanel MaxWidth="64" Margin="12">
-                                    <Border
-                                        Width="48"
-                                        Height="48"
-                                        HorizontalAlignment="Center"
-                                        Background="{StaticResource PrimaryAccentSolidColorBrush}"
-                                        BorderThickness="1"
-                                        CornerRadius="3">
-                                        <TextBlock
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            FontSize="18"
-                                            FontWeight="SemiBold"
-                                            Foreground="{StaticResource SelectedTextSolidColorBrush}"
-                                            Text="S" />
-                                    </Border>
-                                    <TextBlock
-                                        Margin="0,6,0,0"
-                                        Text="Server"
-                                        TextAlignment="Center"
-                                        TextWrapping="Wrap" />
-                                    <TextBlock
-                                        FontSize="11"
-                                        Opacity="0.6"
-                                        Text="127.0.0.1:22"
-                                        TextAlignment="Center"
-                                        TextWrapping="Wrap" />
-                                </StackPanel>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
+                <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
+                    <EventSetter Event="MouseDoubleClick" Handler="SavedListBoxItem_MouseDoubleClick" />
+                    <Setter Property="ContextMenu" Value="{StaticResource SaveContextMenu}" />
                 </Style>
             </ListBox.ItemContainerStyle>
-            <Rectangle
-                Width="10"
-                Height="10"
-                Fill="Red" />
-            <Rectangle
-                Width="10"
-                Height="10"
-                Fill="Red" />
-            <Rectangle
-                Width="10"
-                Height="10"
-                Fill="Red" />
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel MaxWidth="64">
+                        <Border
+                            Width="48"
+                            Height="48"
+                            HorizontalAlignment="Center"
+                            Background="{StaticResource PrimaryAccentSolidColorBrush}"
+                            BorderThickness="1"
+                            CornerRadius="3">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="18"
+                                FontWeight="SemiBold"
+                                Foreground="{StaticResource SelectedTextSolidColorBrush}"
+                                Text="{Binding Type}" />
+                        </Border>
+                        <TextBlock
+                            Margin="0,6,0,0"
+                            Text="{Binding Title}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
         <GridSplitter
             Grid.Row="1"
