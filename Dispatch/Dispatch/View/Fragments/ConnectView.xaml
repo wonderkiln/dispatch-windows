@@ -14,7 +14,7 @@
 
     <UserControl.Resources>
         <ContextMenu x:Key="SaveContextMenu">
-            <MenuItem Click="SaveDeleteMenuItem_Click" Header="Delete">
+            <MenuItem Click="FavoriteDeleteMenuItem_Click" Header="Delete">
                 <MenuItem.Icon>
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;" />
                 </MenuItem.Icon>
@@ -157,8 +157,8 @@
         <ListBox
             Grid.Row="1"
             Padding="16"
-            ItemsSource="{Binding SavedViewModel.Items, RelativeSource={RelativeSource AncestorType={x:Type local:ConnectView}}}"
-            SelectionChanged="ListBox_SelectionChanged">
+            ItemsSource="{Binding FavoritesViewModel.Items, RelativeSource={RelativeSource AncestorType={x:Type local:ConnectView}}}"
+            SelectionChanged="FavoritesListBox_SelectionChanged">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -166,7 +166,7 @@
             </ListBox.ItemsPanel>
             <ListBox.ItemContainerStyle>
                 <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
-                    <EventSetter Event="MouseDoubleClick" Handler="SavedListBoxItem_MouseDoubleClick" />
+                    <EventSetter Event="MouseDoubleClick" Handler="FavoriteListBoxItem_MouseDoubleClick" />
                     <Setter Property="ContextMenu" Value="{StaticResource SaveContextMenu}" />
                 </Style>
             </ListBox.ItemContainerStyle>

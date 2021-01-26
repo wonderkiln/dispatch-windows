@@ -101,14 +101,13 @@
     <Compile Include="Helpers\WindowHelper.cs" />
     <Compile Include="Service\Client\FTPClient.cs" />
     <Compile Include="Service\Client\SFTPClient.cs" />
-    <Compile Include="Service\Model\FavoriteItem.cs" />
+    <Compile Include="Service\Model\BookmarkItem.cs" />
     <Compile Include="Service\Model\ProgressStatus.cs" />
-    <Compile Include="Service\Model\SaveItem.cs" />
+    <Compile Include="Service\Model\FavoriteItem.cs" />
     <Compile Include="Service\Storage\IStorage.cs" />
     <Compile Include="Service\Storage\Storage.cs" />
-    <Compile Include="ViewModel\SavedViewModel.cs" />
-    <Compile Include="ViewModel\FavoritesViewModel.cs" />
     <Compile Include="ViewModel\QueueViewModel.cs" />
+    <Compile Include="ViewModel\StorageViewModel.cs" />
     <Compile Include="ViewModel\UpdateViewModel.cs" />
     <Compile Include="View\Controls\ChromeButtons.xaml.cs">
       <DependentUpon>ChromeButtons.xaml</DependentUpon>

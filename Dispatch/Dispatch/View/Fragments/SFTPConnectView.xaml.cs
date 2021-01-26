@@ -149,7 +149,7 @@ namespace Dispatch.View.Fragments
             var hasError = bindings.Aggregate(false, (prev, curr) => prev || curr.HasError);
             if (hasError) return;
 
-            ConnectView.OnBeginConnecting();
+            ConnectView.OnConnecting();
 
             try
             {

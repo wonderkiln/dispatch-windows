@@ -1,5 +1,4 @@
 ﻿using Dispatch.Helpers;
-using Dispatch.Service.Model;
 using Dispatch.Service.Storage;
 using System;
 using System.Collections.ObjectModel;
@@ -8,19 +7,21 @@ using System.Linq;
 
 namespace Dispatch.ViewModel
 {
-    public class FavoritesViewModel : Observable
+    public class StorageViewModel<T> : Observable
     {
-        private static readonly string PATH = "favorites.json";
+        private readonly Storage<T[]> storage = new Storage<T[]>();
 
-        private readonly Storage<FavoriteItem[]> storage = new Storage<FavoriteItem[]>();
+        public string FileName { get; private set; }
 
-        public ObservableCollection<FavoriteItem> Items { get; } = new ObservableCollection<FavoriteItem>();
+        public ObservableCollection<T> Items { get; } = new ObservableCollection<T>();
 
-        public FavoritesViewModel()
+        public StorageViewModel(string fileName)
         {
+            FileName = fileName;
+
             try
             {
-                var items = storage.Load(PATH);
+                var items = storage.Load(FileName);
 
                 foreach (var item in items)
                 {
@@ -39,7 +40,7 @@ namespace Dispatch.ViewModel
         {
             try
             {
-                storage.Save(Items.ToArray(), PATH);
+                storage.Save(Items.ToArray(), FileName);
             }
             catch (Exception ex)
             {

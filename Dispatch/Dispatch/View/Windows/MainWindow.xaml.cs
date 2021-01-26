@@ -48,7 +48,7 @@ namespace Dispatch.View.Windows
 
         public UpdateViewModel UpdateViewModel { get; } = new UpdateViewModel();
 
-        public FavoritesViewModel FavoritesViewModel { get; } = new FavoritesViewModel();
+        public StorageViewModel<BookmarkItem> BookmarksViewModel { get; } = new StorageViewModel<BookmarkItem>("Bookmarks.json");
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -114,7 +114,7 @@ namespace Dispatch.View.Windows
             WindowHelper.SaveWindowSettings(this);
         }
 
-        private void FavoritesMenu_Drop(object sender, DragEventArgs e)
+        private void BookmarksMenu_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(typeof(ResourceDragData)))
             {
@@ -124,25 +124,25 @@ namespace Dispatch.View.Windows
                 {
                     if (resource.Type == ResourceType.Directory && resource.Client is LocalClient)
                     {
-                        FavoritesViewModel.Items.Add(new FavoriteItem(resource));
+                        BookmarksViewModel.Items.Add(new BookmarkItem(resource));
                     }
                 }
             }
         }
 
-        private void FavoriteMenuItem_Click(object sender, RoutedEventArgs e)
+        private void BookmarkMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var menuItem = (MenuItem)e.OriginalSource;
-            var item = (FavoriteItem)menuItem.DataContext;
+            var item = (BookmarkItem)menuItem.DataContext;
             var viewModel = (TabViewModel)TabListBox.SelectedItem;
             viewModel.LeftViewModel.Load(item.Path);
         }
 
-        private void FavoriteDeleteMenuItem_Click(object sender, RoutedEventArgs e)
+        private void BookmarkDeleteMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var menuItem = (MenuItem)sender;
-            var item = (FavoriteItem)menuItem.DataContext;
-            FavoritesViewModel.Items.Remove(item);
+            var item = (BookmarkItem)menuItem.DataContext;
+            BookmarksViewModel.Items.Remove(item);
         }
     }
 }

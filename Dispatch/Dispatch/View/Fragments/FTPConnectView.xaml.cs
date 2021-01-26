@@ -118,7 +118,7 @@ namespace Dispatch.View.Fragments
                 return;
             }
 
-            ConnectView.OnBeginConnecting();
+            ConnectView.OnConnecting();
 
             try
             {

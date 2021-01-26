@@ -1,6 +1,8 @@
 ﻿using Dispatch.Service.Client;
 using Dispatch.Service.Model;
 using Dispatch.ViewModel;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -42,7 +44,7 @@ namespace Dispatch.View.Fragments
 
     public interface IConnectView
     {
-        void OnBeginConnecting();
+        void OnConnecting();
 
         void OnSuccess(ConnectViewArgs e);
 
@@ -58,7 +60,7 @@ namespace Dispatch.View.Fragments
 
     public partial class ConnectView : UserControl, IConnectView
     {
-        public SavedViewModel SavedViewModel { get; } = new SavedViewModel();
+        public StorageViewModel<FavoriteItem> FavoritesViewModel { get; } = new StorageViewModel<FavoriteItem>("Favorites.json");
 
         public static readonly DependencyProperty IsConnectingProperty = DependencyProperty.Register("IsConnecting", typeof(bool), typeof(ConnectView), new PropertyMetadata(false));
         public bool IsConnecting
@@ -75,7 +77,7 @@ namespace Dispatch.View.Fragments
             ComboBox.SelectedItem = ConnectViewType.Sftp;
         }
 
-        public void OnBeginConnecting()
+        public void OnConnecting()
         {
             IsConnecting = true;
         }
@@ -103,10 +105,10 @@ namespace Dispatch.View.Fragments
             var content = (IConnectFragment)VisualTreeHelper.GetChild(Presenter, 0);
             var connectionInfo = content.GetConnectionInfo();
             var type = (ConnectViewType)ComboBox.SelectedItem;
-            SavedViewModel.Items.Add(new SaveItem() { Title = "Server", Type = type, ConnectionInfo = connectionInfo });
+            FavoritesViewModel.Items.Add(new FavoriteItem() { Title = "Server", Type = type, ConnectionInfo = connectionInfo });
         }
 
-        private void LoadSavedItem(SaveItem item, bool autoConnect)
+        private void LoadFavorite(FavoriteItem item, bool autoConnect)
         {
             ComboBox.SelectedItem = item.Type;
 
@@ -119,11 +121,11 @@ namespace Dispatch.View.Fragments
             }
         }
 
-        private void SavedListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void FavoriteListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var listItem = (ListBoxItem)sender;
-            var item = (SaveItem)listItem.DataContext;
-            LoadSavedItem(item, true);
+            var item = (FavoriteItem)listItem.DataContext;
+            LoadFavorite(item, true);
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -146,20 +148,20 @@ namespace Dispatch.View.Fragments
             }
         }
 
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void FavoritesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count > 0)
             {
-                var item = (SaveItem)e.AddedItems[0];
-                LoadSavedItem(item, false);
+                var item = (FavoriteItem)e.AddedItems[0];
+                LoadFavorite(item, false);
             }
         }
 
-        private void SaveDeleteMenuItem_Click(object sender, RoutedEventArgs e)
+        private void FavoriteDeleteMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var menuItem = (MenuItem)sender;
-            var item = (SaveItem)menuItem.DataContext;
-            SavedViewModel.Items.Remove(item);
+            var item = (FavoriteItem)menuItem.DataContext;
+            FavoritesViewModel.Items.Remove(item);
         }
     }
 }
