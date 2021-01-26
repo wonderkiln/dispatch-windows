@@ -63,7 +63,7 @@
             Placeholder="user">
             <controls:DPTextBox.Text>
                 <Binding
-                    Path="User"
+                    Path="Username"
                     Source="{x:Static local:FTPConnectView.ConnectInfo}"
                     UpdateSourceTrigger="PropertyChanged" />
             </controls:DPTextBox.Text>

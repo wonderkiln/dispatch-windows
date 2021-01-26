@@ -1,5 +1,6 @@
 ﻿using Dispatch.Helpers;
 using Dispatch.Service.Client;
+using Dispatch.Service.Model;
 using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using System;
@@ -41,16 +42,16 @@ namespace Dispatch.View.Fragments
             }
         }
 
-        private string user;
-        public string User
+        private string username;
+        public string Username
         {
             get
             {
-                return user;
+                return username;
             }
             set
             {
-                user = value;
+                username = value;
                 Notify();
             }
         }
@@ -102,17 +103,12 @@ namespace Dispatch.View.Fragments
     {
         public static SFTPConnectInfo ConnectInfo { get; }
 #if DEBUG
-            = new SFTPConnectInfo() { Address = "127.0.0.1", User = "Adrian", Password = "root", Root = "/Downloads" };
+            = new SFTPConnectInfo() { Address = "127.0.0.1", Username = "Adrian", Password = "root", Root = "/Downloads" };
 #else
             = new SFTPConnectInfo();
 #endif
 
-        public static readonly DependencyProperty ConnectViewProperty = DependencyProperty.Register("ConnectView", typeof(IConnectView), typeof(SFTPConnectView));
-        public IConnectView ConnectView
-        {
-            get { return (IConnectView)GetValue(ConnectViewProperty); }
-            set { SetValue(ConnectViewProperty, value); }
-        }
+        public IConnectView ConnectView { get; set; }
 
         public SFTPConnectView()
         {
@@ -153,18 +149,9 @@ namespace Dispatch.View.Fragments
 
             try
             {
-                SFTPClient client;
-
-                if (ConnectInfo.Key != null)
-                {
-                    client = await SFTPClient.CreateWithKey(ConnectInfo.Address, ConnectInfo.Port.Value, ConnectInfo.User, ConnectInfo.Key);
-                }
-                else
-                {
-                    client = await SFTPClient.Create(ConnectInfo.Address, ConnectInfo.Port.Value, ConnectInfo.User, ConnectInfo.Password);
-                }
-
-                var args = new ConnectViewArgs() { Client = client, InitialPath = ConnectInfo.Root ?? "/", Name = $"{ConnectInfo.Address}:{ConnectInfo.Port}" };
+                var connectionInfo = new SFTPConnectionInfo(ConnectInfo.Address, ConnectInfo.Port.Value, ConnectInfo.Username, ConnectInfo.Password, ConnectInfo.Key, ConnectInfo.Root);
+                var client = await SFTPClient.Create(connectionInfo);
+                var args = new ConnectViewArgs() { Client = client, InitialPath = connectionInfo.Root, Name = connectionInfo.ToString() };
                 ConnectView.OnSuccess(args);
             }
             catch (Exception ex)
@@ -175,18 +162,18 @@ namespace Dispatch.View.Fragments
 
         public void Load(object connectionInfo)
         {
-            var connectInfo = JObject.FromObject(connectionInfo).ToObject<SFTPConnectInfo>();
-            ConnectInfo.Address = connectInfo.Address;
-            ConnectInfo.Port = connectInfo.Port;
-            ConnectInfo.User = connectInfo.User;
-            ConnectInfo.Password = connectInfo.Password;
-            ConnectInfo.Root = connectInfo.Root;
-            ConnectInfo.Key = connectInfo.Key;
+            var info = JObject.FromObject(connectionInfo).ToObject<SFTPConnectionInfo>();
+            ConnectInfo.Address = info.Address;
+            ConnectInfo.Port = info.Port;
+            ConnectInfo.Username = info.Username;
+            ConnectInfo.Password = info.Password;
+            ConnectInfo.Root = info.Root;
+            ConnectInfo.Key = info.Key;
         }
 
         public object GetConnectionInfo()
         {
-            return ConnectInfo;
+            return new SFTPConnectionInfo(ConnectInfo.Address, ConnectInfo.Port.Value, ConnectInfo.Username, ConnectInfo.Password, ConnectInfo.Key, ConnectInfo.Root);
         }
     }
 }

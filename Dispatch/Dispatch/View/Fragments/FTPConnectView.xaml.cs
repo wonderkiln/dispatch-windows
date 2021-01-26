@@ -1,5 +1,6 @@
 ﻿using Dispatch.Helpers;
 using Dispatch.Service.Client;
+using Dispatch.Service.Model;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Windows;
@@ -37,16 +38,16 @@ namespace Dispatch.View.Fragments
             }
         }
 
-        private string user;
-        public string User
+        private string username;
+        public string Username
         {
             get
             {
-                return user;
+                return username;
             }
             set
             {
-                user = value;
+                username = value;
                 Notify();
             }
         }
@@ -84,17 +85,12 @@ namespace Dispatch.View.Fragments
     {
         public static FTPConnectInfo ConnectInfo { get; }
 #if DEBUG
-            = new FTPConnectInfo() { Address = "127.0.0.1", User = "Adrian", Password = "root", Root = "/Downloads" };
+            = new FTPConnectInfo() { Address = "127.0.0.1", Username = "Adrian", Password = "root", Root = "/Downloads" };
 #else
             = new FTPConnectInfo();
 #endif
 
-        public static readonly DependencyProperty ConnectViewProperty = DependencyProperty.Register("ConnectView", typeof(IConnectView), typeof(FTPConnectView));
-        public IConnectView ConnectView
-        {
-            get { return (IConnectView)GetValue(ConnectViewProperty); }
-            set { SetValue(ConnectViewProperty, value); }
-        }
+        public IConnectView ConnectView { get; set; }
 
         public FTPConnectView()
         {
@@ -122,9 +118,9 @@ namespace Dispatch.View.Fragments
 
             try
             {
-                var client = await FTPClient.Create(ConnectInfo.Address, ConnectInfo.Port.Value, ConnectInfo.User, ConnectInfo.Password);
-
-                var args = new ConnectViewArgs() { Client = client, InitialPath = ConnectInfo.Root ?? "/", Name = $"{ConnectInfo.Address}:{ConnectInfo.Port}" };
+                var connectionInfo = new FTPConnectionInfo(ConnectInfo.Address, ConnectInfo.Port.Value, ConnectInfo.Username, ConnectInfo.Password, ConnectInfo.Root);
+                var client = await FTPClient.Create(connectionInfo);
+                var args = new ConnectViewArgs() { Client = client, InitialPath = connectionInfo.Root, Name = connectionInfo.ToString() };
                 ConnectView.OnSuccess(args);
             }
             catch (Exception ex)
@@ -135,17 +131,17 @@ namespace Dispatch.View.Fragments
 
         public void Load(object connectionInfo)
         {
-            var connectInfo = JObject.FromObject(connectionInfo).ToObject<FTPConnectInfo>();
-            ConnectInfo.Address = connectInfo.Address;
-            ConnectInfo.Port = connectInfo.Port;
-            ConnectInfo.User = connectInfo.User;
-            ConnectInfo.Password = connectInfo.Password;
-            ConnectInfo.Root = connectInfo.Root;
+            var info = JObject.FromObject(connectionInfo).ToObject<FTPConnectionInfo>();
+            ConnectInfo.Address = info.Address;
+            ConnectInfo.Port = info.Port;
+            ConnectInfo.Username = info.Username;
+            ConnectInfo.Password = info.Password;
+            ConnectInfo.Root = info.Root;
         }
 
         public object GetConnectionInfo()
         {
-            return ConnectInfo;
+            return new FTPConnectionInfo(ConnectInfo.Address, ConnectInfo.Port.Value, ConnectInfo.Username, ConnectInfo.Password, ConnectInfo.Root);
         }
     }
 }

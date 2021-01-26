@@ -69,7 +69,7 @@
             Placeholder="user">
             <controls:DPTextBox.Text>
                 <Binding
-                    Path="User"
+                    Path="Username"
                     Source="{x:Static local:SFTPConnectView.ConnectInfo}"
                     UpdateSourceTrigger="PropertyChanged" />
             </controls:DPTextBox.Text>

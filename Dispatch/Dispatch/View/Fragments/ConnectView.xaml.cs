@@ -105,7 +105,7 @@ namespace Dispatch.View.Fragments
             var content = (IConnectFragment)VisualTreeHelper.GetChild(Presenter, 0);
             var connectionInfo = content.GetConnectionInfo();
             var type = (ConnectViewType)ComboBox.SelectedItem;
-            FavoritesViewModel.Items.Add(new FavoriteItem() { Title = "Server", Type = type, ConnectionInfo = connectionInfo });
+            FavoritesViewModel.Items.Add(new FavoriteItem() { Title = connectionInfo.ToString(), Type = type, ConnectionInfo = connectionInfo });
         }
 
         private void LoadFavorite(FavoriteItem item, bool autoConnect)
