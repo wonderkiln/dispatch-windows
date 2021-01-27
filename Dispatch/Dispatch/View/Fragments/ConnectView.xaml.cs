@@ -1,35 +1,41 @@
 ﻿using Dispatch.Service.Client;
 using Dispatch.Service.Model;
 using Dispatch.ViewModel;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Dispatch.View.Fragments
 {
     public enum ConnectViewType { Sftp, Ftp }
 
-    public class ConnectViewDataTemplateSelector : DataTemplateSelector
+    public class ConnectViewTypeToImageSourceValueConverter: IValueConverter
     {
-        public DataTemplate FTPDataTemplate { get; set; }
-        public DataTemplate SFTPDataTemplate { get; set; }
-
-        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!(item is ConnectViewType)) return null;
+            if (!(value is ConnectViewType)) return null;
 
-            var type = (ConnectViewType)item;
+            var type = (ConnectViewType)value;
 
             switch (type)
             {
-                case ConnectViewType.Sftp: return SFTPDataTemplate;
-                case ConnectViewType.Ftp: return FTPDataTemplate;
-                default: return null;
+                case ConnectViewType.Sftp:
+                    return new BitmapImage(new Uri("/Resources/ic_sftp.png", UriKind.Relative));
+                case ConnectViewType.Ftp:
+                    return new BitmapImage(new Uri("/Resources/ic_ftp.png", UriKind.Relative));
+                default:
+                    return null;
             }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 
