@@ -84,17 +84,17 @@ namespace Dispatch.ViewModel
 
             public ResourceQueue.Item Tag { get; set; }
 
-            public RelayCommand CancelCommand { get; set; }
+            public RelayCommand<object> CancelCommand { get; set; }
 
-            public RelayCommand OpenDestinationCommand { get; set; }
+            public RelayCommand<object> OpenDestinationCommand { get; set; }
 
             public QueueViewModel ViewModel { get; private set; }
 
             public QueueItem(QueueViewModel viewModel)
             {
                 ViewModel = viewModel;
-                CancelCommand = new RelayCommand(Cancel);
-                OpenDestinationCommand = new RelayCommand(OpenDestination);
+                CancelCommand = new RelayCommand<object>(Cancel);
+                OpenDestinationCommand = new RelayCommand<object>(OpenDestination);
             }
 
             private void Cancel(object arg)

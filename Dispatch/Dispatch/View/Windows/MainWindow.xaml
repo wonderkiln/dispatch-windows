@@ -2,6 +2,7 @@
     x:Class="Dispatch.View.Windows.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:a="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
     xmlns:controls="clr-namespace:Dispatch.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fragments="clr-namespace:Dispatch.View.Fragments"
@@ -9,6 +10,7 @@
     xmlns:local="clr-namespace:Dispatch.View.Windows"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vcontrols="clr-namespace:Dispatch.View.Controls"
+    xmlns:vm="clr-namespace:Dispatch.ViewModel"
     Title="{x:Static helpers:Constants.APP_NAME}"
     Width="1000"
     Height="620"
@@ -20,6 +22,10 @@
     Style="{StaticResource ChromelessWindowStyle}"
     WindowStartupLocation="Manual"
     mc:Ignorable="d">
+
+    <Window.DataContext>
+        <vm:RootViewModel />
+    </Window.DataContext>
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -45,7 +51,10 @@
             NewUpdate="{StaticResource NewUpdateDataTemplate}"
             NoUpdate="{StaticResource NoUpdateDataTemplate}" />
         <ContextMenu x:Key="BookmarkContextMenu">
-            <MenuItem Click="BookmarkDeleteMenuItem_Click" Header="Delete">
+            <MenuItem
+                Command="{Binding DataContext.Bookmarks.DeleteCommand, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
+                CommandParameter="{Binding}"
+                Header="Delete">
                 <MenuItem.Icon>
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;" />
                 </MenuItem.Icon>
@@ -64,22 +73,17 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
-        <controls:DPTabListBox
-            x:Name="TabListBox"
-            ItemsSource="{Binding ViewModel.Tabs, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
-            OnAdd="TabListBox_OnAdd"
-            OnClose="TabListBox_OnClose"
-            SelectedIndex="0"
-            SelectionChanged="TabListBox_SelectionChanged">
+        <controls:DPTabListBox ItemsSource="{Binding OpenTabs}" SelectedItem="{Binding SelectedTab}">
             <controls:DPTabListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <Image
-                            Width="14"
-                            Height="14"
+                            Width="16"
+                            Height="16"
                             Margin="0,0,4,0"
+                            VerticalAlignment="Center"
                             Source="{Binding Icon}" />
-                        <TextBlock Text="{Binding Title}" />
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Title}" />
                     </StackPanel>
                 </DataTemplate>
             </controls:DPTabListBox.ItemTemplate>
@@ -94,15 +98,13 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <Menu
-                    AllowDrop="True"
-                    Background="Transparent"
-                    Drop="BookmarksMenu_Drop"
-                    ItemsSource="{Binding BookmarksViewModel.Items, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
-                    MenuItem.Click="BookmarkMenuItem_Click">
+                <Menu ItemsSource="{Binding Bookmarks.Items}">
                     <Menu.ItemContainerStyle>
                         <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
+                            <Setter Property="Command" Value="{Binding DataContext.SelectedTab.NavigateToBookmarkCommand, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" />
+                            <Setter Property="CommandParameter" Value="{Binding}" />
                             <Setter Property="ContextMenu" Value="{StaticResource BookmarkContextMenu}" />
+                            <Setter Property="ToolTip" Value="{Binding Path}" />
                         </Style>
                     </Menu.ItemContainerStyle>
                     <Menu.ItemTemplate>
@@ -155,8 +157,8 @@
             Grid.Row="2"
             Grid.ColumnSpan="2"
             Style="{StaticResource PrimaryBackgroundBorderStyle}">
-            <controls:DPSideView x:Name="SideView">
-                <fragments:TabView ViewModel="{Binding SelectedItem, ElementName=TabListBox}" />
+            <controls:DPSideView>
+                <fragments:TabView DataContext="{Binding SelectedTab}" />
             </controls:DPSideView>
         </Border>
         <Border

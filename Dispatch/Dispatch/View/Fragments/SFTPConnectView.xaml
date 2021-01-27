@@ -31,10 +31,7 @@
                 LabelSharedSizeGroup="Label"
                 Placeholder="sample.address.net">
                 <controls:DPTextBox.Text>
-                    <Binding
-                        Path="Address"
-                        Source="{x:Static local:SFTPConnectView.ConnectInfo}"
-                        UpdateSourceTrigger="PropertyChanged">
+                    <Binding Path="Address" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
                             <validators:RequiredValidator />
                         </Binding.ValidationRules>
@@ -49,10 +46,7 @@
                 MaxLength="5"
                 Placeholder="22">
                 <controls:DPTextBox.Text>
-                    <Binding
-                        Path="Port"
-                        Source="{x:Static local:SFTPConnectView.ConnectInfo}"
-                        UpdateSourceTrigger="PropertyChanged">
+                    <Binding Path="Port" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
                             <validators:RequiredValidator />
                             <validators:RegexValidator Message="Field must be a number" Pattern="^[0-9]+$" />
@@ -68,10 +62,7 @@
             LabelSharedSizeGroup="Label"
             Placeholder="user">
             <controls:DPTextBox.Text>
-                <Binding
-                    Path="Username"
-                    Source="{x:Static local:SFTPConnectView.ConnectInfo}"
-                    UpdateSourceTrigger="PropertyChanged" />
+                <Binding Path="Username" UpdateSourceTrigger="PropertyChanged" />
             </controls:DPTextBox.Text>
         </controls:DPTextBox>
         <controls:DPTextBox
@@ -83,10 +74,7 @@
             Placeholder="password"
             Visibility="{Binding IsChecked, Source={x:Reference PrivateKeyCheckBox}, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
             <controls:DPTextBox.Text>
-                <Binding
-                    Path="Password"
-                    Source="{x:Static local:SFTPConnectView.ConnectInfo}"
-                    UpdateSourceTrigger="PropertyChanged" />
+                <Binding Path="Password" UpdateSourceTrigger="PropertyChanged" />
             </controls:DPTextBox.Text>
         </controls:DPTextBox>
         <controls:DPTextBox
@@ -98,7 +86,7 @@
             Placeholder="private.key"
             Visibility="{Binding IsChecked, Source={x:Reference PrivateKeyCheckBox}, Converter={StaticResource BooleanToVisibilityConverter}}">
             <controls:DPTextBox.Text>
-                <Binding Path="Key" Source="{x:Static local:SFTPConnectView.ConnectInfo}">
+                <Binding Path="Key">
                     <Binding.ValidationRules>
                         <validators:RequiredValidator />
                     </Binding.ValidationRules>
@@ -107,7 +95,7 @@
             <controls:DPTextBox.Trailing>
                 <Button
                     Padding="4,0"
-                    Click="BrowseButton_Click"
+                    Command="{Binding BrowseKeyCommand}"
                     Content="Browse"
                     FontSize="11"
                     Style="{StaticResource SimpleButtonStyle}" />
@@ -120,10 +108,7 @@
             LabelSharedSizeGroup="Label"
             Placeholder="/www">
             <controls:DPTextBox.Text>
-                <Binding
-                    Path="Root"
-                    Source="{x:Static local:SFTPConnectView.ConnectInfo}"
-                    UpdateSourceTrigger="PropertyChanged" />
+                <Binding Path="Root" UpdateSourceTrigger="PropertyChanged" />
             </controls:DPTextBox.Text>
         </controls:DPTextBox>
         <CheckBox x:Name="PrivateKeyCheckBox">

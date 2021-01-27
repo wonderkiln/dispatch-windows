@@ -11,16 +11,16 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
-        <DataTemplate x:Key="ConnectView">
-            <local:ConnectView OnConnected="ConnectView_OnConnected" />
+        <DataTemplate x:Key="ConnectDataTemplate">
+            <local:ConnectView DataContext="{Binding}" />
         </DataTemplate>
-        <DataTemplate x:Key="ListView">
-            <local:ResourceView BeginTransfer="ResourceView_BeginTransfer" ViewModel="{Binding}" />
+        <DataTemplate x:Key="ResourcesDataTemplate">
+            <local:ResourcesView BeginTransfer="ResourceView_BeginTransfer" DataContext="{Binding}" />
         </DataTemplate>
-        <converters:ListViewModelToViewSelector
-            x:Key="ViewSelector"
-            ConnectTemplate="{StaticResource ConnectView}"
-            ListTemplate="{StaticResource ListView}" />
+        <converters:TabViewDataTemplateSelector
+            x:Key="TabViewDataTemplateSelector"
+            ConnectDataTemplate="{StaticResource ConnectDataTemplate}"
+            ResourcesDataTemplate="{StaticResource ResourcesDataTemplate}" />
     </UserControl.Resources>
 
     <Grid>
@@ -28,11 +28,11 @@
             <ColumnDefinition Width="*" MinWidth="100" />
             <ColumnDefinition Width="*" MinWidth="100" />
         </Grid.ColumnDefinitions>
-        <local:ResourceView BeginTransfer="ResourceView_BeginTransfer" ViewModel="{Binding ViewModel.LeftViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:TabView}}}" />
+        <local:ResourcesView BeginTransfer="ResourceView_BeginTransfer" DataContext="{Binding LeftSide}" />
         <ContentPresenter
             Grid.Column="1"
-            Content="{Binding ViewModel.RightViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:TabView}}}"
-            ContentTemplateSelector="{StaticResource ViewSelector}" />
+            Content="{Binding RightSide}"
+            ContentTemplateSelector="{StaticResource TabViewDataTemplateSelector}" />
         <GridSplitter
             Grid.Column="1"
             Margin="-12,0,0,0"

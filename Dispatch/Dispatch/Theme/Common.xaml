@@ -50,7 +50,7 @@
         <Setter Property="Background" Value="{StaticResource PrimaryBackgroundSolidColorBrush}" />
         <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
         <Setter Property="CaretBrush" Value="{StaticResource NormalTextSolidColorBrush}" />
-        <Setter Property="SelectionBrush" Value="{StaticResource SelectionOnPrimaryBackgroundSolidColorBrush}" />
+        <!--<Setter Property="SelectionBrush" Value="{StaticResource SelectionOnPrimaryBackgroundSolidColorBrush}" />-->
         <Setter Property="BorderBrush" Value="{StaticResource SeparatorSolidColorBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FontSize" Value="13" />

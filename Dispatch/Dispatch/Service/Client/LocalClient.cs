@@ -11,6 +11,8 @@ namespace Dispatch.Service.Client
     {
         public static readonly string AllDrivesPathKey = "";
 
+        public bool ShowHiddenFiles { get; set; } = false;
+
         public Task<IClient> Clone()
         {
             return Task.FromResult<IClient>(this);
@@ -30,6 +32,12 @@ namespace Dispatch.Service.Client
             else if (File.Exists(path))
             {
                 var fileInfo = new FileInfo(path);
+
+                if (fileInfo.Attributes.HasFlag(FileAttributes.Hidden))
+                {
+                    return null;
+                }
+
                 return new Resource(this, fileInfo.FullName, fileInfo.Name)
                 {
                     Type = ResourceType.File,
@@ -39,6 +47,7 @@ namespace Dispatch.Service.Client
             else if (Directory.Exists(path))
             {
                 var directoryInfo = new DirectoryInfo(path);
+
                 if (directoryInfo.Parent == null)
                 {
                     var driveInfo = new DriveInfo(path);
@@ -55,6 +64,11 @@ namespace Dispatch.Service.Client
                 }
                 else
                 {
+                    if (directoryInfo.Attributes.HasFlag(FileAttributes.Hidden))
+                    {
+                        return null;
+                    }
+
                     return new Resource(this, directoryInfo.FullName, directoryInfo.Name)
                     {
                         Type = ResourceType.Directory,
@@ -76,16 +90,17 @@ namespace Dispatch.Service.Client
         {
             if (path == AllDrivesPathKey)
             {
-                return Task.FromResult(Directory.GetLogicalDrives().Select(MakeResource).ToArray());
+                return Task.FromResult(Directory.GetLogicalDrives().Select(MakeResource).Where(e => e != null).ToArray());
             }
             else if (File.Exists(path))
             {
-                return Task.FromResult(new Resource[] { MakeResource(path) });
+                var result = new Resource[] { MakeResource(path) };
+                return Task.FromResult(result.Where(e => e != null).ToArray());
             }
             else if (Directory.Exists(path))
             {
-                var directories = Directory.GetDirectories(path).Select(MakeResource);
-                var files = Directory.GetFiles(path).Select(MakeResource);
+                var directories = Directory.GetDirectories(path).Select(MakeResource).Where(e => e != null);
+                var files = Directory.GetFiles(path).Select(MakeResource).Where(e => e != null);
                 return Task.FromResult(directories.Concat(files).ToArray());
             }
             else

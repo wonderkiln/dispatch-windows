@@ -1,10 +1,5 @@
-﻿using Dispatch.Controls;
-using Dispatch.Helpers;
-using Dispatch.Service.Client;
-using Dispatch.Service.Model;
-using Dispatch.View.Fragments;
+﻿using Dispatch.Helpers;
 using Dispatch.ViewModel;
-using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -42,71 +37,10 @@ namespace Dispatch.View.Windows
 
     public partial class MainWindow : Window
     {
-        public TabsViewModel ViewModel { get; } = new TabsViewModel();
-
-        public QueueViewModel QueueViewModel { get; } = new QueueViewModel();
-
-        public UpdateViewModel UpdateViewModel { get; } = new UpdateViewModel();
-
-        public StorageViewModel<BookmarkItem> BookmarksViewModel { get; } = new StorageViewModel<BookmarkItem>("Bookmarks.json");
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             WindowHelper.LoadWindowSettings(this);
             WindowHelper.EnableBlurForWindow(this);
-        }
-
-        private void TabListBox_OnAdd(object sender, EventArgs e)
-        {
-            TabListBox.SelectedItem = ViewModel.NewTab();
-        }
-
-        private void TabListBox_OnClose(object sender, EventArgs e)
-        {
-            var item = (DPTabListBoxItem)sender;
-            ViewModel.CloseTab((TabViewModel)item.DataContext);
-        }
-
-        private void TabListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.AddedItems.Count == 0)
-            {
-                ((DPTabListBox)sender).SelectedIndex = 0;
-            }
-        }
-
-        private void TransfersButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (SideView.IsOpen && SideView.PanelContent is QueueView)
-            {
-                SideView.IsOpen = false;
-                return;
-            }
-
-            SideView.Title = "Transfers";
-            SideView.PanelContent = new QueueView { ViewModel = QueueViewModel };
-            SideView.IsOpen = true;
-        }
-
-        private void AboutButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (SideView.IsOpen && SideView.PanelContent is MoreView)
-            {
-                SideView.IsOpen = false;
-                return;
-            }
-
-            var view = new MoreView();
-            view.CloseSidebar = () => { SideView.IsOpen = false; };
-            view.ChangeSidebar = (title, newView) =>
-            {
-                SideView.Title = title;
-                SideView.PanelContent = newView;
-            };
-
-            SideView.Title = "More";
-            SideView.PanelContent = view;
-            SideView.IsOpen = true;
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -114,35 +48,38 @@ namespace Dispatch.View.Windows
             WindowHelper.SaveWindowSettings(this);
         }
 
-        private void BookmarksMenu_Drop(object sender, DragEventArgs e)
+        private void TransfersButton_Click(object sender, RoutedEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(ResourceDragData)))
-            {
-                var data = (ResourceDragData)e.Data.GetData(typeof(ResourceDragData));
+            //if (SideView.IsOpen && SideView.PanelContent is QueueView)
+            //{
+            //    SideView.IsOpen = false;
+            //    return;
+            //}
 
-                foreach (var resource in data.Resources)
-                {
-                    if (resource.Type == ResourceType.Directory && resource.Client is LocalClient)
-                    {
-                        BookmarksViewModel.Items.Add(new BookmarkItem(resource));
-                    }
-                }
-            }
+            //SideView.Title = "Transfers";
+            //SideView.PanelContent = new QueueView { ViewModel = QueueViewModel };
+            //SideView.IsOpen = true;
         }
 
-        private void BookmarkMenuItem_Click(object sender, RoutedEventArgs e)
+        private void AboutButton_Click(object sender, RoutedEventArgs e)
         {
-            var menuItem = (MenuItem)e.OriginalSource;
-            var item = (BookmarkItem)menuItem.DataContext;
-            var viewModel = (TabViewModel)TabListBox.SelectedItem;
-            viewModel.LeftViewModel.Load(item.Path);
-        }
+            //if (SideView.IsOpen && SideView.PanelContent is MoreView)
+            //{
+            //    SideView.IsOpen = false;
+            //    return;
+            //}
 
-        private void BookmarkDeleteMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            var menuItem = (MenuItem)sender;
-            var item = (BookmarkItem)menuItem.DataContext;
-            BookmarksViewModel.Items.Remove(item);
+            //var view = new MoreView();
+            //view.CloseSidebar = () => { SideView.IsOpen = false; };
+            //view.ChangeSidebar = (title, newView) =>
+            //{
+            //    SideView.Title = title;
+            //    SideView.PanelContent = newView;
+            //};
+
+            //SideView.Title = "More";
+            //SideView.PanelContent = view;
+            //SideView.IsOpen = true;
         }
     }
 }

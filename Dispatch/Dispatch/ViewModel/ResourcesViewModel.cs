@@ -3,17 +3,17 @@ using Dispatch.Service.Client;
 using Dispatch.Service.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
-using System.Windows.Media;
 
 namespace Dispatch.ViewModel
 {
-    public class ListViewModel : Observable
+    public class ResourcesViewModel : Observable
     {
         public IClient Client { get; private set; }
 
-        private RelayCommand _backCommand;
-        public RelayCommand BackCommand
+        private RelayCommand<object> _backCommand;
+        public RelayCommand<object> BackCommand
         {
             get
             {
@@ -26,8 +26,8 @@ namespace Dispatch.ViewModel
             }
         }
 
-        private RelayCommand _homeCommand;
-        public RelayCommand HomeCommand
+        private RelayCommand<object> _homeCommand;
+        public RelayCommand<object> HomeCommand
         {
             get
             {
@@ -40,8 +40,8 @@ namespace Dispatch.ViewModel
             }
         }
 
-        private RelayCommand _refreshCommand;
-        public RelayCommand RefreshCommand
+        private RelayCommand<object> _refreshCommand;
+        public RelayCommand<object> RefreshCommand
         {
             get
             {
@@ -70,23 +70,52 @@ namespace Dispatch.ViewModel
 
         private string InitialPath;
 
-        public ImageSource Icon { get; private set; }
-
-        public string Title { get; private set; }
-
-        public ListViewModel(IClient client, string initialPath, ImageSource icon, string title)
+        private Resource[] selectedResources;
+        public Resource[] SelectedResources
         {
+            get
+            {
+                return selectedResources;
+            }
+            set
+            {
+                selectedResources = value;
+                Notify();
+            }
+        }
+
+        public RelayCommand<IEnumerable<object>> AddBookmarkCommand { get; }
+        public RelayCommand<Resource> NavigateCommand { get; }
+
+        public ResourcesViewModel(IClient client, string initialPath)
+        {
+            AddBookmarkCommand = new RelayCommand<IEnumerable<object>>(AddBookmark);
+            NavigateCommand = new RelayCommand<Resource>(Navigate);
+
             Client = client;
-            BackCommand = new RelayCommand(BackCommandAction, false);
-            HomeCommand = new RelayCommand(HomeCommandAction);
-            RefreshCommand = new RelayCommand(RefreshCommandAction);
+            BackCommand = new RelayCommand<object>(BackCommandAction, false);
+            HomeCommand = new RelayCommand<object>(HomeCommandAction);
+            RefreshCommand = new RelayCommand<object>(RefreshCommandAction);
 
             InitialPath = initialPath;
 
-            Icon = icon;
-            Title = title;
-
             Load(InitialPath);
+        }
+
+        public event EventHandler<Resource[]> OnAddBookmark;
+
+        private void AddBookmark(IEnumerable<object> items)
+        {
+            var bookmarks = items.Cast<Resource>().ToArray();
+            OnAddBookmark?.Invoke(this, bookmarks);
+        }
+
+        private void Navigate(Resource item)
+        {
+            if (item.Type != ResourceType.File)
+            {
+                Load(item.Path);
+            }
         }
 
         private void BackCommandAction(object parameter)
@@ -141,7 +170,15 @@ namespace Dispatch.ViewModel
             }
             private set
             {
-                _resources = value;
+                if (value != null)
+                {
+                    _resources = value.OrderBy(e => e.Type).ThenBy(e => e.Name).ToArray();
+                }
+                else
+                {
+                    _resources = value;
+                }
+
                 Notify();
             }
         }

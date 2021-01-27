@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Windows.Input;
-
 namespace Dispatch.Helpers
 {
-    public class RelayCommand : ICommand
+    public class RelayCommand<T> : ICommand
     {
         public event EventHandler CanExecuteChanged;
 
@@ -17,15 +16,15 @@ namespace Dispatch.Helpers
             set
             {
                 _isExecutable = value;
-                CanExecuteChanged?.Invoke(this, new EventArgs());
+                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        private readonly Action<object> ExecuteAction;
+        private readonly Action<T> action;
 
-        public RelayCommand(Action<object> action, bool executable = true)
+        public RelayCommand(Action<T> action, bool executable = true)
         {
-            ExecuteAction = action;
+            this.action = action;
             IsExecutable = executable;
         }
 
@@ -36,7 +35,7 @@ namespace Dispatch.Helpers
 
         public void Execute(object parameter)
         {
-            ExecuteAction(parameter);
+            action((T)parameter);
         }
     }
 }
