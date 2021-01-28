@@ -339,14 +339,19 @@
     <Style TargetType="Menu">
         <Setter Property="Padding" Value="6" />
         <Setter Property="Background" Value="Transparent" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Menu">
-                    <StackPanel
-                        Margin="{TemplateBinding Padding}"
-                        Background="{TemplateBinding Background}"
-                        IsItemsHost="True"
-                        Orientation="Horizontal" />
+                    <Border Background="{TemplateBinding Background}">
+                        <ItemsPresenter Margin="{TemplateBinding Padding}" />
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

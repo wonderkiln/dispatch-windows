@@ -70,19 +70,6 @@ namespace Dispatch.View.Fragments
             }
         }
 
-        private void ListViewItem_MouseDoubleClick(object sender, EventArgs e)
-        {
-            var item = sender as FrameworkElement;
-            var resource = item.DataContext as Resource;
-
-            if (resource.Type != ResourceType.File)
-            {
-                //ViewModel.Load(resource.Path);
-            }
-
-            // TODO:
-        }
-
         private void List_DragEnter(object sender, DragEventArgs e)
         {
             e.Effects = DragDropEffects.None;

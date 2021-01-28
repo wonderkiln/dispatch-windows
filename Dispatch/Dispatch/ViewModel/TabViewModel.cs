@@ -121,5 +121,18 @@ namespace Dispatch.ViewModel
                 }
             }
         }
+
+        public async void Disconnect()
+        {
+            if (leftSide is ResourcesViewModel leftVM)
+            {
+                await leftVM.Disconnect();
+            }
+
+            if (rightSide is ResourcesViewModel rightVM)
+            {
+                await rightVM.Disconnect();
+            }
+        }
     }
 }

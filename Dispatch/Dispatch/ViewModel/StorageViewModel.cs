@@ -54,6 +54,11 @@ namespace Dispatch.ViewModel
             }
         }
 
+        public void Insert(int index, T item)
+        {
+            Items.Insert(index, item);
+        }
+
         public void Add(T item)
         {
             Items.Add(item);
@@ -62,6 +67,23 @@ namespace Dispatch.ViewModel
         public void Delete(T item)
         {
             Items.Remove(item);
+        }
+
+        public void Move(int index, T item)
+        {
+            var oldIndex = Items.IndexOf(item);
+
+            if (oldIndex == -1 || oldIndex == index) return;
+
+            if (index >= 0 && index < Items.Count)
+            {
+                Items.Move(oldIndex, index);
+            }
+            else if (index >= Items.Count)
+            {
+                Items.RemoveAt(oldIndex);
+                Items.Add(item);
+            }
         }
     }
 }

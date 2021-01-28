@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace Dispatch.Controls
@@ -42,8 +43,19 @@ namespace Dispatch.Controls
     [TemplatePart(Name = "PART_AddButton", Type = typeof(Button))]
     public class DPTabListBox : ListBox
     {
-        public event EventHandler<EventArgs> OnClose;
-        public event EventHandler<EventArgs> OnAdd;
+        public static readonly DependencyProperty AddTabCommandProperty = DependencyProperty.Register("AddTabCommand", typeof(ICommand), typeof(DPTabListBox));
+        public ICommand AddTabCommand
+        {
+            get { return (ICommand)GetValue(AddTabCommandProperty); }
+            set { SetValue(AddTabCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty CloseTabCommandProperty = DependencyProperty.Register("CloseTabCommand", typeof(ICommand), typeof(DPTabListBox));
+        public ICommand CloseTabCommand
+        {
+            get { return (ICommand)GetValue(CloseTabCommandProperty); }
+            set { SetValue(CloseTabCommandProperty, value); }
+        }
 
         public DPTabListBox()
         {
@@ -55,12 +67,7 @@ namespace Dispatch.Controls
             base.OnApplyTemplate();
 
             var closeButton = (Button)GetTemplateChild("PART_AddButton");
-            closeButton.Click += AddButton_Click;
-        }
-
-        private void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            OnAdd.Invoke(this, EventArgs.Empty);
+            closeButton.SetBinding(Button.CommandProperty, new Binding("AddTabCommand"));
         }
 
         protected override DependencyObject GetContainerForItemOverride()
@@ -91,7 +98,8 @@ namespace Dispatch.Controls
 
         private void ListItem_OnClose(object sender, EventArgs e)
         {
-            OnClose.Invoke(sender, EventArgs.Empty);
+            var item = (DPTabListBoxItem)sender;
+            CloseTabCommand?.Execute(item.DataContext);
         }
     }
 }

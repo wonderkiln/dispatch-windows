@@ -8,7 +8,7 @@ namespace Dispatch.Helpers
 {
     public class FileIconHelper
     {
-        private static readonly ImageSource DRIVE_ICON = new BitmapImage(new Uri("/Resources/icons/ic_folder.png", UriKind.Relative));
+        private static readonly ImageSource DRIVE_ICON = new BitmapImage(new Uri("/Resources/icons/ic_drive.png", UriKind.Relative));
         private static readonly ImageSource DIRECTORY_ICON = new BitmapImage(new Uri("/Resources/icons/ic_folder.png", UriKind.Relative));
         private static readonly ImageSource FILE_ICON = new BitmapImage(new Uri("/Resources/icons/ic_file.png", UriKind.Relative));
         private static readonly ImageSource IMAGE_ICON = new BitmapImage(new Uri("/Resources/icons/ic_image.png", UriKind.Relative));

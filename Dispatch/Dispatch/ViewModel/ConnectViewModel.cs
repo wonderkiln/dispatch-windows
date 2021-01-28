@@ -231,7 +231,7 @@ namespace Dispatch.ViewModel
                             var client = await SFTPClient.Create(connectionInfo);
                             OnConnectedClient?.Invoke(this, new ClientEventArgs()
                             {
-                                Icon = null,
+                                Icon = Images.Sftp,
                                 Title = connectionInfo.ToString(),
                                 InitialRoot = connectionInfo.Root,
                                 Client = client,
@@ -244,7 +244,7 @@ namespace Dispatch.ViewModel
                             var client = await FTPClient.Create(connectionInfo);
                             OnConnectedClient?.Invoke(this, new ClientEventArgs()
                             {
-                                Icon = null,
+                                Icon = Images.Ftp,
                                 Title = connectionInfo.ToString(),
                                 InitialRoot = connectionInfo.Root,
                                 Client = client,

@@ -1,15 +1,110 @@
 ﻿using Dispatch.Helpers;
 using Dispatch.Service.Client;
 using Dispatch.Service.Model;
+using GongSolutions.Wpf.DragDrop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Dispatch.ViewModel
 {
+    public class ResourcesDragDropHandler : IDragSource, IDropTarget
+    {
+        private ResourcesViewModel viewModel;
+
+        public ResourcesDragDropHandler(ResourcesViewModel viewModel)
+        {
+            this.viewModel = viewModel;
+        }
+
+        public bool CanStartDrag(IDragInfo dragInfo)
+        {
+            return true;
+        }
+
+        public void DragCancelled()
+        {
+        }
+
+        public void DragDropOperationFinished(DragDropEffects operationResult, IDragInfo dragInfo)
+        {
+        }
+
+        public void Dropped(IDropInfo dropInfo)
+        {
+        }
+
+        public void StartDrag(IDragInfo dragInfo)
+        {
+            var sourceItems = (IEnumerable<object>)dragInfo.SourceItems;
+
+            foreach (var item in sourceItems)
+            {
+                if (!(item is Resource))
+                {
+                    dragInfo.Effects = DragDropEffects.None;
+                    return;
+                }
+            }
+
+            dragInfo.Data = sourceItems.Cast<Resource>();
+            dragInfo.Effects = DragDropEffects.Link | DragDropEffects.Copy;
+        }
+
+        public bool TryCatchOccurredException(Exception exception)
+        {
+            return false;
+        }
+
+        public void DragOver(IDropInfo dropInfo)
+        {
+            if (dropInfo.Data is IEnumerable<Resource> resources)
+            {
+                foreach (var resource in resources)
+                {
+                    if (resource.Client == viewModel.Client)
+                    {
+                        return;
+                    }
+                }
+
+                dropInfo.DropTargetAdorner = null;
+                dropInfo.Effects = DragDropEffects.Copy;
+            }
+        }
+
+        public void Drop(IDropInfo dropInfo)
+        {
+            if (dropInfo.Data is IEnumerable<Resource> resources)
+            {
+                viewModel.Transfer(resources.ToArray());
+            }
+        }
+    }
+
     public class ResourcesViewModel : Observable
     {
+        public async void Transfer(Resource[] resources)
+        {
+            var currentResource = await Client.FetchResource(_currentPath);
+
+            foreach (var resource in resources)
+            {
+                if (Client is LocalClient)
+                {
+                    ResourceQueue.Shared.Enqueue(new ResourceQueue.Item(ResourceQueue.Item.ActionType.Download, resource, currentResource, this));
+                }
+                else
+                {
+                    ResourceQueue.Shared.Enqueue(new ResourceQueue.Item(ResourceQueue.Item.ActionType.Upload, resource, currentResource, this));
+                }
+            }
+        }
+
+        public ResourcesDragDropHandler DragDropHandler { get; }
+
         public IClient Client { get; private set; }
 
         private RelayCommand<object> _backCommand;
@@ -84,11 +179,18 @@ namespace Dispatch.ViewModel
             }
         }
 
+        public async Task Disconnect()
+        {
+            await Client.Diconnect();
+        }
+
         public RelayCommand<IEnumerable<object>> AddBookmarkCommand { get; }
         public RelayCommand<Resource> NavigateCommand { get; }
 
         public ResourcesViewModel(IClient client, string initialPath)
         {
+            DragDropHandler = new ResourcesDragDropHandler(this);
+
             AddBookmarkCommand = new RelayCommand<IEnumerable<object>>(AddBookmark);
             NavigateCommand = new RelayCommand<Resource>(Navigate);
 

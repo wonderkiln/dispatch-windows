@@ -55,6 +55,9 @@
     <Reference Include="FluentFTP, Version=33.0.3.0, Culture=neutral, PublicKeyToken=f4af092b1d8df44f, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentFTP.33.0.3\lib\net45\FluentFTP.dll</HintPath>
     </Reference>
+    <Reference Include="GongSolutions.WPF.DragDrop, Version=2.0.0.0, Culture=neutral, PublicKeyToken=91f1945125b7a587, processorArchitecture=MSIL">
+      <HintPath>..\packages\gong-wpf-dragdrop.2.3.2\lib\net47\GongSolutions.WPF.DragDrop.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -270,6 +273,7 @@
     <Resource Include="Resources\Icon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\icons\ic_drive.png" />
     <Resource Include="Resources\ic_bolt.png" />
   </ItemGroup>
   <ItemGroup>

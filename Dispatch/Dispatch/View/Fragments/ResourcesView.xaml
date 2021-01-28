@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:a="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dd="urn:gong-wpf-dragdrop"
     xmlns:helpers="clr-namespace:Dispatch.Helpers.Converters"
     xmlns:local="clr-namespace:Dispatch.View.Fragments"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -68,6 +69,10 @@
         </Grid>
         <ListView
             Grid.Row="1"
+            dd:DragDrop.DragHandler="{Binding DragDropHandler}"
+            dd:DragDrop.DropHandler="{Binding DragDropHandler}"
+            dd:DragDrop.IsDragSource="True"
+            dd:DragDrop.IsDropTarget="True"
             ItemsSource="{Binding Resources}"
             SelectionMode="Extended">
             <ListView.ContextMenu>

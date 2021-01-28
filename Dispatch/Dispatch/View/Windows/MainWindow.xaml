@@ -5,6 +5,7 @@
     xmlns:a="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
     xmlns:controls="clr-namespace:Dispatch.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dd="urn:gong-wpf-dragdrop"
     xmlns:fragments="clr-namespace:Dispatch.View.Fragments"
     xmlns:helpers="clr-namespace:Dispatch.Helpers"
     xmlns:local="clr-namespace:Dispatch.View.Windows"
@@ -73,7 +74,11 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
-        <controls:DPTabListBox ItemsSource="{Binding OpenTabs}" SelectedItem="{Binding SelectedTab}">
+        <controls:DPTabListBox
+            AddTabCommand="{Binding AddTabCommand}"
+            CloseTabCommand="{Binding CloseTabCommand}"
+            ItemsSource="{Binding OpenTabs}"
+            SelectedItem="{Binding SelectedTab}">
             <controls:DPTabListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -98,7 +103,13 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <Menu ItemsSource="{Binding Bookmarks.Items}">
+                <Menu
+                    dd:DragDrop.DragHandler="{Binding Bookmarks.DragDropHandler}"
+                    dd:DragDrop.DropHandler="{Binding Bookmarks.DragDropHandler}"
+                    dd:DragDrop.DropTargetAdornerBrush="{StaticResource SeparatorSolidColorBrush}"
+                    dd:DragDrop.IsDragSource="True"
+                    dd:DragDrop.IsDropTarget="True"
+                    ItemsSource="{Binding Bookmarks.Items}">
                     <Menu.ItemContainerStyle>
                         <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
                             <Setter Property="Command" Value="{Binding DataContext.SelectedTab.NavigateToBookmarkCommand, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" />
@@ -146,7 +157,7 @@
                     <Button
                         Width="32"
                         Margin="4,0,0,0"
-                        Click="AboutButton_Click"
+                        Command="{Binding OpenMoreCommand}"
                         Content="&#xE712;"
                         FontFamily="Segoe MDL2 Assets"
                         Style="{StaticResource SimpleButtonStyle}" />
@@ -157,7 +168,7 @@
             Grid.Row="2"
             Grid.ColumnSpan="2"
             Style="{StaticResource PrimaryBackgroundBorderStyle}">
-            <controls:DPSideView>
+            <controls:DPSideView IsOpen="{Binding IsSidebarOpen}" PanelContent="{Binding SidebarContent}">
                 <fragments:TabView DataContext="{Binding SelectedTab}" />
             </controls:DPSideView>
         </Border>
