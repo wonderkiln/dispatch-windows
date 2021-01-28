@@ -97,7 +97,7 @@
     <Compile Include="Helpers\Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Helpers\Converters\TabViewDataTemplateSelector.cs" />
     <Compile Include="Helpers\FileIconHelper.cs" />
-    <Compile Include="Helpers\Images.cs" />
+    <Compile Include="Helpers\Icons.cs" />
     <Compile Include="Helpers\Observable.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Helpers\Converters\ResourceToIconConverter.cs" />
@@ -273,24 +273,24 @@
     <Resource Include="Resources\Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\icons\ic_drive.png" />
-    <Resource Include="Resources\ic_bolt.png" />
+    <Resource Include="Resources\Images\ic_drive.png" />
+    <Resource Include="Resources\Images\ic_bolt.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\ic_ftp.png" />
+    <Resource Include="Resources\Images\ic_ftp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\ic_sftp.png" />
+    <Resource Include="Resources\Images\ic_sftp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\icons\ic_folder.png" />
+    <Resource Include="Resources\Images\ic_folder.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\icons\ic_file.png" />
-    <Resource Include="Resources\icons\ic_image.png" />
+    <Resource Include="Resources\Images\ic_file.png" />
+    <Resource Include="Resources\Images\ic_image.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\icons\ic_video.png" />
+    <Resource Include="Resources\Images\ic_video.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

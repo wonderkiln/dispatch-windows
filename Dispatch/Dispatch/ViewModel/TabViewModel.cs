@@ -88,7 +88,7 @@ namespace Dispatch.ViewModel
             connectViewModel.OnConnectedClient += ConnectViewModel_OnConnectedClient;
             RightSide = connectViewModel;
 
-            Icon = Images.Bolt;
+            Icon = Icons.Bolt;
             Title = "Quick Connect";
         }
 

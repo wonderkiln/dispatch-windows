@@ -14,9 +14,9 @@ namespace Dispatch.Helpers.Converters
             switch (resource.Type)
             {
                 case ResourceType.Drive:
-                    return FileIconHelper.GetDriveIcon();
+                    return Icons.Drive;
                 case ResourceType.Directory:
-                    return FileIconHelper.GetDirectoryIcon();
+                    return Icons.Folder;
                 case ResourceType.File:
                     return FileIconHelper.GetFileIcon(resource.Path);
                 default:

@@ -1,4 +1,5 @@
 ﻿using Dispatch.Helpers;
+using Dispatch.Service.Model;
 using Dispatch.ViewModel;
 using System.ComponentModel;
 using System.Windows;
@@ -32,6 +33,19 @@ namespace Dispatch.View.Windows
                 default:
                     return null;
             }
+        }
+    }
+
+    public class xxx: DataTemplateSelector
+    {
+        public DataTemplate BookmarkDataTemplate { get; set; }
+        public DataTemplate ResourceDataTemplate { get; set; }
+
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        {
+            if (item is BookmarkItem) return BookmarkDataTemplate;
+            if (item is Resource) return ResourceDataTemplate;
+            return null;
         }
     }
 

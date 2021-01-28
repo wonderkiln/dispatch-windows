@@ -29,6 +29,30 @@
     </Window.DataContext>
 
     <Window.Resources>
+
+        <DataTemplate x:Key="BookmarkDragDropAdorner">
+            <StackPanel>
+                <Label Content="{Binding Name}" />
+                <Label
+                    Content="{Binding Path}"
+                    FontSize="10"
+                    Opacity="0.5" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="ResourceDragDropAdorner">
+            <StackPanel>
+                <Label Content="{Binding Name}" />
+                <Label
+                    Content="{Binding Path}"
+                    FontSize="10"
+                    Opacity="0.5" />
+            </StackPanel>
+        </DataTemplate>
+        <local:xxx
+            x:Key="a"
+            BookmarkDataTemplate="{StaticResource BookmarkDragDropAdorner}"
+            ResourceDataTemplate="{StaticResource ResourceDragDropAdorner}" />
+
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <DataTemplate x:Key="NoUpdateDataTemplate" />
         <DataTemplate x:Key="NewUpdateDataTemplate">
@@ -104,7 +128,9 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Menu
+                    dd:DragDrop.DragAdornerTemplateSelector="{StaticResource a}"
                     dd:DragDrop.DragHandler="{Binding Bookmarks.DragDropHandler}"
+                    dd:DragDrop.DropAdornerTemplateSelector="{StaticResource a}"
                     dd:DragDrop.DropHandler="{Binding Bookmarks.DragDropHandler}"
                     dd:DragDrop.DropTargetAdornerBrush="{StaticResource SeparatorSolidColorBrush}"
                     dd:DragDrop.IsDragSource="True"
@@ -115,7 +141,11 @@
                             <Setter Property="Command" Value="{Binding DataContext.SelectedTab.NavigateToBookmarkCommand, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" />
                             <Setter Property="CommandParameter" Value="{Binding}" />
                             <Setter Property="ContextMenu" Value="{StaticResource BookmarkContextMenu}" />
-                            <Setter Property="ToolTip" Value="{Binding Path}" />
+                            <Setter Property="ToolTip">
+                                <Setter.Value>
+                                    <ToolTip Content="{Binding}" ContentTemplate="{StaticResource BookmarkDragDropAdorner}" />
+                                </Setter.Value>
+                            </Setter>
                         </Style>
                     </Menu.ItemContainerStyle>
                     <Menu.ItemTemplate>

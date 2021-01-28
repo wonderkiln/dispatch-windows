@@ -65,8 +65,16 @@ namespace Dispatch.ViewModel
                 dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
                 dropInfo.Effects = DragDropEffects.Move;
             }
-            else if (dropInfo.Data is IEnumerable<Resource>)
+            else if (dropInfo.Data is IEnumerable<Resource> resources)
             {
+                foreach (var resource in resources)
+                {
+                    if (resource.Type == ResourceType.File)
+                    {
+                        return;
+                    }
+                }
+
                 dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
                 dropInfo.Effects = DragDropEffects.Link;
             }
