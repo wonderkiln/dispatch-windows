@@ -40,7 +40,6 @@ namespace Dispatch.View.Windows
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             WindowHelper.LoadWindowSettings(this);
-            WindowHelper.EnableBlurForWindow(this);
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)

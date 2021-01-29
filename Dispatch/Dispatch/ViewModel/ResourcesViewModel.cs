@@ -118,13 +118,32 @@ namespace Dispatch.ViewModel
             }
         }
 
+        private class Pair<A, B>
+        {
+            public A Left { get; }
+
+            public B Right { get; }
+
+            public Pair(A left, B right)
+            {
+                Left = left;
+                Right = right;
+            }
+        }
+
+        private static readonly List<Pair<string, string>> DisplayPathMap = new List<Pair<string, string>>()
+        {
+            new Pair<string, string>(LocalClient.AllDrivesPathKey, "\\"),
+        };
+
         public string DisplayPath
         {
             get
             {
-                if (path == LocalClient.AllDrivesPathKey)
+                var pair = DisplayPathMap.Find(e => e.Left == path);
+                if (pair != null)
                 {
-                    return "All Drives";
+                    return pair.Right;
                 }
 
                 return path;
@@ -132,7 +151,16 @@ namespace Dispatch.ViewModel
             set
             {
                 PushHistory(Path);
-                Path = value;
+
+                var pair = DisplayPathMap.Find(e => e.Right == value);
+                if (pair != null)
+                {
+                    Path = pair.Left;
+                }
+                else
+                {
+                    Path = value;
+                }
             }
         }
 

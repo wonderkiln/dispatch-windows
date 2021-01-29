@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:Dispatch.Controls">
+    xmlns:controls="clr-namespace:Dispatch.Controls"
+    xmlns:h="clr-namespace:Dispatch.Helpers">
 
     <Style x:Key="ChromelessWindowStyle" TargetType="Window">
         <Setter Property="UseLayoutRounding" Value="True" />
@@ -11,6 +12,87 @@
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
                 <WindowChrome CaptionHeight="40" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Window">
+                    <Border Background="{TemplateBinding Background}">
+                        <Grid x:Name="Grid">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid VerticalAlignment="Top">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    x:Name="Title"
+                                    Margin="8,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Content="{TemplateBinding Title}" />
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <Button
+                                        x:Name="Minimize"
+                                        Command="{x:Static h:WindowHelper.MinimizeCommand}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                        Content="&#xE921;"
+                                        Style="{StaticResource ChromeButtonStyle}" />
+                                    <Button
+                                        x:Name="Restore"
+                                        Command="{x:Static h:WindowHelper.RestoreCommand}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                        Content="&#xE923;"
+                                        Style="{StaticResource ChromeButtonStyle}"
+                                        Visibility="Collapsed" />
+                                    <Button
+                                        x:Name="Maximize"
+                                        Command="{x:Static h:WindowHelper.MaximizeCommand}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                        Content="&#xE922;"
+                                        Style="{StaticResource ChromeButtonStyle}" />
+                                    <Button
+                                        Command="{x:Static h:WindowHelper.CloseCommand}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                        Content="&#xE8BB;"
+                                        Style="{StaticResource ChromeButtonStyle}" />
+                                </StackPanel>
+                            </Grid>
+                            <AdornerDecorator Name="Content">
+                                <ContentPresenter Grid.Row="1" />
+                            </AdornerDecorator>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="AllowsTransparency" Value="True">
+                            <Setter TargetName="Title" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="Content" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="Content" Property="Grid.RowSpan" Value="2" />
+                        </Trigger>
+                        <Trigger Property="AllowsTransparency" Value="False">
+                            <Setter Property="Background" Value="{StaticResource PrimaryBackgroundSolidColorBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsVisible" Value="True">
+                            <Setter Property="h:WindowHelper.BlurBehind" Value="True" />
+                        </Trigger>
+                        <Trigger Property="WindowState" Value="Maximized">
+                            <Setter TargetName="Grid" Property="Margin" Value="6" />
+                            <Setter TargetName="Restore" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="Maximize" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="ResizeMode" Value="CanMinimize">
+                            <Setter TargetName="Restore" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="Maximize" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="ResizeMode" Value="NoResize">
+                            <Setter TargetName="Minimize" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="Restore" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="Maximize" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>

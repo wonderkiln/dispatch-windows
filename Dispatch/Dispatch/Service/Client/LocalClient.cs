@@ -9,7 +9,7 @@ namespace Dispatch.Service.Client
 {
     public class LocalClient : IClient
     {
-        public static readonly string AllDrivesPathKey = "";
+        public static readonly string AllDrivesPathKey = "AllDrivesPathKey";
 
         public bool ShowHiddenFiles { get; set; } = false;
 

@@ -122,9 +122,6 @@
     <Compile Include="ViewModel\QueueViewModel.cs" />
     <Compile Include="ViewModel\StorageViewModel.cs" />
     <Compile Include="ViewModel\UpdateViewModel.cs" />
-    <Compile Include="View\Controls\ChromeButtons.xaml.cs">
-      <DependentUpon>ChromeButtons.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Service\Client\LocalClient.cs" />
     <Compile Include="Service\Client\IClient.cs" />
     <Compile Include="Service\Model\Resource.cs" />
@@ -214,10 +211,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\Controls\ChromeButtons.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Theme\Buttons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

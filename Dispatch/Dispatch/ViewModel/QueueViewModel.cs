@@ -113,13 +113,8 @@ namespace Dispatch.ViewModel
         {
             get
             {
-                var total = Items.Count;
-                var done = Items.Count(e => e.Status >= QueueItem.StatusType.Done);
-
                 var current = Items.FirstOrDefault(e => e.Status == QueueItem.StatusType.Working);
-                var progress = current?.Progress ?? 0;
-
-                return (100 * done + progress) / total;
+                return current?.Progress ?? 0;
             }
         }
 

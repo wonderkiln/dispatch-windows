@@ -107,5 +107,45 @@ namespace Dispatch.Helpers
 
             Properties.Settings.Default.Save();
         }
+
+        public static bool GetBlurBehind(DependencyObject obj)
+        {
+            return (bool)obj.GetValue(BlurBehindProperty);
+        }
+
+        public static void SetBlurBehind(DependencyObject obj, bool value)
+        {
+            obj.SetValue(BlurBehindProperty, value);
+        }
+
+        public static readonly DependencyProperty BlurBehindProperty = DependencyProperty.RegisterAttached("BlurBehind", typeof(bool), typeof(WindowHelper), new PropertyMetadata(false, new PropertyChangedCallback(OnBlurBehindChanged)));
+
+        public static void OnBlurBehindChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue && d is Window window)
+            {
+                EnableBlurForWindow(window);
+            }
+        }
+
+        public static RelayCommand<Window> MinimizeCommand { get; } = new RelayCommand<Window>((window) =>
+        {
+            window.WindowState = WindowState.Minimized;
+        });
+
+        public static RelayCommand<Window> RestoreCommand { get; } = new RelayCommand<Window>((window) =>
+        {
+            window.WindowState = WindowState.Normal;
+        });
+
+        public static RelayCommand<Window> MaximizeCommand { get; } = new RelayCommand<Window>((window) =>
+        {
+            window.WindowState = WindowState.Maximized;
+        });
+
+        public static RelayCommand<Window> CloseCommand { get; } = new RelayCommand<Window>((window) =>
+        {
+            window.Close();
+        });
     }
 }
