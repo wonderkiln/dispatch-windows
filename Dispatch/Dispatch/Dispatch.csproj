@@ -96,6 +96,7 @@
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Helpers\Converters\ItemToTemplateSelector.cs" />
+    <Compile Include="Helpers\Converters\ListToVisibilityConverter.cs" />
     <Compile Include="Helpers\Converters\TabViewDataTemplateSelector.cs" />
     <Compile Include="Helpers\FileIconHelper.cs" />
     <Compile Include="Helpers\Icons.cs" />

@@ -94,7 +94,15 @@ namespace Dispatch.ViewModel
 
         private void ConnectViewModel_OnConnectedClient(object sender, ConnectViewModel.ClientEventArgs e)
         {
-            RightSide = new ResourcesViewModel(e.Client, e.InitialRoot);
+            var rightSide = new ResourcesViewModel(e.Client, e.InitialRoot);
+
+            if (LeftSide is ResourcesViewModel leftSide)
+            {
+                rightSide.Side = leftSide;
+                leftSide.Side = rightSide;
+            }
+
+            RightSide = rightSide;
             Icon = e.Icon;
             Title = e.Title;
         }
@@ -110,14 +118,14 @@ namespace Dispatch.ViewModel
             {
                 if (leftSide is ResourcesViewModel vm)
                 {
-                    vm.Load(item.Path);
+                    vm.DisplayPath = item.Path;
                 }
             }
             else
             {
                 if (rightSide is ResourcesViewModel vm)
                 {
-                    vm.Load(item.Path);
+                    vm.DisplayPath = item.Path;
                 }
             }
         }

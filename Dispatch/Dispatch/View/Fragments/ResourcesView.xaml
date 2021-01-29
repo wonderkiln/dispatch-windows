@@ -15,21 +15,44 @@
     <UserControl.Resources>
         <helpers:BytesToStringConverter x:Key="BytesToStringConverter" />
         <helpers:ResourceToIconConverter x:Key="ResourceToIconConverter" />
+        <helpers:ListToVisibilityConverter x:Key="ListToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <ContextMenu x:Key="ResourceContextMenu">
             <MenuItem
+                Command="{Binding NavigateCommand}"
+                CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
+                Header="Open"
+                Visibility="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}, Converter={StaticResource ListToVisibilityConverter}}">
+                <MenuItem.Icon>
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8DA;" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem
                 Command="{Binding AddBookmarkCommand}"
                 CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
-                Header="Bookmark">
+                Header="Bookmark"
+                Visibility="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}, Converter={StaticResource ListToVisibilityConverter}}">
                 <MenuItem.Icon>
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE71B;" />
                 </MenuItem.Icon>
             </MenuItem>
             <Separator />
             <MenuItem
+                Command="{Binding Side.TransferCommand}"
+                CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
+                Header="Transfer"
+                Visibility="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}, Converter={StaticResource ListToVisibilityConverter}}">
+                <MenuItem.Icon>
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE898;" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <Separator />
+            <MenuItem
                 Command="{Binding DeleteCommand}"
                 CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
-                Header="Delete">
+                Foreground="{StaticResource ErrorSolidColorBrush}"
+                Header="Delete"
+                Visibility="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}, Converter={StaticResource ListToVisibilityConverter}}">
                 <MenuItem.Icon>
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;" />
                 </MenuItem.Icon>
@@ -67,7 +90,7 @@
                 Margin="4,0"
                 VerticalContentAlignment="Center"
                 KeyDown="TextBox_KeyUp"
-                Text="{Binding Path, UpdateSourceTrigger=Explicit}" />
+                Text="{Binding DisplayPath, UpdateSourceTrigger=Explicit}" />
             <Button
                 Grid.Column="2"
                 Width="32"

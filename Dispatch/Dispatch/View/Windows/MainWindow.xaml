@@ -53,8 +53,18 @@
             NoUpdate="{StaticResource NoUpdateDataTemplate}" />
         <ContextMenu x:Key="BookmarkContextMenu">
             <MenuItem
+                Command="{Binding DataContext.SelectedTab.NavigateToBookmarkCommand, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
+                CommandParameter="{Binding}"
+                Header="Open">
+                <MenuItem.Icon>
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8DA;" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <Separator />
+            <MenuItem
                 Command="{Binding DataContext.Bookmarks.DeleteCommand, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
                 CommandParameter="{Binding}"
+                Foreground="{StaticResource ErrorSolidColorBrush}"
                 Header="Delete">
                 <MenuItem.Icon>
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;" />

@@ -99,56 +99,60 @@ namespace Dispatch.ViewModel
         public RelayCommand<IEnumerable<object>> AddBookmarkCommand { get; }
         public RelayCommand<IEnumerable<object>> DeleteCommand { get; }
         public RelayCommand<Resource> NavigateCommand { get; }
+        public RelayCommand<IEnumerable<object>> TransferCommand { get; }
 
-        private string _temporaryPath;
+        private string path;
         public string Path
         {
             get
             {
-                return _temporaryPath ?? CurrentPath ?? "";
+                return path;
             }
-            set
+            private set
             {
-                _temporaryPath = value;
+                path = value;
+                Notify();
+                Notify("DisplayPath");
+
                 Load(value);
             }
         }
 
-        private string _currentPath;
-        public string CurrentPath
+        public string DisplayPath
         {
             get
             {
-                return _currentPath;
+                if (path == LocalClient.AllDrivesPathKey)
+                {
+                    return "All Drives";
+                }
+
+                return path;
             }
-            private set
+            set
             {
-                _currentPath = value;
-
-                Notify();
-                Notify("Path");
-
-                RefreshCommand.IsExecutable = _currentPath != null;
+                PushHistory(Path);
+                Path = value;
             }
         }
 
-        private Resource[] _resources;
+        private Resource[] resources;
         public Resource[] Resources
         {
             get
             {
-                return _resources;
+                return resources;
             }
             private set
             {
                 if (value != null)
                 {
                     // Folders first
-                    _resources = value.OrderBy(e => e.Type).ThenBy(e => e.Name).ToArray();
+                    resources = value.OrderBy(e => e.Type).ThenBy(e => e.Name).ToArray();
                 }
                 else
                 {
-                    _resources = value;
+                    resources = value;
                 }
 
                 Notify();
@@ -156,6 +160,20 @@ namespace Dispatch.ViewModel
         }
 
         public event EventHandler<Resource[]> OnAddBookmark;
+
+        private ResourcesViewModel side;
+        public ResourcesViewModel Side
+        {
+            get
+            {
+                return side;
+            }
+            set
+            {
+                side = value;
+                Notify();
+            }
+        }
 
         public ResourcesViewModel(IClient client, string initialPath)
         {
@@ -167,26 +185,38 @@ namespace Dispatch.ViewModel
             AddBookmarkCommand = new RelayCommand<IEnumerable<object>>(AddBookmark);
             DeleteCommand = new RelayCommand<IEnumerable<object>>(Delete);
             NavigateCommand = new RelayCommand<Resource>(Navigate);
+            TransferCommand = new RelayCommand<IEnumerable<object>>(Transfer);
 
-            Client = client;
             this.initialPath = initialPath;
 
-            Load(this.initialPath);
+            Client = client;
+            Path = initialPath;
         }
 
         private void Back(object parameter)
         {
-            Back();
+            if (history.Count == 0)
+            {
+                return;
+            }
+
+            Path = PopHistory();
         }
 
         private void Home(object parameter)
         {
-            Load(initialPath);
+            PushHistory(Path);
+            Path = initialPath;
         }
 
         private void Refresh(object parameter)
         {
             Refresh();
+        }
+
+        public void Refresh()
+        {
+            Load(Path);
         }
 
         private void AddBookmark(IEnumerable<object> items)
@@ -213,66 +243,46 @@ namespace Dispatch.ViewModel
         {
             if (item.Type != ResourceType.File)
             {
-                Load(item.Path);
+                PushHistory(Path);
+                Path = item.Path;
             }
         }
 
-        public void Refresh()
+        private void PushHistory(string path)
         {
-            if (CurrentPath != null)
-            {
-                Load(CurrentPath);
-            }
+            history.Push(path);
+            BackCommand.IsExecutable = history.Count > 0;
         }
 
-        public async void Load(string path)
+        private string PopHistory()
+        {
+            var path = history.Pop();
+            BackCommand.IsExecutable = history.Count > 0;
+            return path;
+        }
+
+        private async void Load(string path)
         {
             try
             {
-                var resources = await Client.FetchResources(path);
-
-                if (CurrentPath != null && path != CurrentPath)
-                {
-                    history.Push(CurrentPath);
-                }
-
-                CurrentPath = path;
-                Resources = resources;
-                BackCommand.IsExecutable = history.Count > 0;
+                Resources = null;
+                Resources = await Client.FetchResources(path);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            finally
-            {
-                _temporaryPath = null;
-                Notify("Path");
-            }
         }
 
-        private async void Back()
+        private void Transfer(IEnumerable<object> items)
         {
-            if (history.Count == 0)
-            {
-                return;
-            }
-
-            try
-            {
-                CurrentPath = history.Pop();
-                Resources = await Client.FetchResources(CurrentPath);
-                BackCommand.IsExecutable = history.Count > 0;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            var resources = items.Cast<Resource>().ToArray();
+            Transfer(resources);
         }
 
         public async void Transfer(Resource[] resources)
         {
-            var currentResource = await Client.FetchResource(_currentPath);
+            var currentResource = await Client.FetchResource(Path);
 
             foreach (var resource in resources)
             {

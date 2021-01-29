@@ -194,8 +194,11 @@ namespace Dispatch.ViewModel
 
         private void DeleteFavorite(FavoriteItem item)
         {
-            FavoritesViewModel.Items.Remove(item);
-            SelectedFavorite = null;
+            if (MessageBox.Show($"Are you sure you want to delete '{item.Title}'?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                FavoritesViewModel.Items.Remove(item);
+                SelectedFavorite = null;
+            }
         }
 
         private void SaveAsFavorite(object parameter)
