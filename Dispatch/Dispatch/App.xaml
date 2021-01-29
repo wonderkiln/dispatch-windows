@@ -14,6 +14,7 @@
                 <ResourceDictionary Source="Theme/Buttons.xaml" />
                 <ResourceDictionary Source="Theme/Lists.xaml" />
                 <ResourceDictionary Source="Theme/Side.xaml" />
+                <ResourceDictionary Source="Theme/Templates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

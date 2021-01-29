@@ -1,6 +1,4 @@
-﻿using Dispatch.ViewModel;
-using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace Dispatch.View.Fragments

@@ -1,5 +1,4 @@
 ﻿using Dispatch.Helpers;
-using Dispatch.Service.Model;
 using Dispatch.ViewModel;
 using System.ComponentModel;
 using System.Windows;
@@ -36,19 +35,6 @@ namespace Dispatch.View.Windows
         }
     }
 
-    public class xxx: DataTemplateSelector
-    {
-        public DataTemplate BookmarkDataTemplate { get; set; }
-        public DataTemplate ResourceDataTemplate { get; set; }
-
-        public override DataTemplate SelectTemplate(object item, DependencyObject container)
-        {
-            if (item is BookmarkItem) return BookmarkDataTemplate;
-            if (item is Resource) return ResourceDataTemplate;
-            return null;
-        }
-    }
-
     public partial class MainWindow : Window
     {
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -60,40 +46,6 @@ namespace Dispatch.View.Windows
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             WindowHelper.SaveWindowSettings(this);
-        }
-
-        private void TransfersButton_Click(object sender, RoutedEventArgs e)
-        {
-            //if (SideView.IsOpen && SideView.PanelContent is QueueView)
-            //{
-            //    SideView.IsOpen = false;
-            //    return;
-            //}
-
-            //SideView.Title = "Transfers";
-            //SideView.PanelContent = new QueueView { ViewModel = QueueViewModel };
-            //SideView.IsOpen = true;
-        }
-
-        private void AboutButton_Click(object sender, RoutedEventArgs e)
-        {
-            //if (SideView.IsOpen && SideView.PanelContent is MoreView)
-            //{
-            //    SideView.IsOpen = false;
-            //    return;
-            //}
-
-            //var view = new MoreView();
-            //view.CloseSidebar = () => { SideView.IsOpen = false; };
-            //view.ChangeSidebar = (title, newView) =>
-            //{
-            //    SideView.Title = title;
-            //    SideView.PanelContent = newView;
-            //};
-
-            //SideView.Title = "More";
-            //SideView.PanelContent = view;
-            //SideView.IsOpen = true;
         }
     }
 }

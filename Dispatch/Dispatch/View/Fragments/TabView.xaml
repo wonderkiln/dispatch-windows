@@ -15,7 +15,7 @@
             <local:ConnectView DataContext="{Binding}" />
         </DataTemplate>
         <DataTemplate x:Key="ResourcesDataTemplate">
-            <local:ResourcesView BeginTransfer="ResourceView_BeginTransfer" DataContext="{Binding}" />
+            <local:ResourcesView DataContext="{Binding}" />
         </DataTemplate>
         <converters:TabViewDataTemplateSelector
             x:Key="TabViewDataTemplateSelector"
@@ -28,7 +28,7 @@
             <ColumnDefinition Width="*" MinWidth="100" />
             <ColumnDefinition Width="*" MinWidth="100" />
         </Grid.ColumnDefinitions>
-        <local:ResourcesView BeginTransfer="ResourceView_BeginTransfer" DataContext="{Binding LeftSide}" />
+        <local:ResourcesView DataContext="{Binding LeftSide}" />
         <ContentPresenter
             Grid.Column="1"
             Content="{Binding RightSide}"

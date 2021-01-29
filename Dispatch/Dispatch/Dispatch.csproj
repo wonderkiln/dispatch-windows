@@ -95,6 +95,7 @@
     <Compile Include="Helpers\Converters\BytesToStringConverter.cs" />
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\Converters\InverseBooleanToVisibilityConverter.cs" />
+    <Compile Include="Helpers\Converters\ItemToTemplateSelector.cs" />
     <Compile Include="Helpers\Converters\TabViewDataTemplateSelector.cs" />
     <Compile Include="Helpers\FileIconHelper.cs" />
     <Compile Include="Helpers\Icons.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Service\Model\SFTPConnectionInfo.cs" />
     <Compile Include="Service\Storage\IStorage.cs" />
     <Compile Include="Service\Storage\Storage.cs" />
+    <Compile Include="ViewModel\BookmarksViewModel.cs" />
     <Compile Include="ViewModel\ConnectViewModel.cs" />
     <Compile Include="ViewModel\QueueViewModel.cs" />
     <Compile Include="ViewModel\StorageViewModel.cs" />
@@ -165,6 +167,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Theme\Side.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Theme\Templates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

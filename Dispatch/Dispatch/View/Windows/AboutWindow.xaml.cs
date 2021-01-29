@@ -14,10 +14,5 @@ namespace Dispatch.View.Windows
         {
             WindowHelper.EnableBlurForWindow(this);
         }
-
-        private void UpdatesButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

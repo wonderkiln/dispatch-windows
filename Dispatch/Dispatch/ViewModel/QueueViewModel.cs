@@ -1,7 +1,6 @@
 ﻿using Dispatch.Helpers;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace Dispatch.ViewModel
@@ -84,9 +83,7 @@ namespace Dispatch.ViewModel
 
             public ResourceQueue.Item Tag { get; set; }
 
-            public RelayCommand<object> CancelCommand { get; set; }
-
-            public RelayCommand<object> OpenDestinationCommand { get; set; }
+            public RelayCommand<object> CancelCommand { get; }
 
             public QueueViewModel ViewModel { get; private set; }
 
@@ -94,20 +91,11 @@ namespace Dispatch.ViewModel
             {
                 ViewModel = viewModel;
                 CancelCommand = new RelayCommand<object>(Cancel);
-                OpenDestinationCommand = new RelayCommand<object>(OpenDestination);
             }
 
-            private void Cancel(object arg)
+            private void Cancel(object parameter)
             {
                 ViewModel.Cancel(this);
-            }
-
-            private void OpenDestination(object arg)
-            {
-                if (Directory.Exists(Destination))
-                {
-                    Process.Start(Destination);
-                }
             }
         }
 
@@ -135,8 +123,12 @@ namespace Dispatch.ViewModel
             }
         }
 
+        public RelayCommand<object> ClearCommand { get; }
+
         public QueueViewModel()
         {
+            ClearCommand = new RelayCommand<object>(Clear);
+
             foreach (var item in ResourceQueue.Shared.Queue)
             {
                 Items.Add(Convert(item));
@@ -151,7 +143,7 @@ namespace Dispatch.ViewModel
             ResourceQueue.Shared.OnError += Shared_OnError;
         }
 
-        private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             Notify("IsBusy");
             Notify("Progress");
@@ -225,7 +217,7 @@ namespace Dispatch.ViewModel
             }
         }
 
-        public void ClearCompleted()
+        public void Clear(object parameter)
         {
             var completed = Items.Where(e => e.Status > QueueItem.StatusType.Working).ToArray();
 

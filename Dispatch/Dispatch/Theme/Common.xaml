@@ -466,7 +466,18 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToolTip">
-                    <Border Background="{StaticResource PanelBackgroundSolidColorBrush}" CornerRadius="2">
+                    <Border
+                        Margin="4,2,4,6"
+                        Background="{StaticResource PanelBackgroundSolidColorBrush}"
+                        CornerRadius="2">
+                        <Border.Effect>
+                            <DropShadowEffect
+                                BlurRadius="4"
+                                Direction="-90"
+                                Opacity="1"
+                                ShadowDepth="2"
+                                Color="{StaticResource SeparatorColor}" />
+                        </Border.Effect>
                         <ContentPresenter Margin="{TemplateBinding Padding}" />
                     </Border>
                 </ControlTemplate>

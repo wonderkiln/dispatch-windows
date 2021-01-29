@@ -29,30 +29,6 @@
     </Window.DataContext>
 
     <Window.Resources>
-
-        <DataTemplate x:Key="BookmarkDragDropAdorner">
-            <StackPanel>
-                <Label Content="{Binding Name}" />
-                <Label
-                    Content="{Binding Path}"
-                    FontSize="10"
-                    Opacity="0.5" />
-            </StackPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="ResourceDragDropAdorner">
-            <StackPanel>
-                <Label Content="{Binding Name}" />
-                <Label
-                    Content="{Binding Path}"
-                    FontSize="10"
-                    Opacity="0.5" />
-            </StackPanel>
-        </DataTemplate>
-        <local:xxx
-            x:Key="a"
-            BookmarkDataTemplate="{StaticResource BookmarkDragDropAdorner}"
-            ResourceDataTemplate="{StaticResource ResourceDragDropAdorner}" />
-
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <DataTemplate x:Key="NoUpdateDataTemplate" />
         <DataTemplate x:Key="NewUpdateDataTemplate">
@@ -128,9 +104,9 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Menu
-                    dd:DragDrop.DragAdornerTemplateSelector="{StaticResource a}"
+                    dd:DragDrop.DragAdornerTemplateSelector="{StaticResource ItemToTemplateSelector}"
                     dd:DragDrop.DragHandler="{Binding Bookmarks.DragDropHandler}"
-                    dd:DragDrop.DropAdornerTemplateSelector="{StaticResource a}"
+                    dd:DragDrop.DropAdornerTemplateSelector="{StaticResource ItemToTemplateSelector}"
                     dd:DragDrop.DropHandler="{Binding Bookmarks.DragDropHandler}"
                     dd:DragDrop.DropTargetAdornerBrush="{StaticResource SeparatorSolidColorBrush}"
                     dd:DragDrop.IsDragSource="True"
@@ -168,7 +144,7 @@
                     <Button
                         Width="32"
                         Padding="0"
-                        Click="TransfersButton_Click"
+                        Command="{Binding OpenQueueCommand}"
                         Style="{StaticResource SimpleButtonStyle}">
                         <StackPanel>
                             <Label
@@ -180,8 +156,8 @@
                                 Height="4"
                                 Margin="0,2,0,0"
                                 Maximum="100"
-                                Visibility="{Binding QueueViewModel.IsBusy, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Value="{Binding QueueViewModel.Progress, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}, Mode=OneWay}" />
+                                Visibility="{Binding Queue.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                Value="{Binding Queue.Progress, Mode=OneWay}" />
                         </StackPanel>
                     </Button>
                     <Button
@@ -198,7 +174,10 @@
             Grid.Row="2"
             Grid.ColumnSpan="2"
             Style="{StaticResource PrimaryBackgroundBorderStyle}">
-            <controls:DPSideView IsOpen="{Binding IsSidebarOpen}" PanelContent="{Binding SidebarContent}">
+            <controls:DPSideView
+                Title="{Binding SidebarTitle}"
+                IsOpen="{Binding IsSidebarOpen, Mode=TwoWay}"
+                PanelContent="{Binding SidebarContent}">
                 <fragments:TabView DataContext="{Binding SelectedTab}" />
             </controls:DPSideView>
         </Border>

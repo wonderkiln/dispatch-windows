@@ -36,7 +36,7 @@ namespace Dispatch.Service.Client
             {
                 var authMethod1 = new PasswordAuthenticationMethod(connectionInfo.Username, connectionInfo.Password);
                 var authMethod2 = new KeyboardInteractiveAuthenticationMethod(connectionInfo.Username);
-                
+
                 authMethod2.AuthenticationPrompt += (sender, e) =>
                 {
                     foreach (var prompt in e.Prompts)

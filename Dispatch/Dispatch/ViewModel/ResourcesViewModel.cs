@@ -12,7 +12,7 @@ namespace Dispatch.ViewModel
 {
     public class ResourcesDragDropHandler : IDragSource, IDropTarget
     {
-        private ResourcesViewModel viewModel;
+        private readonly ResourcesViewModel viewModel;
 
         public ResourcesDragDropHandler(ResourcesViewModel viewModel)
         {
@@ -86,68 +86,19 @@ namespace Dispatch.ViewModel
 
     public class ResourcesViewModel : Observable
     {
-        public async void Transfer(Resource[] resources)
-        {
-            var currentResource = await Client.FetchResource(_currentPath);
-
-            foreach (var resource in resources)
-            {
-                if (Client is LocalClient)
-                {
-                    ResourceQueue.Shared.Enqueue(new ResourceQueue.Item(ResourceQueue.Item.ActionType.Download, resource, currentResource, this));
-                }
-                else
-                {
-                    ResourceQueue.Shared.Enqueue(new ResourceQueue.Item(ResourceQueue.Item.ActionType.Upload, resource, currentResource, this));
-                }
-            }
-        }
+        private readonly Stack<string> history = new Stack<string>();
+        private readonly string initialPath;
 
         public ResourcesDragDropHandler DragDropHandler { get; }
 
-        public IClient Client { get; private set; }
+        public IClient Client { get; }
 
-        private RelayCommand<object> _backCommand;
-        public RelayCommand<object> BackCommand
-        {
-            get
-            {
-                return _backCommand;
-            }
-            private set
-            {
-                _backCommand = value;
-                Notify();
-            }
-        }
-
-        private RelayCommand<object> _homeCommand;
-        public RelayCommand<object> HomeCommand
-        {
-            get
-            {
-                return _homeCommand;
-            }
-            private set
-            {
-                _homeCommand = value;
-                Notify();
-            }
-        }
-
-        private RelayCommand<object> _refreshCommand;
-        public RelayCommand<object> RefreshCommand
-        {
-            get
-            {
-                return _refreshCommand;
-            }
-            private set
-            {
-                _refreshCommand = value;
-                Notify();
-            }
-        }
+        public RelayCommand<object> BackCommand { get; }
+        public RelayCommand<object> HomeCommand { get; }
+        public RelayCommand<object> RefreshCommand { get; }
+        public RelayCommand<IEnumerable<object>> AddBookmarkCommand { get; }
+        public RelayCommand<IEnumerable<object>> DeleteCommand { get; }
+        public RelayCommand<Resource> NavigateCommand { get; }
 
         private string _temporaryPath;
         public string Path
@@ -162,88 +113,6 @@ namespace Dispatch.ViewModel
                 Load(value);
             }
         }
-
-        private string InitialPath;
-
-        private Resource[] selectedResources;
-        public Resource[] SelectedResources
-        {
-            get
-            {
-                return selectedResources;
-            }
-            set
-            {
-                selectedResources = value;
-                Notify();
-            }
-        }
-
-        public async Task Disconnect()
-        {
-            await Client.Diconnect();
-        }
-
-        public RelayCommand<IEnumerable<object>> AddBookmarkCommand { get; }
-        public RelayCommand<Resource> NavigateCommand { get; }
-
-        public ResourcesViewModel(IClient client, string initialPath)
-        {
-            DragDropHandler = new ResourcesDragDropHandler(this);
-
-            AddBookmarkCommand = new RelayCommand<IEnumerable<object>>(AddBookmark);
-            NavigateCommand = new RelayCommand<Resource>(Navigate);
-
-            Client = client;
-            BackCommand = new RelayCommand<object>(BackCommandAction, false);
-            HomeCommand = new RelayCommand<object>(HomeCommandAction);
-            RefreshCommand = new RelayCommand<object>(RefreshCommandAction);
-
-            InitialPath = initialPath;
-
-            Load(InitialPath);
-        }
-
-        public event EventHandler<Resource[]> OnAddBookmark;
-
-        private void AddBookmark(IEnumerable<object> items)
-        {
-            var bookmarks = items.Cast<Resource>().ToArray();
-            OnAddBookmark?.Invoke(this, bookmarks);
-        }
-
-        private void Navigate(Resource item)
-        {
-            if (item.Type != ResourceType.File)
-            {
-                Load(item.Path);
-            }
-        }
-
-        private void BackCommandAction(object parameter)
-        {
-            Back();
-        }
-
-        private void HomeCommandAction(object parameter)
-        {
-            Load(InitialPath);
-        }
-
-        private void RefreshCommandAction(object parameter)
-        {
-            Refresh();
-        }
-
-        public void Refresh()
-        {
-            if (CurrentPath != null)
-            {
-                Load(CurrentPath);
-            }
-        }
-
-        private readonly Stack<string> History = new Stack<string>();
 
         private string _currentPath;
         public string CurrentPath
@@ -274,6 +143,7 @@ namespace Dispatch.ViewModel
             {
                 if (value != null)
                 {
+                    // Folders first
                     _resources = value.OrderBy(e => e.Type).ThenBy(e => e.Name).ToArray();
                 }
                 else
@@ -285,6 +155,76 @@ namespace Dispatch.ViewModel
             }
         }
 
+        public event EventHandler<Resource[]> OnAddBookmark;
+
+        public ResourcesViewModel(IClient client, string initialPath)
+        {
+            DragDropHandler = new ResourcesDragDropHandler(this);
+
+            BackCommand = new RelayCommand<object>(Back, false);
+            HomeCommand = new RelayCommand<object>(Home);
+            RefreshCommand = new RelayCommand<object>(Refresh);
+            AddBookmarkCommand = new RelayCommand<IEnumerable<object>>(AddBookmark);
+            DeleteCommand = new RelayCommand<IEnumerable<object>>(Delete);
+            NavigateCommand = new RelayCommand<Resource>(Navigate);
+
+            Client = client;
+            this.initialPath = initialPath;
+
+            Load(this.initialPath);
+        }
+
+        private void Back(object parameter)
+        {
+            Back();
+        }
+
+        private void Home(object parameter)
+        {
+            Load(initialPath);
+        }
+
+        private void Refresh(object parameter)
+        {
+            Refresh();
+        }
+
+        private void AddBookmark(IEnumerable<object> items)
+        {
+            var resources = items.Cast<Resource>().ToArray();
+            OnAddBookmark?.Invoke(this, resources);
+        }
+
+        private void Delete(IEnumerable<object> items)
+        {
+            var resources = items.Cast<Resource>().ToArray();
+            var names = resources.Select(e => $"- {e.Name}\n");
+
+            if (MessageBox.Show($"Are you sure you want to delete the following items?\n\n{string.Join("", names)}", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                foreach (var resource in resources)
+                {
+                    ResourceQueue.Shared.Enqueue(new ResourceQueue.Item(ResourceQueue.Item.ActionType.Delete, resource, null, this));
+                }
+            }
+        }
+
+        private void Navigate(Resource item)
+        {
+            if (item.Type != ResourceType.File)
+            {
+                Load(item.Path);
+            }
+        }
+
+        public void Refresh()
+        {
+            if (CurrentPath != null)
+            {
+                Load(CurrentPath);
+            }
+        }
+
         public async void Load(string path)
         {
             try
@@ -293,12 +233,12 @@ namespace Dispatch.ViewModel
 
                 if (CurrentPath != null && path != CurrentPath)
                 {
-                    History.Push(CurrentPath);
+                    history.Push(CurrentPath);
                 }
 
                 CurrentPath = path;
                 Resources = resources;
-                BackCommand.IsExecutable = History.Count > 0;
+                BackCommand.IsExecutable = history.Count > 0;
             }
             catch (Exception ex)
             {
@@ -311,23 +251,45 @@ namespace Dispatch.ViewModel
             }
         }
 
-        public async void Back()
+        private async void Back()
         {
-            if (History.Count == 0)
+            if (history.Count == 0)
             {
                 return;
             }
 
             try
             {
-                CurrentPath = History.Pop();
+                CurrentPath = history.Pop();
                 Resources = await Client.FetchResources(CurrentPath);
-                BackCommand.IsExecutable = History.Count > 0;
+                BackCommand.IsExecutable = history.Count > 0;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        public async void Transfer(Resource[] resources)
+        {
+            var currentResource = await Client.FetchResource(_currentPath);
+
+            foreach (var resource in resources)
+            {
+                if (Client is LocalClient)
+                {
+                    ResourceQueue.Shared.Enqueue(new ResourceQueue.Item(ResourceQueue.Item.ActionType.Download, resource, currentResource, this));
+                }
+                else
+                {
+                    ResourceQueue.Shared.Enqueue(new ResourceQueue.Item(ResourceQueue.Item.ActionType.Upload, resource, currentResource, this));
+                }
+            }
+        }
+
+        public async Task Disconnect()
+        {
+            await Client.Diconnect();
         }
     }
 }

@@ -19,8 +19,17 @@
         <ContextMenu x:Key="ResourceContextMenu">
             <MenuItem
                 Command="{Binding AddBookmarkCommand}"
-                CommandParameter="{Binding SelectedItems, ElementName=List}"
+                CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
                 Header="Bookmark">
+                <MenuItem.Icon>
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE71B;" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <Separator />
+            <MenuItem
+                Command="{Binding DeleteCommand}"
+                CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
+                Header="Delete">
                 <MenuItem.Icon>
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;" />
                 </MenuItem.Icon>
@@ -69,33 +78,15 @@
         </Grid>
         <ListView
             Grid.Row="1"
+            dd:DragDrop.DragAdornerTemplateSelector="{StaticResource ItemToTemplateSelector}"
             dd:DragDrop.DragHandler="{Binding DragDropHandler}"
+            dd:DragDrop.DropAdornerTemplateSelector="{StaticResource ItemToTemplateSelector}"
             dd:DragDrop.DropHandler="{Binding DragDropHandler}"
             dd:DragDrop.IsDragSource="True"
             dd:DragDrop.IsDropTarget="True"
+            ContextMenu="{StaticResource ResourceContextMenu}"
             ItemsSource="{Binding Resources}"
             SelectionMode="Extended">
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem
-                        Command="{Binding AddBookmarkCommand}"
-                        CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
-                        Header="Bookmark">
-                        <MenuItem.Icon>
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE71B;" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <Separator />
-                    <MenuItem
-                        Command="{Binding DeleteCommand}"
-                        CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
-                        Header="Delete">
-                        <MenuItem.Icon>
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </ContextMenu>
-            </ListView.ContextMenu>
             <ListView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource {x:Type ListViewItem}}" TargetType="ListViewItem">
                     <Setter Property="a:CommandBehavior.Event" Value="MouseDoubleClick" />

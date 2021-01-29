@@ -7,8 +7,7 @@ namespace Dispatch.View.Fragments
 {
     public partial class MoreView : UserControl
     {
-        public Action CloseSidebar { get; set; }
-        public Action<string, object> ChangeSidebar { get; set; }
+        public event EventHandler<object> OnChangeSidebar;
 
         public MoreView()
         {
@@ -17,12 +16,11 @@ namespace Dispatch.View.Fragments
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            ChangeSidebar?.Invoke("Settings", new SettingsView());
+            OnChangeSidebar?.Invoke(this, new SettingsView());
         }
 
         private void AboutButton_Click(object sender, RoutedEventArgs e)
         {
-            CloseSidebar?.Invoke();
             new AboutWindow() { Owner = Window.GetWindow(this) }.ShowDialog();
         }
     }
