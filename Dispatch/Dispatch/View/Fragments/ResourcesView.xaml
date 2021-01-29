@@ -22,6 +22,7 @@
                 Command="{Binding NavigateCommand}"
                 CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
                 Header="Open"
+                InputGestureText="Enter"
                 Visibility="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}, Converter={StaticResource ListToVisibilityConverter}}">
                 <MenuItem.Icon>
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8DA;" />
@@ -30,10 +31,11 @@
             <MenuItem
                 Command="{Binding AddBookmarkCommand}"
                 CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
-                Header="Bookmark"
+                Header="Add Bookmark"
+                InputGestureText="Ctrl+B"
                 Visibility="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}, Converter={StaticResource ListToVisibilityConverter}}">
                 <MenuItem.Icon>
-                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE71B;" />
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE710;" />
                 </MenuItem.Icon>
             </MenuItem>
             <Separator />
@@ -47,11 +49,18 @@
                 </MenuItem.Icon>
             </MenuItem>
             <Separator />
+            <MenuItem Command="{Binding RefreshCommand}" Header="Refresh">
+                <MenuItem.Icon>
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72C;" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <Separator />
             <MenuItem
                 Command="{Binding DeleteCommand}"
                 CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
                 Foreground="{StaticResource ErrorSolidColorBrush}"
                 Header="Delete"
+                InputGestureText="Del"
                 Visibility="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}, Converter={StaticResource ListToVisibilityConverter}}">
                 <MenuItem.Icon>
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;" />
@@ -110,6 +119,23 @@
             ContextMenu="{StaticResource ResourceContextMenu}"
             ItemsSource="{Binding Resources}"
             SelectionMode="Extended">
+            <ListView.InputBindings>
+                <KeyBinding Key="F5" Command="{Binding RefreshCommand}" />
+                <KeyBinding Key="Backspace" Command="{Binding BackCommand}" />
+                <KeyBinding
+                    Key="B"
+                    Command="{Binding AddBookmarkCommand}"
+                    CommandParameter="{Binding SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
+                    Modifiers="Ctrl" />
+                <KeyBinding
+                    Key="Enter"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}" />
+                <KeyBinding
+                    Key="Delete"
+                    Command="{Binding DeleteCommand}"
+                    CommandParameter="{Binding SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}" />
+            </ListView.InputBindings>
             <ListView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource {x:Type ListViewItem}}" TargetType="ListViewItem">
                     <Setter Property="a:CommandBehavior.Event" Value="MouseDoubleClick" />

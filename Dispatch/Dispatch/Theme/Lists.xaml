@@ -202,6 +202,7 @@
     </Style>
 
     <Style TargetType="controls:DPTabListBox">
+        <Setter Property="Focusable" Value="False" />
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
@@ -222,6 +223,7 @@
                                 Name="PART_AddButton"
                                 Margin="8,0,0,0"
                                 VerticalAlignment="Center"
+                                Command="{TemplateBinding AddTabCommand}"
                                 Content="&#xE710;"
                                 FontFamily="Segoe MDL2 Assets"
                                 FontSize="10"

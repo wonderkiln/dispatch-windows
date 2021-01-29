@@ -26,6 +26,18 @@
         <vm:RootViewModel />
     </Window.DataContext>
 
+    <Window.InputBindings>
+        <KeyBinding
+            Key="T"
+            Command="{Binding AddTabCommand}"
+            Modifiers="Ctrl" />
+        <KeyBinding
+            Key="W"
+            Command="{Binding CloseTabCommand}"
+            CommandParameter="{Binding SelectedTab}"
+            Modifiers="Ctrl" />
+    </Window.InputBindings>
+
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <DataTemplate x:Key="NoUpdateDataTemplate" />

@@ -62,14 +62,6 @@ namespace Dispatch.Controls
             DefaultStyleKey = typeof(DPTabListBox);
         }
 
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-
-            var closeButton = (Button)GetTemplateChild("PART_AddButton");
-            closeButton.SetBinding(Button.CommandProperty, new Binding("AddTabCommand"));
-        }
-
         protected override DependencyObject GetContainerForItemOverride()
         {
             return new DPTabListBoxItem();

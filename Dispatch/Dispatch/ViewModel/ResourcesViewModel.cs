@@ -256,6 +256,8 @@ namespace Dispatch.ViewModel
         private void Delete(IEnumerable<object> items)
         {
             var resources = items.Cast<Resource>().ToArray();
+            if (resources.Length == 0) return;
+
             var names = resources.Select(e => $"- {e.Name}\n");
 
             if (MessageBox.Show($"Are you sure you want to delete the following items?\n\n{string.Join("", names)}", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
@@ -269,7 +271,7 @@ namespace Dispatch.ViewModel
 
         private void Navigate(Resource item)
         {
-            if (item.Type != ResourceType.File)
+            if (item != null && item.Type != ResourceType.File)
             {
                 PushHistory(Path);
                 Path = item.Path;
