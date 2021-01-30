@@ -1,67 +1,26 @@
-﻿using Dispatch.Service.Client;
-using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace Dispatch.View.Fragments
 {
     public class ConnectViewDataTemplateSelector : DataTemplateSelector
     {
-        public DataTemplate FTPDataTemplate { get; set; }
         public DataTemplate SFTPDataTemplate { get; set; }
+        public DataTemplate FTPDataTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            var index = item as int?;
-
-            switch (index)
-            {
-                case 0: return FTPDataTemplate;
-                case 1: return SFTPDataTemplate;
-                default: return null;
-            }
+            if (item is SFTPConnectInfo) return SFTPDataTemplate;
+            if (item is FTPConnectInfo) return FTPDataTemplate;
+            return null;
         }
     }
 
-    public class ConnectViewArgs
+    public partial class ConnectView : UserControl
     {
-        public IClient Client { get; set; }
-
-        public string InitialPath { get; set; }
-
-        public string Name { get; set; }
-    }
-
-    public interface IConnectView
-    {
-        void OnBeginConnecting();
-
-        void OnSuccess(ConnectViewArgs e);
-
-        void OnException(Exception ex);
-    }
-
-    public partial class ConnectView : UserControl, IConnectView
-    {
-        public event EventHandler<ConnectViewArgs> OnConnected;
-
         public ConnectView()
         {
             InitializeComponent();
-        }
-
-        public void OnBeginConnecting()
-        {
-        }
-
-        public void OnSuccess(ConnectViewArgs e)
-        {
-            OnConnected?.Invoke(this, e);
-        }
-
-        public void OnException(Exception ex)
-        {
-            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

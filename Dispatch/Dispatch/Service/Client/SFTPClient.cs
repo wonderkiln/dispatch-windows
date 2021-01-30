@@ -13,22 +13,48 @@ namespace Dispatch.Service.Client
 {
     public class SFTPClient : IClient
     {
-        private readonly SftpClient Client;
+        private readonly SftpClient client;
 
-        public SFTPClient(SftpClient client)
+        private readonly SFTPConnectionInfo connectionInfo;
+
+        public SFTPClient(SftpClient client, SFTPConnectionInfo connectionInfo)
         {
-            Client = client;
+            this.client = client;
+            this.connectionInfo = connectionInfo;
         }
 
-        private static Task<SFTPClient> Create(ConnectionInfo connectionInfo)
+        public static Task<SFTPClient> Create(SFTPConnectionInfo connectionInfo)
         {
-            var client = new SftpClient(connectionInfo);
+            ConnectionInfo info;
+
+            if (!string.IsNullOrEmpty(connectionInfo.Key))
+            {
+                var authMethod = new PrivateKeyAuthenticationMethod(connectionInfo.Username, new PrivateKeyFile(connectionInfo.Key));
+                info = new ConnectionInfo(connectionInfo.Address, connectionInfo.Port, connectionInfo.Username, authMethod);
+            }
+            else
+            {
+                var authMethod1 = new PasswordAuthenticationMethod(connectionInfo.Username, connectionInfo.Password);
+                var authMethod2 = new KeyboardInteractiveAuthenticationMethod(connectionInfo.Username);
+
+                authMethod2.AuthenticationPrompt += (sender, e) =>
+                {
+                    foreach (var prompt in e.Prompts)
+                    {
+                        prompt.Response = connectionInfo.Password;
+                    }
+                };
+
+                info = new ConnectionInfo(connectionInfo.Address, connectionInfo.Port, connectionInfo.Username, authMethod1, authMethod2);
+            }
+
+            var client = new SftpClient(info);
             client.HostKeyReceived += Client_HostKeyReceived;
 
             return Task.Run(() =>
             {
                 client.Connect();
-                return new SFTPClient(client);
+                return new SFTPClient(client, connectionInfo);
             });
         }
 
@@ -37,21 +63,9 @@ namespace Dispatch.Service.Client
             e.CanTrust = true;
         }
 
-        public static Task<SFTPClient> Create(string host, int port, string username, string password)
-        {
-            var connectionInfo = new ConnectionInfo(host, port, username, new PasswordAuthenticationMethod(username, password));
-            return Create(connectionInfo);
-        }
-
-        public static Task<SFTPClient> CreateWithKey(string host, int port, string username, string privateKeyPath)
-        {
-            var connectionInfo = new ConnectionInfo(host, port, username, new PrivateKeyAuthenticationMethod(username, new PrivateKeyFile(privateKeyPath)));
-            return Create(connectionInfo);
-        }
-
         public async Task<IClient> Clone()
         {
-            return await Create(Client.ConnectionInfo);
+            return await Create(connectionInfo);
         }
 
         public async Task Delete(string path, CancellationToken token = default)
@@ -60,7 +74,7 @@ namespace Dispatch.Service.Client
 
             if (resource.Type == ResourceType.File)
             {
-                Client.Delete(path);
+                client.Delete(path);
             }
             else
             {
@@ -72,14 +86,14 @@ namespace Dispatch.Service.Client
                     await Delete(item.Path, token);
                 }
 
-                Client.Delete(path);
+                client.Delete(path);
             }
         }
 
         public Task Diconnect()
         {
-            Client.Disconnect();
-            Client.Dispose();
+            client.Disconnect();
+            client.Dispose();
 
             return Task.CompletedTask;
         }
@@ -128,7 +142,7 @@ namespace Dispatch.Service.Client
                 {
                     using (var stream = new StreamWriter(localPath))
                     {
-                        Client.DownloadFile(path, stream.BaseStream, (length) =>
+                        client.DownloadFile(path, stream.BaseStream, (length) =>
                         {
                             var value = 100 * length / (double)resource.Size;
                             progress?.Report(new ProgressStatus(0, 1, value));
@@ -150,7 +164,7 @@ namespace Dispatch.Service.Client
 
                         using (var stream = new StreamWriter(item.Key))
                         {
-                            Client.DownloadFile(item.Value.Path, stream.BaseStream, (length) =>
+                            client.DownloadFile(item.Value.Path, stream.BaseStream, (length) =>
                             {
                                 var value = 100 * length / (double)item.Value.Size;
                                 progress?.Report(new ProgressStatus(index, items.Count, value));
@@ -168,7 +182,7 @@ namespace Dispatch.Service.Client
         {
             return Task.Run(() =>
             {
-                return MakeResource(Client.Get(path));
+                return MakeResource(client.Get(path));
             });
         }
 
@@ -195,7 +209,7 @@ namespace Dispatch.Service.Client
         {
             return Task.Run(() =>
             {
-                var items = Client.ListDirectory(path).Where(e => !HIDDEN_FILE_NAMES.Contains(e.Name));
+                var items = client.ListDirectory(path).Where(e => !HIDDEN_FILE_NAMES.Contains(e.Name));
                 return items.Select(MakeResource).ToArray();
             });
         }
@@ -219,7 +233,7 @@ namespace Dispatch.Service.Client
                         stream.Close();
                     });
 
-                    Client.UploadFile(stream.BaseStream, destination, (length) =>
+                    client.UploadFile(stream.BaseStream, destination, (length) =>
                     {
                         var size = new FileInfo(fileOrDirectory).Length;
                         var value = 100 * length / (double)size;
@@ -231,9 +245,9 @@ namespace Dispatch.Service.Client
             {
                 var destinationDirectory = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
 
-                if (!Client.Exists(destinationDirectory))
+                if (!client.Exists(destinationDirectory))
                 {
-                    Client.CreateDirectory(destinationDirectory);
+                    client.CreateDirectory(destinationDirectory);
                 }
 
                 var totalFiles = Directory.GetFiles(fileOrDirectory, "*", SearchOption.AllDirectories).Length;

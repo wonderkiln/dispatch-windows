@@ -6,6 +6,8 @@
     <Style TargetType="ListBoxItem">
         <Setter Property="Padding" Value="8" />
         <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
@@ -13,7 +15,10 @@
                         x:Name="Border"
                         Background="Transparent"
                         CornerRadius="4">
-                        <ContentPresenter Margin="{TemplateBinding Padding}" />
+                        <ContentPresenter
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
@@ -197,26 +202,34 @@
     </Style>
 
     <Style TargetType="controls:DPTabListBox">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:DPTabListBox">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel IsItemsHost="True" Orientation="Horizontal" />
-                        <Button
-                            Name="PART_AddButton"
-                            Grid.Column="1"
-                            Margin="8,0,0,0"
-                            VerticalAlignment="Center"
-                            Content="&#xE710;"
-                            FontFamily="Segoe MDL2 Assets"
-                            FontSize="10"
-                            Style="{StaticResource SimpleButtonStyle}"
-                            WindowChrome.IsHitTestVisibleInChrome="True" />
-                    </Grid>
+                    <ScrollViewer
+                        HorizontalScrollBarVisibility="Auto"
+                        VerticalScrollBarVisibility="Disabled"
+                        WindowChrome.IsHitTestVisibleInChrome="True">
+                        <StackPanel Orientation="Horizontal">
+                            <ItemsPresenter />
+                            <Button
+                                Name="PART_AddButton"
+                                Margin="8,0,0,0"
+                                VerticalAlignment="Center"
+                                Command="{TemplateBinding AddTabCommand}"
+                                Content="&#xE710;"
+                                FontFamily="Segoe MDL2 Assets"
+                                FontSize="10"
+                                Style="{StaticResource SimpleButtonStyle}" />
+                        </StackPanel>
+                    </ScrollViewer>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

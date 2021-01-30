@@ -1,69 +1,145 @@
 ﻿using Dispatch.Helpers;
 using Dispatch.Service.Client;
+using Dispatch.Service.Model;
+using System;
 using System.Windows.Media;
 
 namespace Dispatch.ViewModel
 {
     public class TabViewModel : Observable
     {
-        private ImageSource _icon;
+        private ImageSource icon;
         public ImageSource Icon
         {
             get
             {
-                return _icon;
+                return icon;
             }
             set
             {
-                _icon = value;
+                icon = value;
                 Notify();
             }
         }
 
-        private string _title;
+        private string title;
         public string Title
         {
             get
             {
-                return _title;
+                return title;
             }
             set
             {
-                _title = value;
+                title = value;
                 Notify();
             }
         }
 
-        public ListViewModel LeftViewModel { get; } = new ListViewModel(new LocalClient(), LocalClient.AllDrivesPathKey, null, "Local");
-
-        private ListViewModel _rightViewModel;
-        public ListViewModel RightViewModel
+        private object leftSide;
+        public object LeftSide
         {
             get
             {
-                return _rightViewModel;
+                return leftSide;
             }
             set
             {
-                _rightViewModel = value;
-
-                if (_rightViewModel != null)
-                {
-                    Icon = _rightViewModel.Icon;
-                    Title = _rightViewModel.Title;
-                }
-
+                leftSide = value;
                 Notify();
-                Notify("Title");
+
+                if (value is ResourcesViewModel vm)
+                {
+                    vm.OnAddBookmark += ResourcesViewModel_OnAddBookmark;
+                }
+            }
+        }
+
+        private object rightSide;
+        public object RightSide
+        {
+            get
+            {
+                return rightSide;
+            }
+            set
+            {
+                rightSide = value;
+                Notify();
+
+                if (value is ResourcesViewModel vm)
+                {
+                    vm.OnAddBookmark += ResourcesViewModel_OnAddBookmark;
+                }
+            }
+        }
+
+        public RelayCommand<BookmarkItem> NavigateToBookmarkCommand { get; }
+
+        public event EventHandler<Resource[]> OnAddBookmark;
+
+        public TabViewModel()
+        {
+            NavigateToBookmarkCommand = new RelayCommand<BookmarkItem>(NavigateToBookmark);
+
+            LeftSide = new ResourcesViewModel(new LocalClient(), LocalClient.AllDrivesPathKey);
+
+            var connectViewModel = new ConnectViewModel();
+            connectViewModel.OnConnectedClient += ConnectViewModel_OnConnectedClient;
+            RightSide = connectViewModel;
+
+            Icon = Icons.Bolt;
+            Title = "Quick Connect";
+        }
+
+        private void ConnectViewModel_OnConnectedClient(object sender, ConnectViewModel.ClientEventArgs e)
+        {
+            var rightSide = new ResourcesViewModel(e.Client, e.InitialRoot);
+
+            if (LeftSide is ResourcesViewModel leftSide)
+            {
+                rightSide.Side = leftSide;
+                leftSide.Side = rightSide;
+            }
+
+            RightSide = rightSide;
+            Icon = e.Icon;
+            Title = e.Title;
+        }
+
+        private void ResourcesViewModel_OnAddBookmark(object sender, Resource[] e)
+        {
+            OnAddBookmark?.Invoke(this, e);
+        }
+
+        private void NavigateToBookmark(BookmarkItem item)
+        {
+            if (item.IsLocal)
+            {
+                if (leftSide is ResourcesViewModel vm)
+                {
+                    vm.DisplayPath = item.Path;
+                }
+            }
+            else
+            {
+                if (rightSide is ResourcesViewModel vm)
+                {
+                    vm.DisplayPath = item.Path;
+                }
             }
         }
 
         public async void Disconnect()
         {
-            if (RightViewModel != null)
+            if (leftSide is ResourcesViewModel leftVM)
             {
-                await RightViewModel.Client.Diconnect();
-                RightViewModel = null;
+                await leftVM.Disconnect();
+            }
+
+            if (rightSide is ResourcesViewModel rightVM)
+            {
+                await rightVM.Disconnect();
             }
         }
     }

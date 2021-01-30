@@ -36,14 +36,14 @@ namespace Dispatch.ViewModel
             }
         }
 
-        public RelayCommand DownloadAndInstallCommand { get; private set; }
+        public RelayCommand<object> DownloadAndInstallCommand { get; private set; }
 
         private readonly ApplicationUpdater applicationUpdater = new ApplicationUpdater(new UpdateProvider());
 
         public UpdateViewModel()
         {
             applicationUpdater.DownloadProgressChanged += ApplicationUpdater_DownloadProgressChanged;
-            DownloadAndInstallCommand = new RelayCommand(DownloadAndInstall);
+            DownloadAndInstallCommand = new RelayCommand<object>(DownloadAndInstall);
             CheckForUpdates();
         }
 

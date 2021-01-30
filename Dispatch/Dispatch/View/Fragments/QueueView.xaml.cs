@@ -53,16 +53,9 @@ namespace Dispatch.View.Fragments
 
     public partial class QueueView : UserControl
     {
-        public QueueViewModel ViewModel { get; set; }
-
         public QueueView()
         {
             InitializeComponent();
-        }
-
-        private void ClearButton_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.ClearCompleted();
         }
     }
 }

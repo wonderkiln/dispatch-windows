@@ -2,14 +2,12 @@
 {
     public class FavoriteItem
     {
-        public string Name { get; set; }
+        public enum ConnectionType { Sftp, Ftp }
 
-        public string Path { get; set; }
+        public string Title { get; set; }
 
-        public FavoriteItem(string name, string path)
-        {
-            Name = name;
-            Path = path;
-        }
+        public ConnectionType Connection { get; set; }
+
+        public object ConnectionInfo { get; set; }
     }
 }

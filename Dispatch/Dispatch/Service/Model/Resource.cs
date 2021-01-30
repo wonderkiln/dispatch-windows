@@ -2,7 +2,7 @@
 
 namespace Dispatch.Service.Model
 {
-    public enum ResourceType { Directory, File, Drive }
+    public enum ResourceType { Drive = 0, Directory = 1, File = 2 }
 
     public class Resource
     {

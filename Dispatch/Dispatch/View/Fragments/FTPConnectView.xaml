@@ -25,10 +25,7 @@
                 LabelSharedSizeGroup="Label"
                 Placeholder="sample.address.net">
                 <controls:DPTextBox.Text>
-                    <Binding
-                        Path="Address"
-                        Source="{x:Static local:FTPConnectView.ConnectInfo}"
-                        UpdateSourceTrigger="PropertyChanged">
+                    <Binding Path="Address" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
                             <validators:RequiredValidator />
                         </Binding.ValidationRules>
@@ -43,10 +40,7 @@
                 MaxLength="5"
                 Placeholder="21">
                 <controls:DPTextBox.Text>
-                    <Binding
-                        Path="Port"
-                        Source="{x:Static local:FTPConnectView.ConnectInfo}"
-                        UpdateSourceTrigger="PropertyChanged">
+                    <Binding Path="Port" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
                             <validators:RequiredValidator />
                             <validators:RegexValidator Message="Field must be a number" Pattern="^[0-9]+$" />
@@ -62,10 +56,7 @@
             LabelSharedSizeGroup="Label"
             Placeholder="user">
             <controls:DPTextBox.Text>
-                <Binding
-                    Path="User"
-                    Source="{x:Static local:FTPConnectView.ConnectInfo}"
-                    UpdateSourceTrigger="PropertyChanged" />
+                <Binding Path="Username" UpdateSourceTrigger="PropertyChanged" />
             </controls:DPTextBox.Text>
         </controls:DPTextBox>
         <controls:DPTextBox
@@ -76,10 +67,7 @@
             LabelSharedSizeGroup="Label"
             Placeholder="password">
             <controls:DPTextBox.Text>
-                <Binding
-                    Path="Password"
-                    Source="{x:Static local:FTPConnectView.ConnectInfo}"
-                    UpdateSourceTrigger="PropertyChanged" />
+                <Binding Path="Password" UpdateSourceTrigger="PropertyChanged" />
             </controls:DPTextBox.Text>
         </controls:DPTextBox>
         <controls:DPTextBox
@@ -89,16 +77,8 @@
             LabelSharedSizeGroup="Label"
             Placeholder="/www">
             <controls:DPTextBox.Text>
-                <Binding
-                    Path="Root"
-                    Source="{x:Static local:FTPConnectView.ConnectInfo}"
-                    UpdateSourceTrigger="PropertyChanged" />
+                <Binding Path="Root" UpdateSourceTrigger="PropertyChanged" />
             </controls:DPTextBox.Text>
         </controls:DPTextBox>
-        <Button
-            HorizontalAlignment="Right"
-            helpers:ButtonExtension.IsLoading="{Binding IsConnecting, RelativeSource={RelativeSource AncestorType={x:Type local:FTPConnectView}}}"
-            Click="ButtonConnect_Click"
-            Content="Connect" />
     </StackPanel>
 </UserControl>

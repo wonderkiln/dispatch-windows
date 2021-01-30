@@ -20,9 +20,9 @@ namespace Dispatch.Helpers
 
             public Resource Destination { get; private set; }
 
-            public ListViewModel ViewModel { get; private set; }
+            public ResourcesViewModel ViewModel { get; private set; }
 
-            public Item(ActionType action, Resource source, Resource destination, ListViewModel viewModel)
+            public Item(ActionType action, Resource source, Resource destination, ResourcesViewModel viewModel)
             {
                 Action = action;
                 Source = source;

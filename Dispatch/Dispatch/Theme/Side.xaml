@@ -12,7 +12,6 @@
                         <Border
                             x:Name="Overlay"
                             Background="{StaticResource PrimaryBackgroundSolidColorBrush}"
-                            IsHitTestVisible="False"
                             Opacity="0"
                             Visibility="Collapsed" />
                         <Border
@@ -22,14 +21,6 @@
                             Background="{StaticResource PanelBackgroundSolidColorBrush}"
                             BorderBrush="{StaticResource SeparatorSolidColorBrush}"
                             BorderThickness="1,0,0,0">
-                            <!--<Border.Effect>
-                                <DropShadowEffect
-                                    BlurRadius="24"
-                                    Direction="180"
-                                    Opacity="0"
-                                    ShadowDepth="4"
-                                    Color="{StaticResource SeparatorColor}" />
-                            </Border.Effect>-->
                             <Border.RenderTransform>
                                 <TranslateTransform X="320" />
                             </Border.RenderTransform>
@@ -80,11 +71,6 @@
                                                 <CubicEase EasingMode="EaseOut" />
                                             </DoubleAnimation.EasingFunction>
                                         </DoubleAnimation>
-                                        <!--<DoubleAnimation
-                                            Storyboard.TargetName="Border"
-                                            Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
-                                            To="0.5"
-                                            Duration="0:0:0.300" />-->
                                         <DoubleAnimation
                                             Storyboard.TargetName="Overlay"
                                             Storyboard.TargetProperty="Opacity"
@@ -108,11 +94,6 @@
                                                 <CubicEase EasingMode="EaseIn" />
                                             </DoubleAnimation.EasingFunction>
                                         </DoubleAnimation>
-                                        <!--<DoubleAnimation
-                                            Storyboard.TargetName="Border"
-                                            Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
-                                            To="0"
-                                            Duration="0:0:0.300" />-->
                                         <DoubleAnimation
                                             Storyboard.TargetName="Overlay"
                                             Storyboard.TargetProperty="Opacity"

@@ -10,10 +10,11 @@
                 <!--  This can be changed in runtime  -->
                 <ResourceDictionary Source="Theme/Colors.Light.xaml" />
                 <ResourceDictionary Source="Theme/Brushes.xaml" />
-                <ResourceDictionary Source="Theme/Common.xaml" />
                 <ResourceDictionary Source="Theme/Buttons.xaml" />
+                <ResourceDictionary Source="Theme/Common.xaml" />
                 <ResourceDictionary Source="Theme/Lists.xaml" />
                 <ResourceDictionary Source="Theme/Side.xaml" />
+                <ResourceDictionary Source="Theme/Templates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
