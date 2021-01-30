@@ -1,4 +1,5 @@
-﻿using Dispatch.Helpers;
+﻿using ByteSizeLib;
+using Dispatch.Helpers;
 using Dispatch.Service.Model;
 using System;
 using System.Diagnostics;
@@ -37,8 +38,8 @@ namespace Dispatch.Service.Updater
 
         public async Task CheckForUpdate(bool silent = false)
         {
-#if DEBUG
-#else
+            // TODO: Do not check for updates in DEBUG
+
             try
             {
                 LatestUpdate = await updater.GetLatestUpdate();
@@ -69,7 +70,6 @@ namespace Dispatch.Service.Updater
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Console.Error.WriteLine(ex);
             }
-#endif
         }
 
         public async void DownloadAndInstall()
