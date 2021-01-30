@@ -91,7 +91,6 @@
     <Compile Include="Controls\DPTabListBox.cs" />
     <Compile Include="Controls\DPTextBox.cs" />
     <Compile Include="Helpers\ButtonExtension.cs" />
-    <Compile Include="Helpers\ContextService.cs" />
     <Compile Include="Helpers\Converters\BytesToStringConverter.cs" />
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\Converters\InverseBooleanToVisibilityConverter.cs" />

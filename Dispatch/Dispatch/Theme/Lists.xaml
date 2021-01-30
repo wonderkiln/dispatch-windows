@@ -220,7 +220,6 @@
                         <StackPanel Orientation="Horizontal">
                             <ItemsPresenter />
                             <Button
-                                Name="PART_AddButton"
                                 Margin="8,0,0,0"
                                 VerticalAlignment="Center"
                                 Command="{TemplateBinding AddTabCommand}"
@@ -243,6 +242,12 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="controls:DPTabListBoxItem">
                                 <Grid Background="Transparent">
+                                    <Grid.InputBindings>
+                                        <MouseBinding
+                                            Command="{Binding CloseTabCommand, RelativeSource={RelativeSource AncestorType={x:Type controls:DPTabListBox}}}"
+                                            CommandParameter="{Binding}"
+                                            MouseAction="MiddleClick" />
+                                    </Grid.InputBindings>
                                     <Border
                                         Width="1"
                                         Height="16"
@@ -263,9 +268,10 @@
                                             CornerRadius="1.5,1.5,0,0" />
                                         <ContentPresenter Margin="0,0,4,0" VerticalAlignment="Center" />
                                         <Button
-                                            Name="PART_CloseButton"
                                             Grid.Column="1"
                                             VerticalAlignment="Center"
+                                            Command="{Binding CloseTabCommand, RelativeSource={RelativeSource AncestorType={x:Type controls:DPTabListBox}}}"
+                                            CommandParameter="{Binding}"
                                             Content="&#xE8BB;"
                                             FontFamily="Segoe MDL2 Assets"
                                             FontSize="8"
