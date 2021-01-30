@@ -76,6 +76,7 @@ namespace Dispatch.ViewModel
             }
         }
 
+        public RelayCommand<bool> NextTabCommand { get; }
         public RelayCommand<object> AddTabCommand { get; }
         public RelayCommand<TabViewModel> CloseTabCommand { get; }
         public RelayCommand<object> OpenQueueCommand { get; }
@@ -83,12 +84,32 @@ namespace Dispatch.ViewModel
 
         public RootViewModel()
         {
+            NextTabCommand = new RelayCommand<bool>(NextTab);
             AddTabCommand = new RelayCommand<object>(AddTab);
             CloseTabCommand = new RelayCommand<TabViewModel>(CloseTab);
             OpenQueueCommand = new RelayCommand<object>(OpenQueue);
             OpenMoreCommand = new RelayCommand<object>(OpenMore);
 
             NewTab();
+        }
+
+        private void NextTab(bool forward)
+        {
+            if (SelectedTab != null)
+            {
+                var index = OpenTabs.IndexOf(SelectedTab);
+
+                if (forward)
+                {
+                    var newIndex = index + 1 < OpenTabs.Count ? index + 1 : 0;
+                    SelectedTab = OpenTabs[newIndex];
+                }
+                else
+                {
+                    var newIndex = index - 1 >= 0 ? index - 1 : OpenTabs.Count - 1;
+                    SelectedTab = OpenTabs[newIndex];
+                }
+            }
         }
 
         private void NewTab()

@@ -9,6 +9,7 @@
     xmlns:helpers="clr-namespace:Dispatch.Helpers"
     xmlns:local="clr-namespace:Dispatch.View.Windows"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:s="clr-namespace:System;assembly=mscorlib"
     xmlns:vm="clr-namespace:Dispatch.ViewModel"
     Title="{x:Static helpers:Constants.APP_NAME}"
     Width="1000"
@@ -36,6 +37,22 @@
             Command="{Binding CloseTabCommand}"
             CommandParameter="{Binding SelectedTab}"
             Modifiers="Ctrl" />
+        <KeyBinding
+            Key="Tab"
+            Command="{Binding NextTabCommand}"
+            Modifiers="Ctrl">
+            <KeyBinding.CommandParameter>
+                <s:Boolean>True</s:Boolean>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+        <KeyBinding
+            Key="Tab"
+            Command="{Binding NextTabCommand}"
+            Modifiers="Ctrl+Shift">
+            <KeyBinding.CommandParameter>
+                <s:Boolean>False</s:Boolean>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
     </Window.InputBindings>
 
     <Window.Resources>
@@ -43,7 +60,7 @@
         <DataTemplate x:Key="NoUpdateDataTemplate" />
         <DataTemplate x:Key="NewUpdateDataTemplate">
             <Button
-                Command="{Binding UpdateViewModel.DownloadAndInstallCommand, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
+                Command="{Binding DataContext.Update.DownloadAndInstallCommand, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
                 Content="New update"
                 Style="{StaticResource SimpleButtonStyle}" />
         </DataTemplate>
@@ -53,7 +70,7 @@
                 <ProgressBar
                     Margin="0,4,0,0"
                     Maximum="100"
-                    Value="{Binding UpdateViewModel.Progress, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}, Mode=OneWay}" />
+                    Value="{Binding DataContext.Update.Progress, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}, Mode=OneWay}" />
             </StackPanel>
         </DataTemplate>
         <local:UpdateStatusDataTemplateSelector
@@ -74,7 +91,6 @@
             <MenuItem
                 Command="{Binding DataContext.Bookmarks.DeleteCommand, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
                 CommandParameter="{Binding}"
-                Foreground="{StaticResource ErrorSolidColorBrush}"
                 Header="Delete">
                 <MenuItem.Icon>
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;" />
@@ -209,7 +225,7 @@
             <ContentPresenter
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
-                Content="{Binding UpdateViewModel.Status, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
+                Content="{Binding Update.Status}"
                 ContentTemplateSelector="{StaticResource UpdateStatusDataTemplateSelector}" />
         </Border>
     </Grid>

@@ -49,7 +49,10 @@
                 </MenuItem.Icon>
             </MenuItem>
             <Separator />
-            <MenuItem Command="{Binding RefreshCommand}" Header="Refresh">
+            <MenuItem
+                Command="{Binding RefreshCommand}"
+                Header="Refresh"
+                InputGestureText="F5">
                 <MenuItem.Icon>
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72C;" />
                 </MenuItem.Icon>
@@ -58,7 +61,6 @@
             <MenuItem
                 Command="{Binding DeleteCommand}"
                 CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
-                Foreground="{StaticResource ErrorSolidColorBrush}"
                 Header="Delete"
                 InputGestureText="Del"
                 Visibility="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}, Converter={StaticResource ListToVisibilityConverter}}">
