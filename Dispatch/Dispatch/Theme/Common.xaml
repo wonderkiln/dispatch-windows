@@ -54,6 +54,7 @@
                                         Content="&#xE922;"
                                         Style="{StaticResource ChromeButtonStyle}" />
                                     <Button
+                                        Background="{StaticResource ErrorSolidColorBrush}"
                                         Command="{x:Static h:WindowHelper.CloseCommand}"
                                         CommandParameter="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                         Content="&#xE8BB;"
