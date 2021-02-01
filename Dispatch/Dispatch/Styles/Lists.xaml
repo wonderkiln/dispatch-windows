@@ -252,6 +252,12 @@
                                             MouseAction="MiddleClick" />
                                     </Grid.InputBindings>
                                     <Border
+                                        x:Name="Hover"
+                                        Margin="3"
+                                        Background="{DynamicResource SelectionOnPrimaryBackgroundSolidColorBrush}"
+                                        CornerRadius="2"
+                                        Opacity="0" />
+                                    <Border
                                         Width="1"
                                         Height="16"
                                         HorizontalAlignment="Right"
@@ -287,6 +293,43 @@
                                     </Grid>
                                 </Grid>
                                 <ControlTemplate.Triggers>
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="IsMouseOver" Value="True" />
+                                            <Condition Property="IsSelected" Value="False" />
+                                        </MultiTrigger.Conditions>
+                                        <MultiTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetName="Hover"
+                                                        Storyboard.TargetProperty="Opacity"
+                                                        From="0"
+                                                        To="1"
+                                                        Duration="{x:Static cc:DPTabListBox.AnimationDuration}">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <SineEase EasingMode="EaseOut" />
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </MultiTrigger.EnterActions>
+                                        <MultiTrigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetName="Hover"
+                                                        Storyboard.TargetProperty="Opacity"
+                                                        To="0"
+                                                        Duration="{x:Static cc:DPTabListBox.AnimationDuration}">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <SineEase EasingMode="EaseIn" />
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </MultiTrigger.ExitActions>
+                                    </MultiTrigger>
                                     <Trigger Property="IsSelected" Value="True">
                                         <Trigger.EnterActions>
                                             <BeginStoryboard>
