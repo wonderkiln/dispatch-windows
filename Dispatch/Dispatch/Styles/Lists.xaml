@@ -219,11 +219,12 @@
                             <ItemsPresenter />
                             <Button
                                 Margin="8,0,0,0"
+                                Padding="8"
                                 VerticalAlignment="Center"
                                 Command="{TemplateBinding AddTabCommand}"
                                 Content="&#xE710;"
                                 FontFamily="Segoe MDL2 Assets"
-                                FontSize="10"
+                                FontSize="12"
                                 Style="{StaticResource SimpleButtonStyle}"
                                 WindowChrome.IsHitTestVisibleInChrome="True" />
                         </StackPanel>
@@ -278,7 +279,7 @@
                                             CommandParameter="{Binding}"
                                             Content="&#xE8BB;"
                                             FontFamily="Segoe MDL2 Assets"
-                                            FontSize="8"
+                                            FontSize="9"
                                             Style="{StaticResource SimpleButtonStyle}" />
                                     </Grid>
                                 </Grid>
