@@ -13,11 +13,11 @@ namespace Dispatch
             switch (theme)
             {
                 case Theme.Light:
-                    Current.Resources.MergedDictionaries[0].Source = new Uri("Theme/Colors.Light.xaml", UriKind.Relative);
+                    Current.Resources.MergedDictionaries[0].Source = new Uri("Styles/Colors.Light.xaml", UriKind.Relative);
                     break;
 
                 case Theme.Dark:
-                    Current.Resources.MergedDictionaries[0].Source = new Uri("Theme/Colors.Dark.xaml", UriKind.Relative);
+                    Current.Resources.MergedDictionaries[0].Source = new Uri("Styles/Colors.Dark.xaml", UriKind.Relative);
                     break;
             }
 

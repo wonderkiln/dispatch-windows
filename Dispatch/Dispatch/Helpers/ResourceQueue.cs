@@ -1,5 +1,5 @@
 ﻿using Dispatch.Service.Model;
-using Dispatch.ViewModel;
+using Dispatch.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -35,9 +35,9 @@ namespace Dispatch.Helpers
         {
             public Item Item { get; private set; }
 
-            public ProgressStatus Progress { get; private set; }
+            public ResourceProgress Progress { get; private set; }
 
-            public ProgressEventArgs(Item item, ProgressStatus progress)
+            public ProgressEventArgs(Item item, ResourceProgress progress)
             {
                 Item = item;
                 Progress = progress;
@@ -65,7 +65,7 @@ namespace Dispatch.Helpers
             }
         }
 
-        private class WorkerProgressReporter : System.IProgress<ProgressStatus>
+        private class WorkerProgressReporter : System.IProgress<ResourceProgress>
         {
             public Item Item { get; private set; }
 
@@ -77,7 +77,7 @@ namespace Dispatch.Helpers
                 Queue = queue;
             }
 
-            public void Report(ProgressStatus value)
+            public void Report(ResourceProgress value)
             {
                 var args = new ProgressEventArgs(Item, value);
 

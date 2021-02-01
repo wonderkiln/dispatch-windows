@@ -127,12 +127,12 @@ namespace Dispatch.Service.Client
             return Task.CompletedTask;
         }
 
-        public Task Upload(string path, string fileOrDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
+        public Task Upload(string path, string fileOrDirectory, IProgress<ResourceProgress> progress = null, CancellationToken token = default)
         {
             throw new NotImplementedException();
         }
 
-        public Task Download(string path, string toDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
+        public Task Download(string path, string toDirectory, IProgress<ResourceProgress> progress = null, CancellationToken token = default)
         {
             throw new NotImplementedException();
         }
