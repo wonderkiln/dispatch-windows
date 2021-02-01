@@ -223,7 +223,8 @@
                                 Content="&#xE710;"
                                 FontFamily="Segoe MDL2 Assets"
                                 FontSize="10"
-                                Style="{StaticResource SimpleButtonStyle}" />
+                                Style="{StaticResource SimpleButtonStyle}"
+                                WindowChrome.IsHitTestVisibleInChrome="True" />
                         </StackPanel>
                     </ScrollViewer>
                 </ControlTemplate>

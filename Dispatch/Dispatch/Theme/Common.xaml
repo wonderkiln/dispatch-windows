@@ -7,8 +7,8 @@
     <Style x:Key="ChromelessWindowStyle" TargetType="Window">
         <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="Background" Value="{StaticResource WindowBlurBackgroundSolidColorBrush}" />
-        <Setter Property="AllowsTransparency" Value="True" />
-        <Setter Property="WindowStyle" Value="None" />
+        <Setter Property="AllowsTransparency" Value="False" />
+        <Setter Property="WindowStyle" Value="SingleBorderWindow" />
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
                 <WindowChrome CaptionHeight="40" />
@@ -67,13 +67,10 @@
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="AllowsTransparency" Value="True">
+                        <Trigger Property="AllowsTransparency" Value="False">
                             <Setter TargetName="Title" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="Content" Property="Grid.Row" Value="0" />
                             <Setter TargetName="Content" Property="Grid.RowSpan" Value="2" />
-                        </Trigger>
-                        <Trigger Property="AllowsTransparency" Value="False">
-                            <Setter Property="Background" Value="{StaticResource PrimaryBackgroundSolidColorBrush}" />
                         </Trigger>
                         <Trigger Property="IsVisible" Value="True">
                             <Setter Property="h:WindowHelper.BlurBehind" Value="True" />
