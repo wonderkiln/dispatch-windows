@@ -213,10 +213,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:DPTabListBox">
-                    <ScrollViewer
-                        HorizontalScrollBarVisibility="Auto"
-                        VerticalScrollBarVisibility="Disabled"
-                        WindowChrome.IsHitTestVisibleInChrome="True">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                         <StackPanel Orientation="Horizontal">
                             <ItemsPresenter />
                             <Button
