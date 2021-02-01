@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace Dispatch.Helpers
 {
-    public class ResourceWatcher : IProgress<ProgressStatus>
+    public class ResourceWatcher : IProgress<ResourceProgress>
     {
         public class Item
         {
@@ -81,7 +81,7 @@ namespace Dispatch.Helpers
             Unwatch(e.FullPath);
         }
 
-        public void Report(ProgressStatus value)
+        public void Report(ResourceProgress value)
         {
             Console.WriteLine(value.TotalProgress);
         }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Dispatch.Service.Model;
+using Dispatch.Service.Storage;
+using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
@@ -79,45 +81,48 @@ namespace Dispatch.Helpers
             Marshal.FreeHGlobal(accentPtr);
         }
 
+        public static readonly Storage<Settings> SettingsStorage = new Storage<Settings>("Settings.json");
+
         public static void LoadWindowSettings(Window window)
         {
-            window.Width = Properties.Settings.Default.WindowSize.Width;
-            window.Height = Properties.Settings.Default.WindowSize.Height;
+            var settings = SettingsStorage.Load();
 
-            var x = Properties.Settings.Default.WindowPosition.X;
-            var y = Properties.Settings.Default.WindowPosition.Y;
+            if (settings.WindowSize != null)
+            {
+                window.Width = settings.WindowSize.Value.Width;
+                window.Height = settings.WindowSize.Value.Height;
+            }
 
-            if (x == -1 && y == -1)
+            if (settings.WindowPosition == null)
             {
                 window.Left = (SystemParameters.WorkArea.Width - window.Width) / 2;
                 window.Top = (SystemParameters.WorkArea.Height - window.Height) / 2;
             }
             else
             {
-                window.Left = x;
-                window.Top = y;
+                window.Left = settings.WindowPosition.Value.X;
+                window.Top = settings.WindowPosition.Value.Y;
             }
 
-            if (Properties.Settings.Default.WindowMaximized)
-                window.WindowState = WindowState.Maximized;
-            else
-                window.WindowState = WindowState.Normal;
+            window.WindowState = settings.WindowState;
         }
 
         public static void SaveWindowSettings(Window window)
         {
+            var settings = SettingsStorage.Load();
+
             if (window.WindowState == WindowState.Maximized)
             {
-                Properties.Settings.Default.WindowMaximized = true;
+                settings.WindowState = WindowState.Maximized;
             }
             else
             {
-                Properties.Settings.Default.WindowSize = new System.Drawing.Size((int)window.Width, (int)window.Height);
-                Properties.Settings.Default.WindowPosition = new System.Drawing.Point((int)window.Left, (int)window.Top);
-                Properties.Settings.Default.WindowMaximized = false;
+                settings.WindowSize = new Size(window.Width, window.Height);
+                settings.WindowPosition = new Point(window.Left, window.Top);
+                settings.WindowState = WindowState.Normal;
             }
 
-            Properties.Settings.Default.Save();
+            SettingsStorage.Save(settings);
         }
 
         public static bool GetBlurBehind(DependencyObject obj)

@@ -15,15 +15,15 @@ namespace Dispatch.Service.Client
     {
         private readonly SftpClient client;
 
-        private readonly SFTPConnectionInfo connectionInfo;
+        private readonly SFTPConnection connectionInfo;
 
-        public SFTPClient(SftpClient client, SFTPConnectionInfo connectionInfo)
+        public SFTPClient(SftpClient client, SFTPConnection connectionInfo)
         {
             this.client = client;
             this.connectionInfo = connectionInfo;
         }
 
-        public static Task<SFTPClient> Create(SFTPConnectionInfo connectionInfo)
+        public static Task<SFTPClient> Create(SFTPConnection connectionInfo)
         {
             ConnectionInfo info;
 
@@ -128,7 +128,7 @@ namespace Dispatch.Service.Client
             return result;
         }
 
-        public async Task Download(string path, string toDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
+        public async Task Download(string path, string toDirectory, IProgress<ResourceProgress> progress = null, CancellationToken token = default)
         {
             token.ThrowIfCancellationRequested();
 
@@ -145,7 +145,7 @@ namespace Dispatch.Service.Client
                         client.DownloadFile(path, stream.BaseStream, (length) =>
                         {
                             var value = 100 * length / (double)resource.Size;
-                            progress?.Report(new ProgressStatus(0, 1, value));
+                            progress?.Report(new ResourceProgress(0, 1, value));
                         });
                     }
                 },
@@ -167,7 +167,7 @@ namespace Dispatch.Service.Client
                             client.DownloadFile(item.Value.Path, stream.BaseStream, (length) =>
                             {
                                 var value = 100 * length / (double)item.Value.Size;
-                                progress?.Report(new ProgressStatus(index, items.Count, value));
+                                progress?.Report(new ResourceProgress(index, items.Count, value));
                             });
                         }
                     },
@@ -214,7 +214,7 @@ namespace Dispatch.Service.Client
             });
         }
 
-        public async Task Upload(string path, string fileOrDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
+        public async Task Upload(string path, string fileOrDirectory, IProgress<ResourceProgress> progress = null, CancellationToken token = default)
         {
             token.ThrowIfCancellationRequested();
 
@@ -237,7 +237,7 @@ namespace Dispatch.Service.Client
                     {
                         var size = new FileInfo(fileOrDirectory).Length;
                         var value = 100 * length / (double)size;
-                        progress?.Report(new ProgressStatus(0, 1, value));
+                        progress?.Report(new ResourceProgress(0, 1, value));
                     });
                 }
             }
@@ -276,13 +276,13 @@ namespace Dispatch.Service.Client
         }
     }
 
-    internal class SingleToMultiFileProgress : IProgress<ProgressStatus>
+    internal class SingleToMultiFileProgress : IProgress<ResourceProgress>
     {
-        IProgress<ProgressStatus> progress;
-        int index;
-        readonly int count;
+        private readonly IProgress<ResourceProgress> progress;
+        private readonly int count;
+        private int index;
 
-        public SingleToMultiFileProgress(IProgress<ProgressStatus> progress, int index, int count)
+        public SingleToMultiFileProgress(IProgress<ResourceProgress> progress, int index, int count)
         {
             this.progress = progress;
             this.index = index;
@@ -294,9 +294,9 @@ namespace Dispatch.Service.Client
             index += 1;
         }
 
-        public void Report(ProgressStatus value)
+        public void Report(ResourceProgress value)
         {
-            progress?.Report(new ProgressStatus(index, count, value.Progress));
+            progress?.Report(new ResourceProgress(index, count, value.Progress));
         }
     }
 }

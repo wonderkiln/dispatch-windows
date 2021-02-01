@@ -1,8 +1,9 @@
-﻿using ByteSizeLib;
-using Dispatch.Helpers;
+﻿using Dispatch.Helpers;
 using Dispatch.Service.Model;
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -12,84 +13,49 @@ namespace Dispatch.Service.Updater
     {
         private readonly IUpdateProvider updater;
 
-        public event EventHandler<double> DownloadProgressChanged;
+        private readonly IProgress<double> progress;
 
-        public UpdateInfo LatestUpdate { get; set; }
-
-        public bool HasUpdate
-        {
-            get
-            {
-                if (LatestUpdate == null) return false;
-                return LatestUpdate.Version > Constants.VERSION;
-            }
-        }
-
-        public ApplicationUpdater(IUpdateProvider updater)
+        public ApplicationUpdater(IUpdateProvider updater, IProgress<double> progress = null)
         {
             this.updater = updater;
-            this.updater.DownloadProgressChanged += Updater_DownloadProgressChanged;
+            this.progress = progress;
         }
 
-        private void Updater_DownloadProgressChanged(object sender, double e)
-        {
-            DownloadProgressChanged?.Invoke(this, e);
-        }
-
-        public async Task CheckForUpdate(bool silent = false)
+        public async Task<Update> CheckForUpdate()
         {
 #if DEBUG
-            return;
+            //return null;
 #endif
 
 #pragma warning disable CS0162 // Unreachable code detected
-            try
+            var update = await updater.GetLatestUpdate();
 #pragma warning restore CS0162 // Unreachable code detected
-            {
-                LatestUpdate = await updater.GetLatestUpdate();
-
-                if (HasUpdate)
-                {
-                    if (!silent && MessageBox.Show(
-                        $"Do you want to download and install it now ({ByteSize.FromBytes(LatestUpdate.DownloadSize)})?",
-                        $"Update available from {Constants.VERSION} to {LatestUpdate.Version} ({Constants.CHANNEL})",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Question,
-                        MessageBoxResult.Yes) == MessageBoxResult.Yes)
-                    {
-                        DownloadAndInstall();
-                    }
-                }
-                else if (!silent)
-                {
-                    MessageBox.Show(
-                        $"You already have the latest version ({Constants.VERSION})",
-                        $"No update available ({Constants.CHANNEL})",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Console.Error.WriteLine(ex);
-            }
+            if (update.Version > Constants.VERSION) return update;
+            return null;
         }
 
         public async void DownloadAndInstall()
         {
-            try
-            {
-                var path = await updater.DownloadUpdate(LatestUpdate);
+            var client = new WebClient();
+            client.Headers.Add(HttpRequestHeader.UserAgent, Constants.APP_NAME);
+            client.Headers.Add(HttpRequestHeader.Accept, "application/octet-stream");
+            client.DownloadProgressChanged += Client_DownloadProgressChanged;
 
-                Process.Start(path, "/VERYSILENT");
-                Application.Current.Shutdown();
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine(ex);
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            var path = Path.GetTempFileName();
+            var update = await updater.GetLatestUpdate();
+
+            await client.DownloadFileTaskAsync(update.Link, path);
+
+            var newPath = Path.ChangeExtension(path, "exe");
+            File.Move(path, newPath);
+
+            Process.Start(newPath, "/VERYSILENT");
+            Application.Current.Shutdown();
+        }
+
+        private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            progress.Report(e.ProgressPercentage);
         }
     }
 }

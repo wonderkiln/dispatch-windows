@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+
 namespace Dispatch.Helpers
 {
     public class RelayCommand : RelayCommand<object>

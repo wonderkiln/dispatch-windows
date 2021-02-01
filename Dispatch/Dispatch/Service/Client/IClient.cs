@@ -17,8 +17,8 @@ namespace Dispatch.Service.Client
 
         Task Delete(string path, CancellationToken token = default);
 
-        Task Upload(string path, string fileOrDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default);
+        Task Upload(string path, string fileOrDirectory, IProgress<ResourceProgress> progress = null, CancellationToken token = default);
 
-        Task Download(string path, string toDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default);
+        Task Download(string path, string toDirectory, IProgress<ResourceProgress> progress = null, CancellationToken token = default);
     }
 }

@@ -3,18 +3,18 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Startup="Application_Startup"
-    StartupUri="View/Windows/MainWindow.xaml">
+    StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <!--  This can be changed in runtime  -->
-                <ResourceDictionary Source="Theme/Colors.Light.xaml" />
-                <ResourceDictionary Source="Theme/Brushes.xaml" />
-                <ResourceDictionary Source="Theme/Buttons.xaml" />
-                <ResourceDictionary Source="Theme/Common.xaml" />
-                <ResourceDictionary Source="Theme/Lists.xaml" />
-                <ResourceDictionary Source="Theme/Side.xaml" />
-                <ResourceDictionary Source="Theme/Templates.xaml" />
+                <ResourceDictionary Source="Styles/Colors.Light.xaml" />
+                <ResourceDictionary Source="Styles/Brushes.xaml" />
+                <ResourceDictionary Source="Styles/Buttons.xaml" />
+                <ResourceDictionary Source="Styles/Common.xaml" />
+                <ResourceDictionary Source="Styles/Lists.xaml" />
+                <ResourceDictionary Source="Styles/Side.xaml" />
+                <ResourceDictionary Source="Styles/Templates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -90,113 +90,114 @@
     <Compile Include="Controls\DPSpinner.cs" />
     <Compile Include="Controls\DPTabListBox.cs" />
     <Compile Include="Controls\DPTextBox.cs" />
-    <Compile Include="Helpers\ButtonExtension.cs" />
-    <Compile Include="Helpers\Converters\BytesToStringConverter.cs" />
+    <Compile Include="Controls\DPButtonExtension.cs" />
+    <Compile Include="Converters\BytesToStringConverter.cs" />
     <Compile Include="Helpers\Constants.cs" />
-    <Compile Include="Helpers\Converters\InverseBooleanToVisibilityConverter.cs" />
-    <Compile Include="Helpers\Converters\ItemToTemplateSelector.cs" />
-    <Compile Include="Helpers\Converters\ListToVisibilityConverter.cs" />
-    <Compile Include="Helpers\Converters\StringToIntConverter.cs" />
-    <Compile Include="Helpers\Converters\TabViewDataTemplateSelector.cs" />
+    <Compile Include="Converters\InverseBooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\ItemToTemplateSelector.cs" />
+    <Compile Include="Converters\ListToVisibilityConverter.cs" />
+    <Compile Include="Converters\StringToIntConverter.cs" />
+    <Compile Include="Converters\TabViewDataTemplateSelector.cs" />
     <Compile Include="Helpers\FileIconHelper.cs" />
     <Compile Include="Helpers\Icons.cs" />
     <Compile Include="Helpers\Observable.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
-    <Compile Include="Helpers\Converters\ResourceToIconConverter.cs" />
+    <Compile Include="Converters\ResourceToIconConverter.cs" />
     <Compile Include="Helpers\ResourceQueue.cs" />
     <Compile Include="Helpers\ResourceWatcher.cs" />
-    <Compile Include="Helpers\Validators\RegexValidator.cs" />
-    <Compile Include="Helpers\Validators\RequiredValidator.cs" />
     <Compile Include="Helpers\WindowHelper.cs" />
     <Compile Include="Service\Client\FTPClient.cs" />
     <Compile Include="Service\Client\SFTPClient.cs" />
-    <Compile Include="Service\Model\BookmarkItem.cs" />
-    <Compile Include="Service\Model\FTPConnectionInfo.cs" />
-    <Compile Include="Service\Model\ProgressStatus.cs" />
-    <Compile Include="Service\Model\FavoriteItem.cs" />
-    <Compile Include="Service\Model\SFTPConnectionInfo.cs" />
-    <Compile Include="Service\Storage\IStorage.cs" />
+    <Compile Include="Service\Model\Bookmark.cs" />
+    <Compile Include="Service\Model\FTPConnection.cs" />
+    <Compile Include="Service\Model\ResourceProgress.cs" />
+    <Compile Include="Service\Model\Favorite.cs" />
+    <Compile Include="Service\Model\Settings.cs" />
+    <Compile Include="Service\Model\SFTPConnection.cs" />
     <Compile Include="Service\Storage\Storage.cs" />
-    <Compile Include="ViewModel\BookmarksViewModel.cs" />
-    <Compile Include="ViewModel\ConnectViewModel.cs" />
-    <Compile Include="ViewModel\QueueViewModel.cs" />
-    <Compile Include="ViewModel\StorageViewModel.cs" />
-    <Compile Include="ViewModel\UpdateViewModel.cs" />
+    <Compile Include="ViewModels\BookmarksViewModel.cs" />
+    <Compile Include="ViewModels\ConnectViewModel.cs" />
+    <Compile Include="ViewModels\QueueViewModel.cs" />
+    <Compile Include="ViewModels\StorageViewModel.cs" />
+    <Compile Include="ViewModels\UpdateViewModel.cs" />
     <Compile Include="Service\Client\LocalClient.cs" />
     <Compile Include="Service\Client\IClient.cs" />
     <Compile Include="Service\Model\Resource.cs" />
     <Compile Include="Service\Updater\ApplicationUpdater.cs" />
     <Compile Include="Service\Updater\UpdateProvider.cs" />
     <Compile Include="Service\Updater\IUpdateProvider.cs" />
-    <Compile Include="Service\Model\UpdateInfo.cs" />
-    <Compile Include="ViewModel\RootViewModel.cs" />
-    <Compile Include="ViewModel\ResourcesViewModel.cs" />
-    <Compile Include="ViewModel\TabViewModel.cs" />
-    <Compile Include="View\Fragments\MoreView.xaml.cs">
+    <Compile Include="Service\Model\Update.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ResourcesViewModel.cs" />
+    <Compile Include="ViewModels\TabViewModel.cs" />
+    <Compile Include="ViewModels\FTPConnectionViewModel.cs" />
+    <Compile Include="Fragments\MoreView.xaml.cs">
       <DependentUpon>MoreView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Fragments\ConnectView.xaml.cs">
+    <Compile Include="Fragments\ConnectView.xaml.cs">
       <DependentUpon>ConnectView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Fragments\FTPConnectView.xaml.cs">
+    <Compile Include="Fragments\FTPConnectView.xaml.cs">
       <DependentUpon>FTPConnectView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Fragments\ResourcesView.xaml.cs">
+    <Compile Include="Helpers\ObservableForm.cs" />
+    <Compile Include="Fragments\ResourcesView.xaml.cs">
       <DependentUpon>ResourcesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Fragments\QueueView.xaml.cs">
+    <Compile Include="Fragments\QueueView.xaml.cs">
       <DependentUpon>QueueView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Fragments\SettingsView.xaml.cs">
+    <Compile Include="Fragments\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Fragments\SFTPConnectView.xaml.cs">
+    <Compile Include="Fragments\SFTPConnectView.xaml.cs">
       <DependentUpon>SFTPConnectView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Fragments\TabView.xaml.cs">
+    <Compile Include="ViewModels\SFTPConnectionViewModel.cs" />
+    <Compile Include="Fragments\TabView.xaml.cs">
       <DependentUpon>TabView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Theme\Brushes.xaml">
+    <Page Include="Styles\Brushes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Theme\Lists.xaml">
+    <Page Include="Styles\Lists.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Theme\Side.xaml">
+    <Page Include="Styles\Side.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Theme\Templates.xaml">
+    <Page Include="Styles\Templates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Fragments\MoreView.xaml">
+    <Page Include="Fragments\MoreView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Fragments\FTPConnectView.xaml">
+    <Page Include="Fragments\FTPConnectView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\Fragments\QueueView.xaml">
+    <Page Include="Fragments\QueueView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Fragments\SettingsView.xaml">
+    <Page Include="Fragments\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Fragments\SFTPConnectView.xaml">
+    <Page Include="Fragments\SFTPConnectView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Windows\AboutWindow.xaml">
+    <Page Include="AboutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Windows\MainWindow.xaml">
+    <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -204,30 +205,30 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="View\Windows\AboutWindow.xaml.cs">
+    <Compile Include="AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Windows\MainWindow.xaml.cs">
+    <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Theme\Buttons.xaml">
+    <Page Include="Styles\Buttons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Theme\Common.xaml">
+    <Page Include="Styles\Common.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Fragments\ConnectView.xaml">
+    <Page Include="Fragments\ConnectView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Fragments\ResourcesView.xaml">
+    <Page Include="Fragments\ResourcesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Fragments\TabView.xaml">
+    <Page Include="Fragments\TabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -257,17 +258,14 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Page Include="Theme\Colors.Dark.xaml">
+    <Page Include="Styles\Colors.Dark.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Theme\Colors.Light.xaml">
+    <Page Include="Styles\Colors.Light.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icon.ico" />

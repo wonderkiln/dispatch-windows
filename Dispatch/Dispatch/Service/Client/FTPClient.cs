@@ -13,15 +13,15 @@ namespace Dispatch.Service.Client
     {
         private readonly FtpClient client;
 
-        private readonly FTPConnectionInfo connectionInfo;
+        private readonly FTPConnection connectionInfo;
 
-        public FTPClient(FtpClient client, FTPConnectionInfo connectionInfo)
+        public FTPClient(FtpClient client, FTPConnection connectionInfo)
         {
             this.client = client;
             this.connectionInfo = connectionInfo;
         }
 
-        public static async Task<FTPClient> Create(FTPConnectionInfo connectionInfo)
+        public static async Task<FTPClient> Create(FTPConnection connectionInfo)
         {
             FtpTrace.EnableTracing = false;
 
@@ -102,20 +102,20 @@ namespace Dispatch.Service.Client
 
         private class FtpProgressConverter : IProgress<FtpProgress>
         {
-            private readonly IProgress<ProgressStatus> progress;
+            private readonly IProgress<ResourceProgress> progress;
 
-            public FtpProgressConverter(IProgress<ProgressStatus> progress)
+            public FtpProgressConverter(IProgress<ResourceProgress> progress)
             {
                 this.progress = progress;
             }
 
             public void Report(FtpProgress value)
             {
-                progress?.Report(new ProgressStatus(value.FileIndex, value.FileCount, value.Progress));
+                progress?.Report(new ResourceProgress(value.FileIndex, value.FileCount, value.Progress));
             }
         }
 
-        public async Task Upload(string path, string fileOrDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
+        public async Task Upload(string path, string fileOrDirectory, IProgress<ResourceProgress> progress = null, CancellationToken token = default)
         {
             token.ThrowIfCancellationRequested();
 
@@ -137,7 +137,7 @@ namespace Dispatch.Service.Client
             }
         }
 
-        public async Task Download(string path, string toDirectory, IProgress<ProgressStatus> progress = null, CancellationToken token = default)
+        public async Task Download(string path, string toDirectory, IProgress<ResourceProgress> progress = null, CancellationToken token = default)
         {
             token.ThrowIfCancellationRequested();
 

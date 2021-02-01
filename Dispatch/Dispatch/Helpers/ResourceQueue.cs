@@ -1,5 +1,5 @@
 ﻿using Dispatch.Service.Model;
-using Dispatch.ViewModel;
+using Dispatch.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -12,6 +12,11 @@ namespace Dispatch.Helpers
     {
         public class Item
         {
+            public interface IRefreshable
+            {
+                void Refresh();
+            }
+
             public enum ActionType { Upload, Download, Delete }
 
             public ActionType Action { get; private set; }
@@ -20,14 +25,14 @@ namespace Dispatch.Helpers
 
             public Resource Destination { get; private set; }
 
-            public ResourcesViewModel ViewModel { get; private set; }
+            public IRefreshable View { get; private set; }
 
-            public Item(ActionType action, Resource source, Resource destination, ResourcesViewModel viewModel)
+            public Item(ActionType action, Resource source, Resource destination, IRefreshable view)
             {
                 Action = action;
                 Source = source;
                 Destination = destination;
-                ViewModel = viewModel;
+                View = view;
             }
         }
 
@@ -35,9 +40,9 @@ namespace Dispatch.Helpers
         {
             public Item Item { get; private set; }
 
-            public ProgressStatus Progress { get; private set; }
+            public ResourceProgress Progress { get; private set; }
 
-            public ProgressEventArgs(Item item, ProgressStatus progress)
+            public ProgressEventArgs(Item item, ResourceProgress progress)
             {
                 Item = item;
                 Progress = progress;
@@ -65,7 +70,7 @@ namespace Dispatch.Helpers
             }
         }
 
-        private class WorkerProgressReporter : System.IProgress<ProgressStatus>
+        private class WorkerProgressReporter : System.IProgress<ResourceProgress>
         {
             public Item Item { get; private set; }
 
@@ -77,7 +82,7 @@ namespace Dispatch.Helpers
                 Queue = queue;
             }
 
-            public void Report(ProgressStatus value)
+            public void Report(ResourceProgress value)
             {
                 var args = new ProgressEventArgs(Item, value);
 
@@ -189,7 +194,7 @@ namespace Dispatch.Helpers
 
             dispatcher.Invoke(() =>
             {
-                item.ViewModel.Refresh();
+                item.View.Refresh();
             });
 
             tokenSource.Token.ThrowIfCancellationRequested();

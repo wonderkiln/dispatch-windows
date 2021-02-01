@@ -1,7 +1,5 @@
-﻿using System.Text.RegularExpressions;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace Dispatch.Controls
 {
@@ -55,20 +53,6 @@ namespace Dispatch.Controls
             set { SetValue(CornerRadiusProperty, value); }
         }
 
-        public static readonly DependencyProperty IsPasswordProperty = DependencyProperty.Register("IsPassword", typeof(bool), typeof(DPTextBox), new PropertyMetadata(false));
-        public bool IsPassword
-        {
-            get { return (bool)GetValue(IsPasswordProperty); }
-            set { SetValue(IsPasswordProperty, value); }
-        }
-
-        public static readonly DependencyProperty PasswordMaskProperty = DependencyProperty.Register("PasswordMask", typeof(string), typeof(DPTextBox), new PropertyMetadata("*"));
-        public string PasswordMask
-        {
-            get { return (string)GetValue(PasswordMaskProperty); }
-            set { SetValue(PasswordMaskProperty, value); }
-        }
-
         public static readonly DependencyProperty TrailingProperty = DependencyProperty.Register("Trailing", typeof(object), typeof(DPTextBox));
         public object Trailing
         {
@@ -87,13 +71,11 @@ namespace Dispatch.Controls
             DefaultStyleKey = typeof(DPTextBox);
         }
 
-        private ScrollViewer PART_ContentHost;
-
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
-            PART_ContentHost = GetTemplateChild("PART_ContentHost") as ScrollViewer;
+            var PART_ContentHost = GetTemplateChild("PART_ContentHost") as ScrollViewer;
 
             if (PART_ContentHost != null)
             {
