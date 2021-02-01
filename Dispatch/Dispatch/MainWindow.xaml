@@ -92,6 +92,10 @@
         </Grid.RowDefinitions>
         <controls:DPTabListBox
             x:Name="Tabs"
+            dd:DragDrop.DropHandler="{Binding TabsDragDropHandler}"
+            dd:DragDrop.DropTargetAdornerBrush="{DynamicResource SeparatorSolidColorBrush}"
+            dd:DragDrop.IsDragSource="True"
+            dd:DragDrop.IsDropTarget="True"
             AddTabCommand="{Binding AddTabCommand}"
             ItemsSource="{Binding OpenTabs}"
             RemoveTabCommand="{Binding RemoveTabCommand}"

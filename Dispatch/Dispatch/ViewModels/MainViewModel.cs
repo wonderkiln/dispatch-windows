@@ -1,13 +1,46 @@
 ﻿using Dispatch.Fragments;
 using Dispatch.Helpers;
 using Dispatch.Service.Model;
+using GongSolutions.Wpf.DragDrop;
 using System;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace Dispatch.ViewModels
 {
+    public class TabsDragDropHandler : IDropTarget
+    {
+        public class TabsMoveEventArgs
+        {
+            public TabViewModel Tab { get; set; }
+
+            public int Index { get; set; }
+        }
+
+        public event EventHandler<TabsMoveEventArgs> OnTabMove;
+
+        public void DragOver(IDropInfo dropInfo)
+        {
+            if (dropInfo.Data is TabViewModel)
+            {
+                dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
+                dropInfo.Effects = DragDropEffects.Move;
+            }
+        }
+
+        public void Drop(IDropInfo dropInfo)
+        {
+            if (dropInfo.Data is TabViewModel tab)
+            {
+                OnTabMove?.Invoke(this, new TabsMoveEventArgs() { Tab = tab, Index = dropInfo.InsertIndex });
+            }
+        }
+    }
+
     public class MainViewModel : Observable
     {
+        public TabsDragDropHandler TabsDragDropHandler { get; }
+
         public BookmarksViewModel Bookmarks { get; } = new BookmarksViewModel();
 
         public QueueViewModel Queue { get; } = new QueueViewModel();
@@ -84,6 +117,9 @@ namespace Dispatch.ViewModels
 
         public MainViewModel()
         {
+            TabsDragDropHandler = new TabsDragDropHandler();
+            TabsDragDropHandler.OnTabMove += TabsDragDropHandler_OnTabMove;
+
             NextTabCommand = new RelayCommand<bool>(NextTab);
             AddTabCommand = new RelayCommand(AddTab);
             RemoveTabCommand = new RelayCommand<TabViewModel>(RemoveTab);
@@ -91,6 +127,18 @@ namespace Dispatch.ViewModels
             OpenMoreCommand = new RelayCommand<object>(OpenMore);
 
             NewTab();
+        }
+
+        private void TabsDragDropHandler_OnTabMove(object sender, TabsDragDropHandler.TabsMoveEventArgs e)
+        {
+            var index = OpenTabs.IndexOf(e.Tab);
+
+            OpenTabs.Insert(e.Index, e.Tab);
+
+            if (e.Index <= index) OpenTabs.RemoveAt(index + 1);
+            else OpenTabs.RemoveAt(index);
+
+            SelectedTab = e.Tab;
         }
 
         private void NextTab(bool forward)
