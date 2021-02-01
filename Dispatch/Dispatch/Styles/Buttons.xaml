@@ -81,7 +81,6 @@
     <Style x:Key="ChromeButtonStyle" TargetType="Button">
         <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
         <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
-        <Setter Property="Background" Value="{DynamicResource PrimaryAccentSolidColorBrush}" />
         <Setter Property="FontSize" Value="10" />
         <Setter Property="Width" Value="46" />
         <Setter Property="Height" Value="28" />
@@ -97,7 +96,33 @@
                             <Setter TargetName="Border" Property="Background" Value="{DynamicResource SelectionOnPanelBackgroundSolidColorBrush}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource PrimaryAccentSolidColorBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource SelectedTextSolidColorBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style
+        x:Key="ChromeCloseButtonStyle"
+        BasedOn="{StaticResource ChromeButtonStyle}"
+        TargetType="Button">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Border" Background="Transparent">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource ErrorSolidColorBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource SelectedTextSolidColorBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Border" Property="Opacity" Value="0.8" />
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource ErrorSolidColorBrush}" />
                             <Setter Property="Foreground" Value="{DynamicResource SelectedTextSolidColorBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>

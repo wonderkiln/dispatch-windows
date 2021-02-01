@@ -54,11 +54,10 @@
                                         Content="&#xE922;"
                                         Style="{StaticResource ChromeButtonStyle}" />
                                     <Button
-                                        Background="{DynamicResource ErrorSolidColorBrush}"
                                         Command="{x:Static h:WindowHelper.CloseCommand}"
                                         CommandParameter="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                         Content="&#xE8BB;"
-                                        Style="{StaticResource ChromeButtonStyle}" />
+                                        Style="{StaticResource ChromeCloseButtonStyle}" />
                                 </StackPanel>
                             </Grid>
                             <AdornerDecorator Name="Content" Grid.Row="1">
