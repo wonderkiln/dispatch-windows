@@ -1,17 +1,17 @@
 ﻿<UserControl
-    x:Class="Dispatch.View.Fragments.ConnectView"
+    x:Class="Dispatch.Fragments.ConnectView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:a="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
     xmlns:cc="clr-namespace:Dispatch.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:Dispatch.View.Fragments"
+    xmlns:local="clr-namespace:Dispatch.Fragments"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:Dispatch.ViewModels"
     d:DataContext="{d:DesignInstance vm:ConnectViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    Background="{StaticResource SecondaryBackgroundSolidColorBrush}"
+    Background="{DynamicResource SecondaryBackgroundSolidColorBrush}"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -55,12 +55,12 @@
         <Style TargetType="cc:DPTextBox">
             <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Background" Value="{StaticResource PrimaryBackgroundSolidColorBrush}" />
-            <Setter Property="BorderBrush" Value="{StaticResource SeparatorSolidColorBrush}" />
+            <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundSolidColorBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SeparatorSolidColorBrush}" />
             <Setter Property="CornerRadius" Value="4" />
             <Setter Property="Padding" Value="8,6" />
             <Setter Property="FontSize" Value="13" />
-            <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="cc:DPTextBox">
@@ -116,16 +116,16 @@
                                     <Condition Property="IsFocused" Value="True" />
                                     <Condition Property="Validation.HasError" Value="False" />
                                 </MultiTrigger.Conditions>
-                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource PrimaryAccentSolidColorBrush}" />
-                                <Setter TargetName="Label" Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PrimaryAccentSolidColorBrush}" />
+                                <Setter TargetName="Label" Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
                             </MultiTrigger>
                             <Trigger Property="IsFocused" Value="True">
-                                <Setter Property="Background" Value="{StaticResource PrimaryBackgroundSolidColorBrush}" />
+                                <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundSolidColorBrush}" />
                                 <Setter TargetName="Label" Property="Opacity" Value="1" />
                             </Trigger>
                             <Trigger Property="Validation.HasError" Value="True">
-                                <Setter Property="Foreground" Value="{StaticResource ErrorSolidColorBrush}" />
-                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource ErrorSolidColorBrush}" />
+                                <Setter Property="Foreground" Value="{DynamicResource ErrorSolidColorBrush}" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ErrorSolidColorBrush}" />
                                 <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
                             </Trigger>
                             <Trigger Property="Trailing" Value="{x:Null}">
@@ -171,7 +171,7 @@
                         <Button
                             Margin="0,0,12,0"
                             Padding="12,6"
-                            Background="{StaticResource SelectionOnSecondaryBackgroundSolidColorBrush}"
+                            Background="{DynamicResource SelectionOnSecondaryBackgroundSolidColorBrush}"
                             Command="{Binding SaveAsFavoriteCommand}"
                             Content="Add to favorites"
                             Style="{StaticResource SimpleButtonStyle}" />
@@ -209,7 +209,7 @@
                             Width="48"
                             Height="48"
                             HorizontalAlignment="Center"
-                            Background="{StaticResource PrimaryAccentSolidColorBrush}"
+                            Background="{DynamicResource PrimaryAccentSolidColorBrush}"
                             BorderThickness="1"
                             CornerRadius="3">
                             <TextBlock
@@ -217,7 +217,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="18"
                                 FontWeight="SemiBold"
-                                Foreground="{StaticResource SelectedTextSolidColorBrush}"
+                                Foreground="{DynamicResource SelectedTextSolidColorBrush}"
                                 Text="{Binding Connection}" />
                         </Border>
                         <TextBlock

@@ -8,8 +8,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <!--  This can be changed in runtime  -->
-                <ResourceDictionary Source="Styles/Colors.Light.xaml" />
-                <ResourceDictionary Source="Styles/Brushes.xaml" />
+                <!--<ResourceDictionary Source="Styles/Colors.Light.xaml" />-->
+                <ResourceDictionary Source="Styles/Brushes.Light.xaml" />
                 <ResourceDictionary Source="Styles/Buttons.xaml" />
                 <ResourceDictionary Source="Styles/Common.xaml" />
                 <ResourceDictionary Source="Styles/Lists.xaml" />

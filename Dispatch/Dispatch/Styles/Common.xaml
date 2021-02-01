@@ -6,7 +6,7 @@
 
     <Style x:Key="ChromelessWindowStyle" TargetType="Window">
         <Setter Property="UseLayoutRounding" Value="True" />
-        <Setter Property="Background" Value="{StaticResource WindowBlurBackgroundSolidColorBrush}" />
+        <Setter Property="Background" Value="{DynamicResource WindowBlurBackgroundSolidColorBrush}" />
         <Setter Property="AllowsTransparency" Value="False" />
         <Setter Property="WindowStyle" Value="SingleBorderWindow" />
         <Setter Property="WindowChrome.WindowChrome">
@@ -54,11 +54,10 @@
                                         Content="&#xE922;"
                                         Style="{StaticResource ChromeButtonStyle}" />
                                     <Button
-                                        Background="{StaticResource ErrorSolidColorBrush}"
                                         Command="{x:Static h:WindowHelper.CloseCommand}"
                                         CommandParameter="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                         Content="&#xE8BB;"
-                                        Style="{StaticResource ChromeButtonStyle}" />
+                                        Style="{StaticResource ChromeCloseButtonStyle}" />
                                 </StackPanel>
                             </Grid>
                             <AdornerDecorator Name="Content" Grid.Row="1">
@@ -96,42 +95,42 @@
     </Style>
 
     <Style x:Key="TopPanelBackgroundBorderStyle" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource PanelBackgroundSolidColorBrush}" />
-        <Setter Property="BorderBrush" Value="{StaticResource SeparatorSolidColorBrush}" />
+        <Setter Property="Background" Value="{DynamicResource PanelBackgroundSolidColorBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SeparatorSolidColorBrush}" />
         <Setter Property="BorderThickness" Value="0,0,0,1" />
     </Style>
 
     <Style x:Key="StatusBarBackgroundBorderStyle" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource PrimaryBackgroundSolidColorBrush}" />
-        <Setter Property="BorderBrush" Value="{StaticResource SeparatorSolidColorBrush}" />
+        <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundSolidColorBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SeparatorSolidColorBrush}" />
         <Setter Property="BorderThickness" Value="0,1,0,0" />
     </Style>
 
     <Style x:Key="PrimaryBackgroundBorderStyle" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource PrimaryBackgroundSolidColorBrush}" />
+        <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundSolidColorBrush}" />
     </Style>
 
     <Style x:Key="SecondaryBackgroundBorderStyle" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource SecondaryBackgroundSolidColorBrush}" />
+        <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundSolidColorBrush}" />
     </Style>
 
     <Style TargetType="Label">
         <Setter Property="Padding" Value="0" />
         <Setter Property="FontSize" Value="13" />
-        <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
     </Style>
 
     <Style TargetType="Hyperlink">
         <Setter Property="TextDecorations" Value="None" />
-        <Setter Property="Foreground" Value="{StaticResource PrimaryAccentSolidColorBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryAccentSolidColorBrush}" />
     </Style>
 
     <Style TargetType="TextBox">
-        <Setter Property="Background" Value="{StaticResource PrimaryBackgroundSolidColorBrush}" />
-        <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
-        <Setter Property="CaretBrush" Value="{StaticResource NormalTextSolidColorBrush}" />
-        <!--<Setter Property="SelectionBrush" Value="{StaticResource SelectionOnPrimaryBackgroundSolidColorBrush}" />-->
-        <Setter Property="BorderBrush" Value="{StaticResource SeparatorSolidColorBrush}" />
+        <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundSolidColorBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource NormalTextSolidColorBrush}" />
+        <!--<Setter Property="SelectionBrush" Value="{DynamicResource SelectionOnPrimaryBackgroundSolidColorBrush}" />-->
+        <Setter Property="BorderBrush" Value="{DynamicResource SeparatorSolidColorBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FontSize" Value="13" />
         <Setter Property="Padding" Value="8,6" />
@@ -150,8 +149,8 @@
     </Style>
 
     <Style TargetType="ProgressBar">
-        <Setter Property="Background" Value="{StaticResource SelectionOnPanelBackgroundSolidColorBrush}" />
-        <Setter Property="Foreground" Value="{StaticResource PrimaryAccentSolidColorBrush}" />
+        <Setter Property="Background" Value="{DynamicResource SelectionOnPanelBackgroundSolidColorBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryAccentSolidColorBrush}" />
         <Setter Property="Height" Value="5" />
         <Setter Property="Template">
             <Setter.Value>
@@ -169,16 +168,9 @@
                             CornerRadius="2.5" />
                         <Border
                             x:Name="Overlay"
+                            Background="{TemplateBinding Foreground}"
                             CornerRadius="2.5"
-                            Visibility="Collapsed">
-                            <Border.Background>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                    <GradientStop Offset="0" Color="Transparent" />
-                                    <GradientStop x:Name="GradientStop" Offset="0" Color="{DynamicResource PrimaryAccentColor}" />
-                                    <GradientStop Offset="1" Color="Transparent" />
-                                </LinearGradientBrush>
-                            </Border.Background>
-                        </Border>
+                            Visibility="Collapsed" />
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Determinate" />
@@ -207,8 +199,8 @@
                                         <DoubleAnimation
                                             AutoReverse="True"
                                             RepeatBehavior="Forever"
-                                            Storyboard.TargetName="GradientStop"
-                                            Storyboard.TargetProperty="Offset"
+                                            Storyboard.TargetName="Overlay"
+                                            Storyboard.TargetProperty="Opacity"
                                             From="0"
                                             To="1"
                                             Duration="0:0:3" />
@@ -223,9 +215,9 @@
     </Style>
 
     <Style TargetType="GridSplitter">
-        <Setter Property="Background" Value="{StaticResource PrimaryBackgroundSolidColorBrush}" />
-        <Setter Property="BorderBrush" Value="{StaticResource SeparatorSolidColorBrush}" />
-        <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
+        <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundSolidColorBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SeparatorSolidColorBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="GridSplitter">
@@ -321,7 +313,7 @@
                 <Setter TargetName="Icon" Property="Visibility" Value="Hidden" />
             </Trigger>
             <Trigger Property="IsHighlighted" Value="True">
-                <Setter TargetName="Border" Property="Background" Value="{StaticResource SelectionOnPanelBackgroundSolidColorBrush}" />
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource SelectionOnPanelBackgroundSolidColorBrush}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -338,13 +330,13 @@
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="IsHighlighted" Value="True">
-                <Setter TargetName="Border" Property="Background" Value="{StaticResource SelectionOnPanelBackgroundSolidColorBrush}" />
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource SelectionOnPanelBackgroundSolidColorBrush}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
     <Style TargetType="MenuItem">
-        <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
         <Setter Property="FontSize" Value="13" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Style.Triggers>
@@ -367,7 +359,7 @@
     <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" TargetType="Separator">
         <Setter Property="Height" Value="1" />
         <Setter Property="Margin" Value="0,4" />
-        <Setter Property="Background" Value="{StaticResource SeparatorSolidColorBrush}" />
+        <Setter Property="Background" Value="{DynamicResource SeparatorSolidColorBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Separator">
@@ -382,7 +374,7 @@
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Grid.IsSharedSizeScope" Value="True" />
         <Setter Property="HasDropShadow" Value="True" />
-        <Setter Property="Background" Value="{StaticResource PanelBackgroundSolidColorBrush}" />
+        <Setter Property="Background" Value="{DynamicResource PanelBackgroundSolidColorBrush}" />
         <Setter Property="Padding" Value="4" />
         <Setter Property="Template">
             <Setter.Value>
@@ -404,9 +396,9 @@
                                     <DropShadowEffect
                                         BlurRadius="4"
                                         Direction="-90"
-                                        Opacity="1"
+                                        Opacity="0.2"
                                         ShadowDepth="2"
-                                        Color="{StaticResource SeparatorColor}" />
+                                        Color="Black" />
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
@@ -438,7 +430,7 @@
     </Style>
 
     <Style TargetType="CheckBox">
-        <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
         <Setter Property="FontSize" Value="13" />
         <Setter Property="Template">
             <Setter.Value>
@@ -454,8 +446,8 @@
                             Height="14"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Background="{StaticResource PrimaryBackgroundSolidColorBrush}"
-                            BorderBrush="{StaticResource SeparatorSolidColorBrush}"
+                            Background="{DynamicResource PrimaryBackgroundSolidColorBrush}"
+                            BorderBrush="{DynamicResource SeparatorSolidColorBrush}"
                             BorderThickness="1"
                             CornerRadius="1.5">
                             <Path
@@ -463,7 +455,7 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Data="M 0,2 L 3,6 L 8,0"
-                                Stroke="{StaticResource PrimaryAccentSolidColorBrush}"
+                                Stroke="{DynamicResource PrimaryAccentSolidColorBrush}"
                                 StrokeEndLineCap="Round"
                                 StrokeLineJoin="Round"
                                 StrokeThickness="1.5"
@@ -473,7 +465,47 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource PrimaryAccentSolidColorBrush}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PrimaryAccentSolidColorBrush}" />
+                            <Setter TargetName="Check" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="RadioButton">
+        <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Grid Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="18" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid
+                            Width="14"
+                            Height="14"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center">
+                            <Ellipse
+                                x:Name="Border"
+                                Fill="{DynamicResource PrimaryBackgroundSolidColorBrush}"
+                                Stroke="{DynamicResource SeparatorSolidColorBrush}"
+                                StrokeThickness="1" />
+                            <Ellipse
+                                x:Name="Check"
+                                Margin="4"
+                                Fill="{DynamicResource PrimaryAccentSolidColorBrush}"
+                                Visibility="Collapsed" />
+                        </Grid>
+                        <ContentPresenter Grid.Column="1" VerticalAlignment="Center" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Border" Property="Stroke" Value="{DynamicResource PrimaryAccentSolidColorBrush}" />
                             <Setter TargetName="Check" Property="Visibility" Value="Visible" />
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -485,8 +517,8 @@
     <Style TargetType="cc:DPSpinner">
         <Setter Property="Width" Value="12" />
         <Setter Property="Height" Value="12" />
-        <Setter Property="Background" Value="{StaticResource SeparatorSolidColorBrush}" />
-        <Setter Property="Foreground" Value="{StaticResource PrimaryAccentSolidColorBrush}" />
+        <Setter Property="Background" Value="{DynamicResource SeparatorSolidColorBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryAccentSolidColorBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="cc:DPSpinner">
@@ -542,21 +574,21 @@
 
     <Style TargetType="ToolTip">
         <Setter Property="Padding" Value="8,4" />
-        <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToolTip">
                     <Border
                         Margin="4,2,4,6"
-                        Background="{StaticResource PanelBackgroundSolidColorBrush}"
+                        Background="{DynamicResource PanelBackgroundSolidColorBrush}"
                         CornerRadius="2">
                         <Border.Effect>
                             <DropShadowEffect
                                 BlurRadius="4"
                                 Direction="-90"
-                                Opacity="1"
+                                Opacity="0.2"
                                 ShadowDepth="2"
-                                Color="{StaticResource SeparatorColor}" />
+                                Color="Black" />
                         </Border.Effect>
                         <ContentPresenter Margin="{TemplateBinding Padding}" />
                     </Border>

@@ -1,5 +1,4 @@
 ﻿using Dispatch.Service.Model;
-using Dispatch.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading;

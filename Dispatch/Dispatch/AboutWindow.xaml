@@ -9,7 +9,7 @@
     Width="300"
     Height="200"
     AllowsTransparency="False"
-    Background="{StaticResource PrimaryBackgroundSolidColorBrush}"
+    Background="{DynamicResource PrimaryBackgroundSolidColorBrush}"
     ResizeMode="NoResize"
     Style="{StaticResource ChromelessWindowStyle}"
     WindowStartupLocation="CenterOwner"

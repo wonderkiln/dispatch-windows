@@ -5,7 +5,7 @@
 
     <Style TargetType="ListBoxItem">
         <Setter Property="Padding" Value="8" />
-        <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
@@ -22,7 +22,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource SelectionOnPanelBackgroundSolidColorBrush}" />
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource SelectionOnPanelBackgroundSolidColorBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -56,7 +56,7 @@
     <Style TargetType="ListViewItem">
         <Setter Property="Padding" Value="8" />
         <Setter Property="FontSize" Value="13" />
-        <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
@@ -68,11 +68,11 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource SelectionOnPanelBackgroundSolidColorBrush}" />
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource SelectionOnPanelBackgroundSolidColorBrush}" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource PrimaryAccentSolidColorBrush}" />
-                            <Setter Property="Foreground" Value="{StaticResource SelectedTextSolidColorBrush}" />
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource PrimaryAccentSolidColorBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource SelectedTextSolidColorBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -82,7 +82,7 @@
 
     <Style x:Key="GridViewColumnHeaderGripperStyle" TargetType="Thumb">
         <Setter Property="Width" Value="8" />
-        <Setter Property="Background" Value="{StaticResource SeparatorSolidColorBrush}" />
+        <Setter Property="Background" Value="{DynamicResource SeparatorSolidColorBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Thumb">
@@ -98,7 +98,7 @@
 
     <Style x:Key="GridViewColumnHeaderStyle" TargetType="GridViewColumnHeader">
         <Setter Property="Padding" Value="0,8" />
-        <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
         <Setter Property="FontSize" Value="13" />
         <Setter Property="Template">
             <Setter.Value>
@@ -143,7 +143,7 @@
                             VerticalScrollBarVisibility="Hidden">
                             <Border
                                 Margin="{TemplateBinding Padding}"
-                                BorderBrush="{StaticResource SeparatorSolidColorBrush}"
+                                BorderBrush="{DynamicResource SeparatorSolidColorBrush}"
                                 BorderThickness="0,0,0,1">
                                 <GridViewHeaderRowPresenter
                                     Margin="8,0"
@@ -193,7 +193,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListView">
-                    <ScrollViewer Style="{DynamicResource {x:Static GridView.GridViewScrollViewerStyleKey}}">
+                    <ScrollViewer Style="{StaticResource {x:Static GridView.GridViewScrollViewerStyleKey}}">
                         <ItemsPresenter Margin="{TemplateBinding Padding}" />
                     </ScrollViewer>
                 </ControlTemplate>
@@ -234,7 +234,7 @@
             <Setter.Value>
                 <Style TargetType="cc:DPTabListBoxItem">
                     <Setter Property="FontSize" Value="13" />
-                    <Setter Property="Foreground" Value="{StaticResource NormalTextSolidColorBrush}" />
+                    <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
                     <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
                     <Setter Property="Template">
                         <Setter.Value>
@@ -251,7 +251,7 @@
                                         Height="16"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Background="{StaticResource WindowBlurSeparatorSolidColorBrush}" />
+                                        Background="{DynamicResource WindowBlurSeparatorSolidColorBrush}" />
                                     <Grid Margin="16,0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
@@ -262,7 +262,7 @@
                                             Grid.ColumnSpan="2"
                                             Height="3"
                                             VerticalAlignment="Bottom"
-                                            Background="{StaticResource PrimaryAccentSolidColorBrush}"
+                                            Background="{DynamicResource PrimaryAccentSolidColorBrush}"
                                             CornerRadius="1.5,1.5,0,0" />
                                         <ContentPresenter Margin="0,0,4,0" VerticalAlignment="Center" />
                                         <Button

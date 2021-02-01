@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="PrimaryAccentSolidColorBrush" Color="#017AFF" />
+    <SolidColorBrush x:Key="ErrorSolidColorBrush" Color="#FF0138" />
+
+    <SolidColorBrush x:Key="PrimaryBackgroundSolidColorBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="SecondaryBackgroundSolidColorBrush" Color="#FAFAFA" />
+    <SolidColorBrush x:Key="PanelBackgroundSolidColorBrush" Color="#F7F7F7" />
+    <SolidColorBrush x:Key="WindowBlurBackgroundSolidColorBrush" Color="#B2FFFFFF" />
+
+    <SolidColorBrush x:Key="SeparatorSolidColorBrush" Color="#DFDFDF" />
+    <SolidColorBrush x:Key="WindowBlurSeparatorSolidColorBrush" Color="#3F000000" />
+
+    <SolidColorBrush x:Key="DisabledTextSolidColorBrush" Color="#99000000" />
+    <SolidColorBrush x:Key="NormalTextSolidColorBrush" Color="#000000" />
+    <SolidColorBrush x:Key="SelectedTextSolidColorBrush" Color="#FFFFFF" />
+
+    <SolidColorBrush x:Key="SelectionOnPrimaryBackgroundSolidColorBrush" Color="#19000000" />
+    <SolidColorBrush x:Key="SelectionOnSecondaryBackgroundSolidColorBrush" Color="#19000000" />
+    <SolidColorBrush x:Key="SelectionOnPanelBackgroundSolidColorBrush" Color="#19000000" />
+
+</ResourceDictionary>

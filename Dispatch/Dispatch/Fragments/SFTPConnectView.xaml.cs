@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Dispatch.View.Fragments
+namespace Dispatch.Fragments
 {
     public partial class SFTPConnectView : UserControl
     {

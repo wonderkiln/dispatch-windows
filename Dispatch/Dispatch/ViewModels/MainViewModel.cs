@@ -1,6 +1,6 @@
-﻿using Dispatch.Helpers;
+﻿using Dispatch.Fragments;
+using Dispatch.Helpers;
 using Dispatch.Service.Model;
-using Dispatch.View.Fragments;
 using System;
 using System.Collections.ObjectModel;
 

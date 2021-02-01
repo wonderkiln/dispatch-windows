@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Dispatch.View.Fragments
+namespace Dispatch.Fragments
 {
     public partial class ResourcesView : UserControl
     {

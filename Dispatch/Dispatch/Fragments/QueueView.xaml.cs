@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Dispatch.View.Fragments
+namespace Dispatch.Fragments
 {
     public class IsIndeterminateProgressValueConverter : IValueConverter
     {
