@@ -35,7 +35,7 @@
             Modifiers="Ctrl" />
         <KeyBinding
             Key="W"
-            Command="{Binding CloseTabCommand}"
+            Command="{Binding CloseTabCommand, Source={x:Reference Tabs}}"
             CommandParameter="{Binding SelectedTab}"
             Modifiers="Ctrl" />
         <KeyBinding
@@ -91,21 +91,30 @@
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
         <controls:DPTabListBox
+            x:Name="Tabs"
             AddTabCommand="{Binding AddTabCommand}"
-            CloseTabCommand="{Binding CloseTabCommand}"
             ItemsSource="{Binding OpenTabs}"
+            RemoveTabCommand="{Binding RemoveTabCommand}"
             SelectedItem="{Binding SelectedTab}">
             <controls:DPTabListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
                         <Image
                             Width="16"
                             Height="16"
-                            Margin="0,0,4,0"
+                            HorizontalAlignment="Left"
                             VerticalAlignment="Center"
                             Source="{Binding Icon}" />
-                        <TextBlock VerticalAlignment="Center" Text="{Binding Title}" />
-                    </StackPanel>
+                        <TextBlock
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Text="{Binding Title}"
+                            TextTrimming="CharacterEllipsis" />
+                    </Grid>
                 </DataTemplate>
             </controls:DPTabListBox.ItemTemplate>
         </controls:DPTabListBox>
