@@ -71,17 +71,10 @@ namespace Dispatch.ViewModels
         {
             var oldIndex = Items.IndexOf(item);
 
-            if (oldIndex == -1 || oldIndex == index) return;
+            Items.Insert(index, item);
 
-            if (index >= 0 && index < Items.Count)
-            {
-                Items.Move(oldIndex, index);
-            }
-            else if (index >= Items.Count)
-            {
-                Items.RemoveAt(oldIndex);
-                Items.Add(item);
-            }
+            if (index <= oldIndex) Items.RemoveAt(oldIndex + 1);
+            else Items.RemoveAt(oldIndex);
         }
     }
 }
