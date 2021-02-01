@@ -138,8 +138,6 @@ namespace Dispatch.ViewModels
             item.Disconnect();
 
             var index = OpenTabs.IndexOf(item);
-            if (index == -1) return;
-
             var prevIndex = Math.Max(0, index - 1);
 
             OpenTabs.RemoveAt(index);

@@ -1,4 +1,5 @@
 ﻿using Dispatch.Helpers;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -37,6 +38,8 @@ namespace Dispatch.Controls
             set { SetValue(RemoveTabCommandProperty, value); }
         }
 
+        public static readonly Duration AnimationDuration = new Duration(TimeSpan.FromMilliseconds(180));
+
         public ICommand CloseTabCommand { get; }
 
         public DPTabListBox()
@@ -47,13 +50,17 @@ namespace Dispatch.Controls
 
         private async void CloseTab(object parameter)
         {
-            var item = (DPTabListBoxItem)ItemContainerGenerator.ContainerFromItem(parameter);
-            item.IsOpen = false;
+            var item = ItemContainerGenerator.ContainerFromItem(parameter) as DPTabListBoxItem;
 
-            // Wait for the close animation to finish
-            await Task.Delay(200);
+            if (item != null && item.IsOpen)
+            {
+                item.IsOpen = false;
 
-            RemoveTabCommand?.Execute(parameter);
+                // Wait for the close animation to finish
+                await Task.Delay(AnimationDuration.TimeSpan);
+
+                RemoveTabCommand?.Execute(parameter);
+            }
         }
 
         protected override DependencyObject GetContainerForItemOverride()

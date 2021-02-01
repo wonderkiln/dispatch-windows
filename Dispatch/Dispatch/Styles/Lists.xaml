@@ -241,6 +241,9 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="cc:DPTabListBoxItem">
+                                <ControlTemplate.Resources>
+                                    <Duration x:Key="AnimationDuration">0:0:0.180</Duration>
+                                </ControlTemplate.Resources>
                                 <Grid Background="Transparent">
                                     <Grid.InputBindings>
                                         <MouseBinding
@@ -293,7 +296,7 @@
                                                         Storyboard.TargetProperty="Opacity"
                                                         From="0"
                                                         To="1"
-                                                        Duration="0:0:0.200">
+                                                        Duration="{x:Static cc:DPTabListBox.AnimationDuration}">
                                                         <DoubleAnimation.EasingFunction>
                                                             <SineEase EasingMode="EaseOut" />
                                                         </DoubleAnimation.EasingFunction>
@@ -303,7 +306,7 @@
                                                         Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)"
                                                         From="3"
                                                         To="0"
-                                                        Duration="0:0:0.200">
+                                                        Duration="{x:Static cc:DPTabListBox.AnimationDuration}">
                                                         <DoubleAnimation.EasingFunction>
                                                             <SineEase EasingMode="EaseOut" />
                                                         </DoubleAnimation.EasingFunction>
@@ -317,9 +320,8 @@
                                                     <DoubleAnimation
                                                         Storyboard.TargetName="Indicator"
                                                         Storyboard.TargetProperty="Opacity"
-                                                        From="1"
                                                         To="0"
-                                                        Duration="0:0:0.200">
+                                                        Duration="{x:Static cc:DPTabListBox.AnimationDuration}">
                                                         <DoubleAnimation.EasingFunction>
                                                             <SineEase EasingMode="EaseIn" />
                                                         </DoubleAnimation.EasingFunction>
@@ -327,9 +329,8 @@
                                                     <DoubleAnimation
                                                         Storyboard.TargetName="Indicator"
                                                         Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)"
-                                                        From="0"
                                                         To="3"
-                                                        Duration="0:0:0.200">
+                                                        Duration="{x:Static cc:DPTabListBox.AnimationDuration}">
                                                         <DoubleAnimation.EasingFunction>
                                                             <SineEase EasingMode="EaseIn" />
                                                         </DoubleAnimation.EasingFunction>
@@ -346,7 +347,7 @@
                                                         Storyboard.TargetProperty="Width"
                                                         From="0"
                                                         To="200"
-                                                        Duration="0:0:0.200">
+                                                        Duration="{x:Static cc:DPTabListBox.AnimationDuration}">
                                                         <DoubleAnimation.EasingFunction>
                                                             <SineEase EasingMode="EaseOut" />
                                                         </DoubleAnimation.EasingFunction>
@@ -360,7 +361,7 @@
                                                     <DoubleAnimation
                                                         Storyboard.TargetProperty="Width"
                                                         To="0"
-                                                        Duration="0:0:0.200">
+                                                        Duration="{x:Static cc:DPTabListBox.AnimationDuration}">
                                                         <DoubleAnimation.EasingFunction>
                                                             <SineEase EasingMode="EaseIn" />
                                                         </DoubleAnimation.EasingFunction>
