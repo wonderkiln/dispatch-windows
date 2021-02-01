@@ -11,15 +11,15 @@
                         <ContentPresenter />
                         <Border
                             x:Name="Overlay"
-                            Background="{StaticResource PrimaryBackgroundSolidColorBrush}"
+                            Background="{DynamicResource PrimaryBackgroundSolidColorBrush}"
                             Opacity="0"
                             Visibility="Collapsed" />
                         <Border
                             x:Name="Border"
                             Width="320"
                             HorizontalAlignment="Right"
-                            Background="{StaticResource PanelBackgroundSolidColorBrush}"
-                            BorderBrush="{StaticResource SeparatorSolidColorBrush}"
+                            Background="{DynamicResource PanelBackgroundSolidColorBrush}"
+                            BorderBrush="{DynamicResource SeparatorSolidColorBrush}"
                             BorderThickness="1,0,0,0">
                             <Border.RenderTransform>
                                 <TranslateTransform X="320" />
@@ -31,7 +31,7 @@
                                 </Grid.RowDefinitions>
                                 <Border
                                     Margin="8,8,8,0"
-                                    BorderBrush="{StaticResource SeparatorSolidColorBrush}"
+                                    BorderBrush="{DynamicResource SeparatorSolidColorBrush}"
                                     BorderThickness="0,0,0,1">
                                     <Grid Margin="8,0">
                                         <Grid.ColumnDefinitions>

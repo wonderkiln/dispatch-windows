@@ -2,7 +2,7 @@
 
 namespace Dispatch.Service.Model
 {
-    public enum AppTheme { Light, Dark }
+    public enum AppTheme { Auto, Light, Dark }
 
     public class Settings
     {

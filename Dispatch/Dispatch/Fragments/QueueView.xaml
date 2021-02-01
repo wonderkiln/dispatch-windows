@@ -166,7 +166,7 @@
                     Grid.Row="1"
                     Grid.Column="1"
                     FontSize="11"
-                    Foreground="{StaticResource ErrorSolidColorBrush}"
+                    Foreground="{DynamicResource ErrorSolidColorBrush}"
                     Text="{Binding Error}" />
                 <Button
                     Grid.RowSpan="3"
