@@ -85,7 +85,7 @@ namespace Dispatch.ViewModel
         public RootViewModel()
         {
             NextTabCommand = new RelayCommand<bool>(NextTab);
-            AddTabCommand = new RelayCommand<object>(AddTab);
+            AddTabCommand = new RelayCommand(AddTab);
             CloseTabCommand = new RelayCommand<TabViewModel>(CloseTab);
             OpenQueueCommand = new RelayCommand<object>(OpenQueue);
             OpenMoreCommand = new RelayCommand<object>(OpenMore);
@@ -128,7 +128,7 @@ namespace Dispatch.ViewModel
             }
         }
 
-        private void AddTab(object parameter)
+        private void AddTab()
         {
             NewTab();
         }

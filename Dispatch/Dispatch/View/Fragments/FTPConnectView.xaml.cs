@@ -1,9 +1,8 @@
-﻿using Dispatch.Helpers;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace Dispatch.View.Fragments
 {
-    public class FTPConnectInfo : Observable
+    public class FTPConnectInfo : ObservableForm
     {
         private string address;
         public string Address
@@ -19,7 +18,7 @@ namespace Dispatch.View.Fragments
             }
         }
 
-        private int? port = 21;
+        private int? port;
         public int? Port
         {
             get
@@ -73,6 +72,40 @@ namespace Dispatch.View.Fragments
                 root = value;
                 Notify();
             }
+        }
+
+        internal override string GetError(string propertyName)
+        {
+            string errorMessage = null;
+
+            switch (propertyName)
+            {
+                case "Address":
+                    if (string.IsNullOrEmpty(Address))
+                        errorMessage = "Address must not be empty";
+
+                    break;
+
+                case "Port":
+                    if (!Port.HasValue || Port.Value < 1 || Port.Value > 99999)
+                        errorMessage = "Port must be a number between 1 and 99999";
+
+                    break;
+
+                case "Username":
+                    if (string.IsNullOrEmpty(Username))
+                        errorMessage = "Username must not be empty";
+
+                    break;
+
+                case "Password":
+                    if (string.IsNullOrEmpty(Password))
+                        errorMessage = "Password must not be empty";
+
+                    break;
+            }
+
+            return errorMessage;
         }
     }
 

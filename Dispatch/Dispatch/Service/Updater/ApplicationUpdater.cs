@@ -38,9 +38,13 @@ namespace Dispatch.Service.Updater
 
         public async Task CheckForUpdate(bool silent = false)
         {
-            // TODO: Do not check for updates in DEBUG
+#if DEBUG
+            return;
+#endif
 
+#pragma warning disable CS0162 // Unreachable code detected
             try
+#pragma warning restore CS0162 // Unreachable code detected
             {
                 LatestUpdate = await updater.GetLatestUpdate();
 

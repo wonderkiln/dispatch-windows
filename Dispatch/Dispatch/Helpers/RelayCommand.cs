@@ -2,25 +2,33 @@
 using System.Windows.Input;
 namespace Dispatch.Helpers
 {
+    public class RelayCommand : RelayCommand<object>
+    {
+        public RelayCommand(Action action, bool executable = true) : base((parameter) => action(), executable)
+        {
+        }
+    }
+
     public class RelayCommand<T> : ICommand
     {
+        private readonly Action<T> action;
+
         public event EventHandler CanExecuteChanged;
 
-        private bool _isExecutable;
+        private bool isExecutable;
         public bool IsExecutable
         {
             get
             {
-                return _isExecutable;
+                return isExecutable;
             }
             set
             {
-                _isExecutable = value;
+                isExecutable = value;
                 CanExecuteChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        private readonly Action<T> action;
 
         public RelayCommand(Action<T> action, bool executable = true)
         {

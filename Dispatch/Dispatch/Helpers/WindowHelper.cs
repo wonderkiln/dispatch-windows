@@ -41,6 +41,15 @@ namespace Dispatch.Helpers
             public int AnimationId;
         }
 
+        private const int GWL_STYLE = -16;
+        private const int WS_SYSMENU = 0x80000;
+
+        [DllImport("user32.dll")]
+        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
         public static void EnableBlurForWindow(Window window)
         {
             var windowHelper = new WindowInteropHelper(window);
@@ -63,6 +72,9 @@ namespace Dispatch.Helpers
             };
 
             SetWindowCompositionAttribute(windowHelper.Handle, ref data);
+
+            var style = GetWindowLong(windowHelper.Handle, GWL_STYLE);
+            SetWindowLong(windowHelper.Handle, GWL_STYLE, style & ~WS_SYSMENU);
 
             Marshal.FreeHGlobal(accentPtr);
         }

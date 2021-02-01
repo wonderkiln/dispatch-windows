@@ -27,7 +27,7 @@
 
         public override string ToString()
         {
-            return $"{Address}:{Port}";
+            return $"{Username}@{Address}:{Port}";
         }
     }
 }

@@ -91,12 +91,12 @@
     <Compile Include="Controls\DPTabListBox.cs" />
     <Compile Include="Controls\DPTextBox.cs" />
     <Compile Include="Helpers\ButtonExtension.cs" />
-    <Compile Include="Helpers\ContextService.cs" />
     <Compile Include="Helpers\Converters\BytesToStringConverter.cs" />
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Helpers\Converters\ItemToTemplateSelector.cs" />
     <Compile Include="Helpers\Converters\ListToVisibilityConverter.cs" />
+    <Compile Include="Helpers\Converters\StringToIntConverter.cs" />
     <Compile Include="Helpers\Converters\TabViewDataTemplateSelector.cs" />
     <Compile Include="Helpers\FileIconHelper.cs" />
     <Compile Include="Helpers\Icons.cs" />
