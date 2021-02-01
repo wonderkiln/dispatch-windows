@@ -13,7 +13,7 @@
     xmlns:vm="clr-namespace:Dispatch.ViewModel"
     Title="{x:Static helpers:Constants.APP_NAME}"
     Width="1000"
-    Height="620"
+    Height="640"
     MinWidth="200"
     MinHeight="200"
     Closing="Window_Closing"
