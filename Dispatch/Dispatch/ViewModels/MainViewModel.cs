@@ -78,7 +78,7 @@ namespace Dispatch.ViewModels
 
         public RelayCommand<bool> NextTabCommand { get; }
         public RelayCommand<object> AddTabCommand { get; }
-        public RelayCommand<TabViewModel> CloseTabCommand { get; }
+        public RelayCommand<TabViewModel> RemoveTabCommand { get; }
         public RelayCommand<object> OpenQueueCommand { get; }
         public RelayCommand<object> OpenMoreCommand { get; }
 
@@ -86,7 +86,7 @@ namespace Dispatch.ViewModels
         {
             NextTabCommand = new RelayCommand<bool>(NextTab);
             AddTabCommand = new RelayCommand(AddTab);
-            CloseTabCommand = new RelayCommand<TabViewModel>(CloseTab);
+            RemoveTabCommand = new RelayCommand<TabViewModel>(RemoveTab);
             OpenQueueCommand = new RelayCommand<object>(OpenQueue);
             OpenMoreCommand = new RelayCommand<object>(OpenMore);
 
@@ -133,11 +133,13 @@ namespace Dispatch.ViewModels
             NewTab();
         }
 
-        private void CloseTab(TabViewModel item)
+        private void RemoveTab(TabViewModel item)
         {
             item.Disconnect();
 
             var index = OpenTabs.IndexOf(item);
+            if (index == -1) return;
+
             var prevIndex = Math.Max(0, index - 1);
 
             OpenTabs.RemoveAt(index);
