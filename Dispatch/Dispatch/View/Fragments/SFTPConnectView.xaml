@@ -16,6 +16,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+        <converters:StringToIntConverter x:Key="StringToIntConverter" />
     </UserControl.Resources>
 
     <StackPanel Grid.IsSharedSizeScope="True">
@@ -29,31 +30,16 @@
                 CornerRadius="4,0,0,4"
                 Label="Address:"
                 LabelSharedSizeGroup="Label"
-                Placeholder="sample.address.net">
-                <controls:DPTextBox.Text>
-                    <Binding Path="Address" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <validators:RequiredValidator />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </controls:DPTextBox.Text>
-            </controls:DPTextBox>
+                Placeholder="sample.address.net"
+                Text="{Binding Address, ValidatesOnNotifyDataErrors=True}" />
             <controls:DPTextBox
                 x:Name="PortTextBox"
                 Grid.Column="1"
                 CornerRadius="0,4,4,0"
                 Label="Port:"
                 MaxLength="5"
-                Placeholder="22">
-                <controls:DPTextBox.Text>
-                    <Binding Path="Port" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <validators:RequiredValidator />
-                            <validators:RegexValidator Message="Field must be a number" Pattern="^[0-9]+$" />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </controls:DPTextBox.Text>
-            </controls:DPTextBox>
+                Placeholder="22"
+                Text="{Binding Port, Converter={StaticResource StringToIntConverter}, ValidatesOnNotifyDataErrors=True}" />
         </Grid>
         <controls:DPTextBox
             x:Name="UserTextBox"
@@ -72,11 +58,8 @@
             Label="Password:"
             LabelSharedSizeGroup="Label"
             Placeholder="password"
-            Visibility="{Binding IsChecked, Source={x:Reference PrivateKeyCheckBox}, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
-            <controls:DPTextBox.Text>
-                <Binding Path="Password" UpdateSourceTrigger="PropertyChanged" />
-            </controls:DPTextBox.Text>
-        </controls:DPTextBox>
+            Text="{Binding Password, ValidatesOnNotifyDataErrors=True}"
+            Visibility="{Binding UseKey, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
         <controls:DPTextBox
             x:Name="KeyTextBox"
             Margin="0,0,0,6"
@@ -84,14 +67,8 @@
             Label="Key:"
             LabelSharedSizeGroup="Label"
             Placeholder="private.key"
-            Visibility="{Binding IsChecked, Source={x:Reference PrivateKeyCheckBox}, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <controls:DPTextBox.Text>
-                <Binding Path="Key">
-                    <Binding.ValidationRules>
-                        <validators:RequiredValidator />
-                    </Binding.ValidationRules>
-                </Binding>
-            </controls:DPTextBox.Text>
+            Text="{Binding Key, ValidatesOnNotifyDataErrors=True}"
+            Visibility="{Binding UseKey, Converter={StaticResource BooleanToVisibilityConverter}}">
             <controls:DPTextBox.Trailing>
                 <Button
                     Padding="4,0"
@@ -106,12 +83,9 @@
             Margin="0,0,0,6"
             Label="Root:"
             LabelSharedSizeGroup="Label"
-            Placeholder="/www">
-            <controls:DPTextBox.Text>
-                <Binding Path="Root" UpdateSourceTrigger="PropertyChanged" />
-            </controls:DPTextBox.Text>
-        </controls:DPTextBox>
-        <CheckBox x:Name="PrivateKeyCheckBox">
+            Placeholder="/www"
+            Text="{Binding Root, ValidatesOnNotifyDataErrors=True}" />
+        <CheckBox IsChecked="{Binding UseKey}">
             <TextBlock Text="Use private key" />
         </CheckBox>
     </StackPanel>

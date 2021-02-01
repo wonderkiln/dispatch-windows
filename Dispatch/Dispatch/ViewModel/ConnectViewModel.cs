@@ -69,8 +69,8 @@ namespace Dispatch.ViewModel
             }
         }
 
-        private object connectInfo;
-        public object ConnectInfo
+        private ObservableForm connectInfo;
+        public ObservableForm ConnectInfo
         {
             get
             {
@@ -116,7 +116,7 @@ namespace Dispatch.ViewModel
             Connection = FavoriteItem.ConnectionType.Sftp;
         }
 
-        private object CreateConnectInfo(FavoriteItem.ConnectionType type, object value = null)
+        private ObservableForm CreateConnectInfo(FavoriteItem.ConnectionType type, object value = null)
         {
             switch (type)
             {
@@ -165,11 +165,13 @@ namespace Dispatch.ViewModel
                 case FavoriteItem.ConnectionType.Sftp:
                     {
                         var connectInfo = (SFTPConnectInfo)value;
+                        if (!connectInfo.Validate()) return null;
                         return new SFTPConnectionInfo(connectInfo.Address, connectInfo.Port.Value, connectInfo.Username, connectInfo.Password, connectInfo.Key, connectInfo.Root);
                     }
                 case FavoriteItem.ConnectionType.Ftp:
                     {
                         var connectInfo = (FTPConnectInfo)value;
+                        if (!connectInfo.Validate()) return null;
                         return new FTPConnectionInfo(connectInfo.Address, connectInfo.Port.Value, connectInfo.Username, connectInfo.Password, connectInfo.Root);
                     }
                 default:
@@ -204,6 +206,7 @@ namespace Dispatch.ViewModel
         private void SaveAsFavorite(object parameter)
         {
             var connectionInfo = CreateConnectionInfo(Connection, ConnectInfo);
+            if (connectionInfo == null) return;
 
             var item = new FavoriteItem
             {
@@ -230,6 +233,7 @@ namespace Dispatch.ViewModel
                 {
                     case FavoriteItem.ConnectionType.Sftp:
                         {
+                            if (!ConnectInfo.Validate()) return;
                             var connectionInfo = (SFTPConnectionInfo)CreateConnectionInfo(Connection, ConnectInfo);
                             var client = await SFTPClient.Create(connectionInfo);
                             OnConnectedClient?.Invoke(this, new ClientEventArgs()
@@ -244,6 +248,7 @@ namespace Dispatch.ViewModel
                     case FavoriteItem.ConnectionType.Ftp:
                         {
                             var connectionInfo = (FTPConnectionInfo)CreateConnectionInfo(Connection, ConnectInfo);
+                            if (!ConnectInfo.Validate()) return;
                             var client = await FTPClient.Create(connectionInfo);
                             OnConnectedClient?.Invoke(this, new ClientEventArgs()
                             {

@@ -2,15 +2,17 @@
     x:Class="Dispatch.View.Fragments.FTPConnectView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:Dispatch.Helpers.Converters"
     xmlns:controls="clr-namespace:Dispatch.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:helpers="clr-namespace:Dispatch.Helpers"
-    xmlns:local="clr-namespace:Dispatch.View.Fragments"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:validators="clr-namespace:Dispatch.Helpers.Validators"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <c:StringToIntConverter x:Key="StringToIntConverter" />
+    </UserControl.Resources>
 
     <StackPanel Grid.IsSharedSizeScope="True">
         <Grid Margin="0,0,0,6">
@@ -23,62 +25,38 @@
                 CornerRadius="4,0,0,4"
                 Label="Address:"
                 LabelSharedSizeGroup="Label"
-                Placeholder="sample.address.net">
-                <controls:DPTextBox.Text>
-                    <Binding Path="Address" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <validators:RequiredValidator />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </controls:DPTextBox.Text>
-            </controls:DPTextBox>
+                Placeholder="sample.address.net"
+                Text="{Binding Address, ValidatesOnNotifyDataErrors=True}" />
             <controls:DPTextBox
                 x:Name="PortTextBox"
                 Grid.Column="1"
                 CornerRadius="0,4,4,0"
                 Label="Port:"
                 MaxLength="5"
-                Placeholder="21">
-                <controls:DPTextBox.Text>
-                    <Binding Path="Port" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <validators:RequiredValidator />
-                            <validators:RegexValidator Message="Field must be a number" Pattern="^[0-9]+$" />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </controls:DPTextBox.Text>
-            </controls:DPTextBox>
+                Placeholder="21"
+                Text="{Binding Port, Converter={StaticResource StringToIntConverter}, ValidatesOnNotifyDataErrors=True}" />
         </Grid>
         <controls:DPTextBox
             x:Name="UserTextBox"
             Margin="0,0,0,6"
             Label="User:"
             LabelSharedSizeGroup="Label"
-            Placeholder="user">
-            <controls:DPTextBox.Text>
-                <Binding Path="Username" UpdateSourceTrigger="PropertyChanged" />
-            </controls:DPTextBox.Text>
-        </controls:DPTextBox>
+            Placeholder="user"
+            Text="{Binding Username, ValidatesOnNotifyDataErrors=True}" />
         <controls:DPTextBox
             x:Name="PasswordTextBox"
             Margin="0,0,0,6"
             IsPassword="True"
             Label="Password:"
             LabelSharedSizeGroup="Label"
-            Placeholder="password">
-            <controls:DPTextBox.Text>
-                <Binding Path="Password" UpdateSourceTrigger="PropertyChanged" />
-            </controls:DPTextBox.Text>
-        </controls:DPTextBox>
+            Placeholder="password"
+            Text="{Binding Password, ValidatesOnNotifyDataErrors=True}" />
         <controls:DPTextBox
             x:Name="RootTextBox"
             Margin="0,0,0,6"
             Label="Root:"
             LabelSharedSizeGroup="Label"
-            Placeholder="/www">
-            <controls:DPTextBox.Text>
-                <Binding Path="Root" UpdateSourceTrigger="PropertyChanged" />
-            </controls:DPTextBox.Text>
-        </controls:DPTextBox>
+            Placeholder="/www"
+            Text="{Binding Root, ValidatesOnNotifyDataErrors=True}" />
     </StackPanel>
 </UserControl>
