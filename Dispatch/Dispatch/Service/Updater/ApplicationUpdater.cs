@@ -24,7 +24,7 @@ namespace Dispatch.Service.Updater
         public async Task<Update> CheckForUpdate()
         {
 #if DEBUG
-            //return null;
+            return null;
 #endif
 
 #pragma warning disable CS0162 // Unreachable code detected

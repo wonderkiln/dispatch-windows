@@ -92,6 +92,9 @@
     <Compile Include="Controls\DPTextBox.cs" />
     <Compile Include="Controls\DPButtonExtension.cs" />
     <Compile Include="Converters\BytesToStringConverter.cs" />
+    <Compile Include="Fragments\UpdateView.xaml.cs">
+      <DependentUpon>UpdateView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\ItemToTemplateSelector.cs" />
@@ -157,6 +160,10 @@
     <Compile Include="Fragments\TabView.xaml.cs">
       <DependentUpon>TabView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Fragments\UpdateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\Brushes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

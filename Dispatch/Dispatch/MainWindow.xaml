@@ -5,7 +5,7 @@
     xmlns:controls="clr-namespace:Dispatch.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dd="urn:gong-wpf-dragdrop"
-    xmlns:f="clr-namespace:Dispatch.View.Fragments"
+    xmlns:f="clr-namespace:Dispatch.Fragments"
     xmlns:h="clr-namespace:Dispatch.Helpers"
     xmlns:local="clr-namespace:Dispatch.View.Windows"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -58,29 +58,6 @@
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <DataTemplate x:Key="NoUpdateDataTemplate" />
-        <DataTemplate x:Key="NewUpdateDataTemplate">
-            <Button Command="{Binding DataContext.Update.DownloadAndInstallCommand, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" Style="{StaticResource SimpleButtonStyle}">
-                <TextBlock>
-                    <Run Text="Update to" />
-                    <Run Text="{Binding DataContext.Update.NewVersion, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" />
-                </TextBlock>
-            </Button>
-        </DataTemplate>
-        <DataTemplate x:Key="DownloadingUpdateDataTemplate">
-            <StackPanel>
-                <Label Content="Downloading update..." />
-                <ProgressBar
-                    Margin="0,4,0,0"
-                    Maximum="100"
-                    Value="{Binding DataContext.Update.Progress, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}, Mode=OneWay}" />
-            </StackPanel>
-        </DataTemplate>
-        <local:UpdateStatusDataTemplateSelector
-            x:Key="UpdateStatusDataTemplateSelector"
-            DownloadingUpdate="{StaticResource DownloadingUpdateDataTemplate}"
-            NewUpdate="{StaticResource NewUpdateDataTemplate}"
-            NoUpdate="{StaticResource NoUpdateDataTemplate}" />
         <ContextMenu x:Key="BookmarkContextMenu">
             <MenuItem
                 Command="{Binding DataContext.SelectedTab.NavigateToBookmarkCommand, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
@@ -225,11 +202,10 @@
             Grid.ColumnSpan="2"
             Padding="16,0"
             Style="{StaticResource StatusBarBackgroundBorderStyle}">
-            <ContentPresenter
+            <f:UpdateView
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
-                Content="{Binding Update.Status}"
-                ContentTemplateSelector="{StaticResource UpdateStatusDataTemplateSelector}" />
+                DataContext="{Binding Update}" />
         </Border>
     </Grid>
 </Window>

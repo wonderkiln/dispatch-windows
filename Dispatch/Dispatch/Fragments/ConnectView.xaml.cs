@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Dispatch.View.Fragments
+namespace Dispatch.Fragments
 {
     public class ConnectViewDataTemplateSelector : DataTemplateSelector
     {

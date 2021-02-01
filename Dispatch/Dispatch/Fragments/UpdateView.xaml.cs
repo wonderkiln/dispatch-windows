@@ -2,9 +2,9 @@
 
 namespace Dispatch.Fragments
 {
-    public partial class TabView : UserControl
+    public partial class UpdateView : UserControl
     {
-        public TabView()
+        public UpdateView()
         {
             InitializeComponent();
         }

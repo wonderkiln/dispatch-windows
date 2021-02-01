@@ -3,7 +3,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Dispatch.View.Fragments
+namespace Dispatch.Fragments
 {
     public partial class MoreView : UserControl
     {

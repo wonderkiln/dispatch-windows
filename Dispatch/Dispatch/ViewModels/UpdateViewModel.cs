@@ -7,7 +7,7 @@ namespace Dispatch.ViewModels
 {
     public class UpdateViewModel : Observable, IProgress<double>
     {
-        public enum StatusType { None, UpdateAvailable, Downloading }
+        public enum StatusType { None, Checking, UpdateAvailable, Downloading, Error }
 
         private StatusType status = StatusType.None;
         public StatusType Status
@@ -51,6 +51,20 @@ namespace Dispatch.ViewModels
             }
         }
 
+        private string errorMessage;
+        public string ErrorMessage
+        {
+            get
+            {
+                return errorMessage;
+            }
+            private set
+            {
+                errorMessage = value;
+                Notify();
+            }
+        }
+
         public RelayCommand DownloadAndInstallCommand { get; private set; }
 
         private readonly ApplicationUpdater applicationUpdater;
@@ -64,9 +78,19 @@ namespace Dispatch.ViewModels
 
         private async void CheckForUpdate()
         {
-            var update = await applicationUpdater.CheckForUpdate();
-            Status = update != null ? StatusType.UpdateAvailable : StatusType.None;
-            NewVersion = update?.Version.ToString();
+            Status = StatusType.Checking;
+
+            try
+            {
+                var update = await applicationUpdater.CheckForUpdate();
+                Status = update != null ? StatusType.UpdateAvailable : StatusType.None;
+                NewVersion = update?.Version.ToString();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+                Status = StatusType.Error;
+            }
         }
 
         private void DownloadAndInstall()
@@ -74,7 +98,16 @@ namespace Dispatch.ViewModels
             if (MessageBox.Show("Do you want to update to the latest version now?", "New update available", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 Status = StatusType.Downloading;
-                applicationUpdater.DownloadAndInstall();
+
+                try
+                {
+                    applicationUpdater.DownloadAndInstall();
+                }
+                catch (Exception ex)
+                {
+                    ErrorMessage = ex.Message;
+                    Status = StatusType.Error;
+                }
             }
         }
 
