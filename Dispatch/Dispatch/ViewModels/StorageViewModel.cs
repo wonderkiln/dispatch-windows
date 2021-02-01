@@ -9,9 +9,7 @@ namespace Dispatch.ViewModels
 {
     public class StorageViewModel<T> : Observable
     {
-        private readonly Storage<T[]> storage = new Storage<T[]>();
-
-        private readonly string fileName;
+        private readonly Storage<T[]> storage;
 
         public ObservableCollection<T> Items { get; } = new ObservableCollection<T>();
 
@@ -23,11 +21,11 @@ namespace Dispatch.ViewModels
             AddCommand = new RelayCommand<T>(Add);
             DeleteCommand = new RelayCommand<T>(Delete);
 
-            this.fileName = fileName;
+            storage = new Storage<T[]>(fileName);
 
             try
             {
-                var items = storage.Load(this.fileName);
+                var items = storage.Load();
 
                 foreach (var item in items)
                 {
@@ -46,7 +44,7 @@ namespace Dispatch.ViewModels
         {
             try
             {
-                storage.Save(Items.ToArray(), fileName);
+                storage.Save(Items.ToArray());
             }
             catch (Exception ex)
             {

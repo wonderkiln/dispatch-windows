@@ -84,7 +84,7 @@ namespace Dispatch.ViewModels
         }
     }
 
-    public class ResourcesViewModel : Observable
+    public class ResourcesViewModel : Observable, ResourceQueue.Item.IRefreshable
     {
         private readonly Stack<string> history = new Stack<string>();
         private readonly string initialPath;

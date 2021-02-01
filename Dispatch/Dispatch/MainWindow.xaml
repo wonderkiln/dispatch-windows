@@ -16,6 +16,7 @@
     Height="640"
     MinWidth="200"
     MinHeight="200"
+    d:DataContext="{d:DesignInstance vm:MainViewModel}"
     Closing="Window_Closing"
     Icon="Resources/Icon.ico"
     Loaded="Window_Loaded"
@@ -59,10 +60,12 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <DataTemplate x:Key="NoUpdateDataTemplate" />
         <DataTemplate x:Key="NewUpdateDataTemplate">
-            <Button
-                Command="{Binding DataContext.Update.DownloadAndInstallCommand, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
-                Content="New update"
-                Style="{StaticResource SimpleButtonStyle}" />
+            <Button Command="{Binding DataContext.Update.DownloadAndInstallCommand, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" Style="{StaticResource SimpleButtonStyle}">
+                <TextBlock>
+                    <Run Text="Update to" />
+                    <Run Text="{Binding DataContext.Update.NewVersion, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" />
+                </TextBlock>
+            </Button>
         </DataTemplate>
         <DataTemplate x:Key="DownloadingUpdateDataTemplate">
             <StackPanel>

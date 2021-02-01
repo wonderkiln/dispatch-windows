@@ -2,7 +2,6 @@
 using Dispatch.Service.Model;
 using Newtonsoft.Json;
 using System;
-using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -10,7 +9,7 @@ namespace Dispatch.Service.Updater
 {
     public class UpdateProvider : IUpdateProvider
     {
-        class Release
+        private class Release
         {
             public string url { get; set; }
             public long fileSize { get; set; }
@@ -31,64 +30,22 @@ namespace Dispatch.Service.Updater
                     case Constants.Channel.Stable:
                         return "https://api.dispatch.wonderkiln.com/release/stable";
                     default:
-                        throw new Exception("Unhandled channel");
+                        throw new Exception($"Unhandled channel: {Constants.CHANNEL}");
                 }
             }
         }
 
-        public event EventHandler<double> DownloadProgressChanged;
-
-        private WebClient GetWebClient()
+        public async Task<Update> GetLatestUpdate()
         {
             var client = new WebClient();
-            client.Headers.Add(HttpRequestHeader.UserAgent, "Dispatch");
-
-            return client;
-        }
-
-        public async Task<UpdateInfo> GetLatestUpdate()
-        {
-            var client = GetWebClient();
+            client.Headers.Add(HttpRequestHeader.UserAgent, Constants.APP_NAME);
             client.Headers.Add(HttpRequestHeader.Accept, "application/json");
 
             var data = await client.DownloadStringTaskAsync(BaseUrl);
             var json = JsonConvert.DeserializeObject<Release>(data);
 
-            return new UpdateInfo()
-            {
-                Version = new Version(json.versionCode),
-                ReleaseNotes = "",
-                DownloadSize = json.fileSize,
-                DownloadUrl = json.url
-            };
+            return new Update(new Version(json.versionCode), "", json.fileSize, new Uri(json.url));
         }
 
-        public async Task<string> DownloadUpdate(UpdateInfo info)
-        {
-            var client = GetWebClient();
-            client.Headers.Add(HttpRequestHeader.Accept, "application/octet-stream");
-            client.DownloadProgressChanged += Client_DownloadProgressChanged;
-
-            var path = Path.GetTempFileName();
-
-            try
-            {
-                await client.DownloadFileTaskAsync(info.DownloadUrl, path);
-            }
-            finally
-            {
-                client.DownloadProgressChanged -= Client_DownloadProgressChanged;
-            }
-
-            var newPath = Path.ChangeExtension(path, "exe");
-            File.Move(path, newPath);
-
-            return newPath;
-        }
-
-        private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            DownloadProgressChanged?.Invoke(this, e.ProgressPercentage);
-        }
     }
 }

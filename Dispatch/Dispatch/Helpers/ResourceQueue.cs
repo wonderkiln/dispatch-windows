@@ -12,6 +12,11 @@ namespace Dispatch.Helpers
     {
         public class Item
         {
+            public interface IRefreshable
+            {
+                void Refresh();
+            }
+
             public enum ActionType { Upload, Download, Delete }
 
             public ActionType Action { get; private set; }
@@ -20,14 +25,14 @@ namespace Dispatch.Helpers
 
             public Resource Destination { get; private set; }
 
-            public ResourcesViewModel ViewModel { get; private set; }
+            public IRefreshable View { get; private set; }
 
-            public Item(ActionType action, Resource source, Resource destination, ResourcesViewModel viewModel)
+            public Item(ActionType action, Resource source, Resource destination, IRefreshable view)
             {
                 Action = action;
                 Source = source;
                 Destination = destination;
-                ViewModel = viewModel;
+                View = view;
             }
         }
 
@@ -189,7 +194,7 @@ namespace Dispatch.Helpers
 
             dispatcher.Invoke(() =>
             {
-                item.ViewModel.Refresh();
+                item.View.Refresh();
             });
 
             tokenSource.Token.ThrowIfCancellationRequested();

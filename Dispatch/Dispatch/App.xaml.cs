@@ -1,4 +1,6 @@
-﻿using Dispatch.Properties;
+﻿
+using Dispatch.Helpers;
+using Dispatch.Service.Model;
 using System;
 using System.Windows;
 
@@ -6,36 +8,32 @@ namespace Dispatch
 {
     public partial class App : Application
     {
-        public enum Theme { Light, Dark }
-
-        public static void ChangeTheme(Theme theme)
+        public static void ChangeTheme(AppTheme theme)
         {
             switch (theme)
             {
-                case Theme.Light:
+                case AppTheme.Light:
                     Current.Resources.MergedDictionaries[0].Source = new Uri("Styles/Colors.Light.xaml", UriKind.Relative);
                     break;
 
-                case Theme.Dark:
+                case AppTheme.Dark:
                     Current.Resources.MergedDictionaries[0].Source = new Uri("Styles/Colors.Dark.xaml", UriKind.Relative);
                     break;
             }
-
-            Settings.Default.DarkTheme = theme == Theme.Dark;
-            Settings.Default.Save();
         }
 
         public static void ToggleTheme()
         {
-            if (Settings.Default.DarkTheme)
-                ChangeTheme(Theme.Light);
-            else
-                ChangeTheme(Theme.Dark);
+            var settings = WindowHelper.SettingsStorage.Load();
+            settings.Theme = settings.Theme == AppTheme.Light ? AppTheme.Dark : AppTheme.Light;
+            ChangeTheme(settings.Theme);
+            WindowHelper.SettingsStorage.Save(settings);
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            ChangeTheme(Settings.Default.DarkTheme ? Theme.Dark : Theme.Light);
+            var settings = WindowHelper.SettingsStorage.Load();
+            ChangeTheme(settings.Theme);
         }
     }
 }
