@@ -23,9 +23,12 @@
         </StackPanel>
     </DataTemplate>
 
+    <DataTemplate x:Key="NoneDragDropAdorner" />
+
     <c:ItemToTemplateSelector
         x:Key="ItemToTemplateSelector"
         Bookmark="{StaticResource BookmarkDragDropAdorner}"
+        None="{StaticResource NoneDragDropAdorner}"
         Resource="{StaticResource ResourceDragDropAdorner}" />
 
 </ResourceDictionary>
