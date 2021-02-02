@@ -17,7 +17,7 @@
 
     <UserControl.Resources>
         <c:ConnectionTypeToImageConverter x:Key="ConnectionTypeToImageConverter" />
-        <c:ConnectionTypeToImageString x:Key="ConnectionTypeToImageString" />
+        <c:ConnectionTypeToStringConverter x:Key="ConnectionTypeToStringConverter" />
         <DataTemplate x:Key="SFTPDataTemplate">
             <local:SFTPConnectView DataContext="{Binding}" />
         </DataTemplate>
@@ -90,7 +90,7 @@
                                 Grid.Column="1"
                                 Margin="0,0,0,2"
                                 VerticalAlignment="Center"
-                                Text="{Binding Converter={StaticResource ConnectionTypeToImageString}}" />
+                                Text="{Binding Converter={StaticResource ConnectionTypeToStringConverter}}" />
                         </Grid>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
@@ -101,6 +101,20 @@
                 HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Auto">
                 <StackPanel Margin="40">
+                    <Image
+                        Width="32"
+                        Height="32"
+                        HorizontalAlignment="Center"
+                        Source="{Binding ConnectionType, Converter={StaticResource ConnectionTypeToImageConverter}}" />
+                    <Label
+                        Margin="0,4,0,24"
+                        HorizontalAlignment="Center"
+                        FontSize="18">
+                        <TextBlock>
+                            <Run Text="Connect via" />
+                            <Run Text="{Binding ConnectionType, Converter={StaticResource ConnectionTypeToStringConverter}}" />
+                        </TextBlock>
+                    </Label>
                     <ContentPresenter Content="{Binding Connection}" ContentTemplateSelector="{StaticResource ConnectViewDataTemplateSelector}" />
                     <StackPanel
                         Margin="0,12,0,0"
