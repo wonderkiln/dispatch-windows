@@ -54,6 +54,14 @@
                 <s:Boolean>False</s:Boolean>
             </KeyBinding.CommandParameter>
         </KeyBinding>
+        <KeyBinding
+            Key="Q"
+            Command="{Binding OpenQueueCommand}"
+            Modifiers="Ctrl" />
+        <KeyBinding
+            Key="M"
+            Command="{Binding OpenMoreCommand}"
+            Modifiers="Ctrl" />
     </Window.InputBindings>
 
     <Window.Resources>
@@ -174,7 +182,8 @@
                         Width="32"
                         Padding="0"
                         Command="{Binding OpenQueueCommand}"
-                        Style="{StaticResource SimpleButtonStyle}">
+                        Style="{StaticResource SimpleButtonStyle}"
+                        ToolTip="Queue (Ctrl+Q)">
                         <StackPanel>
                             <Label
                                 HorizontalAlignment="Center"
@@ -195,7 +204,8 @@
                         Command="{Binding OpenMoreCommand}"
                         Content="&#xE712;"
                         FontFamily="Segoe MDL2 Assets"
-                        Style="{StaticResource SimpleButtonStyle}" />
+                        Style="{StaticResource SimpleButtonStyle}"
+                        ToolTip="More (Ctrl+M)" />
                 </StackPanel>
             </Grid>
         </Border>

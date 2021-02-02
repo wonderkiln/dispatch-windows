@@ -597,4 +597,226 @@
         </Setter>
     </Style>
 
+    <Style TargetType="cc:DPTextBox">
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundSolidColorBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SeparatorSolidColorBrush}" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="cc:DPTextBox">
+                    <Grid>
+                        <Border
+                            x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                            <Grid Margin="{TemplateBinding Padding}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="{TemplateBinding LabelSharedSizeGroup}" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    x:Name="Label"
+                                    Margin="0,0,12,0"
+                                    VerticalAlignment="Center"
+                                    Content="{TemplateBinding Label}"
+                                    FontSize="{TemplateBinding FontSize}"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    Opacity="0.6" />
+                                <Label
+                                    x:Name="Placeholder"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Content="{TemplateBinding Placeholder}"
+                                    FontSize="{TemplateBinding FontSize}"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    Opacity="0.5" />
+                                <ScrollViewer
+                                    x:Name="PART_ContentHost"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center" />
+                                <ContentPresenter
+                                    x:Name="TrailingView"
+                                    Grid.Column="2"
+                                    ContentSource="Trailing" />
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPlaceholderShown" Value="False">
+                            <Setter TargetName="Placeholder" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsLabelShown" Value="False">
+                            <Setter TargetName="Label" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused" Value="True" />
+                                <Condition Property="Validation.HasError" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PrimaryAccentSolidColorBrush}" />
+                            <Setter TargetName="Label" Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
+                        </MultiTrigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundSolidColorBrush}" />
+                            <Setter TargetName="Label" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="Validation.HasError" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource ErrorSolidColorBrush}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ErrorSolidColorBrush}" />
+                            <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
+                        </Trigger>
+                        <Trigger Property="Trailing" Value="{x:Null}">
+                            <Setter TargetName="TrailingView" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsReadOnly" Value="True">
+                            <Setter TargetName="PART_ContentHost" Property="Opacity" Value="0.6" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+        <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
+        <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundSolidColorBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SeparatorSolidColorBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4">
+                        <Grid Margin="{TemplateBinding Padding}">
+                            <ContentPresenter />
+                            <Path
+                                x:Name="Arrow"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Data="M 0,0 L 4,4 L 8,0"
+                                Opacity="0.5"
+                                RenderTransformOrigin="0.5,0.5"
+                                Stroke="{TemplateBinding Foreground}"
+                                StrokeEndLineCap="Round"
+                                StrokeLineJoin="Round"
+                                StrokeThickness="1" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Arrow" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Arrow" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="180" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ComboBox">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
+        <Setter Property="MinWidth" Value="20" />
+        <Setter Property="MinHeight" Value="20" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Grid>
+                        <ToggleButton
+                            ClickMode="Press"
+                            Focusable="False"
+                            IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                            Style="{StaticResource ComboBoxToggleButton}" />
+                        <Grid Margin="{TemplateBinding Padding}" VerticalAlignment="Center">
+                            <ContentPresenter
+                                Margin="0,0,16,0"
+                                Content="{TemplateBinding SelectionBoxItem}"
+                                ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                IsHitTestVisible="False" />
+                        </Grid>
+                        <Popup
+                            AllowsTransparency="True"
+                            Focusable="False"
+                            IsOpen="{TemplateBinding IsDropDownOpen}"
+                            Placement="Bottom"
+                            PopupAnimation="Slide">
+                            <Border
+                                MinWidth="{TemplateBinding ActualWidth}"
+                                MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                Margin="4,4,4,8"
+                                Background="{DynamicResource PrimaryBackgroundSolidColorBrush}"
+                                CornerRadius="4">
+                                <Border.Effect>
+                                    <DropShadowEffect
+                                        BlurRadius="4"
+                                        Direction="-90"
+                                        Opacity="0.2"
+                                        ShadowDepth="2"
+                                        Color="Black" />
+                                </Border.Effect>
+                                <ScrollViewer Margin="1" SnapsToDevicePixels="True">
+                                    <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ComboBoxItem">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Padding" Value="4" />
+        <Setter Property="Margin" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Border
+                        x:Name="Border"
+                        Background="Transparent"
+                        CornerRadius="2"
+                        SnapsToDevicePixels="True">
+                        <ContentPresenter Margin="{TemplateBinding Padding}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource SelectionOnPrimaryBackgroundSolidColorBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource PrimaryAccentSolidColorBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource SelectedTextSolidColorBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

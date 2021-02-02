@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:a="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
+    xmlns:c="clr-namespace:Dispatch.Converters"
     xmlns:cc="clr-namespace:Dispatch.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Dispatch.Fragments"
@@ -15,6 +16,8 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
+        <c:ConnectionTypeToImageConverter x:Key="ConnectionTypeToImageConverter" />
+        <c:ConnectionTypeToImageString x:Key="ConnectionTypeToImageString" />
         <DataTemplate x:Key="SFTPDataTemplate">
             <local:SFTPConnectView DataContext="{Binding}" />
         </DataTemplate>
@@ -52,93 +55,6 @@
                 </MenuItem.Icon>
             </MenuItem>
         </ContextMenu>
-        <Style TargetType="cc:DPTextBox">
-            <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundSolidColorBrush}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource SeparatorSolidColorBrush}" />
-            <Setter Property="CornerRadius" Value="4" />
-            <Setter Property="Padding" Value="8,6" />
-            <Setter Property="FontSize" Value="13" />
-            <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="cc:DPTextBox">
-                        <Grid>
-                            <Border
-                                x:Name="Border"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="{TemplateBinding CornerRadius}">
-                                <Grid Margin="{TemplateBinding Padding}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="{TemplateBinding LabelSharedSizeGroup}" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label
-                                        x:Name="Label"
-                                        Margin="0,0,12,0"
-                                        VerticalAlignment="Center"
-                                        Content="{TemplateBinding Label}"
-                                        FontSize="{TemplateBinding FontSize}"
-                                        Foreground="{TemplateBinding Foreground}"
-                                        Opacity="0.6" />
-                                    <Label
-                                        x:Name="Placeholder"
-                                        Grid.Column="1"
-                                        VerticalAlignment="Center"
-                                        Content="{TemplateBinding Placeholder}"
-                                        FontSize="{TemplateBinding FontSize}"
-                                        Foreground="{TemplateBinding Foreground}"
-                                        Opacity="0.5" />
-                                    <ScrollViewer
-                                        x:Name="PART_ContentHost"
-                                        Grid.Column="1"
-                                        VerticalAlignment="Center" />
-                                    <ContentPresenter
-                                        x:Name="TrailingView"
-                                        Grid.Column="2"
-                                        ContentSource="Trailing" />
-                                </Grid>
-                            </Border>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsPlaceholderShown" Value="False">
-                                <Setter TargetName="Placeholder" Property="Visibility" Value="Collapsed" />
-                            </Trigger>
-                            <Trigger Property="IsLabelShown" Value="False">
-                                <Setter TargetName="Label" Property="Visibility" Value="Collapsed" />
-                            </Trigger>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="IsFocused" Value="True" />
-                                    <Condition Property="Validation.HasError" Value="False" />
-                                </MultiTrigger.Conditions>
-                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PrimaryAccentSolidColorBrush}" />
-                                <Setter TargetName="Label" Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
-                            </MultiTrigger>
-                            <Trigger Property="IsFocused" Value="True">
-                                <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundSolidColorBrush}" />
-                                <Setter TargetName="Label" Property="Opacity" Value="1" />
-                            </Trigger>
-                            <Trigger Property="Validation.HasError" Value="True">
-                                <Setter Property="Foreground" Value="{DynamicResource ErrorSolidColorBrush}" />
-                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ErrorSolidColorBrush}" />
-                                <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
-                            </Trigger>
-                            <Trigger Property="Trailing" Value="{x:Null}">
-                                <Setter TargetName="TrailingView" Property="Visibility" Value="Collapsed" />
-                            </Trigger>
-                            <Trigger Property="IsReadOnly" Value="True">
-                                <Setter TargetName="PART_ContentHost" Property="Opacity" Value="0.6" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </UserControl.Resources>
 
     <Grid>
@@ -148,21 +64,43 @@
         </Grid.RowDefinitions>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="40" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <ComboBox
-                Margin="16,0,0,0"
+                Margin="40,40,40,12"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 ItemsSource="{Binding ConnectionTypes}"
-                SelectedItem="{Binding ConnectionType}" />
+                SelectedItem="{Binding ConnectionType}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Image
+                                Width="16"
+                                Height="16"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Source="{Binding Converter={StaticResource ConnectionTypeToImageConverter}}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="0,0,0,2"
+                                VerticalAlignment="Center"
+                                Text="{Binding Converter={StaticResource ConnectionTypeToImageString}}" />
+                        </Grid>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             <ScrollViewer
                 Grid.Row="1"
                 VerticalContentAlignment="Center"
                 HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Auto">
-                <StackPanel Margin="60">
+                <StackPanel Margin="40">
                     <ContentPresenter Content="{Binding Connection}" ContentTemplateSelector="{StaticResource ConnectViewDataTemplateSelector}" />
                     <StackPanel
                         Margin="0,12,0,0"
