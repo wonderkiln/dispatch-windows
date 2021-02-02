@@ -87,6 +87,7 @@ jobs:
         run: |
           NAME=$(ls | grep '.exe' | head -1)
           VERSION=$(echo $NAME | egrep -o '[0-9]+.[0-9]+.[0-9]+.[0-9]+')
+          echo "SETUP_NAME=$NAME" >> $GITHUB_ENV
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           URL="https://stwonderkilnprod.blob.core.windows.net/${{ env.CONTAINER_NAME }}/$NAME"
           SIZE=$(stat -c %s "$NAME")
@@ -96,6 +97,7 @@ jobs:
           curl -X POST -H "Content-Type: application/json" -H "release-code: ${{ secrets.API_SECRET }}" -d "$JSON" https://api.dispatch.wonderkiln.com/release
 
       - name: Create Release (Develop)
+        id: create_release
         if: github.ref == 'refs/heads/develop'
         uses: actions/create-release@v1
         env:
@@ -107,6 +109,7 @@ jobs:
           prerelease: true
 
       - name: Create Release (Beta)
+        id: create_release
         if: github.ref == 'refs/heads/beta'
         uses: actions/create-release@v1
         env:
@@ -118,6 +121,7 @@ jobs:
           prerelease: true
 
       - name: Create Release (Master)
+        id: create_release
         if: github.ref == 'refs/heads/master'
         uses: actions/create-release@v1
         env:
@@ -127,3 +131,13 @@ jobs:
           release_name: ${{ env.VERSION }}
           draft: false
           prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./${{ env.SETUP_NAME }}
+          asset_name: setup.exe
+          asset_content_type: application/octet-stream

@@ -93,6 +93,9 @@
     <Compile Include="Controls\DPTextBox.cs" />
     <Compile Include="Controls\DPButtonExtension.cs" />
     <Compile Include="Converters\BytesToStringConverter.cs" />
+    <Compile Include="Converters\ConnectionTypeToImageConverter.cs" />
+    <Compile Include="Converters\ConnectionTypeToStringConverter.cs" />
+    <Compile Include="Converters\ThemeToIconConverter.cs" />
     <Compile Include="Fragments\UpdateView.xaml.cs">
       <DependentUpon>UpdateView.xaml</DependentUpon>
     </Compile>
