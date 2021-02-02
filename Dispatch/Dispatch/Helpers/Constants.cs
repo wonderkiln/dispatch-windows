@@ -35,7 +35,11 @@ namespace Dispatch.Helpers
         {
             get
             {
+#if DEBUG
+                return VERSION.ToString() + "-debug";
+#else
                 return VERSION.ToString();
+#endif
             }
         }
 

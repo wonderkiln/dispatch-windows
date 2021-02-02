@@ -38,7 +38,7 @@
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE710;" />
                 </MenuItem.Icon>
             </MenuItem>
-            <Separator />
+            <Separator Visibility="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}, Converter={StaticResource ListToVisibilityConverter}}" />
             <MenuItem
                 Command="{Binding Side.TransferCommand}"
                 CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
@@ -48,7 +48,7 @@
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE898;" />
                 </MenuItem.Icon>
             </MenuItem>
-            <Separator />
+            <Separator Visibility="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}, Converter={StaticResource ListToVisibilityConverter}}" />
             <MenuItem
                 Command="{Binding RefreshCommand}"
                 Header="Refresh"
@@ -57,7 +57,7 @@
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72C;" />
                 </MenuItem.Icon>
             </MenuItem>
-            <Separator />
+            <Separator Visibility="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}, Converter={StaticResource ListToVisibilityConverter}}" />
             <MenuItem
                 Command="{Binding DeleteCommand}"
                 CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
