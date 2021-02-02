@@ -5,7 +5,7 @@ using static Dispatch.Service.Model.Favorite;
 
 namespace Dispatch.Converters
 {
-    public class ConnectionTypeToImageString : IValueConverter
+    public class ConnectionTypeToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
