@@ -97,7 +97,7 @@ jobs:
           curl -X POST -H "Content-Type: application/json" -H "release-code: ${{ secrets.API_SECRET }}" -d "$JSON" https://api.dispatch.wonderkiln.com/release
 
       - name: Create Release (Develop)
-        id: create_release
+        id: create_release_develop
         if: github.ref == 'refs/heads/develop'
         uses: actions/create-release@v1
         env:
@@ -109,7 +109,7 @@ jobs:
           prerelease: true
 
       - name: Create Release (Beta)
-        id: create_release
+        id: create_release_beta
         if: github.ref == 'refs/heads/beta'
         uses: actions/create-release@v1
         env:
@@ -121,7 +121,7 @@ jobs:
           prerelease: true
 
       - name: Create Release (Master)
-        id: create_release
+        id: create_release_master
         if: github.ref == 'refs/heads/master'
         uses: actions/create-release@v1
         env:
@@ -132,12 +132,35 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload Release Asset
+      - name: Upload Release Asset (Develop)
+        if: github.ref == 'refs/heads/develop'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.create_release_develop.outputs.upload_url }}
+          asset_path: ./${{ env.SETUP_NAME }}
+          asset_name: setup.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload Release Asset (Beta)
+        if: github.ref == 'refs/heads/beta'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release_beta.outputs.upload_url }}
+          asset_path: ./${{ env.SETUP_NAME }}
+          asset_name: setup.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload Release Asset (Master)
+        if: github.ref == 'refs/heads/master'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release_master.outputs.upload_url }}
           asset_path: ./${{ env.SETUP_NAME }}
           asset_name: setup.exe
           asset_content_type: application/octet-stream
