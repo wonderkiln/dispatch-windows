@@ -1,5 +1,6 @@
 ﻿
 using Dispatch.Helpers;
+using Dispatch.Service.License;
 using Dispatch.Service.Model;
 using System;
 using System.Windows;
@@ -43,6 +44,8 @@ namespace Dispatch
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            var _ = LicenseManager.Shared;
+
             var settings = WindowHelper.SettingsStorage.Load();
 
             if (settings.Theme == AppTheme.Auto)

@@ -115,6 +115,10 @@
     <Compile Include="Helpers\WindowHelper.cs" />
     <Compile Include="Service\Client\FTPClient.cs" />
     <Compile Include="Service\Client\SFTPClient.cs" />
+    <Compile Include="Service\License\ILicense.cs" />
+    <Compile Include="Service\License\LicenseManager.cs" />
+    <Compile Include="Service\License\PaidLicense.cs" />
+    <Compile Include="Service\License\TrialLicense.cs" />
     <Compile Include="Service\Model\Bookmark.cs" />
     <Compile Include="Service\Model\FTPConnection.cs" />
     <Compile Include="Service\Model\ResourceProgress.cs" />
