@@ -15,7 +15,7 @@ namespace Dispatch.Service.Storage
             FileName = fileName;
         }
 
-        public T Load()
+        public T Load(T defaultValue = default)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace Dispatch.Service.Storage
                 Console.WriteLine(ex.Message);
             }
 
-            return (T)Activator.CreateInstance(typeof(T));
+            return defaultValue;
         }
 
         public void Save(T value)

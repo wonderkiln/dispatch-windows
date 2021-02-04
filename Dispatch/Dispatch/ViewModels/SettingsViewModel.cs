@@ -1,5 +1,5 @@
 ﻿using Dispatch.Helpers;
-using Dispatch.Service.Model;
+using Dispatch.Service.Models;
 using System.Windows;
 
 namespace Dispatch.ViewModels
@@ -36,7 +36,7 @@ namespace Dispatch.ViewModels
 
         public SettingsViewModel()
         {
-            var settings = WindowHelper.SettingsStorage.Load();
+            var settings = WindowHelper.SettingsStorage.Load(new Settings());
             theme = settings.Theme;
         }
     }

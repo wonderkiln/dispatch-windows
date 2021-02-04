@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Management;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Dispatch.Service.License
+namespace Dispatch.Service.Licensing
 {
-    public class FingerPrint
+    public class Fingerprint
     {
         private static string fingerprint = string.Empty;
 
@@ -101,95 +100,6 @@ namespace Dispatch.Service.License
                 + GetIdentifier("Win32_BaseBoard", "Manufacturer") + ";"
                 + GetIdentifier("Win32_BaseBoard", "Name") + ";"
                 + GetIdentifier("Win32_BaseBoard", "SerialNumber");
-        }
-    }
-
-    public class LicenseManager
-    {
-        public enum Status { None, Trial, TrialExpired, Paid, PaidExpired, PaidExpiredWrongVersion }
-
-        public static LicenseManager Shared = new LicenseManager();
-
-        // Save locally to be faster?
-        private readonly string HardwareIdentifier = FingerPrint.GetFingerprint();
-
-        public LicenseManager()
-        {
-            Console.WriteLine("License manager initialized with hardware identifier: {0}", HardwareIdentifier);
-        }
-
-        // Get locally available installed licenses
-        private ILicense[] GetInstalledLicenses()
-        {
-            return null;
-        }
-
-        // Verify and validate the licenses with the API and update them locally.
-        // On error remove that license locally.
-        private ILicense[] RefreshLicenses(ILicense[] licenses)
-        {
-            return null;
-        }
-
-        // Install a license making sure that type doesn't exist locally.
-        // Need to re-calculate the status.
-        public void InstallLicense(ILicense license)
-        {
-            InstallLicenseLocally(license);
-        }
-
-        // Returns the status of the licensing, validating them with the API and locally
-        public Status GetLicenseStatus()
-        {
-            var installedLicenses = GetInstalledLicenses();
-            var refreshedLicenses = RefreshLicenses(installedLicenses);
-
-            var paidLicenses = refreshedLicenses.Where(e => e is PaidLicense).Cast<PaidLicense>();
-            var trialLicenses = refreshedLicenses.Where(e => e is TrialLicense).Cast<TrialLicense>();
-
-            foreach (var license in paidLicenses)
-            {
-                if (!license.IsExpired)
-                {
-                    return Status.Paid;
-                }
-                else if (license.IsSameMajorVersion)
-                {
-                    return Status.PaidExpired;
-                }
-
-                return Status.PaidExpiredWrongVersion;
-            }
-
-            foreach (var license in trialLicenses)
-            {
-                if (!license.IsExpired)
-                {
-                    return Status.Trial;
-                }
-
-                return Status.TrialExpired;
-            }
-
-            return Status.None;
-        }
-
-        // Remove the local (instant) + remote paid license.
-        // Does not remove the trial ones.
-        // Need to re-calculate the status.
-        public void RemoveLicense(ILicense license)
-        {
-            RemoveLicenseLocally(license);
-        }
-
-        private void InstallLicenseLocally(ILicense license)
-        {
-            //
-        }
-
-        private void RemoveLicenseLocally(ILicense license)
-        {
-            //
         }
     }
 }

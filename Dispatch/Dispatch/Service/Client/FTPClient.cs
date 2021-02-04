@@ -1,4 +1,4 @@
-﻿using Dispatch.Service.Model;
+﻿using Dispatch.Service.Models;
 using FluentFTP;
 using System;
 using System.IO;

@@ -1,4 +1,4 @@
-﻿using Dispatch.Service.Model;
+﻿using Dispatch.Service.Models;
 using System.Windows;
 using System.Windows.Controls;
 

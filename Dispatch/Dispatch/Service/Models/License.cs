@@ -1,18 +1,23 @@
 ﻿using Dispatch.Helpers;
 using System;
 
-namespace Dispatch.Service.License
+namespace Dispatch.Service.Models
 {
-    public class PaidLicense : ILicense
+    public class License
     {
-        public DateTime ExpiresAt { get; set; }
+        public string Id { get; set; }
+
+        public DateTime Expiration { get; set; }
+
         public int MajorVersion { get; set; }
+
+        public bool IsTrial { get; set; }
 
         public bool IsExpired
         {
             get
             {
-                return DateTime.Now < ExpiresAt;
+                return DateTime.Now > Expiration;
             }
         }
 

@@ -1,4 +1,4 @@
-﻿using Dispatch.Service.Model;
+﻿using Dispatch.Service.Models;
 using Renci.SshNet;
 using Renci.SshNet.Common;
 using Renci.SshNet.Sftp;

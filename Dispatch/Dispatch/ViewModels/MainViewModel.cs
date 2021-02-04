@@ -1,6 +1,6 @@
 ﻿using Dispatch.Fragments;
 using Dispatch.Helpers;
-using Dispatch.Service.Model;
+using Dispatch.Service.Models;
 using GongSolutions.Wpf.DragDrop;
 using System;
 using System.Collections.ObjectModel;

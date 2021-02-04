@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dispatch.Service.Model
+namespace Dispatch.Service.Models
 {
     public class Update
     {

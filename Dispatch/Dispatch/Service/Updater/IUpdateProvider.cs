@@ -1,4 +1,4 @@
-﻿using Dispatch.Service.Model;
+﻿using Dispatch.Service.Models;
 using System.Threading.Tasks;
 
 namespace Dispatch.Service.Updater

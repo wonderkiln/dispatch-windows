@@ -1,4 +1,4 @@
-﻿using Dispatch.Service.Model;
+﻿using Dispatch.Service.Models;
 using Dispatch.Service.Storage;
 using System;
 using System.Runtime.InteropServices;
@@ -85,7 +85,7 @@ namespace Dispatch.Helpers
 
         public static void LoadWindowSettings(Window window)
         {
-            var settings = SettingsStorage.Load();
+            var settings = SettingsStorage.Load(new Settings());
 
             if (settings.WindowSize != null)
             {
@@ -109,7 +109,7 @@ namespace Dispatch.Helpers
 
         public static void SaveWindowSettings(Window window)
         {
-            var settings = SettingsStorage.Load();
+            var settings = SettingsStorage.Load(new Settings());
 
             if (window.WindowState == WindowState.Maximized)
             {
