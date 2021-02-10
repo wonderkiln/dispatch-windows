@@ -92,7 +92,7 @@ jobs:
           URL="https://stwonderkilnprod.blob.core.windows.net/${{ env.CONTAINER_NAME }}/$NAME"
           SIZE=$(stat -c %s "$NAME")
           FORMAT='{ "url": "%s", "version": "%s", "size": %s }\n'
-          JSON=$(printf "$FORMAT" "$URL" "$VERSION" "$SIZE" "${{ env.CONTAINER_NAME }}")
+          JSON=$(printf "$FORMAT" "$URL" "$VERSION" "$SIZE")
           echo $JSON
           curl -X PUT -H "Content-Type: application/json" -H "X-Secret: ${{ secrets.API_SECRET }}" -d "$JSON" https://api.dispatch.wonderkiln.com/api/release/${{ env.CONTAINER_NAME }}
 
