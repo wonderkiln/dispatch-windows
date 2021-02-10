@@ -12,9 +12,9 @@ namespace Dispatch.Service.Updater
         private class Release
         {
             public string url { get; set; }
-            public long fileSize { get; set; }
-            public string versionCode { get; set; }
-            public string releaseDate { get; set; }
+            public long size { get; set; }
+            public string version { get; set; }
+            public string createdAt { get; set; }
         }
 
         private string BaseUrl
@@ -24,11 +24,11 @@ namespace Dispatch.Service.Updater
                 switch (Constants.CHANNEL)
                 {
                     case Constants.Channel.Nightly:
-                        return "https://api.dispatch.wonderkiln.com/release/nightly";
+                        return "https://api.dispatch.wonderkiln.com/api/release/nightly";
                     case Constants.Channel.Beta:
-                        return "https://api.dispatch.wonderkiln.com/release/beta";
+                        return "https://api.dispatch.wonderkiln.com/api/release/beta";
                     case Constants.Channel.Stable:
-                        return "https://api.dispatch.wonderkiln.com/release/stable";
+                        return "https://api.dispatch.wonderkiln.com/api/release/stable";
                     default:
                         throw new Exception($"Unhandled channel: {Constants.CHANNEL}");
                 }
@@ -44,7 +44,7 @@ namespace Dispatch.Service.Updater
             var data = await client.DownloadStringTaskAsync(BaseUrl);
             var json = JsonConvert.DeserializeObject<Release>(data);
 
-            return new Update(new Version(json.versionCode), "", json.fileSize, new Uri(json.url));
+            return new Update(new Version(json.version), "", json.size, new Uri(json.url));
         }
 
     }
