@@ -2,7 +2,7 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
-using static Dispatch.Service.Model.Favorite;
+using static Dispatch.Service.Models.Favorite;
 
 namespace Dispatch.Converters
 {

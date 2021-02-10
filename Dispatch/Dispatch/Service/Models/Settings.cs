@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Dispatch.Service.Model
+namespace Dispatch.Service.Models
 {
     public enum AppTheme { Auto, Light, Dark }
 

@@ -91,10 +91,10 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           URL="https://stwonderkilnprod.blob.core.windows.net/${{ env.CONTAINER_NAME }}/$NAME"
           SIZE=$(stat -c %s "$NAME")
-          FORMAT='{ "url": "%s", "versionCode": "%s", "fileSize": %s, "channel": "%s" }\n'
+          FORMAT='{ "url": "%s", "version": "%s", "size": %s }\n'
           JSON=$(printf "$FORMAT" "$URL" "$VERSION" "$SIZE" "${{ env.CONTAINER_NAME }}")
           echo $JSON
-          curl -X POST -H "Content-Type: application/json" -H "release-code: ${{ secrets.API_SECRET }}" -d "$JSON" https://api.dispatch.wonderkiln.com/release
+          curl -X PUT -H "Content-Type: application/json" -H "X-Secret: ${{ secrets.API_SECRET }}" -d "$JSON" https://api.dispatch.wonderkiln.com/api/release/${{ env.CONTAINER_NAME }}
 
       - name: Create Release (Develop)
         id: create_release_develop

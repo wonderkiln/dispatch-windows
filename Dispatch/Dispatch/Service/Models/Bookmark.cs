@@ -1,6 +1,6 @@
 ﻿using Dispatch.Service.Client;
 
-namespace Dispatch.Service.Model
+namespace Dispatch.Service.Models
 {
     public class Bookmark
     {

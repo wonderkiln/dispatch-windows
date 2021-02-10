@@ -23,18 +23,11 @@ namespace Dispatch.ViewModels
 
             storage = new Storage<T[]>(fileName);
 
-            try
-            {
-                var items = storage.Load();
+            var items = storage.Load(new T[] { });
 
-                foreach (var item in items)
-                {
-                    Items.Add(item);
-                }
-            }
-            catch (Exception ex)
+            foreach (var item in items)
             {
-                Console.WriteLine(ex);
+                Items.Add(item);
             }
 
             Items.CollectionChanged += Items_CollectionChanged;

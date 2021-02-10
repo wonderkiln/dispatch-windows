@@ -1,4 +1,4 @@
-﻿using Dispatch.Service.Model;
+﻿using Dispatch.Service.Models;
 using System;
 using System.IO;
 using System.Linq;

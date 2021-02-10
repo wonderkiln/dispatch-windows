@@ -1,6 +1,6 @@
 ﻿using Dispatch.Helpers;
 using Dispatch.Service.Client;
-using Dispatch.Service.Model;
+using Dispatch.Service.Models;
 using System;
 using System.Windows.Media;
 

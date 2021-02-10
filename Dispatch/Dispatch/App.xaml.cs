@@ -1,6 +1,7 @@
 ﻿
 using Dispatch.Helpers;
-using Dispatch.Service.Model;
+using Dispatch.Service.Licensing;
+using Dispatch.Service.Models;
 using System;
 using System.Windows;
 
@@ -26,7 +27,7 @@ namespace Dispatch
 
         public void SetTheme(AppTheme theme)
         {
-            var settings = WindowHelper.SettingsStorage.Load();
+            var settings = WindowHelper.SettingsStorage.Load(new Settings());
             settings.Theme = theme;
             WindowHelper.SettingsStorage.Save(settings);
 
@@ -43,7 +44,19 @@ namespace Dispatch
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            var settings = WindowHelper.SettingsStorage.Load();
+            var licenseManager = LicenseManager.Shared;
+            var status = licenseManager.GetLicenseStatus();
+
+            Console.WriteLine(status);
+
+            if (status == LicenseManager.Status.None)
+            {
+                licenseManager.InstallTrialLicense();
+            }
+
+            Console.WriteLine(licenseManager.GetLicenseStatus());
+
+            var settings = WindowHelper.SettingsStorage.Load(new Settings());
 
             if (settings.Theme == AppTheme.Auto)
             {

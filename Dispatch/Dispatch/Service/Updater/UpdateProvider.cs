@@ -1,5 +1,5 @@
 ﻿using Dispatch.Helpers;
-using Dispatch.Service.Model;
+using Dispatch.Service.Models;
 using Newtonsoft.Json;
 using System;
 using System.Net;
