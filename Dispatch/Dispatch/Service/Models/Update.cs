@@ -2,6 +2,7 @@
 
 namespace Dispatch.Service.Models
 {
+    // TODO: use json prop
     public class Update
     {
         public Version Version { get; }

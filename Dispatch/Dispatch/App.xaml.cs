@@ -1,5 +1,4 @@
-﻿
-using Dispatch.Helpers;
+﻿using Dispatch.Helpers;
 using Dispatch.Service.Licensing;
 using Dispatch.Service.Models;
 using System;
@@ -9,6 +8,8 @@ namespace Dispatch
 {
     public partial class App : Application
     {
+        public static LicenseViewModel License { get; } = new LicenseViewModel();
+
         private readonly WindowsThemeWatcher themeWatcher = new WindowsThemeWatcher();
 
         public void ChangeTheme(AppTheme theme)
@@ -44,17 +45,7 @@ namespace Dispatch
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            var licenseManager = LicenseManager.Shared;
-            var status = licenseManager.GetLicenseStatus();
-
-            Console.WriteLine(status);
-
-            if (status == LicenseManager.Status.None)
-            {
-                licenseManager.InstallTrialLicense();
-            }
-
-            Console.WriteLine(licenseManager.GetLicenseStatus());
+            _ = License.Load();
 
             var settings = WindowHelper.SettingsStorage.Load(new Settings());
 

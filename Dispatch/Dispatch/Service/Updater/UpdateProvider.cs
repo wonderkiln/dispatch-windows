@@ -24,13 +24,11 @@ namespace Dispatch.Service.Updater
                 switch (Constants.CHANNEL)
                 {
                     case Constants.Channel.Nightly:
-                        return "https://api.dispatch.wonderkiln.com/api/release/nightly";
+                        return $"{Constants.API_URL}/release/nightly";
                     case Constants.Channel.Beta:
-                        return "https://api.dispatch.wonderkiln.com/api/release/beta";
-                    case Constants.Channel.Stable:
-                        return "https://api.dispatch.wonderkiln.com/api/release/stable";
+                        return $"{Constants.API_URL}/release/beta";
                     default:
-                        throw new Exception($"Unhandled channel: {Constants.CHANNEL}");
+                        return $"{Constants.API_URL}/release/stable";
                 }
             }
         }

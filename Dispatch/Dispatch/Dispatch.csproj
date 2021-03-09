@@ -113,12 +113,13 @@
     <Compile Include="Helpers\ResourceQueue.cs" />
     <Compile Include="Helpers\ResourceWatcher.cs" />
     <Compile Include="Helpers\WindowHelper.cs" />
+    <Compile Include="Service\API\APIClient.cs" />
     <Compile Include="Service\Client\FTPClient.cs" />
     <Compile Include="Service\Client\SFTPClient.cs" />
     <Compile Include="Service\Licensing\Fingerprint.cs" />
-    <Compile Include="Service\Licensing\LicenseApi.cs" />
-    <Compile Include="Service\Licensing\LicenseManager.cs" />
-    <Compile Include="Service\Licensing\LicenseWriter.cs" />
+    <Compile Include="ViewModels\LicenseViewModel.cs" />
+    <Compile Include="Service\Models\Device.cs" />
+    <Compile Include="Service\Models\DeviceStatus.cs" />
     <Compile Include="Service\Models\License.cs" />
     <Compile Include="Service\Models\Bookmark.cs" />
     <Compile Include="Service\Models\FTPConnection.cs" />
