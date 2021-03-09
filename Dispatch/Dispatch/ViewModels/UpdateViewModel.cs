@@ -93,7 +93,7 @@ namespace Dispatch.ViewModels
             }
         }
 
-        private void DownloadAndInstall()
+        private async void DownloadAndInstall()
         {
             if (MessageBox.Show("Do you want to update to the latest version now?", "New update available", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
@@ -101,7 +101,7 @@ namespace Dispatch.ViewModels
 
                 try
                 {
-                    applicationUpdater.DownloadAndInstall();
+                    await applicationUpdater.DownloadAndInstall();
                 }
                 catch (Exception ex)
                 {

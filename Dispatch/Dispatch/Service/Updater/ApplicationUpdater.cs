@@ -28,34 +28,23 @@ namespace Dispatch.Service.Updater
             return null;
         }
 
-        public async void DownloadAndInstall()
+        public async Task DownloadAndInstall()
         {
             var client = new WebClient();
             client.Headers.Add(HttpRequestHeader.UserAgent, Constants.APP_NAME);
             client.Headers.Add(HttpRequestHeader.Accept, "application/octet-stream");
             client.DownloadProgressChanged += Client_DownloadProgressChanged;
 
-            try
-            {
-                var path = Path.GetTempFileName();
-                var update = await updater.GetLatestUpdate();
+            var path = Path.GetTempFileName();
+            var update = await updater.GetLatestUpdate();
 
-                await client.DownloadFileTaskAsync(update.Link, path);
+            await client.DownloadFileTaskAsync(update.Link, path);
 
-                var newPath = Path.ChangeExtension(path, "exe");
-                File.Move(path, newPath);
+            var newPath = Path.ChangeExtension(path, "exe");
+            File.Move(path, newPath);
 
-                Process.Start(newPath, "/VERYSILENT");
-                Application.Current.Shutdown();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                client.DownloadProgressChanged -= Client_DownloadProgressChanged;
-            }
+            Process.Start(newPath, "/VERYSILENT");
+            Application.Current.Shutdown();
         }
 
         private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
