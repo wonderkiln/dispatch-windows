@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:a="clr-namespace:Dispatch"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:c="clr-namespace:Dispatch.Converters"
     xmlns:h="clr-namespace:Dispatch.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="About Dispatch"
@@ -17,6 +18,7 @@
     mc:Ignorable="d">
 
     <Window.Resources>
+        <c:DateToRelativeStringConverter x:Key="DateToRelativeStringConverter" />
         <x:Static x:Key="License" Member="a:App.License" />
     </Window.Resources>
 
@@ -42,7 +44,7 @@
                 <Label Content="{x:Static h:Constants.APP_NAME}" FontSize="16" />
                 <Label Content="{x:Static h:Constants.VERSION_STRING}" Opacity="0.5" />
                 <Label Content="{Binding Device.Status, Source={StaticResource License}}" Opacity="0.5" />
-                <Label Content="{Binding Device.Device.ExpiresAt, Source={StaticResource License}}" Opacity="0.5" />
+                <Label Content="{Binding Device.Device.ExpiresAt, Converter={StaticResource DateToRelativeStringConverter}, Source={StaticResource License}}" Opacity="0.5" />
                 <Button Command="{Binding InstallTrialCommand, Source={StaticResource License}}">Trial</Button>
                 <TextBox Text="{Binding LicenseKey, Source={StaticResource License}}" />
                 <Button Command="{Binding InstallLicenseCommand, Source={StaticResource License}}">License</Button>
