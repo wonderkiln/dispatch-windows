@@ -21,7 +21,11 @@ namespace Dispatch.Fragments
 
         private void AboutButton_Click(object sender, RoutedEventArgs e)
         {
-            new AboutWindow() { Owner = Window.GetWindow(this) }.ShowDialog();
+            var aboutWindow = new AboutWindow();
+            aboutWindow.Owner = Window.GetWindow(this);
+            aboutWindow.DataContext = aboutWindow.Owner.DataContext;
+
+            aboutWindow.ShowDialog();
         }
     }
 }

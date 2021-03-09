@@ -2,14 +2,15 @@
     x:Class="Dispatch.View.Windows.AboutWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:a="clr-namespace:Dispatch"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:c="clr-namespace:Dispatch.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:h="clr-namespace:Dispatch.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Dispatch.ViewModels"
     Title="About Dispatch"
     Width="300"
     Height="400"
+    d:DataContext="{d:DesignInstance vm:MainViewModel}"
     AllowsTransparency="False"
     Background="{DynamicResource PrimaryBackgroundSolidColorBrush}"
     ResizeMode="NoResize"
@@ -19,7 +20,6 @@
 
     <Window.Resources>
         <c:DateToRelativeStringConverter x:Key="DateToRelativeStringConverter" />
-        <x:Static x:Key="License" Member="a:App.License" />
     </Window.Resources>
 
     <StackPanel
@@ -43,12 +43,12 @@
             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                 <Label Content="{x:Static h:Constants.APP_NAME}" FontSize="16" />
                 <Label Content="{x:Static h:Constants.VERSION_STRING}" Opacity="0.5" />
-                <Label Content="{Binding Device.Status, Source={StaticResource License}}" Opacity="0.5" />
-                <Label Content="{Binding Device.Device.ExpiresAt, Converter={StaticResource DateToRelativeStringConverter}, Source={StaticResource License}}" Opacity="0.5" />
-                <Button Command="{Binding InstallTrialCommand, Source={StaticResource License}}">Trial</Button>
-                <TextBox Text="{Binding LicenseKey, Source={StaticResource License}}" />
-                <Button Command="{Binding InstallLicenseCommand, Source={StaticResource License}}">License</Button>
-                <Button Command="{Binding RemoveLicenseCommand, Source={StaticResource License}}">Remove License</Button>
+                <Label Content="{Binding License.Device.Status}" Opacity="0.5" />
+                <Label Content="{Binding License.Device.Device.ExpiresAt, Converter={StaticResource DateToRelativeStringConverter}}" Opacity="0.5" />
+                <Button Command="{Binding License.InstallTrialCommand}">Trial</Button>
+                <TextBox Text="{Binding License.LicenseKey}" />
+                <Button Command="{Binding License.InstallLicenseCommand}">License</Button>
+                <Button Command="{Binding License.RemoveLicenseCommand}">Remove License</Button>
             </StackPanel>
         </Grid>
     </StackPanel>

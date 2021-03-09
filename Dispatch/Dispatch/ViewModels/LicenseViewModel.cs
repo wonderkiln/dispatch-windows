@@ -1,5 +1,6 @@
 ﻿using Dispatch.Helpers;
 using Dispatch.Service.API;
+using Dispatch.Service.Licensing;
 using Dispatch.Service.Models;
 using System;
 using System.IO;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Dispatch.Service.Licensing
+namespace Dispatch.ViewModels
 {
     public class LicenseViewModel : Observable
     {
@@ -76,6 +77,8 @@ namespace Dispatch.Service.Licensing
             RemoveLicenseCommand = new RelayCommand(RemoveLicense);
 
             Console.WriteLine("License manager initialized with hardware identifier: {0}", client.HardwareIdentifier);
+
+            _ = Load();
         }
 
         public async Task Load()
@@ -86,6 +89,9 @@ namespace Dispatch.Service.Licensing
             InstallTrialCommand.IsExecutable = Device.Status == DeviceStatus.LicenseStatus.None;
             InstallLicenseCommand.IsExecutable = Device.Status <= DeviceStatus.LicenseStatus.TrialExpired;
             RemoveLicenseCommand.IsExecutable = Device.Status >= DeviceStatus.LicenseStatus.License;
+
+            // TODO: If the status is none, trial expired, license expired wrong version show the blocking modal
+            // TODO: Do not update if license expired and major version differs
         }
 
         private async void InstallTrial()

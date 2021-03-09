@@ -1,5 +1,4 @@
 ﻿using Dispatch.Helpers;
-using Dispatch.Service.Licensing;
 using Dispatch.Service.Models;
 using System;
 using System.Windows;
@@ -8,8 +7,6 @@ namespace Dispatch
 {
     public partial class App : Application
     {
-        public static LicenseViewModel License { get; } = new LicenseViewModel();
-
         private readonly WindowsThemeWatcher themeWatcher = new WindowsThemeWatcher();
 
         public void ChangeTheme(AppTheme theme)
@@ -45,8 +42,6 @@ namespace Dispatch
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            _ = License.Load();
-
             var settings = WindowHelper.SettingsStorage.Load(new Settings());
 
             if (settings.Theme == AppTheme.Auto)

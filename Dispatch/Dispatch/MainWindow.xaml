@@ -225,10 +225,13 @@
             Grid.ColumnSpan="2"
             Padding="16,0"
             Style="{StaticResource StatusBarBackgroundBorderStyle}">
-            <f:UpdateView
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                DataContext="{Binding Update}" />
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <f:LicenseView
+                    Margin="0,0,12,0"
+                    VerticalAlignment="Center"
+                    DataContext="{Binding License}" />
+                <f:UpdateView VerticalAlignment="Center" DataContext="{Binding Update}" />
+            </StackPanel>
         </Border>
     </Grid>
 </Window>

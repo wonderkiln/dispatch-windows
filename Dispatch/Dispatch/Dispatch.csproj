@@ -100,6 +100,9 @@
     <Compile Include="Converters\ConnectionTypeToStringConverter.cs" />
     <Compile Include="Converters\DateToRelativeStringConverter.cs" />
     <Compile Include="Converters\ThemeToIconConverter.cs" />
+    <Compile Include="Fragments\LicenseView.xaml.cs">
+      <DependentUpon>LicenseView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Fragments\UpdateView.xaml.cs">
       <DependentUpon>UpdateView.xaml</DependentUpon>
     </Compile>
@@ -176,6 +179,10 @@
       <DependentUpon>TabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\WindowsThemeWatcher.cs" />
+    <Page Include="Fragments\LicenseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Fragments\UpdateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
