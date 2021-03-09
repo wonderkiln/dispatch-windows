@@ -1,9 +1,7 @@
 ﻿using Dispatch.Helpers;
 using Dispatch.Service.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -12,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace Dispatch.Service.API
 {
-    // TODO: use this for updates
     public class APIClient
     {
         public readonly string Platform = Environment.OSVersion.ToString();
@@ -77,6 +74,26 @@ namespace Dispatch.Service.API
         public Task<DeviceStatus> GetDeviceStatus()
         {
             return Request<DeviceStatus>(HttpMethod.Get, $"{Constants.API_URL}/device/{HardwareIdentifier}/{Constants.VERSION}");
+        }
+
+        public Task<Update> GetLatestUpdate()
+        {
+            string url;
+
+            switch (Constants.CHANNEL)
+            {
+                case Constants.Channel.Nightly:
+                    url = $"{Constants.API_URL}/release/nightly";
+                    break;
+                case Constants.Channel.Beta:
+                    url = $"{Constants.API_URL}/release/beta";
+                    break;
+                default:
+                    url = $"{Constants.API_URL}/release/stable";
+                    break;
+            }
+
+            return Request<Update>(HttpMethod.Get, url);
         }
     }
 }

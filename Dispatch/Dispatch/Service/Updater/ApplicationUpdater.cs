@@ -23,13 +23,7 @@ namespace Dispatch.Service.Updater
 
         public async Task<Update> CheckForUpdate()
         {
-#if DEBUG
-            return null;
-#endif
-
-#pragma warning disable CS0162 // Unreachable code detected
             var update = await updater.GetLatestUpdate();
-#pragma warning restore CS0162 // Unreachable code detected
             if (update.Version > Constants.VERSION) return update;
             return null;
         }
@@ -41,16 +35,27 @@ namespace Dispatch.Service.Updater
             client.Headers.Add(HttpRequestHeader.Accept, "application/octet-stream");
             client.DownloadProgressChanged += Client_DownloadProgressChanged;
 
-            var path = Path.GetTempFileName();
-            var update = await updater.GetLatestUpdate();
+            try
+            {
+                var path = Path.GetTempFileName();
+                var update = await updater.GetLatestUpdate();
 
-            await client.DownloadFileTaskAsync(update.Link, path);
+                await client.DownloadFileTaskAsync(update.Link, path);
 
-            var newPath = Path.ChangeExtension(path, "exe");
-            File.Move(path, newPath);
+                var newPath = Path.ChangeExtension(path, "exe");
+                File.Move(path, newPath);
 
-            Process.Start(newPath, "/VERYSILENT");
-            Application.Current.Shutdown();
+                Process.Start(newPath, "/VERYSILENT");
+                Application.Current.Shutdown();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                client.DownloadProgressChanged -= Client_DownloadProgressChanged;
+            }
         }
 
         private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
