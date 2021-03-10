@@ -88,8 +88,9 @@ namespace Dispatch.ViewModels
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message;
-                Status = StatusType.Error;
+                // No need to show the error when checking for update
+                Console.WriteLine(ex.Message);
+                Status = StatusType.None;
             }
         }
 

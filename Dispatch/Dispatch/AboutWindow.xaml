@@ -46,8 +46,8 @@
                 <Label Content="{Binding License.Device.Status}" Opacity="0.5" />
                 <Label Content="{Binding License.Device.Device.ExpiresAt, Converter={StaticResource DateToRelativeStringConverter}}" Opacity="0.5" />
                 <Button Command="{Binding License.InstallTrialCommand}">Trial</Button>
-                <TextBox Text="{Binding License.LicenseKey}" />
-                <Button Command="{Binding License.InstallLicenseCommand}">License</Button>
+                <TextBox x:Name="LicenseTextBox" />
+                <Button Command="{Binding License.InstallLicenseCommand}" CommandParameter="{Binding Text, ElementName=LicenseTextBox}">License</Button>
                 <Button Command="{Binding License.RemoveLicenseCommand}">Remove License</Button>
             </StackPanel>
         </Grid>

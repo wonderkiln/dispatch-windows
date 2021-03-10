@@ -2,9 +2,8 @@
 using Dispatch.Service.API;
 using Dispatch.Service.Licensing;
 using Dispatch.Service.Models;
+using Microsoft.Win32;
 using System;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -28,42 +27,32 @@ namespace Dispatch.ViewModels
             }
         }
 
-        private string licenseKey;
-        public string LicenseKey
-        {
-            get
-            {
-                return licenseKey;
-            }
-            set
-            {
-                licenseKey = value;
-                Notify();
-            }
-        }
-
         public RelayCommand InstallTrialCommand { get; }
-        public RelayCommand InstallLicenseCommand { get; }
+        public RelayCommand<string> InstallLicenseCommand { get; }
         public RelayCommand RemoveLicenseCommand { get; }
 
         private string GenerateFingerprint()
         {
             string fingerprint = null;
 
+            var key = Registry.CurrentUser.CreateSubKey($"SOFTWARE\\{Constants.APP_NAME}");
+
             try
             {
-                fingerprint = File.ReadAllText("fingerprint.txt", Encoding.UTF8);
+                fingerprint = key.GetValue("Fingerprint") as string;
             }
-            catch
+            catch (Exception ex)
             {
-                //
+                Console.WriteLine(ex.Message);
             }
 
             if (string.IsNullOrEmpty(fingerprint))
             {
                 fingerprint = Fingerprint.GetFingerprint();
-                File.WriteAllText("fingerprint.txt", fingerprint, Encoding.UTF8);
+                key.SetValue("Fingerprint", fingerprint, RegistryValueKind.String);
             }
+
+            key.Close();
 
             return fingerprint;
         }
@@ -73,7 +62,7 @@ namespace Dispatch.ViewModels
             client = new APIClient(GenerateFingerprint());
 
             InstallTrialCommand = new RelayCommand(InstallTrial);
-            InstallLicenseCommand = new RelayCommand(InstallLicense);
+            InstallLicenseCommand = new RelayCommand<string>(InstallLicense);
             RemoveLicenseCommand = new RelayCommand(RemoveLicense);
 
             Console.WriteLine("License manager initialized with hardware identifier: {0}", client.HardwareIdentifier);
@@ -84,7 +73,6 @@ namespace Dispatch.ViewModels
         public async Task Load()
         {
             Device = await client.GetDeviceStatus();
-            LicenseKey = Device.Device?.License?.Key;
 
             InstallTrialCommand.IsExecutable = Device.Status == DeviceStatus.LicenseStatus.None;
             InstallLicenseCommand.IsExecutable = Device.Status <= DeviceStatus.LicenseStatus.TrialExpired;
@@ -107,11 +95,11 @@ namespace Dispatch.ViewModels
             }
         }
 
-        private async void InstallLicense()
+        private async void InstallLicense(string key)
         {
             try
             {
-                await client.InstallLicense(LicenseKey);
+                await client.InstallLicense(key);
                 await Load();
             }
             catch (Exception ex)
@@ -124,7 +112,7 @@ namespace Dispatch.ViewModels
         {
             try
             {
-                await client.RemoveLicense(LicenseKey);
+                await client.RemoveLicense(Device.Device?.License?.Key);
                 await Load();
             }
             catch (Exception ex)
