@@ -14,6 +14,7 @@ namespace Dispatch.Service.Models
             TrialExpired = 11,
             Trial = 10,
             None = 0,
+            Error = -1, // This is used internal, not from the server, in case of a fetch error
         }
 
         [JsonProperty("status")]

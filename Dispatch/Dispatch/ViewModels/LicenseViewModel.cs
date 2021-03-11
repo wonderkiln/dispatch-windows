@@ -11,6 +11,8 @@ namespace Dispatch.ViewModels
 {
     public class LicenseViewModel : Observable
     {
+        private LicenseWindow licenseWindow;
+
         private readonly APIClient client;
 
         private DeviceStatus device;
@@ -32,7 +34,7 @@ namespace Dispatch.ViewModels
         {
             get
             {
-                return Device?.Status ?? DeviceStatus.LicenseStatus.None;
+                return Device?.Status ?? DeviceStatus.LicenseStatus.Error;
             }
         }
 
@@ -70,13 +72,12 @@ namespace Dispatch.ViewModels
         public LicenseViewModel()
         {
             client = new APIClient(GenerateFingerprint());
+            Console.WriteLine("License manager initialized with hardware identifier: {0}", client.HardwareIdentifier);
 
             InstallTrialCommand = new RelayCommand(InstallTrial);
             InstallLicenseCommand = new RelayCommand<string>(InstallLicense);
             RemoveLicenseCommand = new RelayCommand(RemoveLicense);
             EnterLicenseCommand = new RelayCommand(EnterLicense);
-
-            Console.WriteLine("License manager initialized with hardware identifier: {0}", client.HardwareIdentifier);
 
             _ = Load();
         }
@@ -88,14 +89,18 @@ namespace Dispatch.ViewModels
                 // TODO: Load from cache?
                 Device = await client.GetDeviceStatus();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+
+                // If there is a fetch error then delete the device, it will default to error status
+                Device = null;
             }
 
             InstallTrialCommand.IsExecutable = Status == DeviceStatus.LicenseStatus.None;
-            InstallLicenseCommand.IsExecutable = Status <= DeviceStatus.LicenseStatus.TrialExpired;
+            InstallLicenseCommand.IsExecutable = Status <= DeviceStatus.LicenseStatus.TrialExpired || Status <= DeviceStatus.LicenseStatus.LicenseExpiredWrongVersion;
             RemoveLicenseCommand.IsExecutable = Status >= DeviceStatus.LicenseStatus.License;
+            EnterLicenseCommand.IsExecutable = Status != DeviceStatus.LicenseStatus.License && Status != DeviceStatus.LicenseStatus.LicenseExpired;
 
             // If the status is none, trial expired or license expired wrong version then show the blocking license modal
             if (Status == DeviceStatus.LicenseStatus.None ||
@@ -106,8 +111,8 @@ namespace Dispatch.ViewModels
             }
             else
             {
+                // Remove license window if there is one active
                 licenseWindow?.Close();
-                licenseWindow = null;
             }
 
             // TODO: Do not update if license expired and major version differs
@@ -152,8 +157,6 @@ namespace Dispatch.ViewModels
             }
         }
 
-        private Window licenseWindow;
-
         private void EnterLicense()
         {
             if (licenseWindow != null)
@@ -165,11 +168,13 @@ namespace Dispatch.ViewModels
 
             if (!mainWindow.IsLoaded)
             {
+                // Show the modal when the main window is loaded
                 mainWindow.Loaded += MainWindow_Loaded;
                 return;
             }
 
             var window = new LicenseWindow();
+            window.Closed += Window_Closed;
             window.Owner = mainWindow;
             window.DataContext = this;
 
@@ -183,6 +188,11 @@ namespace Dispatch.ViewModels
             var mainWindow = (Window)sender;
             mainWindow.Loaded -= MainWindow_Loaded;
             EnterLicense();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            licenseWindow = null;
         }
     }
 }

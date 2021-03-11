@@ -11,8 +11,7 @@
     Width="300"
     Height="300"
     d:DataContext="{d:DesignInstance vm:MainViewModel}"
-    AllowsTransparency="False"
-    Background="{DynamicResource PrimaryBackgroundSolidColorBrush}"
+    Background="{DynamicResource WindowBlurBackgroundSolidColorBrush}"
     ResizeMode="NoResize"
     Style="{StaticResource ChromelessWindowStyle}"
     WindowStartupLocation="CenterOwner"
@@ -20,6 +19,11 @@
 
     <Window.Resources>
         <c:DateToRelativeStringConverter x:Key="DateToRelativeStringConverter" />
+        <DataTemplate x:Key="ErrorDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
+            <StackPanel>
+                <Label Content="Error while getting license status" />
+            </StackPanel>
+        </DataTemplate>
         <DataTemplate x:Key="TrialDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
             <StackPanel>
                 <Label Content="Trial" />
@@ -95,6 +99,9 @@
                                             </ContentPresenter.ContentTemplate>
                                         </ContentPresenter>
                                         <ControlTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Status}" Value="Error">
+                                                <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource ErrorDataTemplate}" />
+                                            </DataTrigger>
                                             <DataTrigger Binding="{Binding Status}" Value="Trial">
                                                 <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource TrialDataTemplate}" />
                                             </DataTrigger>
