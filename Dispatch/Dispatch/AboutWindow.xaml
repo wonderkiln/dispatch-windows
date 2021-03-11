@@ -9,7 +9,7 @@
     xmlns:vm="clr-namespace:Dispatch.ViewModels"
     Title="About Dispatch"
     Width="300"
-    Height="300"
+    Height="250"
     d:DataContext="{d:DesignInstance vm:MainViewModel}"
     Background="{DynamicResource WindowBlurBackgroundSolidColorBrush}"
     ResizeMode="NoResize"
@@ -21,12 +21,12 @@
         <c:DateToRelativeStringConverter x:Key="DateToRelativeStringConverter" />
         <DataTemplate x:Key="ErrorDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
             <StackPanel>
-                <Label Content="Error while getting license status" />
+                <Label Content="Error while getting license status" Foreground="{DynamicResource ErrorSolidColorBrush}" />
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="TrialDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
             <StackPanel>
-                <Label Content="Trial" />
+                <Label Content="Trial" FontSize="16" />
                 <Label Opacity="0.5">
                     <TextBlock>
                         <Run Text="Expires in" />
@@ -35,13 +35,16 @@
                 </Label>
                 <Button
                     Margin="0,8,0,0"
+                    Padding="8,4"
+                    HorizontalAlignment="Left"
                     Command="{Binding EnterLicenseCommand}"
-                    Content="Enter License" />
+                    Content="Enter License"
+                    FontSize="13" />
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="LicenseDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
             <StackPanel>
-                <Label Content="License" />
+                <Label Content="License" FontSize="16" />
                 <Label Opacity="0.5">
                     <TextBlock>
                         <Run Text="Expires in" />
@@ -50,18 +53,24 @@
                 </Label>
                 <Button
                     Margin="0,8,0,0"
+                    Padding="8,4"
+                    HorizontalAlignment="Left"
                     Command="{Binding RemoveLicenseCommand}"
-                    Content="Unlink Computer" />
+                    Content="Unlink Computer"
+                    FontSize="13" />
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="LicenseExpiredDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
             <StackPanel>
-                <Label Content="License Expired" />
+                <Label Content="License Expired" FontSize="16" />
                 <Label Content="You can still use this major version only of the app" Opacity="0.5" />
                 <Button
                     Margin="0,8,0,0"
+                    Padding="8,4"
+                    HorizontalAlignment="Left"
                     Command="{Binding RemoveLicenseCommand}"
-                    Content="Unlink Computer" />
+                    Content="Unlink Computer"
+                    FontSize="13" />
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
@@ -82,7 +91,7 @@
             <Image
                 Width="36"
                 Height="36"
-                VerticalAlignment="Center"
+                VerticalAlignment="Top"
                 Source="{x:Static h:Icons.Icon}" />
             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                 <Label Content="{x:Static h:Constants.APP_NAME}" FontSize="16" />

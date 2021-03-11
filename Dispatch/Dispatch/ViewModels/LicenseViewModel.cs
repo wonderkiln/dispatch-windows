@@ -26,15 +26,20 @@ namespace Dispatch.ViewModels
             {
                 device = value;
                 Notify();
-                Notify("Status");
             }
         }
 
+        private DeviceStatus.LicenseStatus status = DeviceStatus.LicenseStatus.None;
         public DeviceStatus.LicenseStatus Status
         {
             get
             {
-                return Device?.Status ?? DeviceStatus.LicenseStatus.Error;
+                return status;
+            }
+            set
+            {
+                status = value;
+                Notify();
             }
         }
 
@@ -88,13 +93,14 @@ namespace Dispatch.ViewModels
             {
                 // TODO: Load from cache?
                 Device = await client.GetDeviceStatus();
+                Status = Device.Status;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
 
-                // If there is a fetch error then delete the device, it will default to error status
                 Device = null;
+                Status = DeviceStatus.LicenseStatus.Error;
             }
 
             InstallTrialCommand.IsExecutable = Status == DeviceStatus.LicenseStatus.None;
