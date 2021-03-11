@@ -87,6 +87,11 @@
                             <Setter TargetName="Minimize" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="Restore" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="Maximize" Property="Visibility" Value="Collapsed" />
+                            <Setter Property="WindowChrome.WindowChrome">
+                                <Setter.Value>
+                                    <WindowChrome CaptionHeight="40" ResizeBorderThickness="0" />
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
