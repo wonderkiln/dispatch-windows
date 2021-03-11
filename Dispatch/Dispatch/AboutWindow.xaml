@@ -9,7 +9,7 @@
     xmlns:vm="clr-namespace:Dispatch.ViewModels"
     Title="About Dispatch"
     Width="300"
-    Height="400"
+    Height="300"
     d:DataContext="{d:DesignInstance vm:MainViewModel}"
     AllowsTransparency="False"
     Background="{DynamicResource PrimaryBackgroundSolidColorBrush}"
@@ -20,6 +20,46 @@
 
     <Window.Resources>
         <c:DateToRelativeStringConverter x:Key="DateToRelativeStringConverter" />
+        <DataTemplate x:Key="TrialDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
+            <StackPanel>
+                <Label Content="Trial" />
+                <Label Opacity="0.5">
+                    <TextBlock>
+                        <Run Text="Expires in" />
+                        <Run Text="{Binding Device.Device.ExpiresAt, Converter={StaticResource DateToRelativeStringConverter}}" />
+                    </TextBlock>
+                </Label>
+                <Button
+                    Margin="0,8,0,0"
+                    Command="{Binding EnterLicenseCommand}"
+                    Content="Enter License" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="LicenseDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
+            <StackPanel>
+                <Label Content="License" />
+                <Label Opacity="0.5">
+                    <TextBlock>
+                        <Run Text="Expires in" />
+                        <Run Text="{Binding Device.Device.ExpiresAt, Converter={StaticResource DateToRelativeStringConverter}}" />
+                    </TextBlock>
+                </Label>
+                <Button
+                    Margin="0,8,0,0"
+                    Command="{Binding RemoveLicenseCommand}"
+                    Content="Unlink Computer" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="LicenseExpiredDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
+            <StackPanel>
+                <Label Content="License Expired" />
+                <Label Content="You can still use this major version only of the app" Opacity="0.5" />
+                <Button
+                    Margin="0,8,0,0"
+                    Command="{Binding RemoveLicenseCommand}"
+                    Content="Unlink Computer" />
+            </StackPanel>
+        </DataTemplate>
     </Window.Resources>
 
     <StackPanel
@@ -43,12 +83,34 @@
             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                 <Label Content="{x:Static h:Constants.APP_NAME}" FontSize="16" />
                 <Label Content="{x:Static h:Constants.VERSION_STRING}" Opacity="0.5" />
-                <Label Content="{Binding License.Device.Status}" Opacity="0.5" />
-                <Label Content="{Binding License.Device.Device.ExpiresAt, Converter={StaticResource DateToRelativeStringConverter}}" Opacity="0.5" />
-                <Button Command="{Binding License.InstallTrialCommand}">Trial</Button>
-                <TextBox x:Name="LicenseTextBox" />
-                <Button Command="{Binding License.InstallLicenseCommand}" CommandParameter="{Binding Text, ElementName=LicenseTextBox}">License</Button>
-                <Button Command="{Binding License.RemoveLicenseCommand}">Remove License</Button>
+                <ContentControl Margin="0,12,0,0" DataContext="{Binding License}">
+                    <ContentControl.Style>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ContentControl">
+                                        <ContentPresenter x:Name="Presenter" Content="{Binding}">
+                                            <ContentPresenter.ContentTemplate>
+                                                <DataTemplate />
+                                            </ContentPresenter.ContentTemplate>
+                                        </ContentPresenter>
+                                        <ControlTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Status}" Value="Trial">
+                                                <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource TrialDataTemplate}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Status}" Value="License">
+                                                <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource LicenseDataTemplate}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Status}" Value="LicenseExpired">
+                                                <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource LicenseExpiredDataTemplate}" />
+                                            </DataTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
             </StackPanel>
         </Grid>
     </StackPanel>

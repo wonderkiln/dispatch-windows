@@ -23,20 +23,20 @@
                 </ContentPresenter.ContentTemplate>
             </ContentPresenter>
             <ControlTemplate.Triggers>
-                <DataTrigger Binding="{Binding Device.Status}" Value="Trial">
+                <DataTrigger Binding="{Binding Status}" Value="Trial">
                     <Setter TargetName="Presenter" Property="ContentTemplate">
                         <Setter.Value>
                             <DataTemplate>
-                                <Button Padding="12,4">
+                                <Button Padding="12,4" Command="{Binding EnterLicenseCommand}">
                                     <TextBlock>
-                                        <Run Text="Trial (" /><Run Text="{Binding Device.Device.ExpiresAt, Converter={StaticResource DateToRelativeStringConverter}}" /><Run Text=")" />
+                                        <Run Text="Trial (Expires in " /><Run Text="{Binding Device.Device.ExpiresAt, Converter={StaticResource DateToRelativeStringConverter}}" /><Run Text=")" />
                                     </TextBlock>
                                 </Button>
                             </DataTemplate>
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Device.Status}" Value="LicenseExpired">
+                <DataTrigger Binding="{Binding Status}" Value="LicenseExpired">
                     <Setter TargetName="Presenter" Property="ContentTemplate">
                         <Setter.Value>
                             <DataTemplate>
