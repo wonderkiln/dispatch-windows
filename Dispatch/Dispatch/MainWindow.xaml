@@ -96,7 +96,6 @@
             <RowDefinition Height="40" />
             <RowDefinition Height="40" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="40" />
         </Grid.RowDefinitions>
         <controls:DPTabListBox
             x:Name="Tabs"
@@ -219,19 +218,6 @@
                 PanelContent="{Binding SidebarContent}">
                 <f:TabView DataContext="{Binding SelectedTab}" />
             </controls:DPSideView>
-        </Border>
-        <Border
-            Grid.Row="3"
-            Grid.ColumnSpan="2"
-            Padding="16,0"
-            Style="{StaticResource StatusBarBackgroundBorderStyle}">
-            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                <f:LicenseView
-                    Margin="0,0,12,0"
-                    VerticalAlignment="Center"
-                    DataContext="{Binding License}" />
-                <f:UpdateView VerticalAlignment="Center" DataContext="{Binding Update}" />
-            </StackPanel>
         </Border>
     </Grid>
 </Window>
