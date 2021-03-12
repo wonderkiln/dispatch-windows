@@ -96,10 +96,8 @@ namespace Dispatch.Controls
                     passwordBox.PART_ContentHost.Password = password;
                 }
             }
-            else
-            {
-                passwordBox.passwordChangedByMe = false;
-            }
+
+            passwordBox.passwordChangedByMe = false;
 
             passwordBox.SetValue(IsPlaceholderShownPropertyKey, password == null || password.Length == 0);
         }
@@ -175,12 +173,14 @@ namespace Dispatch.Controls
         private void PART_ButtonPassword_Checked(object sender, RoutedEventArgs e)
         {
             PART_ContentHostVisible.Text = Password;
+            passwordChangedByMe = false;
             SetValue(IsPasswordShownPropertyKey, true);
         }
 
         private void PART_ButtonPassword_Unchecked(object sender, RoutedEventArgs e)
         {
             PART_ContentHost.Password = Password;
+            passwordChangedByMe = false;
             SetValue(IsPasswordShownPropertyKey, false);
         }
     }
