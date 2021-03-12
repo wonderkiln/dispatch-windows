@@ -1,5 +1,5 @@
 ﻿<Window
-    x:Class="Dispatch.View.Windows.MainWindow"
+    x:Class="Dispatch.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:Dispatch.Controls"
@@ -7,7 +7,7 @@
     xmlns:dd="urn:gong-wpf-dragdrop"
     xmlns:f="clr-namespace:Dispatch.Fragments"
     xmlns:h="clr-namespace:Dispatch.Helpers"
-    xmlns:local="clr-namespace:Dispatch.View.Windows"
+    xmlns:local="clr-namespace:Dispatch"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:s="clr-namespace:System;assembly=mscorlib"
     xmlns:vm="clr-namespace:Dispatch.ViewModels"
@@ -96,7 +96,6 @@
             <RowDefinition Height="40" />
             <RowDefinition Height="40" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="40" />
         </Grid.RowDefinitions>
         <controls:DPTabListBox
             x:Name="Tabs"
@@ -215,23 +214,10 @@
             Style="{StaticResource PrimaryBackgroundBorderStyle}">
             <controls:DPSideView
                 Title="{Binding SidebarTitle}"
-                IsOpen="{Binding IsSidebarOpen, Mode=TwoWay}"
+                IsOpen="{Binding IsSidebarOpen}"
                 PanelContent="{Binding SidebarContent}">
                 <f:TabView DataContext="{Binding SelectedTab}" />
             </controls:DPSideView>
-        </Border>
-        <Border
-            Grid.Row="3"
-            Grid.ColumnSpan="2"
-            Padding="16,0"
-            Style="{StaticResource StatusBarBackgroundBorderStyle}">
-            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                <f:LicenseView
-                    Margin="0,0,12,0"
-                    VerticalAlignment="Center"
-                    DataContext="{Binding License}" />
-                <f:UpdateView VerticalAlignment="Center" DataContext="{Binding Update}" />
-            </StackPanel>
         </Border>
     </Grid>
 </Window>

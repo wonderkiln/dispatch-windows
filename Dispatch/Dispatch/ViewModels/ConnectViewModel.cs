@@ -1,4 +1,5 @@
-﻿using Dispatch.Helpers;
+﻿using Dispatch.Fragments;
+using Dispatch.Helpers;
 using Dispatch.Service.Client;
 using Dispatch.Service.Models;
 using Newtonsoft.Json.Linq;
@@ -207,14 +208,20 @@ namespace Dispatch.ViewModels
             var connectionInfo = CreateConnectionInfo(ConnectionType, Connection);
             if (connectionInfo == null) return;
 
-            var item = new Favorite
-            {
-                Connection = ConnectionType,
-                Title = connectionInfo.ToString(),
-                ConnectionInfo = connectionInfo,
-            };
+            var view = new FavoriteNameView();
+            var modal = new ModalWindow("New Favorite", view);
 
-            FavoritesViewModel.Items.Add(item);
+            if (modal.ShowDialog() == true)
+            {
+                var item = new Favorite
+                {
+                    Title = view.Name,
+                    Connection = ConnectionType,
+                    ConnectionInfo = connectionInfo,
+                };
+
+                FavoritesViewModel.Items.Add(item);
+            }
         }
 
         private void ShowErrorMessage(Exception ex)

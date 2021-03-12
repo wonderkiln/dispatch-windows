@@ -1,4 +1,5 @@
 ﻿using Dispatch.Service.Client;
+using System;
 
 namespace Dispatch.Service.Models
 {
@@ -15,6 +16,8 @@ namespace Dispatch.Service.Models
         public ResourceType Type { get; set; }
 
         public long? Size { get; set; }
+
+        public DateTime? Modified { get; set; }
 
         public Resource(IClient client, string path, string name)
         {

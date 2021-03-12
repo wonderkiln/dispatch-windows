@@ -73,13 +73,40 @@ namespace Dispatch.ViewModels
                 dropInfo.DropTargetAdorner = null;
                 dropInfo.Effects = DragDropEffects.Copy;
             }
+            // Windows Explorer drop
+            else if (dropInfo.Data is DataObject)
+            {
+                // Don't allow Windows Explorer drag to local client
+                if (viewModel.Client is LocalClient)
+                {
+                    return;
+                }
+
+                dropInfo.DropTargetAdorner = null;
+                dropInfo.Effects = DragDropEffects.Copy;
+            }
         }
 
-        public void Drop(IDropInfo dropInfo)
+        public async void Drop(IDropInfo dropInfo)
         {
             if (dropInfo.Data is IEnumerable<Resource> resources)
             {
                 viewModel.Transfer(resources.ToArray());
+            }
+            else if (dropInfo.Data is DataObject dataObject)
+            {
+                var client = new LocalClient();
+                var files = dataObject.GetFileDropList();
+
+                var localResources = new List<Resource>();
+
+                foreach (var file in files)
+                {
+                    var resource = await client.FetchResource(file);
+                    localResources.Add(resource);
+                }
+
+                viewModel.Transfer(localResources.ToArray());
             }
         }
     }

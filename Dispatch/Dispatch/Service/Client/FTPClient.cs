@@ -62,6 +62,7 @@ namespace Dispatch.Service.Client
                     {
                         Type = ResourceType.File,
                         Size = item.Size,
+                        Modified = item.Modified,
                     };
             }
         }

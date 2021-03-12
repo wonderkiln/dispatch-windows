@@ -14,7 +14,7 @@ namespace Dispatch.Controls
             set { SetValue(TitleProperty, value); }
         }
 
-        public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register("IsOpen", typeof(bool), typeof(DPSideView), new PropertyMetadata(false));
+        public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register("IsOpen", typeof(bool), typeof(DPSideView), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
         public bool IsOpen
         {
             get { return (bool)GetValue(IsOpenProperty); }

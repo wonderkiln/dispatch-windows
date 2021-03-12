@@ -153,6 +153,29 @@
         </Setter>
     </Style>
 
+    <Style TargetType="PasswordBox">
+        <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundSolidColorBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource NormalTextSolidColorBrush}" />
+        <!--<Setter Property="SelectionBrush" Value="{DynamicResource SelectionOnPrimaryBackgroundSolidColorBrush}" />-->
+        <Setter Property="BorderBrush" Value="{DynamicResource SeparatorSolidColorBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="PasswordBox">
+                    <Border
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="2">
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="0" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="ProgressBar">
         <Setter Property="Background" Value="{DynamicResource SelectionOnPanelBackgroundSolidColorBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryAccentSolidColorBrush}" />
@@ -690,6 +713,155 @@
         </Setter>
     </Style>
 
+    <Style TargetType="cc:DPPasswordBox">
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundSolidColorBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SeparatorSolidColorBrush}" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="cc:DPPasswordBox">
+                    <Grid>
+                        <Border
+                            x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                            <Grid Margin="{TemplateBinding Padding}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="{TemplateBinding LabelSharedSizeGroup}" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    x:Name="Label"
+                                    Margin="0,0,12,0"
+                                    VerticalAlignment="Center"
+                                    Content="{TemplateBinding Label}"
+                                    FontSize="{TemplateBinding FontSize}"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    Opacity="0.6" />
+                                <Label
+                                    x:Name="Placeholder"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Content="{TemplateBinding Placeholder}"
+                                    FontSize="{TemplateBinding FontSize}"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    Opacity="0.5" />
+                                <PasswordBox
+                                    x:Name="PART_ContentHost"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center">
+                                    <PasswordBox.Style>
+                                        <Style BasedOn="{StaticResource {x:Type PasswordBox}}" TargetType="PasswordBox">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="PasswordBox">
+                                                        <ScrollViewer x:Name="PART_ContentHost" />
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </PasswordBox.Style>
+                                </PasswordBox>
+                                <TextBox
+                                    x:Name="PART_ContentHostVisible"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Visibility="Collapsed">
+                                    <TextBox.Style>
+                                        <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="TextBox">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="TextBox">
+                                                        <ScrollViewer x:Name="PART_ContentHost" />
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                                <ToggleButton
+                                    x:Name="PART_ButtonPassword"
+                                    Grid.Column="2"
+                                    Content="SH">
+                                    <ToggleButton.Style>
+                                        <Style TargetType="ToggleButton">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ToggleButton">
+                                                        <Border Background="Transparent">
+                                                            <Label
+                                                                x:Name="Icon"
+                                                                HorizontalAlignment="Center"
+                                                                VerticalAlignment="Center"
+                                                                Content="&#xF78D;"
+                                                                FontFamily="Segoe MDL2 Assets"
+                                                                Foreground="{DynamicResource DisabledTextSolidColorBrush}" />
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsChecked" Value="True">
+                                                                <Setter TargetName="Icon" Property="Foreground" Value="{DynamicResource PrimaryAccentSolidColorBrush}" />
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ToggleButton.Style>
+                                </ToggleButton>
+                                <ContentPresenter
+                                    x:Name="TrailingView"
+                                    Grid.Column="3"
+                                    ContentSource="Trailing" />
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPlaceholderShown" Value="False">
+                            <Setter TargetName="Placeholder" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsLabelShown" Value="False">
+                            <Setter TargetName="Label" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused" Value="True" />
+                                <Condition Property="Validation.HasError" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PrimaryAccentSolidColorBrush}" />
+                            <Setter TargetName="Label" Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
+                        </MultiTrigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundSolidColorBrush}" />
+                            <Setter TargetName="Label" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="Validation.HasError" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource ErrorSolidColorBrush}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ErrorSolidColorBrush}" />
+                            <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
+                        </Trigger>
+                        <Trigger Property="Trailing" Value="{x:Null}">
+                            <Setter TargetName="TrailingView" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsPasswordShown" Value="True">
+                            <Setter TargetName="PART_ContentHost" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_ContentHostVisible" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
         <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
         <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundSolidColorBrush}" />
@@ -763,7 +935,7 @@
                             ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                             ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                             Focusable="False"
-                            IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                            IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
                             Style="{StaticResource ComboBoxToggleButton}" />
                         <Popup
                             AllowsTransparency="True"
@@ -821,6 +993,78 @@
                             <Setter Property="Foreground" Value="{DynamicResource SelectedTextSolidColorBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="cc:DPPathBarItem">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="cc:DPPathBarItem">
+                    <Border Background="{TemplateBinding Background}">
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="PART_Button">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border
+                                                        x:Name="Border"
+                                                        Background="Transparent"
+                                                        CornerRadius="2">
+                                                        <ContentPresenter Margin="4,2" VerticalAlignment="Center" />
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource SelectionOnSecondaryBackgroundSolidColorBrush}" />
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Style>
+                                <Label Content="{TemplateBinding Name}" />
+                            </Button>
+                            <Label
+                                x:Name="Delimiter"
+                                VerticalAlignment="Center"
+                                Content="&#xE76C;"
+                                FontFamily="Segoe MDL2 Assets"
+                                FontSize="8" />
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsLast" Value="True">
+                            <Setter TargetName="Delimiter" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="cc:DPPathBar">
+        <Setter Property="MinHeight" Value="28" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="cc:DPPathBar">
+                    <ScrollViewer
+                        x:Name="PART_ScrollViewer"
+                        HorizontalScrollBarVisibility="Hidden"
+                        VerticalScrollBarVisibility="Disabled">
+                        <ItemsPresenter />
+                    </ScrollViewer>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

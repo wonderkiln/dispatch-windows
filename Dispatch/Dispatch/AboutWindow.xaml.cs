@@ -1,7 +1,7 @@
 ﻿using Dispatch.Helpers;
 using System.Windows;
 
-namespace Dispatch.View.Windows
+namespace Dispatch
 {
     public partial class AboutWindow : Window
     {
