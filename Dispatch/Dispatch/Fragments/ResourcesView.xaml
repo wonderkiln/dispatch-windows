@@ -16,6 +16,7 @@
         <c:BytesToStringConverter x:Key="BytesToStringConverter" />
         <c:ResourceToIconConverter x:Key="ResourceToIconConverter" />
         <c:ListToVisibilityConverter x:Key="ListToVisibilityConverter" />
+        <c:DateToStringConverter x:Key="DateToStringConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <ContextMenu x:Key="ResourceContextMenu">
             <MenuItem
@@ -147,7 +148,7 @@
             </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Width="300">
+                    <GridViewColumn Width="280">
                         <GridViewColumn.Header>
                             <TextBlock
                                 Margin="32,0,8,0"
@@ -175,7 +176,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Width="120">
+                    <GridViewColumn Width="100">
                         <GridViewColumn.Header>
                             <TextBlock
                                 Margin="0,0,8,0"
@@ -185,6 +186,19 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Margin="-6,0,2,0" Text="{Binding Size, Converter={StaticResource BytesToStringConverter}}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="160">
+                        <GridViewColumn.Header>
+                            <TextBlock
+                                Margin="0,0,8,0"
+                                Text="Date Modified"
+                                TextTrimming="CharacterEllipsis" />
+                        </GridViewColumn.Header>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="-6,0,2,0" Text="{Binding Modified, Converter={StaticResource DateToStringConverter}}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

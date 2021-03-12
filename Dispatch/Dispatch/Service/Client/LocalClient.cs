@@ -42,6 +42,7 @@ namespace Dispatch.Service.Client
                 {
                     Type = ResourceType.File,
                     Size = fileInfo.Length,
+                    Modified = fileInfo.LastWriteTime,
                 };
             }
             else if (Directory.Exists(path))

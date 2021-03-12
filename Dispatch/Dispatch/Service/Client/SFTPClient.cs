@@ -200,6 +200,7 @@ namespace Dispatch.Service.Client
             {
                 Type = ResourceType.File,
                 Size = item.Length,
+                Modified = item.LastWriteTime,
             };
         }
 
