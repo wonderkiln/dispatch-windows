@@ -62,79 +62,67 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="140" />
         </Grid.RowDefinitions>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <ComboBox
-                Margin="40,40,40,12"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                ItemsSource="{Binding ConnectionTypes}"
-                SelectedItem="{Binding ConnectionType}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="20" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Image
-                                Width="16"
-                                Height="16"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Source="{Binding Converter={StaticResource ConnectionTypeToImageConverter}}" />
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="0,0,0,2"
-                                VerticalAlignment="Center"
-                                Text="{Binding Converter={StaticResource ConnectionTypeToStringConverter}}" />
-                        </Grid>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <ScrollViewer
-                Grid.Row="1"
-                VerticalContentAlignment="Center"
-                HorizontalScrollBarVisibility="Disabled"
-                VerticalScrollBarVisibility="Auto">
-                <StackPanel Margin="40">
-                    <Image
-                        Width="32"
-                        Height="32"
-                        HorizontalAlignment="Center"
-                        Source="{Binding ConnectionType, Converter={StaticResource ConnectionTypeToImageConverter}}" />
-                    <Label
-                        Margin="0,4,0,24"
-                        HorizontalAlignment="Center"
-                        FontSize="18">
-                        <TextBlock>
-                            <Run Text="Connect via" />
-                            <Run Text="{Binding ConnectionType, Converter={StaticResource ConnectionTypeToStringConverter}}" />
-                        </TextBlock>
-                    </Label>
-                    <ContentPresenter Content="{Binding Connection}" ContentTemplateSelector="{StaticResource ConnectViewDataTemplateSelector}" />
-                    <StackPanel
-                        Margin="0,12,0,0"
-                        HorizontalAlignment="Right"
-                        Orientation="Horizontal">
-                        <Button
-                            Margin="0,0,12,0"
-                            Padding="12,6"
-                            Background="{DynamicResource SelectionOnSecondaryBackgroundSolidColorBrush}"
-                            Command="{Binding SaveAsFavoriteCommand}"
-                            Content="Add to favorites"
-                            Style="{StaticResource SimpleButtonStyle}" />
-                        <Button
-                            cc:DPButtonExtension.IsLoading="{Binding IsConnecting}"
-                            Command="{Binding ConnectCommand}"
-                            Content="Connect" />
-                    </StackPanel>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="40" VerticalAlignment="Center">
+                <Image
+                    Width="32"
+                    Height="32"
+                    HorizontalAlignment="Center"
+                    Source="{Binding ConnectionType, Converter={StaticResource ConnectionTypeToImageConverter}}" />
+                <Label
+                    Margin="0,4,0,24"
+                    HorizontalAlignment="Center"
+                    FontSize="18">
+                    <TextBlock>
+                        <Run Text="Connect via" />
+                        <Run Text="{Binding ConnectionType, Converter={StaticResource ConnectionTypeToStringConverter}}" />
+                    </TextBlock>
+                </Label>
+                <ComboBox
+                    Margin="0,0,0,6"
+                    ItemsSource="{Binding ConnectionTypes}"
+                    SelectedItem="{Binding ConnectionType}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image
+                                    Width="16"
+                                    Height="16"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Source="{Binding Converter={StaticResource ConnectionTypeToImageConverter}}" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="0,0,0,2"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Converter={StaticResource ConnectionTypeToStringConverter}}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <ContentPresenter Content="{Binding Connection}" ContentTemplateSelector="{StaticResource ConnectViewDataTemplateSelector}" />
+                <StackPanel
+                    Margin="0,12,0,0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <Button
+                        Margin="0,0,12,0"
+                        Padding="12,6"
+                        Background="{DynamicResource SelectionOnSecondaryBackgroundSolidColorBrush}"
+                        Command="{Binding SaveAsFavoriteCommand}"
+                        Content="Add to favorites"
+                        Style="{StaticResource SimpleButtonStyle}" />
+                    <Button
+                        cc:DPButtonExtension.IsLoading="{Binding IsConnecting}"
+                        Command="{Binding ConnectCommand}"
+                        Content="Connect" />
                 </StackPanel>
-            </ScrollViewer>
-        </Grid>
+            </StackPanel>
+        </ScrollViewer>
         <ListBox
             Grid.Row="1"
             Padding="16"
