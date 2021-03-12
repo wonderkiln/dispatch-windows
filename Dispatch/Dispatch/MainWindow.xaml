@@ -214,7 +214,7 @@
             Style="{StaticResource PrimaryBackgroundBorderStyle}">
             <controls:DPSideView
                 Title="{Binding SidebarTitle}"
-                IsOpen="{Binding IsSidebarOpen, Mode=TwoWay}"
+                IsOpen="{Binding IsSidebarOpen}"
                 PanelContent="{Binding SidebarContent}">
                 <f:TabView DataContext="{Binding SelectedTab}" />
             </controls:DPSideView>

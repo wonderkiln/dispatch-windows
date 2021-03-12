@@ -43,18 +43,15 @@
             Margin="0,0,0,6"
             Label="User:"
             LabelSharedSizeGroup="Label"
-            Placeholder="user">
-            <cc:DPTextBox.Text>
-                <Binding Path="Username" UpdateSourceTrigger="PropertyChanged" />
-            </cc:DPTextBox.Text>
-        </cc:DPTextBox>
-        <cc:DPTextBox
+            Placeholder="user"
+            Text="{Binding Username, ValidatesOnNotifyDataErrors=True}" />
+        <cc:DPPasswordBox
             x:Name="PasswordTextBox"
             Margin="0,0,0,6"
             Label="Password:"
             LabelSharedSizeGroup="Label"
+            Password="{Binding Password, ValidatesOnNotifyDataErrors=True}"
             Placeholder="password"
-            Text="{Binding Password, ValidatesOnNotifyDataErrors=True}"
             Visibility="{Binding UseKey, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
         <cc:DPTextBox
             x:Name="KeyTextBox"

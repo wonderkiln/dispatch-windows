@@ -90,6 +90,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\DPPasswordBox.cs" />
     <Compile Include="Controls\DPSideView.cs" />
     <Compile Include="Controls\DPSpinner.cs" />
     <Compile Include="Controls\DPTabListBox.cs" />
