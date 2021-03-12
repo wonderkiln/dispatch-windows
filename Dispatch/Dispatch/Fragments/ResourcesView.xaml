@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:a="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
     xmlns:c="clr-namespace:Dispatch.Converters"
+    xmlns:cc="clr-namespace:Dispatch.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dd="urn:gong-wpf-dragdrop"
     xmlns:local="clr-namespace:Dispatch.Fragments"
@@ -97,12 +98,11 @@
                     FontFamily="Segoe MDL2 Assets"
                     Style="{StaticResource SimpleButtonStyle}" />
             </StackPanel>
-            <TextBox
+            <cc:DPPathBar
                 Grid.Column="1"
                 Margin="4,0"
                 VerticalContentAlignment="Center"
-                KeyDown="TextBox_KeyUp"
-                Text="{Binding DisplayPath, UpdateSourceTrigger=Explicit}" />
+                Path="{Binding DisplayPath}" />
             <Button
                 Grid.Column="2"
                 Width="32"
