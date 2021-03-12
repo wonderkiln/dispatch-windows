@@ -58,6 +58,9 @@
     <Reference Include="GongSolutions.WPF.DragDrop, Version=2.0.0.0, Culture=neutral, PublicKeyToken=91f1945125b7a587, processorArchitecture=MSIL">
       <HintPath>..\packages\gong-wpf-dragdrop.2.3.2\lib\net47\GongSolutions.WPF.DragDrop.dll</HintPath>
     </Reference>
+    <Reference Include="Humanizer, Version=2.8.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Humanizer.Core.2.8.26\lib\netstandard2.0\Humanizer.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -95,7 +98,11 @@
     <Compile Include="Converters\BytesToStringConverter.cs" />
     <Compile Include="Converters\ConnectionTypeToImageConverter.cs" />
     <Compile Include="Converters\ConnectionTypeToStringConverter.cs" />
+    <Compile Include="Converters\DateToRelativeStringConverter.cs" />
     <Compile Include="Converters\ThemeToIconConverter.cs" />
+    <Compile Include="Fragments\LicenseView.xaml.cs">
+      <DependentUpon>LicenseView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Fragments\UpdateView.xaml.cs">
       <DependentUpon>UpdateView.xaml</DependentUpon>
     </Compile>
@@ -113,12 +120,16 @@
     <Compile Include="Helpers\ResourceQueue.cs" />
     <Compile Include="Helpers\ResourceWatcher.cs" />
     <Compile Include="Helpers\WindowHelper.cs" />
+    <Compile Include="LicenseWindow.xaml.cs">
+      <DependentUpon>LicenseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Service\API\APIClient.cs" />
     <Compile Include="Service\Client\FTPClient.cs" />
     <Compile Include="Service\Client\SFTPClient.cs" />
     <Compile Include="Service\Licensing\Fingerprint.cs" />
-    <Compile Include="Service\Licensing\LicenseApi.cs" />
-    <Compile Include="Service\Licensing\LicenseManager.cs" />
-    <Compile Include="Service\Licensing\LicenseWriter.cs" />
+    <Compile Include="ViewModels\LicenseViewModel.cs" />
+    <Compile Include="Service\Models\Device.cs" />
+    <Compile Include="Service\Models\DeviceStatus.cs" />
     <Compile Include="Service\Models\License.cs" />
     <Compile Include="Service\Models\Bookmark.cs" />
     <Compile Include="Service\Models\FTPConnection.cs" />
@@ -171,7 +182,15 @@
       <DependentUpon>TabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\WindowsThemeWatcher.cs" />
+    <Page Include="Fragments\LicenseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Fragments\UpdateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LicenseWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,32 +1,29 @@
-﻿using Dispatch.Helpers;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 
 namespace Dispatch.Service.Models
 {
     public class License
     {
-        public string Id { get; set; }
+        [JsonProperty("createdAt")]
+        [JsonConverter(typeof(IsoDateTimeConverter))]
+        public DateTime CreatedAt { get; set; }
 
-        public DateTime Expiration { get; set; }
+        [JsonProperty("expiresAt")]
+        [JsonConverter(typeof(IsoDateTimeConverter))]
+        public DateTime ExpiresAt { get; set; }
 
+        [JsonProperty("key")]
+        public string Key { get; set; }
+
+        [JsonProperty("majorVersion")]
         public int MajorVersion { get; set; }
 
-        public bool IsTrial { get; set; }
+        [JsonProperty("numberOfComputers")]
+        public int NumberOfComputers { get; set; }
 
-        public bool IsExpired
-        {
-            get
-            {
-                return DateTime.Now > Expiration;
-            }
-        }
-
-        public bool IsSameMajorVersion
-        {
-            get
-            {
-                return Constants.VERSION.Major == MajorVersion;
-            }
-        }
+        [JsonProperty("isExpired")]
+        public bool IsExpired { get; set; }
     }
 }

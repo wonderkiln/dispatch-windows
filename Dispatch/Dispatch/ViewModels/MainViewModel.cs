@@ -47,6 +47,8 @@ namespace Dispatch.ViewModels
 
         public UpdateViewModel Update { get; } = new UpdateViewModel();
 
+        public LicenseViewModel License { get; } = new LicenseViewModel();
+
         public ObservableCollection<TabViewModel> OpenTabs { get; } = new ObservableCollection<TabViewModel>();
 
         private TabViewModel selectedTab;

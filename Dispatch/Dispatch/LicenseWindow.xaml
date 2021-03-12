@@ -1,0 +1,67 @@
+﻿<Window
+    x:Class="Dispatch.LicenseWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:h="clr-namespace:Dispatch.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Dispatch.ViewModels"
+    Title="About Dispatch"
+    Width="600"
+    Height="400"
+    d:DataContext="{d:DesignInstance vm:LicenseViewModel}"
+    Background="{DynamicResource WindowBlurBackgroundSolidColorBrush}"
+    Closing="Window_Closing"
+    Loaded="Window_Loaded"
+    ResizeMode="NoResize"
+    Style="{StaticResource ChromelessWindowStyle}"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+
+    <StackPanel Margin="24" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal">
+            <Image
+                Width="36"
+                Height="36"
+                VerticalAlignment="Center"
+                Source="{x:Static h:Icons.Icon}" />
+            <Label
+                Margin="8,0,0,0"
+                VerticalAlignment="Center"
+                Content="{x:Static h:Constants.APP_NAME}"
+                FontSize="18" />
+        </StackPanel>
+        <Grid Margin="0,32,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="48" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel VerticalAlignment="Center">
+                <Label Content="Start your 30-day free trial" />
+                <Button
+                    Margin="0,12,0,0"
+                    Padding="12,6"
+                    HorizontalAlignment="Left"
+                    Command="{Binding InstallTrialCommand}"
+                    Content="Start Trial" />
+            </StackPanel>
+            <Label
+                Grid.Column="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="or" />
+            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                <Label Content="If you have a license key, enter it below" />
+                <TextBox x:Name="LicenseTextBox" Margin="0,12,0,0" />
+                <Button
+                    Margin="0,12,0,0"
+                    Padding="12,6"
+                    HorizontalAlignment="Left"
+                    Command="{Binding InstallLicenseCommand}"
+                    CommandParameter="{Binding Text, ElementName=LicenseTextBox}"
+                    Content="Use License" />
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</Window>

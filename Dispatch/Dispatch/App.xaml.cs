@@ -1,6 +1,4 @@
-﻿
-using Dispatch.Helpers;
-using Dispatch.Service.Licensing;
+﻿using Dispatch.Helpers;
 using Dispatch.Service.Models;
 using System;
 using System.Windows;
@@ -44,18 +42,6 @@ namespace Dispatch
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            var licenseManager = LicenseManager.Shared;
-            var status = licenseManager.GetLicenseStatus();
-
-            Console.WriteLine(status);
-
-            if (status == LicenseManager.Status.None)
-            {
-                licenseManager.InstallTrialLicense();
-            }
-
-            Console.WriteLine(licenseManager.GetLicenseStatus());
-
             var settings = WindowHelper.SettingsStorage.Load(new Settings());
 
             if (settings.Theme == AppTheme.Auto)

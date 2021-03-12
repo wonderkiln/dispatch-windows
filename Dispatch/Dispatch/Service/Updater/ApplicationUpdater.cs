@@ -23,18 +23,12 @@ namespace Dispatch.Service.Updater
 
         public async Task<Update> CheckForUpdate()
         {
-#if DEBUG
-            return null;
-#endif
-
-#pragma warning disable CS0162 // Unreachable code detected
             var update = await updater.GetLatestUpdate();
-#pragma warning restore CS0162 // Unreachable code detected
             if (update.Version > Constants.VERSION) return update;
             return null;
         }
 
-        public async void DownloadAndInstall()
+        public async Task DownloadAndInstall()
         {
             var client = new WebClient();
             client.Headers.Add(HttpRequestHeader.UserAgent, Constants.APP_NAME);

@@ -58,5 +58,17 @@ namespace Dispatch.Helpers
                 return name;
             }
         }
+
+        public static string API_URL
+        {
+            get
+            {
+#if DEBUG
+                return "http://localhost:3001/api";
+#else
+                return "https://api.dispatch.wonderkiln.com/api";
+#endif
+            }
+        }
     }
 }

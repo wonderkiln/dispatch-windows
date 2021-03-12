@@ -1,23 +1,24 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 
 namespace Dispatch.Service.Models
 {
     public class Update
     {
-        public Version Version { get; }
+        [JsonProperty("createdAt")]
+        [JsonConverter(typeof(IsoDateTimeConverter))]
+        public DateTime CreatedAt { get; set; }
 
-        public string Notes { get; }
+        [JsonProperty("version")]
+        public Version Version { get; set; }
 
-        public long Size { get; }
+        public string Notes { get; set; }
 
-        public Uri Link { get; }
+        [JsonProperty("url")]
+        public Uri Link { get; set; }
 
-        public Update(Version version, string notes, long size, Uri link)
-        {
-            Version = version;
-            Notes = notes;
-            Size = size;
-            Link = link;
-        }
+        [JsonProperty("size")]
+        public long Size { get; set; }
     }
 }
