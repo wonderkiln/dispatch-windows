@@ -1,5 +1,4 @@
-﻿using Dispatch.View.Windows;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 

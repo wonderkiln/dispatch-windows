@@ -101,6 +101,9 @@
     <Compile Include="Converters\DateToRelativeStringConverter.cs" />
     <Compile Include="Converters\DateToStringConverter.cs" />
     <Compile Include="Converters\ThemeToIconConverter.cs" />
+    <Compile Include="Fragments\FavoriteNameView.xaml.cs">
+      <DependentUpon>FavoriteNameView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Fragments\LicenseView.xaml.cs">
       <DependentUpon>LicenseView.xaml</DependentUpon>
     </Compile>
@@ -123,6 +126,9 @@
     <Compile Include="Helpers\WindowHelper.cs" />
     <Compile Include="LicenseWindow.xaml.cs">
       <DependentUpon>LicenseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ModalWindow.xaml.cs">
+      <DependentUpon>ModalWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Service\API\APIClient.cs" />
     <Compile Include="Service\Client\FTPClient.cs" />
@@ -183,6 +189,10 @@
       <DependentUpon>TabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\WindowsThemeWatcher.cs" />
+    <Page Include="Fragments\FavoriteNameView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Fragments\LicenseView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -192,6 +202,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LicenseWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ModalWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
