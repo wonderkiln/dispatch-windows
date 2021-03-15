@@ -41,15 +41,14 @@
                 </DataTemplate>
                 <DataTemplate x:Key="ErrorUpdateDataTemplate">
                     <StackPanel>
+                        <Label Content="Update Error" FontSize="16" />
                         <Label>
-                            <TextBlock TextWrapping="Wrap">
-                                <Run Text="Error while updating:" />
-                                <Run Text="{Binding ErrorMessage, Mode=OneWay}" />
-                                <LineBreak />
-                                <Hyperlink Command="{Binding ContactUsCommand}">
-                                    <Run Text="Contact us" />
-                                </Hyperlink>
-                            </TextBlock>
+                            <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
+                        </Label>
+                        <Label>
+                            <Hyperlink Command="{Binding ContactUsCommand}">
+                                <Run Text="Contact us" />
+                            </Hyperlink>
                         </Label>
                     </StackPanel>
                 </DataTemplate>
