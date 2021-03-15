@@ -1,6 +1,7 @@
 ﻿using Dispatch.Helpers;
 using Dispatch.Service.Updater;
 using System;
+using System.Diagnostics;
 using System.Windows;
 
 namespace Dispatch.ViewModels
@@ -66,12 +67,15 @@ namespace Dispatch.ViewModels
         }
 
         public RelayCommand DownloadAndInstallCommand { get; private set; }
+        public RelayCommand ContactUsCommand { get; private set; }
 
         private readonly ApplicationUpdater applicationUpdater;
 
         public UpdateViewModel()
         {
             DownloadAndInstallCommand = new RelayCommand(DownloadAndInstall);
+            ContactUsCommand = new RelayCommand(ContactUs);
+
             applicationUpdater = new ApplicationUpdater(new UpdateProvider(), this);
             CheckForUpdate();
         }
@@ -88,9 +92,8 @@ namespace Dispatch.ViewModels
             }
             catch (Exception ex)
             {
-                // No need to show the error when checking for update
-                Console.WriteLine(ex.Message);
-                Status = StatusType.None;
+                ErrorMessage = ex.Message;
+                Status = StatusType.Error;
             }
         }
 
@@ -115,6 +118,11 @@ namespace Dispatch.ViewModels
         public void Report(double value)
         {
             Progress = value;
+        }
+
+        private void ContactUs()
+        {
+            Process.Start("mailto:support@wonderkiln.com");
         }
     }
 }
