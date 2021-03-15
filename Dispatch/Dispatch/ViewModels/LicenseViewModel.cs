@@ -43,6 +43,20 @@ namespace Dispatch.ViewModels
             }
         }
 
+        private bool isLoading = false;
+        public bool IsLoading
+        {
+            get
+            {
+                return isLoading;
+            }
+            set
+            {
+                isLoading = value;
+                Notify();
+            }
+        }
+
         public RelayCommand InstallTrialCommand { get; }
         public RelayCommand<string> InstallLicenseCommand { get; }
         public RelayCommand RemoveLicenseCommand { get; }
@@ -128,6 +142,8 @@ namespace Dispatch.ViewModels
         {
             try
             {
+                IsLoading = true;
+
                 await client.InstallTrial();
                 await Load();
             }
@@ -135,12 +151,18 @@ namespace Dispatch.ViewModels
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            finally
+            {
+                IsLoading = false;
+            }
         }
 
         private async void InstallLicense(string key)
         {
             try
             {
+                IsLoading = true;
+
                 await client.InstallLicense(key);
                 await Load();
             }
@@ -148,18 +170,28 @@ namespace Dispatch.ViewModels
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            finally
+            {
+                IsLoading = false;
+            }
         }
 
         private async void RemoveLicense()
         {
             try
             {
+                IsLoading = true;
+
                 await client.RemoveLicense(Device.Device?.License?.Key);
                 await Load();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                IsLoading = false;
             }
         }
 
