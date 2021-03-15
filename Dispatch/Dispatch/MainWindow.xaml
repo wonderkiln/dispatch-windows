@@ -12,7 +12,7 @@
     xmlns:s="clr-namespace:System;assembly=mscorlib"
     xmlns:vm="clr-namespace:Dispatch.ViewModels"
     Title="{x:Static h:Constants.APP_NAME}"
-    Width="1100"
+    Width="1200"
     Height="720"
     MinWidth="200"
     MinHeight="200"
