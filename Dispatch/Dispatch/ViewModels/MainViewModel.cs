@@ -212,9 +212,7 @@ namespace Dispatch.ViewModels
         private void OpenMore(object parameter)
         {
             SidebarTitle = "More";
-            var moreView = new MoreView();
-            moreView.OnChangeSidebar += MoreView_OnChangeSidebar;
-            SidebarContent = moreView;
+            SidebarContent = new MoreView();
         }
 
         private void MoreView_OnChangeSidebar(object sender, object e)
