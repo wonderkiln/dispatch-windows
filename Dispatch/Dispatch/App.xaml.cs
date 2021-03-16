@@ -1,4 +1,5 @@
-﻿using Dispatch.Helpers;
+﻿using Dispatch.Controls;
+using Dispatch.Helpers;
 using Dispatch.Service.Models;
 using System;
 using System.Windows;
@@ -51,6 +52,16 @@ namespace Dispatch
             else
             {
                 ChangeTheme(settings.Theme);
+            }
+
+            try
+            {
+                FileIconTheme.LoadTheme(settings.IconThemePath);
+            }
+            catch (Exception ex)
+            {
+                // TODO: If it fails, load the default
+                Console.WriteLine(ex.Message);
             }
         }
 

@@ -13,5 +13,7 @@ namespace Dispatch.Service.Models
         public Size? WindowSize { get; set; }
 
         public WindowState WindowState { get; set; }
+
+        public string IconThemePath { get; set; }
     }
 }

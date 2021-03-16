@@ -70,6 +70,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -90,6 +92,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\FileIconImage.cs" />
     <Compile Include="Controls\DPPasswordBox.cs" />
     <Compile Include="Controls\DPPathBar.cs" />
     <Compile Include="Controls\DPSideView.cs" />
@@ -102,6 +105,7 @@
     <Compile Include="Converters\ConnectionTypeToStringConverter.cs" />
     <Compile Include="Converters\DateToRelativeStringConverter.cs" />
     <Compile Include="Converters\DateToStringConverter.cs" />
+    <Compile Include="Converters\EqualConverter.cs" />
     <Compile Include="Converters\ThemeToIconConverter.cs" />
     <Compile Include="Fragments\FavoriteNameView.xaml.cs">
       <DependentUpon>FavoriteNameView.xaml</DependentUpon>
@@ -315,6 +319,9 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Themes\fluent.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
