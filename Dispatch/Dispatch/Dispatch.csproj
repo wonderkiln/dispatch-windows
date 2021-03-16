@@ -70,6 +70,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -90,6 +92,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\DPFileIconImage.cs" />
     <Compile Include="Controls\DPPasswordBox.cs" />
     <Compile Include="Controls\DPPathBar.cs" />
     <Compile Include="Controls\DPSideView.cs" />
@@ -97,11 +100,13 @@
     <Compile Include="Controls\DPTabListBox.cs" />
     <Compile Include="Controls\DPTextBox.cs" />
     <Compile Include="Controls\DPButtonExtension.cs" />
+    <Compile Include="Service\Theme\FileIconTheme.cs" />
     <Compile Include="Converters\BytesToStringConverter.cs" />
     <Compile Include="Converters\ConnectionTypeToImageConverter.cs" />
     <Compile Include="Converters\ConnectionTypeToStringConverter.cs" />
     <Compile Include="Converters\DateToRelativeStringConverter.cs" />
     <Compile Include="Converters\DateToStringConverter.cs" />
+    <Compile Include="Converters\EqualConverter.cs" />
     <Compile Include="Converters\ThemeToIconConverter.cs" />
     <Compile Include="Fragments\FavoriteNameView.xaml.cs">
       <DependentUpon>FavoriteNameView.xaml</DependentUpon>
@@ -118,11 +123,9 @@
     <Compile Include="Converters\ListToVisibilityConverter.cs" />
     <Compile Include="Converters\StringToIntConverter.cs" />
     <Compile Include="Converters\TabViewDataTemplateSelector.cs" />
-    <Compile Include="Helpers\FileIconHelper.cs" />
     <Compile Include="Helpers\Icons.cs" />
     <Compile Include="Helpers\Observable.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
-    <Compile Include="Converters\ResourceToIconConverter.cs" />
     <Compile Include="Helpers\ResourceQueue.cs" />
     <Compile Include="Helpers\ResourceWatcher.cs" />
     <Compile Include="Helpers\WindowHelper.cs" />
@@ -136,6 +139,7 @@
     <Compile Include="Service\Client\FTPClient.cs" />
     <Compile Include="Service\Client\SFTPClient.cs" />
     <Compile Include="Service\Licensing\Fingerprint.cs" />
+    <Compile Include="Service\Models\ThemePackage.cs" />
     <Compile Include="ViewModels\LicenseViewModel.cs" />
     <Compile Include="Service\Models\Device.cs" />
     <Compile Include="Service\Models\DeviceStatus.cs" />
@@ -316,12 +320,14 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Themes\fluent.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\ic_drive.png" />
     <Resource Include="Resources\Images\ic_bolt.png" />
   </ItemGroup>
   <ItemGroup>
@@ -329,16 +335,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\ic_sftp.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Images\ic_folder.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Images\ic_file.png" />
-    <Resource Include="Resources\Images\ic_image.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Images\ic_video.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

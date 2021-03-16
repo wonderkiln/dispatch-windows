@@ -1,6 +1,8 @@
 ﻿using Dispatch.Helpers;
 using Dispatch.Service.Models;
+using Dispatch.Service.Theme;
 using System;
+using System.IO;
 using System.Windows;
 
 namespace Dispatch
@@ -51,6 +53,21 @@ namespace Dispatch
             else
             {
                 ChangeTheme(settings.Theme);
+            }
+
+            if (settings.IconThemePath == null)
+            {
+                settings.IconThemePath = Path.Combine(Directory.GetCurrentDirectory(), "Themes", "fluent.zip");
+                WindowHelper.SettingsStorage.Save(settings);
+            }
+
+            try
+            {
+                FileIconTheme.LoadTheme(settings.IconThemePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 

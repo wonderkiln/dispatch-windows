@@ -43,6 +43,17 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
+                <Label
+                    Margin="0,16,0,8"
+                    Content="Icons"
+                    FontSize="16" />
+                <ComboBox ItemsSource="{Binding IconThemes}" SelectedItem="{Binding IconTheme}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
             </StackPanel>
         </StackPanel>
     </ScrollViewer>

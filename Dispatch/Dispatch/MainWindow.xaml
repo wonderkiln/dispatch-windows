@@ -2,6 +2,7 @@
     x:Class="Dispatch.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cc="clr-namespace:Dispatch.Controls"
     xmlns:controls="clr-namespace:Dispatch.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dd="urn:gong-wpf-dragdrop"
@@ -12,7 +13,7 @@
     xmlns:s="clr-namespace:System;assembly=mscorlib"
     xmlns:vm="clr-namespace:Dispatch.ViewModels"
     Title="{x:Static h:Constants.APP_NAME}"
-    Width="1100"
+    Width="1200"
     Height="720"
     MinWidth="200"
     MinHeight="200"
@@ -163,11 +164,13 @@
                     <Menu.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock
+                                <cc:DPFileIconImage
+                                    Width="18"
+                                    Height="18"
                                     Margin="0,0,4,0"
                                     VerticalAlignment="Center"
-                                    FontFamily="Segoe MDL2 Assets"
-                                    Text="&#xE8B7;" />
+                                    FullName="{Binding Path}"
+                                    IsFile="False" />
                                 <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
                             </StackPanel>
                         </DataTemplate>

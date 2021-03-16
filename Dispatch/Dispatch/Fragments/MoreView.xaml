@@ -9,40 +9,51 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="8,16">
-            <Button
-                Padding="8"
-                HorizontalContentAlignment="Left"
-                Click="SettingsButton_Click"
-                Style="{StaticResource SimpleButtonStyle}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock
-                        Margin="0,0,4,0"
-                        VerticalAlignment="Center"
-                        FontFamily="Segoe MDL2 Assets"
-                        FontSize="17"
-                        Text="&#xE713;" />
-                    <TextBlock VerticalAlignment="Center" Text="Settings" />
-                </StackPanel>
-            </Button>
-            <Button
-                Padding="8"
-                HorizontalContentAlignment="Left"
-                Click="AboutButton_Click"
-                Style="{StaticResource SimpleButtonStyle}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock
-                        Margin="0,0,4,0"
-                        VerticalAlignment="Center"
-                        FontFamily="Segoe MDL2 Assets"
-                        FontSize="17"
-                        Text="&#xE946;" />
-                    <TextBlock VerticalAlignment="Center" Text="About Dispatch" />
-                </StackPanel>
-            </Button>
-            <f:LicenseView Margin="0,12,0,0" DataContext="{Binding License}" />
-            <f:UpdateView Margin="0,12,0,0" DataContext="{Binding Update}" />
-        </StackPanel>
-    </ScrollViewer>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="8,16">
+                <Button
+                    Padding="8"
+                    HorizontalContentAlignment="Left"
+                    Click="SettingsButton_Click"
+                    Style="{StaticResource SimpleButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            Margin="0,0,4,0"
+                            VerticalAlignment="Center"
+                            FontFamily="Segoe MDL2 Assets"
+                            FontSize="17"
+                            Text="&#xE713;" />
+                        <TextBlock VerticalAlignment="Center" Text="Settings" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Padding="8"
+                    HorizontalContentAlignment="Left"
+                    Click="AboutButton_Click"
+                    Style="{StaticResource SimpleButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            Margin="0,0,4,0"
+                            VerticalAlignment="Center"
+                            FontFamily="Segoe MDL2 Assets"
+                            FontSize="17"
+                            Text="&#xE946;" />
+                        <TextBlock VerticalAlignment="Center" Text="About" />
+                    </StackPanel>
+                </Button>
+                <f:UpdateView Margin="8" DataContext="{Binding Update}" />
+            </StackPanel>
+        </ScrollViewer>
+        <Border
+            Grid.Row="1"
+            BorderBrush="{DynamicResource SeparatorSolidColorBrush}"
+            BorderThickness="0,1,0,0">
+            <f:LicenseView Margin="16" DataContext="{Binding License}" />
+        </Border>
+    </Grid>
 </UserControl>

@@ -8,6 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dd="urn:gong-wpf-dragdrop"
     xmlns:local="clr-namespace:Dispatch.Fragments"
+    xmlns:m="clr-namespace:Dispatch.Service.Models"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -15,9 +16,9 @@
 
     <UserControl.Resources>
         <c:BytesToStringConverter x:Key="BytesToStringConverter" />
-        <c:ResourceToIconConverter x:Key="ResourceToIconConverter" />
         <c:ListToVisibilityConverter x:Key="ListToVisibilityConverter" />
         <c:DateToStringConverter x:Key="DateToStringConverter" />
+        <c:EqualConverter x:Key="EqualConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <ContextMenu x:Key="ResourceContextMenu">
             <MenuItem
@@ -162,11 +163,12 @@
                                         <ColumnDefinition Width="32" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <Image
-                                        Width="16"
-                                        Height="16"
+                                    <cc:DPFileIconImage
+                                        Width="18"
+                                        Height="18"
                                         VerticalAlignment="Center"
-                                        Source="{Binding Converter={StaticResource ResourceToIconConverter}}" />
+                                        FullName="{Binding Name}"
+                                        IsFile="{Binding Type, Converter={StaticResource EqualConverter}, ConverterParameter={x:Static m:ResourceType.File}}" />
                                     <TextBlock
                                         Grid.Column="1"
                                         VerticalAlignment="Center"

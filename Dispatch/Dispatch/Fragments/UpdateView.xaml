@@ -40,7 +40,17 @@
                     </StackPanel>
                 </DataTemplate>
                 <DataTemplate x:Key="ErrorUpdateDataTemplate">
-                    <Label Content="Error" ToolTip="{Binding ErrorMessage}" />
+                    <StackPanel>
+                        <Label Content="Update Error" FontSize="16" />
+                        <Label>
+                            <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
+                        </Label>
+                        <Label>
+                            <Hyperlink Command="{Binding ContactUsCommand}">
+                                <Run Text="Contact us" />
+                            </Hyperlink>
+                        </Label>
+                    </StackPanel>
                 </DataTemplate>
             </ControlTemplate.Resources>
             <ControlTemplate.Triggers>

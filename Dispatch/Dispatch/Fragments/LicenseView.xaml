@@ -27,7 +27,10 @@
                     <Setter TargetName="Presenter" Property="ContentTemplate">
                         <Setter.Value>
                             <DataTemplate>
-                                <Label>Error while getting license status</Label>
+                                <StackPanel>
+                                    <Label Content="License Error" FontSize="16" />
+                                    <Label Content="Error while getting license status" />
+                                </StackPanel>
                             </DataTemplate>
                         </Setter.Value>
                     </Setter>
@@ -36,10 +39,22 @@
                     <Setter TargetName="Presenter" Property="ContentTemplate">
                         <Setter.Value>
                             <DataTemplate>
-                                <Button
-                                    Padding="12,4"
-                                    Command="{Binding EnterLicenseCommand}"
-                                    Content="Trial" />
+                                <StackPanel>
+                                    <Label Content="License Status" FontSize="16" />
+                                    <Label>
+                                        <TextBlock TextWrapping="Wrap">
+                                            <Run Text="You are using the free trial. Expires in" />
+                                            <Run Text="{Binding Device.Device.ExpiresAt, Converter={StaticResource DateToRelativeStringConverter}}" />
+                                        </TextBlock>
+                                    </Label>
+                                    <Button
+                                        Margin="0,8,0,0"
+                                        Padding="12,4"
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding EnterLicenseCommand}"
+                                        Content="Enter License" />
+                                </StackPanel>
+
                             </DataTemplate>
                         </Setter.Value>
                     </Setter>
@@ -48,7 +63,10 @@
                     <Setter TargetName="Presenter" Property="ContentTemplate">
                         <Setter.Value>
                             <DataTemplate>
-                                <Label Content="License Expired" />
+                                <StackPanel>
+                                    <Label Content="License Status" FontSize="16" />
+                                    <Label Content="Your license is expired but you can still use it in this major version" />
+                                </StackPanel>
                             </DataTemplate>
                         </Setter.Value>
                     </Setter>

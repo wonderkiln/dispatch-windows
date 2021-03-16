@@ -2,6 +2,7 @@
     x:Class="Dispatch.LicenseWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cc="clr-namespace:Dispatch.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:h="clr-namespace:Dispatch.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -43,6 +44,7 @@
                     Margin="0,12,0,0"
                     Padding="12,6"
                     HorizontalAlignment="Left"
+                    cc:DPButtonExtension.IsLoading="{Binding IsLoading}"
                     Command="{Binding InstallTrialCommand}"
                     Content="Start Trial" />
             </StackPanel>
@@ -58,6 +60,7 @@
                     Margin="0,12,0,0"
                     Padding="12,6"
                     HorizontalAlignment="Left"
+                    cc:DPButtonExtension.IsLoading="{Binding IsLoading}"
                     Command="{Binding InstallLicenseCommand}"
                     CommandParameter="{Binding Text, ElementName=LicenseTextBox}"
                     Content="Use License" />

@@ -1,5 +1,9 @@
 ﻿using Dispatch.Helpers;
 using Dispatch.Service.Models;
+using Dispatch.Service.Theme;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 
 namespace Dispatch.ViewModels
@@ -34,10 +38,83 @@ namespace Dispatch.ViewModels
             }
         }
 
+        private ThemePackage[] iconThemes;
+        public ThemePackage[] IconThemes
+        {
+            get
+            {
+                return iconThemes;
+            }
+            private set
+            {
+                iconThemes = value;
+                Notify();
+            }
+        }
+
+        private ThemePackage iconTheme;
+        public ThemePackage IconTheme
+        {
+            get
+            {
+                return iconTheme;
+            }
+            set
+            {
+                iconTheme = value;
+                Notify();
+
+                try
+                {
+                    FileIconTheme.LoadTheme(value.Path);
+
+                    var settings = WindowHelper.SettingsStorage.Load(new Settings());
+                    settings.IconThemePath = value.Path;
+                    WindowHelper.SettingsStorage.Save(settings);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
+
         public SettingsViewModel()
         {
-            var settings = WindowHelper.SettingsStorage.Load(new Settings());
-            theme = settings.Theme;
+            try
+            {
+                var settings = WindowHelper.SettingsStorage.Load(new Settings());
+                theme = settings.Theme;
+
+                var dir = Path.Combine(Directory.GetCurrentDirectory(), "Themes");
+                var files = Directory.GetFiles(dir, "*.zip");
+
+                var themes = new List<ThemePackage>();
+
+                foreach (var file in files)
+                {
+                    try
+                    {
+                        var theme = FileIconTheme.LoadThemeMetadata(file);
+                        themes.Add(theme);
+
+                        if (settings.IconThemePath == file)
+                        {
+                            IconTheme = theme;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+
+                IconThemes = themes.ToArray();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }
