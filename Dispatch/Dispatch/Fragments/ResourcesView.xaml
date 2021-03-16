@@ -16,7 +16,6 @@
 
     <UserControl.Resources>
         <c:BytesToStringConverter x:Key="BytesToStringConverter" />
-        <c:ResourceToIconConverter x:Key="ResourceToIconConverter" />
         <c:ListToVisibilityConverter x:Key="ListToVisibilityConverter" />
         <c:DateToStringConverter x:Key="DateToStringConverter" />
         <c:EqualConverter x:Key="EqualConverter" />
@@ -164,7 +163,7 @@
                                         <ColumnDefinition Width="32" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <cc:FileIconImage
+                                    <cc:DPFileIconImage
                                         Width="18"
                                         Height="18"
                                         VerticalAlignment="Center"

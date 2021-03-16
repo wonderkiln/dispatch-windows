@@ -164,7 +164,7 @@
                     <Menu.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <cc:FileIconImage
+                                <cc:DPFileIconImage
                                     Width="18"
                                     Height="18"
                                     Margin="0,0,4,0"

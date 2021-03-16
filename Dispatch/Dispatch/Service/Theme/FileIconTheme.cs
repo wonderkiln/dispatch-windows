@@ -1,42 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using Dispatch.Service.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Dispatch.Controls
+namespace Dispatch.Service.Theme
 {
-    public class FileIconTheme
+    public partial class FileIconTheme
     {
-        public class Package
-        {
-            public class FileIcon
-            {
-                [JsonProperty("extensions")]
-                public string[] Extensions { get; set; }
-
-                [JsonProperty("source")]
-                public string Source { get; set; }
-            }
-
-            public string Path { get; set; }
-
-            [JsonProperty("name")]
-            public string Name { get; set; }
-
-            [JsonProperty("fileIcons")]
-            public FileIcon[] FileIcons { get; set; }
-        }
 
         private static Dictionary<string, ImageSource> ExtensionImageMap = new Dictionary<string, ImageSource>();
 
         public static event EventHandler<EventArgs> OnInvalidate;
 
-        public static Package LoadThemeMetadata(string path)
+        public static ThemePackage LoadThemeMetadata(string path)
         {
             using (var fileStream = new FileStream(path, FileMode.Open))
             {
@@ -56,7 +36,7 @@ namespace Dispatch.Controls
                             using (var jsonReader = new JsonTextReader(streamReader))
                             {
                                 var serializer = new JsonSerializer();
-                                var result = serializer.Deserialize<Package>(jsonReader);
+                                var result = serializer.Deserialize<ThemePackage>(jsonReader);
                                 result.Path = path;
                                 return result;
                             }
@@ -138,51 +118,6 @@ namespace Dispatch.Controls
         public static ImageSource GetFolderImageSource()
         {
             return GetImageSourceAt("_");
-        }
-    }
-
-    public class FileIconImage : Image
-    {
-        public static readonly DependencyProperty FullNameProperty = DependencyProperty.Register("FullName", typeof(string), typeof(FileIconImage), new PropertyMetadata(OnPropertyChanged));
-        public string FullName
-        {
-            get { return (string)GetValue(FullNameProperty); }
-            set { SetValue(FullNameProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsFileProperty = DependencyProperty.Register("IsFile", typeof(bool), typeof(FileIconImage), new PropertyMetadata(true, OnPropertyChanged));
-        public bool IsFile
-        {
-            get { return (bool)GetValue(IsFileProperty); }
-            set { SetValue(IsFileProperty, value); }
-        }
-
-        private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var image = (FileIconImage)d;
-            image.Invalidate();
-        }
-
-        public FileIconImage()
-        {
-            FileIconTheme.OnInvalidate += Theme_OnInvalidate;
-        }
-
-        private void Theme_OnInvalidate(object sender, EventArgs e)
-        {
-            Invalidate();
-        }
-
-        private void Invalidate()
-        {
-            if (IsFile)
-            {
-                Source = FileIconTheme.GetFileImageSource(FullName);
-            }
-            else
-            {
-                Source = FileIconTheme.GetFolderImageSource();
-            }
         }
     }
 }
