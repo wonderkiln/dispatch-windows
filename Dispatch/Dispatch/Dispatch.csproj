@@ -107,7 +107,6 @@
     <Compile Include="Converters\DateToRelativeStringConverter.cs" />
     <Compile Include="Converters\DateToStringConverter.cs" />
     <Compile Include="Converters\EqualConverter.cs" />
-    <Compile Include="Converters\ThemeToIconConverter.cs" />
     <Compile Include="Fragments\FavoriteNameView.xaml.cs">
       <DependentUpon>FavoriteNameView.xaml</DependentUpon>
     </Compile>
@@ -140,6 +139,9 @@
     <Compile Include="Service\Client\SFTPClient.cs" />
     <Compile Include="Service\Licensing\Fingerprint.cs" />
     <Compile Include="Service\Models\ThemePackage.cs" />
+    <Compile Include="SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\LicenseViewModel.cs" />
     <Compile Include="Service\Models\Device.cs" />
     <Compile Include="Service\Models\DeviceStatus.cs" />
@@ -184,9 +186,6 @@
     <Compile Include="Fragments\QueueView.xaml.cs">
       <DependentUpon>QueueView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Fragments\SettingsView.xaml.cs">
-      <DependentUpon>SettingsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Fragments\SFTPConnectView.xaml.cs">
       <DependentUpon>SFTPConnectView.xaml</DependentUpon>
     </Compile>
@@ -212,6 +211,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ModalWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -244,10 +247,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Fragments\QueueView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Fragments\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

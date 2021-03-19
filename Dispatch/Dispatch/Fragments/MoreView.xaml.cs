@@ -1,13 +1,10 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace Dispatch.Fragments
 {
     public partial class MoreView : UserControl
     {
-        public event EventHandler<object> OnChangeSidebar;
-
         public MoreView()
         {
             InitializeComponent();
@@ -15,7 +12,10 @@ namespace Dispatch.Fragments
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            OnChangeSidebar?.Invoke(this, new SettingsView());
+            var settingsWindow = new SettingsWindow();
+            settingsWindow.Owner = Window.GetWindow(this);
+
+            settingsWindow.Show();
         }
 
         private void AboutButton_Click(object sender, RoutedEventArgs e)
