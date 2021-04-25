@@ -36,6 +36,7 @@ Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
 UninstallDisplayIcon={app}\{#MyAppExeName}
+SetupIconFile=..\Dispatch\Dispatch\Resources\Icon.ico
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
