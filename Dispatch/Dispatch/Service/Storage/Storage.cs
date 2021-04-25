@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Dispatch.Helpers;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 
@@ -6,7 +7,7 @@ namespace Dispatch.Service.Storage
 {
     public class Storage<T>
     {
-        public string DirectoryPath { get; set; } = Path.Combine(Directory.GetCurrentDirectory(), "Settings");
+        public string DirectoryPath { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.APP_NAME, "Settings");
 
         public string FileName { get; }
 
