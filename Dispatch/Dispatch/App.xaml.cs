@@ -3,7 +3,6 @@ using Dispatch.Service.Models;
 using Dispatch.Service.Theme;
 using System;
 using System.IO;
-using System.Runtime.ExceptionServices;
 using System.Windows;
 
 namespace Dispatch
@@ -45,7 +44,7 @@ namespace Dispatch
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             var settings = WindowHelper.SettingsStorage.Load(new Settings());
 
@@ -79,9 +78,12 @@ namespace Dispatch
             ChangeTheme(e == WindowsThemeWatcher.WindowsTheme.Light ? AppTheme.Light : AppTheme.Dark);
         }
 
-        private void CurrentDomain_FirstChanceException(object sender, FirstChanceExceptionEventArgs e)
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            MessageBox.Show(e.Exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            if (e.ExceptionObject is Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
