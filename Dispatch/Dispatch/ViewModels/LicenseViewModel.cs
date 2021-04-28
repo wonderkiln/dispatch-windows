@@ -120,7 +120,7 @@ namespace Dispatch.ViewModels
             InstallTrialCommand.IsExecutable = Status == DeviceStatus.LicenseStatus.None;
             InstallLicenseCommand.IsExecutable = Status <= DeviceStatus.LicenseStatus.TrialExpired || Status <= DeviceStatus.LicenseStatus.LicenseExpiredWrongVersion;
             RemoveLicenseCommand.IsExecutable = Status >= DeviceStatus.LicenseStatus.License;
-            EnterLicenseCommand.IsExecutable = Status != DeviceStatus.LicenseStatus.License && Status != DeviceStatus.LicenseStatus.LicenseExpired;
+            // EnterLicenseCommand.IsExecutable = Status != DeviceStatus.LicenseStatus.License && Status != DeviceStatus.LicenseStatus.LicenseExpired;
 
             // If the status is none, trial expired or license expired wrong version then show the blocking license modal
             if (Status == DeviceStatus.LicenseStatus.None ||
