@@ -167,7 +167,7 @@ namespace Dispatch.Service.Client
                             client.DownloadFile(item.Value.Path, stream.BaseStream, (length) =>
                             {
                                 var value = 100 * length / (double)item.Value.Size;
-                                progress?.Report(new ResourceProgress(index, items.Count, value));
+                                progress?.Report(new ResourceProgress(index, items.Count, value, item.Value.Path));
                             });
                         }
                     },
@@ -244,7 +244,7 @@ namespace Dispatch.Service.Client
             }
             else if (Directory.Exists(fileOrDirectory))
             {
-                var destinationDirectory = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}"; 
+                var destinationDirectory = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
 
                 if (!client.Exists(destinationDirectory))
                 {
@@ -260,6 +260,7 @@ namespace Dispatch.Service.Client
 
                 foreach (var file in files)
                 {
+                    newProgress.Path = file;
                     token.ThrowIfCancellationRequested();
                     await Upload(destinationDirectory, file, newProgress, token);
                     newProgress.IncrementIndex();
@@ -283,6 +284,8 @@ namespace Dispatch.Service.Client
         private readonly int count;
         private int index;
 
+        public string Path { get; set; }
+
         public SingleToMultiFileProgress(IProgress<ResourceProgress> progress, int index, int count)
         {
             this.progress = progress;
@@ -297,7 +300,7 @@ namespace Dispatch.Service.Client
 
         public void Report(ResourceProgress value)
         {
-            progress?.Report(new ResourceProgress(index, count, value.Progress));
+            progress?.Report(new ResourceProgress(index, count, value.Progress, Path));
         }
     }
 }

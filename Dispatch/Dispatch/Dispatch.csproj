@@ -106,6 +106,7 @@
     <Compile Include="Controls\DPTabListBox.cs" />
     <Compile Include="Controls\DPTextBox.cs" />
     <Compile Include="Controls\DPButtonExtension.cs" />
+    <Compile Include="Converters\StringToVisibilityConverter.cs" />
     <Compile Include="Fragments\S3ConnectView.xaml.cs">
       <DependentUpon>S3ConnectView.xaml</DependentUpon>
     </Compile>

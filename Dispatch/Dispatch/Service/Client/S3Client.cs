@@ -230,6 +230,8 @@ namespace Dispatch.Service.Client
 
             private int index = 0;
 
+            public string Path { get; set; }
+
             public S3ProgressConverter(IProgress<ResourceProgress> progress, int count = 1)
             {
                 this.progress = progress;
@@ -238,12 +240,12 @@ namespace Dispatch.Service.Client
 
             public void StreamTransferProgress(object sender, StreamTransferProgressArgs e)
             {
-                progress.Report(new ResourceProgress(index, count, e.PercentDone));
+                progress.Report(new ResourceProgress(index, count, e.PercentDone, Path));
             }
 
             public void WriteObjectProgress(object sender, WriteObjectProgressArgs e)
             {
-                progress.Report(new ResourceProgress(index, count, e.PercentDone));
+                progress.Report(new ResourceProgress(index, count, e.PercentDone, Path));
             }
 
             public void Next()
@@ -281,6 +283,8 @@ namespace Dispatch.Service.Client
 
                     foreach (var file in files)
                     {
+                        progressConverter.Path = file;
+
                         var newPath = file
                             .Substring(fileOrDirectory.Length)
                             .Split(Path.DirectorySeparatorChar)
@@ -350,6 +354,8 @@ namespace Dispatch.Service.Client
 
                     foreach (var item in items)
                     {
+                        progressConverter.Path = item.Key;
+
                         var response = await client.GetObjectAsync(new GetObjectRequest()
                         {
                             Key = item.Key,
