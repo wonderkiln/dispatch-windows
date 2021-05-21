@@ -35,6 +35,7 @@ namespace Dispatch.ViewModels
                 {
                     Favorite.ConnectionType.Sftp,
                     Favorite.ConnectionType.Ftp,
+                    Favorite.ConnectionType.S3,
                 };
             }
         }
@@ -153,6 +154,21 @@ namespace Dispatch.ViewModels
 
                         return connectInfo;
                     }
+                case Favorite.ConnectionType.S3:
+                    {
+                        var connectInfo = new S3ConnectionViewModel();
+
+                        if (value != null)
+                        {
+                            var connectionInfo = JObject.FromObject(value).ToObject<S3Connection>();
+                            connectInfo.Server = connectionInfo.Server;
+                            connectInfo.Key = connectionInfo.Key;
+                            connectInfo.Secret = connectionInfo.Secret;
+                            connectInfo.Root = connectionInfo.Root;
+                        }
+
+                        return connectInfo;
+                    }
                 default:
                     return null;
             }
@@ -174,6 +190,12 @@ namespace Dispatch.ViewModels
                         if (!connectInfo.Validate()) return null;
                         return new FTPConnection(connectInfo.Address, connectInfo.Port.Value, connectInfo.Username, connectInfo.Password, connectInfo.Root);
                     }
+                case Favorite.ConnectionType.S3:
+                    {
+                        var connectInfo = (S3ConnectionViewModel)value;
+                        if (!connectInfo.Validate()) return null;
+                        return new S3Connection(connectInfo.Server, connectInfo.Key, connectInfo.Secret, connectInfo.Root);
+                    }
                 default:
                     return null;
             }
@@ -191,6 +213,7 @@ namespace Dispatch.ViewModels
             Notify("Connection");
 
             SelectedFavorite = item;
+            ConnectionType = item.Connection;
             Connection = CreateConnectInfo(item.Connection, item.ConnectionInfo);
         }
 
@@ -259,6 +282,20 @@ namespace Dispatch.ViewModels
                             OnConnectedClient?.Invoke(this, new ClientEventArgs()
                             {
                                 Icon = Icons.Ftp,
+                                Title = connectionInfo.ToString(),
+                                InitialRoot = connectionInfo.Root,
+                                Client = client,
+                            });
+                            break;
+                        }
+                    case Favorite.ConnectionType.S3:
+                        {
+                            var connectionInfo = (S3Connection)CreateConnectionInfo(ConnectionType, Connection);
+                            if (!Connection.Validate()) return;
+                            var client = await S3Client.Create(connectionInfo);
+                            OnConnectedClient?.Invoke(this, new ClientEventArgs()
+                            {
+                                Icon = Icons.S3,
                                 Title = connectionInfo.ToString(),
                                 InitialRoot = connectionInfo.Root,
                                 Client = client,

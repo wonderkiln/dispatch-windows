@@ -244,7 +244,7 @@ namespace Dispatch.Service.Client
             }
             else if (Directory.Exists(fileOrDirectory))
             {
-                var destinationDirectory = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
+                var destinationDirectory = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}"; 
 
                 if (!client.Exists(destinationDirectory))
                 {

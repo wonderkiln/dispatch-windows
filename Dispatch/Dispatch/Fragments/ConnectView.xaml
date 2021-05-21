@@ -24,9 +24,13 @@
         <DataTemplate x:Key="FTPDataTemplate">
             <local:FTPConnectView DataContext="{Binding}" />
         </DataTemplate>
+        <DataTemplate x:Key="S3DataTemplate">
+            <local:S3ConnectView DataContext="{Binding}" />
+        </DataTemplate>
         <local:ConnectViewDataTemplateSelector
             x:Key="ConnectViewDataTemplateSelector"
             FTPDataTemplate="{StaticResource FTPDataTemplate}"
+            S3DataTemplate="{StaticResource S3DataTemplate}"
             SFTPDataTemplate="{StaticResource SFTPDataTemplate}" />
         <ContextMenu x:Key="SaveContextMenu">
             <MenuItem

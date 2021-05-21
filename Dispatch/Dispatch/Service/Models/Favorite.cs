@@ -2,7 +2,7 @@
 {
     public class Favorite
     {
-        public enum ConnectionType { Sftp, Ftp }
+        public enum ConnectionType { Sftp, Ftp, S3 }
 
         public string Title { get; set; }
 

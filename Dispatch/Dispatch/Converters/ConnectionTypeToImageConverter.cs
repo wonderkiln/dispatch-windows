@@ -18,6 +18,8 @@ namespace Dispatch.Converters
                     return Icons.Sftp;
                 case ConnectionType.Ftp:
                     return Icons.Ftp;
+                case ConnectionType.S3:
+                    return Icons.S3;
                 default:
                     return null;
             }

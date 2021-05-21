@@ -49,6 +49,12 @@
     <Reference Include="AttachedCommandBehavior, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AttachedCommandBehavior.2.0.0.0\lib\net35\AttachedCommandBehavior.dll</HintPath>
     </Reference>
+    <Reference Include="AWSSDK.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.Core.3.7.0.25\lib\net45\AWSSDK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.S3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.S3.3.7.0.26\lib\net45\AWSSDK.S3.dll</HintPath>
+    </Reference>
     <Reference Include="ByteSize, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ByteSize.2.0.0\lib\net45\ByteSize.dll</HintPath>
     </Reference>
@@ -100,6 +106,11 @@
     <Compile Include="Controls\DPTabListBox.cs" />
     <Compile Include="Controls\DPTextBox.cs" />
     <Compile Include="Controls\DPButtonExtension.cs" />
+    <Compile Include="Fragments\S3ConnectView.xaml.cs">
+      <DependentUpon>S3ConnectView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Service\Client\S3Client.cs" />
+    <Compile Include="Service\Models\S3Connection.cs" />
     <Compile Include="Service\Theme\FileIconTheme.cs" />
     <Compile Include="Converters\BytesToStringConverter.cs" />
     <Compile Include="Converters\ConnectionTypeToImageConverter.cs" />
@@ -156,6 +167,7 @@
     <Compile Include="ViewModels\BookmarksViewModel.cs" />
     <Compile Include="ViewModels\ConnectViewModel.cs" />
     <Compile Include="ViewModels\QueueViewModel.cs" />
+    <Compile Include="ViewModels\S3ConnectionViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\StorageViewModel.cs" />
     <Compile Include="ViewModels\UpdateViewModel.cs" />
@@ -201,6 +213,10 @@
     <Page Include="Fragments\LicenseView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Fragments\S3ConnectView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Fragments\UpdateView.xaml">
       <SubType>Designer</SubType>
@@ -334,6 +350,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\ic_sftp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\AWSSDK.S3.3.7.0.26\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ic_s3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

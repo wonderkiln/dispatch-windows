@@ -25,5 +25,15 @@ namespace Dispatch.Service.Models
             Path = path;
             Name = name;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Resource resource)
+            {
+                return resource.Path == Path;
+            }
+
+            return base.Equals(obj);
+        }
     }
 }
