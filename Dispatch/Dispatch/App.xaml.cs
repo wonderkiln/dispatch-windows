@@ -1,6 +1,9 @@
 ﻿using Dispatch.Helpers;
 using Dispatch.Service.Models;
 using Dispatch.Service.Theme;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using System;
 using System.IO;
 using System.Windows;
@@ -44,6 +47,8 @@ namespace Dispatch
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            AppCenter.Start("***REMOVED***", typeof(Analytics), typeof(Crashes));
+
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             var settings = WindowHelper.SettingsStorage.Load(new Settings());
