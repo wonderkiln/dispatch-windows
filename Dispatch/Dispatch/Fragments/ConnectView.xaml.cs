@@ -8,11 +8,13 @@ namespace Dispatch.Fragments
     {
         public DataTemplate SFTPDataTemplate { get; set; }
         public DataTemplate FTPDataTemplate { get; set; }
+        public DataTemplate S3DataTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             if (item is SFTPConnectionViewModel) return SFTPDataTemplate;
             if (item is FTPConnectionViewModel) return FTPDataTemplate;
+            if (item is S3ConnectionViewModel) return S3DataTemplate;
             return null;
         }
     }

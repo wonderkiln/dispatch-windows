@@ -16,11 +16,14 @@
             }
         }
 
-        public ResourceProgress(int index, int count, double progress)
+        public string CurrentPath { get; set; }
+
+        public ResourceProgress(int index, int count, double progress, string path = null)
         {
             FileIndex = index;
             FileCount = count;
             Progress = progress;
+            CurrentPath = path;
         }
     }
 }

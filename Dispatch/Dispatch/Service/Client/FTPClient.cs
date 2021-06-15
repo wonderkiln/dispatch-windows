@@ -105,6 +105,8 @@ namespace Dispatch.Service.Client
         {
             private readonly IProgress<ResourceProgress> progress;
 
+            public bool Uploading { get; set; }
+
             public FtpProgressConverter(IProgress<ResourceProgress> progress)
             {
                 this.progress = progress;
@@ -112,7 +114,9 @@ namespace Dispatch.Service.Client
 
             public void Report(FtpProgress value)
             {
-                progress?.Report(new ResourceProgress(value.FileIndex, value.FileCount, value.Progress));
+                string path = null;
+                if (value.FileCount > 1) path = Uploading ? value.LocalPath : value.RemotePath;
+                progress?.Report(new ResourceProgress(value.FileIndex, value.FileCount, value.Progress, path));
             }
         }
 
@@ -125,12 +129,12 @@ namespace Dispatch.Service.Client
             if (File.Exists(fileOrDirectory))
             {
                 var destination = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
-                await client.UploadFileAsync(fileOrDirectory, destination, FtpRemoteExists.Overwrite, false, FtpVerify.None, new FtpProgressConverter(progress), token);
+                await client.UploadFileAsync(fileOrDirectory, destination, FtpRemoteExists.Overwrite, false, FtpVerify.None, new FtpProgressConverter(progress) { Uploading = true }, token);
             }
             else if (Directory.Exists(fileOrDirectory))
             {
                 var destination = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
-                await client.UploadDirectoryAsync(fileOrDirectory, destination, FtpFolderSyncMode.Update, FtpRemoteExists.Skip, FtpVerify.None, null, new FtpProgressConverter(progress), token);
+                await client.UploadDirectoryAsync(fileOrDirectory, destination, FtpFolderSyncMode.Update, FtpRemoteExists.Skip, FtpVerify.None, null, new FtpProgressConverter(progress) { Uploading = true }, token);
             }
             else
             {
@@ -148,11 +152,11 @@ namespace Dispatch.Service.Client
 
             if (resource.Type == ResourceType.File)
             {
-                await client.DownloadFileAsync(localPath, path, FtpLocalExists.Overwrite, FtpVerify.None, new FtpProgressConverter(progress), token);
+                await client.DownloadFileAsync(localPath, path, FtpLocalExists.Overwrite, FtpVerify.None, new FtpProgressConverter(progress) { Uploading = false }, token);
             }
             else if (resource.Type == ResourceType.Directory)
             {
-                await client.DownloadDirectoryAsync(localPath, path, FtpFolderSyncMode.Update, FtpLocalExists.Skip, FtpVerify.None, null, new FtpProgressConverter(progress), token);
+                await client.DownloadDirectoryAsync(localPath, path, FtpFolderSyncMode.Update, FtpLocalExists.Skip, FtpVerify.None, null, new FtpProgressConverter(progress) { Uploading = false }, token);
             }
         }
     }

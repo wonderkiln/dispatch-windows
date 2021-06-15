@@ -17,6 +17,8 @@ namespace Dispatch.Converters
                     return "SFTP";
                 case ConnectionType.Ftp:
                     return "FTP";
+                case ConnectionType.S3:
+                    return "Amazon S3";
                 default:
                     return string.Empty;
             }

@@ -54,7 +54,6 @@
                                         Command="{Binding EnterLicenseCommand}"
                                         Content="Enter License" />
                                 </StackPanel>
-
                             </DataTemplate>
                         </Setter.Value>
                     </Setter>
@@ -64,8 +63,35 @@
                         <Setter.Value>
                             <DataTemplate>
                                 <StackPanel>
-                                    <Label Content="License Status" FontSize="16" />
-                                    <Label Content="Your license is expired but you can still use it in this major version" />
+                                    <Label FontSize="16">
+                                        <Hyperlink Command="{Binding EnterLicenseCommand}">
+                                            <TextBlock Text="License Status" />
+                                        </Hyperlink>
+                                    </Label>
+                                    <Label>
+                                        <TextBlock Text="Your license is expired but you can still use it in this major version" TextWrapping="Wrap" />
+                                    </Label>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Status}" Value="License">
+                    <Setter TargetName="Presenter" Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Label FontSize="16">
+                                        <Hyperlink Command="{Binding EnterLicenseCommand}">
+                                            <TextBlock Text="License is Active" />
+                                        </Hyperlink>
+                                    </Label>
+                                    <Label>
+                                        <TextBlock TextWrapping="Wrap">
+                                            <Run Text="Expires in" />
+                                            <Run Text="{Binding Device.Device.ExpiresAt, Converter={StaticResource DateToRelativeStringConverter}}" />
+                                        </TextBlock>
+                                    </Label>
                                 </StackPanel>
                             </DataTemplate>
                         </Setter.Value>

@@ -47,6 +47,13 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: iscc Setup\script.iss
 
+      - name: Sign Setup
+        uses: dlemstra/code-sign-action@v1
+        with:
+          certificate: '${{ secrets.CERTIFICATE }}'
+          folder: 'Setup\Output\'
+          recursive: true
+
       - name: Archive Setup
         uses: actions/upload-artifact@v2
         with:

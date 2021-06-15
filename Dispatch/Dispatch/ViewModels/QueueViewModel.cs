@@ -81,6 +81,20 @@ namespace Dispatch.ViewModels
                 }
             }
 
+            private string path;
+            public string Path
+            {
+                get
+                {
+                    return path;
+                }
+                set
+                {
+                    path = value;
+                    Notify();
+                }
+            }
+
             public ResourceQueue.Item Tag { get; set; }
 
             public RelayCommand<object> CancelCommand { get; }
@@ -106,6 +120,14 @@ namespace Dispatch.ViewModels
             get
             {
                 return Items.FirstOrDefault(e => e.Status < QueueItem.StatusType.Done) != null;
+            }
+        }
+
+        public bool HasError
+        {
+            get
+            {
+                return Items.FirstOrDefault(e => e.Status == QueueItem.StatusType.Error) != null;
             }
         }
 
@@ -141,6 +163,7 @@ namespace Dispatch.ViewModels
         private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             Notify("IsBusy");
+            Notify("HasError");
             Notify("Progress");
         }
 
@@ -171,6 +194,7 @@ namespace Dispatch.ViewModels
         {
             var item = Items.First(i => i.Tag == e.Item);
             item.Progress = e.Progress.TotalProgress;
+            item.Path = e.Progress.CurrentPath;
 
             Notify("Progress");
         }
