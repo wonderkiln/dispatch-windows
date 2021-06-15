@@ -32,6 +32,13 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: msbuild Dispatch\Dispatch.sln /p:Configuration=Release /p:Revision=${{ github.run_number }}
 
+      - name: Sign Application
+        uses: dlemstra/code-sign-action@v1
+        with:
+          certificate: '${{ secrets.CERTIFICATE }}'
+          folder: 'Dispatch\Dispatch\bin\Release'
+          recursive: true
+
       - name: Install Inno Setup
         run: choco install -y innosetup
 
