@@ -36,7 +36,7 @@ jobs:
         uses: dlemstra/code-sign-action@v1
         with:
           certificate: '${{ secrets.CERT_BASE64 }}'
-          folder: 'Dispatch\Dispatch\bin\Release'
+          folder: 'Dispatch\Dispatch\bin\Release\'
           recursive: true
 
       - name: Install Inno Setup
@@ -58,7 +58,7 @@ jobs:
         uses: dlemstra/code-sign-action@v1
         with:
           certificate: '${{ secrets.CERT_BASE64 }}'
-          folder: 'Setup\Output'
+          folder: 'Setup\Output\'
           recursive: true
 
       - name: Archive Setup
