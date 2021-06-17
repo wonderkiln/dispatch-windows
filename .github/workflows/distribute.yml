@@ -33,11 +33,9 @@ jobs:
         run: msbuild Dispatch\Dispatch.sln /p:Configuration=Release /p:Revision=${{ github.run_number }}
 
       - name: Sign Application
-        uses: DanaBear/code-sign-action@v4
+        uses: dlemstra/code-sign-action@v1
         with:
           certificate: '${{ secrets.CERT_BASE64 }}'
-          password: '${{ secrets.CERT_PASSWORD }}'
-          certificatesha1: '${{ secrets.CERT_SHA1 }}'
           folder: 'Dispatch\Dispatch\bin\Release'
           recursive: true
 
@@ -57,11 +55,9 @@ jobs:
         run: iscc Setup\script.iss
 
       - name: Sign Setup
-        uses: DanaBear/code-sign-action@v4
+        uses: dlemstra/code-sign-action@v1
         with:
           certificate: '${{ secrets.CERT_BASE64 }}'
-          password: '${{ secrets.CERT_PASSWORD }}'
-          certificatesha1: '${{ secrets.CERT_SHA1 }}'
           folder: 'Setup\Output\'
           recursive: true
 
