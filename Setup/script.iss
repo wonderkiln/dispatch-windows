@@ -6,9 +6,15 @@
 #define MyAppVersion GetFileVersion(MyAppPath + "\" + MyAppExeName)
 
 #ifdef MyAppChannel
-#define MyAppName "Dispatch_" + MyAppChannel
+#define MyAppName "Dispatch (" + MyAppChannel + ")"
 #else
 #define MyAppName "Dispatch"
+#endif
+
+#ifdef MyAppChannel
+#define MySetupOutputName Lowercase("Dispatch_" + MyAppChannel + "_Setup_" + MyAppVersion)
+#else
+#define MySetupOutputName Lowercase("Dispatch" + "_Setup_" + MyAppVersion)
 #endif
 
 #define MyAppPublisher "WonderKiln Inc."
@@ -31,7 +37,7 @@ LicenseFile=LICENSE.txt
 ; Remove the following line to run in administrative install mode (install for all users.)
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-OutputBaseFilename={#MyAppName}_Setup_{#MyAppVersion}
+OutputBaseFilename={#MySetupOutputName}
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
