@@ -1,0 +1,180 @@
+name: Distribute
+
+on:
+  push:
+    branches: [develop, beta, master]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1
+
+      - name: Restore NuGet Packages
+        run: nuget restore Dispatch\Dispatch.sln
+
+      - name: Build the Solution (Develop)
+        if: github.ref == 'refs/heads/develop'
+        run: msbuild Dispatch\Dispatch.sln /p:Configuration=Release /p:Revision=${{ github.run_number }} /p:DefineConstants=NIGHTLY
+
+      - name: Build the Solution (Beta)
+        if: github.ref == 'refs/heads/beta'
+        run: msbuild Dispatch\Dispatch.sln /p:Configuration=Release /p:Revision=${{ github.run_number }} /p:DefineConstants=BETA
+
+      - name: Build the Solution (Master)
+        if: github.ref == 'refs/heads/master'
+        run: msbuild Dispatch\Dispatch.sln /p:Configuration=Release /p:Revision=${{ github.run_number }}
+
+      - name: Sign Application
+        uses: dlemstra/code-sign-action@v1
+        with:
+          certificate: '${{ secrets.CERT_BASE64 }}'
+          folder: 'Dispatch\Dispatch\bin\Release\'
+          recursive: true
+
+      - name: Install Inno Setup
+        run: choco install -y innosetup
+
+      - name: Package Setup (Develop)
+        if: github.ref == 'refs/heads/develop'
+        run: iscc /DMyAppChannel=Nightly Setup\script.iss
+
+      - name: Package Setup (Beta)
+        if: github.ref == 'refs/heads/beta'
+        run: iscc /DMyAppChannel=Beta Setup\script.iss
+
+      - name: Package Setup (Master)
+        if: github.ref == 'refs/heads/master'
+        run: iscc Setup\script.iss
+
+      - name: Sign Setup
+        uses: dlemstra/code-sign-action@v1
+        with:
+          certificate: '${{ secrets.CERT_BASE64 }}'
+          folder: 'Setup\Output\'
+          recursive: true
+
+      - name: Archive Setup
+        uses: actions/upload-artifact@v2
+        with:
+          name: setup
+          path: Setup\Output\
+
+  upload:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Setup
+        uses: actions/download-artifact@v2
+        with:
+          name: setup
+
+      - name: Set Container Name (Develop)
+        if: github.ref == 'refs/heads/develop'
+        run: echo 'CONTAINER_NAME=nightly' >> $GITHUB_ENV
+
+      - name: Set Container Name (Beta)
+        if: github.ref == 'refs/heads/beta'
+        run: echo 'CONTAINER_NAME=beta' >> $GITHUB_ENV
+
+      - name: Set Container Name (Master)
+        if: github.ref == 'refs/heads/master'
+        run: echo 'CONTAINER_NAME=stable' >> $GITHUB_ENV
+
+      - name: Upload to Azure
+        uses: LanceMcCarthy/Action-AzureBlobUpload@v1.7.1
+        if: github.ref == 'refs/heads/develop'
+        with:
+          connection_string: ${{ secrets.AZURE_CONNECTION_STRING }}
+          container_name: ${{ env.CONTAINER_NAME }}
+          source_folder: .
+
+      - name: Notify the API
+        run: |
+          NAME=$(ls | grep '.exe' | head -1)
+          VERSION=$(echo $NAME | egrep -o '[0-9]+.[0-9]+.[0-9]+.[0-9]+')
+          echo "SETUP_NAME=$NAME" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          URL="https://stwonderkilnprod.blob.core.windows.net/${{ env.CONTAINER_NAME }}/$NAME"
+          SIZE=$(stat -c %s "$NAME")
+          FORMAT='{ "url": "%s", "version": "%s", "size": %s }\n'
+          JSON=$(printf "$FORMAT" "$URL" "$VERSION" "$SIZE")
+          echo $JSON
+          curl -X PUT -H "Content-Type: application/json" -H "X-Secret: ${{ secrets.API_SECRET }}" -d "$JSON" https://api.dispatch.wonderkiln.com/api/release/${{ env.CONTAINER_NAME }}
+
+      - name: Create Release (Develop)
+        id: create_release_develop
+        if: github.ref == 'refs/heads/develop'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.VERSION }}-${{ env.CONTAINER_NAME }}
+          release_name: ${{ env.VERSION }}-${{ env.CONTAINER_NAME }}
+          draft: false
+          prerelease: true
+
+      - name: Create Release (Beta)
+        id: create_release_beta
+        if: github.ref == 'refs/heads/beta'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.VERSION }}-${{ env.CONTAINER_NAME }}
+          release_name: ${{ env.VERSION }}-${{ env.CONTAINER_NAME }}
+          draft: false
+          prerelease: true
+
+      - name: Create Release (Master)
+        id: create_release_master
+        if: github.ref == 'refs/heads/master'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.VERSION }}
+          release_name: ${{ env.VERSION }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset (Develop)
+        if: github.ref == 'refs/heads/develop'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release_develop.outputs.upload_url }}
+          asset_path: ./${{ env.SETUP_NAME }}
+          asset_name: setup.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload Release Asset (Beta)
+        if: github.ref == 'refs/heads/beta'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release_beta.outputs.upload_url }}
+          asset_path: ./${{ env.SETUP_NAME }}
+          asset_name: setup.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload Release Asset (Master)
+        if: github.ref == 'refs/heads/master'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release_master.outputs.upload_url }}
+          asset_path: ./${{ env.SETUP_NAME }}
+          asset_name: setup.exe
+          asset_content_type: application/octet-stream

@@ -1,0 +1,136 @@
+﻿<Window
+    x:Class="Dispatch.AboutWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:Dispatch.Converters"
+    xmlns:cc="clr-namespace:Dispatch.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:h="clr-namespace:Dispatch.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Dispatch.ViewModels"
+    Title="About Dispatch"
+    Width="300"
+    Height="250"
+    d:DataContext="{d:DesignInstance vm:MainViewModel}"
+    Background="{DynamicResource WindowBlurBackgroundSolidColorBrush}"
+    ResizeMode="NoResize"
+    Style="{StaticResource ChromelessWindowStyle}"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+
+    <Window.Resources>
+        <c:DateToRelativeStringConverter x:Key="DateToRelativeStringConverter" />
+        <DataTemplate x:Key="ErrorDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
+            <StackPanel>
+                <Label Content="Error while getting license status" Foreground="{DynamicResource ErrorSolidColorBrush}" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="TrialDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
+            <StackPanel>
+                <Label Content="Trial" FontSize="16" />
+                <Label Opacity="0.5">
+                    <TextBlock>
+                        <Run Text="Expires in" />
+                        <Run Text="{Binding Device.Device.ExpiresAt, Converter={StaticResource DateToRelativeStringConverter}}" />
+                    </TextBlock>
+                </Label>
+                <Button
+                    Margin="0,8,0,0"
+                    Padding="8,4"
+                    HorizontalAlignment="Left"
+                    Command="{Binding EnterLicenseCommand}"
+                    Content="Enter License"
+                    FontSize="13" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="LicenseDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
+            <StackPanel>
+                <Label Content="License" FontSize="16" />
+                <Label Opacity="0.5">
+                    <TextBlock>
+                        <Run Text="Expires in" />
+                        <Run Text="{Binding Device.Device.ExpiresAt, Converter={StaticResource DateToRelativeStringConverter}}" />
+                    </TextBlock>
+                </Label>
+                <Button
+                    Margin="0,8,0,0"
+                    Padding="8,4"
+                    HorizontalAlignment="Left"
+                    cc:DPButtonExtension.IsLoading="{Binding IsLoading}"
+                    Command="{Binding RemoveLicenseCommand}"
+                    Content="Unlink Computer"
+                    FontSize="13" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="LicenseExpiredDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
+            <StackPanel>
+                <Label Content="License Expired" FontSize="16" />
+                <Label Content="You can still use this major version only of the app" Opacity="0.5" />
+                <Button
+                    Margin="0,8,0,0"
+                    Padding="8,4"
+                    HorizontalAlignment="Left"
+                    cc:DPButtonExtension.IsLoading="{Binding IsLoading}"
+                    Command="{Binding RemoveLicenseCommand}"
+                    Content="Unlink Computer"
+                    FontSize="13" />
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+
+    <StackPanel
+        Margin="-12,24,24,24"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="54" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Image
+                Width="36"
+                Height="36"
+                VerticalAlignment="Top"
+                Source="{x:Static h:Icons.Icon}" />
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <Label Content="{x:Static h:Constants.APP_NAME}" FontSize="16" />
+                <Label Content="{x:Static h:Constants.VERSION_STRING}" Opacity="0.5" />
+                <ContentControl Margin="0,12,0,0" DataContext="{Binding License}">
+                    <ContentControl.Style>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ContentControl">
+                                        <ContentPresenter x:Name="Presenter" Content="{Binding}">
+                                            <ContentPresenter.ContentTemplate>
+                                                <DataTemplate />
+                                            </ContentPresenter.ContentTemplate>
+                                        </ContentPresenter>
+                                        <ControlTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Status}" Value="Error">
+                                                <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource ErrorDataTemplate}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Status}" Value="Trial">
+                                                <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource TrialDataTemplate}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Status}" Value="License">
+                                                <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource LicenseDataTemplate}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Status}" Value="LicenseExpired">
+                                                <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource LicenseExpiredDataTemplate}" />
+                                            </DataTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</Window>

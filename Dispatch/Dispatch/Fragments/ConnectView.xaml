@@ -1,0 +1,184 @@
+﻿<UserControl
+    x:Class="Dispatch.Fragments.ConnectView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:a="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
+    xmlns:c="clr-namespace:Dispatch.Converters"
+    xmlns:cc="clr-namespace:Dispatch.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Dispatch.Fragments"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Dispatch.ViewModels"
+    d:DataContext="{d:DesignInstance vm:ConnectViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Background="{DynamicResource SecondaryBackgroundSolidColorBrush}"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <c:ConnectionTypeToImageConverter x:Key="ConnectionTypeToImageConverter" />
+        <c:ConnectionTypeToStringConverter x:Key="ConnectionTypeToStringConverter" />
+        <DataTemplate x:Key="SFTPDataTemplate">
+            <local:SFTPConnectView DataContext="{Binding}" />
+        </DataTemplate>
+        <DataTemplate x:Key="FTPDataTemplate">
+            <local:FTPConnectView DataContext="{Binding}" />
+        </DataTemplate>
+        <DataTemplate x:Key="S3DataTemplate">
+            <local:S3ConnectView DataContext="{Binding}" />
+        </DataTemplate>
+        <local:ConnectViewDataTemplateSelector
+            x:Key="ConnectViewDataTemplateSelector"
+            FTPDataTemplate="{StaticResource FTPDataTemplate}"
+            S3DataTemplate="{StaticResource S3DataTemplate}"
+            SFTPDataTemplate="{StaticResource SFTPDataTemplate}" />
+        <ContextMenu x:Key="SaveContextMenu">
+            <MenuItem
+                Command="{Binding DataContext.ConnectFavoriteCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ConnectView}}}"
+                CommandParameter="{Binding}"
+                Header="Connect">
+                <MenuItem.Icon>
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8AF;" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <Separator />
+            <MenuItem
+                Command="{Binding DataContext.EditFavoriteCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ConnectView}}}"
+                CommandParameter="{Binding}"
+                Header="Edit">
+                <MenuItem.Icon>
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE70F;" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem
+                Command="{Binding DataContext.DeleteFavoriteCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ConnectView}}}"
+                CommandParameter="{Binding}"
+                Header="Delete">
+                <MenuItem.Icon>
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="140" />
+        </Grid.RowDefinitions>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="40" VerticalAlignment="Center">
+                <Image
+                    Width="32"
+                    Height="32"
+                    HorizontalAlignment="Center"
+                    Source="{Binding ConnectionType, Converter={StaticResource ConnectionTypeToImageConverter}}" />
+                <Label
+                    Margin="0,4,0,24"
+                    HorizontalAlignment="Center"
+                    FontSize="18">
+                    <TextBlock>
+                        <Run Text="Connect via" />
+                        <Run Text="{Binding ConnectionType, Converter={StaticResource ConnectionTypeToStringConverter}}" />
+                    </TextBlock>
+                </Label>
+                <ComboBox
+                    Margin="0,0,0,6"
+                    ItemsSource="{Binding ConnectionTypes}"
+                    SelectedItem="{Binding ConnectionType}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image
+                                    Width="16"
+                                    Height="16"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Source="{Binding Converter={StaticResource ConnectionTypeToImageConverter}}" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="0,0,0,2"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Converter={StaticResource ConnectionTypeToStringConverter}}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <ContentPresenter Content="{Binding Connection}" ContentTemplateSelector="{StaticResource ConnectViewDataTemplateSelector}" />
+                <StackPanel
+                    Margin="0,12,0,0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <Button
+                        Margin="0,0,12,0"
+                        Padding="12,6"
+                        Background="{DynamicResource SelectionOnSecondaryBackgroundSolidColorBrush}"
+                        Command="{Binding SaveAsFavoriteCommand}"
+                        Content="Add to favorites"
+                        Style="{StaticResource SimpleButtonStyle}" />
+                    <Button
+                        cc:DPButtonExtension.IsLoading="{Binding IsConnecting}"
+                        Command="{Binding ConnectCommand}"
+                        Content="Connect" />
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+        <ListBox
+            Grid.Row="1"
+            Padding="16"
+            ItemsSource="{Binding FavoritesViewModel.Items}"
+            SelectedItem="{Binding SelectedFavorite}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemContainerStyle>
+                <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
+                    <Setter Property="a:CommandBehavior.Event" Value="MouseDoubleClick" />
+                    <Setter Property="a:CommandBehavior.Command" Value="{Binding DataContext.ConnectFavoriteCommand, RelativeSource={RelativeSource AncestorType={x:Type local:ConnectView}}}" />
+                    <Setter Property="a:CommandBehavior.CommandParameter" Value="{Binding}" />
+                    <Setter Property="ContextMenu" Value="{StaticResource SaveContextMenu}" />
+                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel MaxWidth="80">
+                        <Border
+                            Width="48"
+                            Height="48"
+                            HorizontalAlignment="Center"
+                            Background="{DynamicResource PrimaryAccentSolidColorBrush}"
+                            BorderThickness="1"
+                            CornerRadius="3">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="18"
+                                FontWeight="SemiBold"
+                                Foreground="{DynamicResource SelectedTextSolidColorBrush}"
+                                Text="{Binding Connection}" />
+                        </Border>
+                        <TextBlock
+                            Margin="0,6,0,0"
+                            Text="{Binding Title}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <GridSplitter
+            Grid.Row="1"
+            Margin="0,-12,0,0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top"
+            ResizeBehavior="PreviousAndCurrent"
+            ResizeDirection="Rows" />
+    </Grid>
+</UserControl>
