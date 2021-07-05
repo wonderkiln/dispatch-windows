@@ -91,7 +91,6 @@ jobs:
 
       - name: Upload to Azure
         uses: LanceMcCarthy/Action-AzureBlobUpload@v1.7.1
-        if: github.ref == 'refs/heads/develop'
         with:
           connection_string: ${{ secrets.AZURE_CONNECTION_STRING }}
           container_name: ${{ env.CONTAINER_NAME }}
