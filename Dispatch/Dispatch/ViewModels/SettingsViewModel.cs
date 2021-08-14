@@ -79,12 +79,42 @@ namespace Dispatch.ViewModels
             }
         }
 
+        public AppFontSize[] FontSizes
+        {
+            get
+            {
+                return new AppFontSize[]
+                {
+                    AppFontSize.Normal,
+                    AppFontSize.Large,
+                    AppFontSize.Small,
+                };
+            }
+        }
+
+        private AppFontSize fontSize;
+        public AppFontSize FontSize
+        {
+            get
+            {
+                return fontSize;
+            }
+            set
+            {
+                fontSize = value;
+                Notify();
+
+                ((App)Application.Current).SetFontSize(value);
+            }
+        }
+
         public SettingsViewModel()
         {
             try
             {
                 var settings = WindowHelper.SettingsStorage.Load(new Settings());
                 theme = settings.Theme;
+                fontSize = settings.FontSize;
 
                 var dir = Path.Combine(Directory.GetCurrentDirectory(), "Themes");
                 var files = Directory.GetFiles(dir, "*.zip");

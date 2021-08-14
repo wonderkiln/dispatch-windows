@@ -45,6 +45,13 @@ namespace Dispatch
             }
         }
 
+        public void SetFontSize(AppFontSize fontSize)
+        {
+            var settings = WindowHelper.SettingsStorage.Load(new Settings());
+            settings.FontSize = fontSize;
+            WindowHelper.SettingsStorage.Save(settings);
+        }
+
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             AppCenter.Start("***REMOVED***", typeof(Analytics), typeof(Crashes));

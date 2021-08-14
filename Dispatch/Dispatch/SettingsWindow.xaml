@@ -7,7 +7,7 @@
     xmlns:vm="clr-namespace:Dispatch.ViewModels"
     Title="Settings"
     Width="400"
-    Height="400"
+    Height="500"
     Background="{DynamicResource WindowBlurBackgroundSolidColorBrush}"
     Loaded="Window_Loaded"
     Style="{StaticResource ChromelessWindowStyle}"
@@ -47,6 +47,17 @@
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Label
+                    Margin="0,16,0,8"
+                    Content="Font Size"
+                    FontSize="16" />
+                <ComboBox ItemsSource="{Binding FontSizes}" SelectedItem="{Binding FontSize}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
