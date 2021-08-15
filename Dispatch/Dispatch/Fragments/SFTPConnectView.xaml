@@ -76,7 +76,7 @@
             Margin="0,0,0,6"
             Label="Remote Path:"
             LabelSharedSizeGroup="Label"
-            Placeholder="/www"
+            Placeholder="/"
             Text="{Binding Root, ValidatesOnNotifyDataErrors=True}" />
         <CheckBox IsChecked="{Binding UseKey}">
             <TextBlock Text="Use private key" />
