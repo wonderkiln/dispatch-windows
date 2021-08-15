@@ -156,6 +156,12 @@ namespace Dispatch.ViewModels
                         errorMessage = "Key file was not found";
 
                     break;
+
+                case "Root":
+                    if (string.IsNullOrEmpty(Root))
+                        errorMessage = "Root must not be empty";
+
+                    break;
             }
 
             return errorMessage;
