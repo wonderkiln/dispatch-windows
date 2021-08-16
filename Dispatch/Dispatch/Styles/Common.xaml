@@ -121,7 +121,7 @@
 
     <Style TargetType="Label">
         <Setter Property="Padding" Value="0" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="h:FontSizeProperty.BaseFontSize" Value="13" />
         <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
     </Style>
 
@@ -137,7 +137,7 @@
         <!--<Setter Property="SelectionBrush" Value="{DynamicResource SelectionOnPrimaryBackgroundSolidColorBrush}" />-->
         <Setter Property="BorderBrush" Value="{DynamicResource SeparatorSolidColorBrush}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="h:FontSizeProperty.BaseFontSize" Value="13" />
         <Setter Property="Padding" Value="8,6" />
         <Setter Property="Template">
             <Setter.Value>
@@ -160,7 +160,7 @@
         <!--<Setter Property="SelectionBrush" Value="{DynamicResource SelectionOnPrimaryBackgroundSolidColorBrush}" />-->
         <Setter Property="BorderBrush" Value="{DynamicResource SeparatorSolidColorBrush}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="h:FontSizeProperty.BaseFontSize" Value="13" />
         <Setter Property="Padding" Value="8,6" />
         <Setter Property="Template">
             <Setter.Value>
@@ -365,7 +365,7 @@
 
     <Style TargetType="MenuItem">
         <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="h:FontSizeProperty.BaseFontSize" Value="13" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Style.Triggers>
             <Trigger Property="Role" Value="TopLevelHeader">
@@ -459,7 +459,7 @@
 
     <Style TargetType="CheckBox">
         <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="h:FontSizeProperty.BaseFontSize" Value="13" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="CheckBox">
@@ -504,7 +504,7 @@
 
     <Style TargetType="RadioButton">
         <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="h:FontSizeProperty.BaseFontSize" Value="13" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RadioButton">
@@ -632,7 +632,8 @@
         <Setter Property="BorderBrush" Value="{DynamicResource SeparatorSolidColorBrush}" />
         <Setter Property="CornerRadius" Value="4" />
         <Setter Property="Padding" Value="8,6" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="h:FontSizeProperty.BaseFontSize" Value="13" />
+
         <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
         <Setter Property="Template">
             <Setter.Value>
@@ -720,7 +721,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource SeparatorSolidColorBrush}" />
         <Setter Property="CornerRadius" Value="4" />
         <Setter Property="Padding" Value="8,6" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="h:FontSizeProperty.BaseFontSize" Value="13" />
         <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Template">
@@ -923,7 +924,7 @@
         <Setter Property="MinWidth" Value="20" />
         <Setter Property="MinHeight" Value="20" />
         <Setter Property="Padding" Value="8,6" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="h:FontSizeProperty.BaseFontSize" Value="13" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
@@ -1034,7 +1035,7 @@
                                 VerticalAlignment="Center"
                                 Content="&#xE76C;"
                                 FontFamily="Segoe MDL2 Assets"
-                                FontSize="8" />
+                                FontSize="{h:FontSize Value=8}" />
                         </StackPanel>
                     </Border>
                     <ControlTemplate.Triggers>

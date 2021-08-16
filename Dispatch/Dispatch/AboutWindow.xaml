@@ -27,7 +27,7 @@
         </DataTemplate>
         <DataTemplate x:Key="TrialDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
             <StackPanel>
-                <Label Content="Trial" FontSize="16" />
+                <Label Content="Trial" FontSize="{h:FontSize Value=16}" />
                 <Label Opacity="0.5">
                     <TextBlock>
                         <Run Text="Expires in" />
@@ -40,12 +40,12 @@
                     HorizontalAlignment="Left"
                     Command="{Binding EnterLicenseCommand}"
                     Content="Enter License"
-                    FontSize="13" />
+                    FontSize="{h:FontSize Value=13}" />
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="LicenseDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
             <StackPanel>
-                <Label Content="License" FontSize="16" />
+                <Label Content="License" FontSize="{h:FontSize Value=16}" />
                 <Label Opacity="0.5">
                     <TextBlock>
                         <Run Text="Expires in" />
@@ -59,12 +59,12 @@
                     cc:DPButtonExtension.IsLoading="{Binding IsLoading}"
                     Command="{Binding RemoveLicenseCommand}"
                     Content="Unlink Computer"
-                    FontSize="13" />
+                    FontSize="{h:FontSize Value=13}" />
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="LicenseExpiredDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
             <StackPanel>
-                <Label Content="License Expired" FontSize="16" />
+                <Label Content="License Expired" FontSize="{h:FontSize Value=16}" />
                 <Label Content="You can still use this major version only of the app" Opacity="0.5" />
                 <Button
                     Margin="0,8,0,0"
@@ -73,7 +73,7 @@
                     cc:DPButtonExtension.IsLoading="{Binding IsLoading}"
                     Command="{Binding RemoveLicenseCommand}"
                     Content="Unlink Computer"
-                    FontSize="13" />
+                    FontSize="{h:FontSize Value=13}" />
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
@@ -97,7 +97,7 @@
                 VerticalAlignment="Top"
                 Source="{x:Static h:Icons.Icon}" />
             <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                <Label Content="{x:Static h:Constants.APP_NAME}" FontSize="16" />
+                <Label Content="{x:Static h:Constants.APP_NAME}" FontSize="{h:FontSize Value=16}" />
                 <Label Content="{x:Static h:Constants.VERSION_STRING}" Opacity="0.5" />
                 <ContentControl Margin="0,12,0,0" DataContext="{Binding License}">
                     <ContentControl.Style>

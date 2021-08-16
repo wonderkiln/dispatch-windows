@@ -9,6 +9,7 @@
     xmlns:local="clr-namespace:Dispatch.Fragments"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:Dispatch.ViewModels"
+    xmlns:h="clr-namespace:Dispatch.Helpers"
     d:DataContext="{d:DesignInstance vm:ConnectViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -76,7 +77,7 @@
                 <Label
                     Margin="0,4,0,24"
                     HorizontalAlignment="Center"
-                    FontSize="18">
+                    FontSize="{h:FontSize Value=18}">
                     <TextBlock>
                         <Run Text="Connect via" />
                         <Run Text="{Binding ConnectionType, Converter={StaticResource ConnectionTypeToStringConverter}}" />
@@ -159,7 +160,7 @@
                             <TextBlock
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                FontSize="18"
+                                FontSize="{h:FontSize Value=18}"
                                 FontWeight="SemiBold"
                                 Foreground="{DynamicResource SelectedTextSolidColorBrush}"
                                 Text="{Binding Connection}" />

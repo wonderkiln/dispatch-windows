@@ -146,6 +146,11 @@
     <Compile Include="Fragments\S3ConnectView.xaml.cs">
       <DependentUpon>S3ConnectView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\FontSizeProperty.cs" />
+    <Compile Include="Helpers\FontSizeExtension.cs" />
+    <Compile Include="Helpers\FontSizeListener.cs" />
+    <Compile Include="Helpers\FontSizeProvider.cs" />
+    <Compile Include="Helpers\MarkupExtensionTarget.cs" />
     <Compile Include="Service\Client\S3Client.cs" />
     <Compile Include="Service\Models\S3Connection.cs" />
     <Compile Include="Service\Theme\FileIconTheme.cs" />

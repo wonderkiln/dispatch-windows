@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Dispatch"
+    xmlns:h="clr-namespace:Dispatch.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="ModalWindow"
     Width="400"
@@ -33,7 +34,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 FontFamily="Segoe MDL2 Assets"
-                FontSize="24"
+                FontSize="{h:FontSize Value=24}"
                 Foreground="{DynamicResource SelectedTextSolidColorBrush}"
                 Text="&#xF142;" />
         </Grid>
@@ -42,7 +43,7 @@
                 Height="32"
                 VerticalContentAlignment="Center"
                 Content="{Binding Title, RelativeSource={RelativeSource AncestorType={x:Type local:ModalWindow}}}"
-                FontSize="20"
+                FontSize="{h:FontSize Value=20}"
                 FontWeight="SemiBold" />
             <ContentPresenter Margin="0,8,0,0" Content="{Binding ModalContent, RelativeSource={RelativeSource AncestorType={x:Type local:ModalWindow}}}" />
         </StackPanel>

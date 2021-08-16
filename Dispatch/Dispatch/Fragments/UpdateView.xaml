@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cc="clr-namespace:Dispatch.Controls"
+    xmlns:h="clr-namespace:Dispatch.Helpers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:Dispatch.ViewModels"
@@ -23,7 +24,7 @@
                     <Button
                         Padding="12,4"
                         Command="{Binding DownloadAndInstallCommand}"
-                        FontSize="12">
+                        FontSize="{h:FontSize Value=12}">
                         <TextBlock>
                             <Run Text="Update to" />
                             <Run Text="{Binding NewVersion, Mode=OneWay}" />
@@ -41,7 +42,7 @@
                 </DataTemplate>
                 <DataTemplate x:Key="ErrorUpdateDataTemplate">
                     <StackPanel>
-                        <Label Content="Update Error" FontSize="16" />
+                        <Label Content="Update Error" FontSize="{h:FontSize Value=16}" />
                         <Label>
                             <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
                         </Label>

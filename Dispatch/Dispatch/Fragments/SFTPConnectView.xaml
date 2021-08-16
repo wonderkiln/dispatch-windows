@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:c="clr-namespace:Dispatch.Converters"
     xmlns:cc="clr-namespace:Dispatch.Controls"
+    xmlns:h="clr-namespace:Dispatch.Helpers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
@@ -67,7 +68,7 @@
                     Padding="4,0"
                     Command="{Binding BrowseKeyCommand}"
                     Content="Browse"
-                    FontSize="11"
+                    FontSize="{h:FontSize Value=11}"
                     Style="{StaticResource SimpleButtonStyle}" />
             </cc:DPTextBox.Trailing>
         </cc:DPTextBox>

@@ -1,14 +1,15 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:c="clr-namespace:Dispatch.Converters">
+    xmlns:c="clr-namespace:Dispatch.Converters"
+    xmlns:h="clr-namespace:Dispatch.Helpers">
 
     <DataTemplate x:Key="BookmarkDragDropAdorner">
         <StackPanel>
             <Label Content="{Binding Name}" />
             <Label
                 Content="{Binding Path}"
-                FontSize="10"
+                FontSize="{h:FontSize Value=10}"
                 Opacity="0.5" />
         </StackPanel>
     </DataTemplate>
@@ -18,7 +19,7 @@
             <Label Content="{Binding Name}" />
             <Label
                 Content="{Binding Path}"
-                FontSize="10"
+                FontSize="{h:FontSize Value=10}"
                 Opacity="0.5" />
         </StackPanel>
     </DataTemplate>

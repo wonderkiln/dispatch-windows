@@ -1,12 +1,13 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:cc="clr-namespace:Dispatch.Controls">
+    xmlns:cc="clr-namespace:Dispatch.Controls"
+    xmlns:h="clr-namespace:Dispatch.Helpers">
 
     <Style TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource PrimaryAccentSolidColorBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource SelectedTextSolidColorBrush}" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="h:FontSizeProperty.BaseFontSize" Value="13" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Padding" Value="42,6" />
         <Setter Property="Cursor" Value="Hand" />
@@ -51,7 +52,7 @@
         TargetType="Button">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="h:FontSizeProperty.BaseFontSize" Value="13" />
         <Setter Property="Padding" Value="4" />
         <Setter Property="Template">
             <Setter.Value>
@@ -81,7 +82,7 @@
     <Style x:Key="ChromeButtonStyle" TargetType="Button">
         <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
         <Setter Property="Foreground" Value="{DynamicResource NormalTextSolidColorBrush}" />
-        <Setter Property="FontSize" Value="10" />
+        <Setter Property="h:FontSizeProperty.BaseFontSize" Value="10" />
         <Setter Property="Width" Value="46" />
         <Setter Property="Height" Value="28" />
         <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
