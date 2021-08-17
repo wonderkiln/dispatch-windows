@@ -103,6 +103,12 @@ namespace Dispatch.ViewModels
                         errorMessage = "Password must not be empty";
 
                     break;
+
+                case "Root":
+                    if (string.IsNullOrEmpty(Root))
+                        errorMessage = "Root must not be empty";
+
+                    break;
             }
 
             return errorMessage;

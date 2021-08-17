@@ -5,6 +5,7 @@
     xmlns:c="clr-namespace:Dispatch.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Dispatch.Fragments"
+    xmlns:h="clr-namespace:Dispatch.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -29,16 +30,16 @@
                     VerticalAlignment="Center"
                     Content="&#xE896;"
                     FontFamily="Segoe MDL2 Assets"
-                    FontSize="16" />
+                    FontSize="{h:FontSize Value=16}" />
                 <TextBlock
                     Grid.Column="1"
-                    FontSize="14"
+                    FontSize="{h:FontSize Value=14}"
                     Text="{Binding Name}"
                     TextWrapping="Wrap" />
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="1"
-                    FontSize="11"
+                    FontSize="{h:FontSize Value=11}"
                     Opacity="0.5"
                     Text="Waiting..." />
                 <Button
@@ -49,7 +50,7 @@
                     Command="{Binding CancelCommand}"
                     Content="&#xE8BB;"
                     FontFamily="Segoe MDL2 Assets"
-                    FontSize="10"
+                    FontSize="{h:FontSize Value=10}"
                     Style="{StaticResource SimpleButtonStyle}" />
             </Grid>
         </DataTemplate>
@@ -70,19 +71,19 @@
                     VerticalAlignment="Center"
                     Content="&#xE896;"
                     FontFamily="Segoe MDL2 Assets"
-                    FontSize="16" />
+                    FontSize="{h:FontSize Value=16}" />
                 <TextBlock
                     Grid.Column="1"
-                    FontSize="14"
+                    FontSize="{h:FontSize Value=14}"
                     Text="{Binding Name}"
                     TextWrapping="Wrap" />
                 <StackPanel Grid.Row="1" Grid.Column="1">
-                    <TextBlock FontSize="11">
+                    <TextBlock FontSize="{h:FontSize Value=11}">
                         <Run Text="Destination: " />
                         <Run Text="{Binding Destination}" />
                     </TextBlock>
                     <TextBlock
-                        FontSize="11"
+                        FontSize="{h:FontSize Value=11}"
                         Foreground="{DynamicResource DisabledTextSolidColorBrush}"
                         Text="{Binding Path}"
                         TextTrimming="CharacterEllipsis"
@@ -96,7 +97,7 @@
                     Command="{Binding CancelCommand}"
                     Content="&#xE8BB;"
                     FontFamily="Segoe MDL2 Assets"
-                    FontSize="10"
+                    FontSize="{h:FontSize Value=10}"
                     Style="{StaticResource SimpleButtonStyle}" />
                 <ProgressBar
                     Grid.Row="2"
@@ -123,16 +124,16 @@
                     VerticalAlignment="Center"
                     Content="&#xE896;"
                     FontFamily="Segoe MDL2 Assets"
-                    FontSize="16" />
+                    FontSize="{h:FontSize Value=16}" />
                 <TextBlock
                     Grid.Column="1"
-                    FontSize="14"
+                    FontSize="{h:FontSize Value=14}"
                     Text="{Binding Name}"
                     TextWrapping="Wrap" />
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="1"
-                    FontSize="11"
+                    FontSize="{h:FontSize Value=11}"
                     Opacity="0.5"
                     Text="Complete" />
                 <Button
@@ -143,7 +144,7 @@
                     Command="{Binding CancelCommand}"
                     Content="&#xE8BB;"
                     FontFamily="Segoe MDL2 Assets"
-                    FontSize="10"
+                    FontSize="{h:FontSize Value=10}"
                     Style="{StaticResource SimpleButtonStyle}" />
             </Grid>
         </DataTemplate>
@@ -163,16 +164,16 @@
                     VerticalAlignment="Center"
                     Content="&#xE896;"
                     FontFamily="Segoe MDL2 Assets"
-                    FontSize="16" />
+                    FontSize="{h:FontSize Value=16}" />
                 <TextBlock
                     Grid.Column="1"
-                    FontSize="14"
+                    FontSize="{h:FontSize Value=14}"
                     Text="{Binding Name}"
                     TextWrapping="Wrap" />
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="1"
-                    FontSize="11"
+                    FontSize="{h:FontSize Value=11}"
                     Foreground="{DynamicResource ErrorSolidColorBrush}"
                     Text="{Binding Error}"
                     TextWrapping="Wrap" />
@@ -184,7 +185,7 @@
                     Command="{Binding CancelCommand}"
                     Content="&#xE8BB;"
                     FontFamily="Segoe MDL2 Assets"
-                    FontSize="10"
+                    FontSize="{h:FontSize Value=10}"
                     Style="{StaticResource SimpleButtonStyle}" />
             </Grid>
         </DataTemplate>

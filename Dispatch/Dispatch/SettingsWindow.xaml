@@ -5,9 +5,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:Dispatch.ViewModels"
+    xmlns:h="clr-namespace:Dispatch.Helpers"
     Title="Settings"
     Width="400"
-    Height="400"
+    Height="500"
     Background="{DynamicResource WindowBlurBackgroundSolidColorBrush}"
     Loaded="Window_Loaded"
     Style="{StaticResource ChromelessWindowStyle}"
@@ -27,11 +28,11 @@
                 <Label
                     Margin="0,0,0,16"
                     Content="Settings"
-                    FontSize="20" />
+                    FontSize="{h:FontSize Value=20}" />
                 <Label
                     Margin="0,0,0,8"
                     Content="Theme"
-                    FontSize="16" />
+                    FontSize="{h:FontSize Value=16}" />
                 <ComboBox ItemsSource="{Binding Themes}" SelectedItem="{Binding Theme}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
@@ -42,11 +43,22 @@
                 <Label
                     Margin="0,16,0,8"
                     Content="Icons"
-                    FontSize="16" />
+                    FontSize="{h:FontSize Value=16}" />
                 <ComboBox ItemsSource="{Binding IconThemes}" SelectedItem="{Binding IconTheme}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Label
+                    Margin="0,16,0,8"
+                    Content="Font Size"
+                    FontSize="{h:FontSize Value=16}" />
+                <ComboBox ItemsSource="{Binding FontSizes}" SelectedItem="{Binding FontSize}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>

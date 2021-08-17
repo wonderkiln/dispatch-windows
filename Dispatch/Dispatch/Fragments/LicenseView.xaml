@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:Dispatch.ViewModels"
+    xmlns:h="clr-namespace:Dispatch.Helpers"
     d:DataContext="{d:DesignInstance vm:LicenseViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -28,7 +29,7 @@
                         <Setter.Value>
                             <DataTemplate>
                                 <StackPanel>
-                                    <Label Content="License Error" FontSize="16" />
+                                    <Label Content="License Error" FontSize="{h:FontSize Value=16}" />
                                     <Label Content="Error while getting license status" />
                                 </StackPanel>
                             </DataTemplate>
@@ -40,7 +41,7 @@
                         <Setter.Value>
                             <DataTemplate>
                                 <StackPanel>
-                                    <Label Content="License Status" FontSize="16" />
+                                    <Label Content="License Status" FontSize="{h:FontSize Value=16}" />
                                     <Label>
                                         <TextBlock TextWrapping="Wrap">
                                             <Run Text="You are using the free trial. Expires in" />
@@ -63,7 +64,7 @@
                         <Setter.Value>
                             <DataTemplate>
                                 <StackPanel>
-                                    <Label FontSize="16">
+                                    <Label FontSize="{h:FontSize Value=16}">
                                         <Hyperlink Command="{Binding EnterLicenseCommand}">
                                             <TextBlock Text="License Status" />
                                         </Hyperlink>
@@ -81,7 +82,7 @@
                         <Setter.Value>
                             <DataTemplate>
                                 <StackPanel>
-                                    <Label FontSize="16">
+                                    <Label FontSize="{h:FontSize Value=16}">
                                         <Hyperlink Command="{Binding EnterLicenseCommand}">
                                             <TextBlock Text="License is Active" />
                                         </Hyperlink>
