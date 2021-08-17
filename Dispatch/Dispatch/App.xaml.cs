@@ -45,6 +45,15 @@ namespace Dispatch
             }
         }
 
+        public void SetFontSize(AppFontSize fontSize)
+        {
+            var settings = WindowHelper.SettingsStorage.Load(new Settings());
+            settings.FontSize = fontSize;
+            WindowHelper.SettingsStorage.Save(settings);
+
+            FontSizeProvider.Instance.FontSize = fontSize;
+        }
+
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             AppCenter.Start("***REMOVED***", typeof(Analytics), typeof(Crashes));
@@ -76,6 +85,8 @@ namespace Dispatch
             {
                 Console.WriteLine(ex.Message);
             }
+
+            FontSizeProvider.Initialize(settings.FontSize);
         }
 
         private void ThemeWatcher_OnChangeWindowsTheme(object sender, WindowsThemeWatcher.WindowsTheme e)

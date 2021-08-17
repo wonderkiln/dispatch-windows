@@ -59,7 +59,7 @@
             Margin="0,0,0,8"
             VerticalAlignment="Bottom"
             Content="{x:Static h:Constants.APP_NAME}"
-            FontSize="24"
+            FontSize="{h:FontSize Value=24}"
             FontWeight="Light" />
         <ContentControl
             Grid.Row="1"
@@ -84,7 +84,7 @@
                                                     <StackPanel>
                                                         <Label
                                                             Content="Error"
-                                                            FontSize="16"
+                                                            FontSize="{h:FontSize Value=16}"
                                                             FontWeight="SemiBold"
                                                             Foreground="{DynamicResource ErrorSolidColorBrush}" />
                                                         <Label Content="There was an error while fetching the license" Foreground="{DynamicResource ErrorSolidColorBrush}" />
@@ -105,7 +105,7 @@
                                                         <StackPanel>
                                                             <Label
                                                                 Content="Activate"
-                                                                FontSize="16"
+                                                                FontSize="{h:FontSize Value=16}"
                                                                 FontWeight="SemiBold" />
                                                             <Label>
                                                                 <TextBlock TextWrapping="Wrap">
@@ -151,7 +151,7 @@
                                                         <StackPanel>
                                                             <Label
                                                                 Content="Trial"
-                                                                FontSize="16"
+                                                                FontSize="{h:FontSize Value=16}"
                                                                 FontWeight="SemiBold" />
                                                             <Label>
                                                                 <TextBlock TextWrapping="Wrap">
@@ -195,7 +195,7 @@
                                                         <StackPanel>
                                                             <Label
                                                                 Content="Trial Expired"
-                                                                FontSize="16"
+                                                                FontSize="{h:FontSize Value=16}"
                                                                 FontWeight="SemiBold" />
                                                             <Label>
                                                                 <TextBlock TextWrapping="Wrap">
@@ -234,7 +234,7 @@
                                                         <StackPanel>
                                                             <Label
                                                                 Content="License Active"
-                                                                FontSize="16"
+                                                                FontSize="{h:FontSize Value=16}"
                                                                 FontWeight="SemiBold" />
                                                             <Label>
                                                                 <TextBlock TextWrapping="Wrap">
@@ -272,7 +272,7 @@
                                                         <StackPanel>
                                                             <Label
                                                                 Content="License Expired"
-                                                                FontSize="16"
+                                                                FontSize="{h:FontSize Value=16}"
                                                                 FontWeight="SemiBold" />
                                                             <Label>
                                                                 <TextBlock Text="License is expired but you can still fully use the app with the latest major version" TextWrapping="Wrap" />
@@ -306,7 +306,7 @@
                                                         <StackPanel>
                                                             <Label
                                                                 Content="License Not Valid"
-                                                                FontSize="16"
+                                                                FontSize="{h:FontSize Value=16}"
                                                                 FontWeight="SemiBold" />
                                                             <Label>
                                                                 <TextBlock Text="License is not valid for this major version of the app. You can either downgrade to the major version the license was bought or you can unlink this computer and install a valid license" TextWrapping="Wrap" />
