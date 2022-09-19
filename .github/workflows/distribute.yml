@@ -89,26 +89,6 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: echo 'CONTAINER_NAME=stable' >> $GITHUB_ENV
 
-      - name: Upload to Azure
-        uses: LanceMcCarthy/Action-AzureBlobUpload@v1.7.1
-        with:
-          connection_string: ${{ secrets.AZURE_CONNECTION_STRING }}
-          container_name: ${{ env.CONTAINER_NAME }}
-          source_folder: .
-
-      - name: Notify the API
-        run: |
-          NAME=$(ls | grep '.exe' | head -1)
-          VERSION=$(echo $NAME | egrep -o '[0-9]+.[0-9]+.[0-9]+.[0-9]+')
-          echo "SETUP_NAME=$NAME" >> $GITHUB_ENV
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          URL="https://stwonderkilnprod.blob.core.windows.net/${{ env.CONTAINER_NAME }}/$NAME"
-          SIZE=$(stat -c %s "$NAME")
-          FORMAT='{ "url": "%s", "version": "%s", "size": %s }\n'
-          JSON=$(printf "$FORMAT" "$URL" "$VERSION" "$SIZE")
-          echo $JSON
-          curl -X PUT -H "Content-Type: application/json" -H "X-Secret: ${{ secrets.API_SECRET }}" -d "$JSON" https://api.dispatch.wonderkiln.com/api/release/${{ env.CONTAINER_NAME }}
-
       - name: Create Release (Develop)
         id: create_release_develop
         if: github.ref == 'refs/heads/develop'
