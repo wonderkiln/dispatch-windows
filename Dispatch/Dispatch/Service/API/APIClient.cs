@@ -53,27 +53,5 @@ namespace Dispatch.Service.API
             return JsonConvert.DeserializeObject<T>(json);
         }
 
-        public Task<Device> InstallTrial()
-        {
-            var body = new Dictionary<string, string>() { { "platform", Platform } };
-            return Request<Device>(HttpMethod.Post, $"{Constants.API_URL}/device/{HardwareIdentifier}/trial", body);
-        }
-
-        public Task<Device> InstallLicense(string key)
-        {
-            var body = new Dictionary<string, string>() { { "platform", Platform }, { "key", key } };
-            return Request<Device>(HttpMethod.Post, $"{Constants.API_URL}/device/{HardwareIdentifier}/license", body);
-        }
-
-        public Task<Device> RemoveLicense(string key)
-        {
-            var body = new Dictionary<string, string>() { { "key", key } };
-            return Request<Device>(HttpMethod.Delete, $"{Constants.API_URL}/device/{HardwareIdentifier}/license", body);
-        }
-
-        public Task<DeviceStatus> GetDeviceStatus()
-        {
-            return Request<DeviceStatus>(HttpMethod.Get, $"{Constants.API_URL}/device/{HardwareIdentifier}/{Constants.VERSION}");
-        }
     }
 }

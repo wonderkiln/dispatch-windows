@@ -18,66 +18,6 @@
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
 
-    <Window.Resources>
-        <c:DateToRelativeStringConverter x:Key="DateToRelativeStringConverter" />
-        <DataTemplate x:Key="ErrorDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
-            <StackPanel>
-                <Label Content="Error while getting license status" Foreground="{DynamicResource ErrorSolidColorBrush}" />
-            </StackPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="TrialDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
-            <StackPanel>
-                <Label Content="Trial" FontSize="{h:FontSize Value=16}" />
-                <Label Opacity="0.5">
-                    <TextBlock>
-                        <Run Text="Expires in" />
-                        <Run Text="{Binding Device.Device.ExpiresAt, Converter={StaticResource DateToRelativeStringConverter}}" />
-                    </TextBlock>
-                </Label>
-                <Button
-                    Margin="0,8,0,0"
-                    Padding="8,4"
-                    HorizontalAlignment="Left"
-                    Command="{Binding EnterLicenseCommand}"
-                    Content="Enter License"
-                    FontSize="{h:FontSize Value=13}" />
-            </StackPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="LicenseDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
-            <StackPanel>
-                <Label Content="License" FontSize="{h:FontSize Value=16}" />
-                <Label Opacity="0.5">
-                    <TextBlock>
-                        <Run Text="Expires in" />
-                        <Run Text="{Binding Device.Device.ExpiresAt, Converter={StaticResource DateToRelativeStringConverter}}" />
-                    </TextBlock>
-                </Label>
-                <Button
-                    Margin="0,8,0,0"
-                    Padding="8,4"
-                    HorizontalAlignment="Left"
-                    cc:DPButtonExtension.IsLoading="{Binding IsLoading}"
-                    Command="{Binding RemoveLicenseCommand}"
-                    Content="Unlink Computer"
-                    FontSize="{h:FontSize Value=13}" />
-            </StackPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="LicenseExpiredDataTemplate" DataType="{x:Type vm:LicenseViewModel}">
-            <StackPanel>
-                <Label Content="License Expired" FontSize="{h:FontSize Value=16}" />
-                <Label Content="You can still use this major version only of the app" Opacity="0.5" />
-                <Button
-                    Margin="0,8,0,0"
-                    Padding="8,4"
-                    HorizontalAlignment="Left"
-                    cc:DPButtonExtension.IsLoading="{Binding IsLoading}"
-                    Command="{Binding RemoveLicenseCommand}"
-                    Content="Unlink Computer"
-                    FontSize="{h:FontSize Value=13}" />
-            </StackPanel>
-        </DataTemplate>
-    </Window.Resources>
-
     <StackPanel
         Margin="-12,24,24,24"
         HorizontalAlignment="Center"
@@ -99,37 +39,6 @@
             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                 <Label Content="{x:Static h:Constants.APP_NAME}" FontSize="{h:FontSize Value=16}" />
                 <Label Content="{x:Static h:Constants.VERSION_STRING}" Opacity="0.5" />
-                <ContentControl Margin="0,12,0,0" DataContext="{Binding License}">
-                    <ContentControl.Style>
-                        <Style TargetType="ContentControl">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ContentControl">
-                                        <ContentPresenter x:Name="Presenter" Content="{Binding}">
-                                            <ContentPresenter.ContentTemplate>
-                                                <DataTemplate />
-                                            </ContentPresenter.ContentTemplate>
-                                        </ContentPresenter>
-                                        <ControlTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding Status}" Value="Error">
-                                                <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource ErrorDataTemplate}" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Status}" Value="Trial">
-                                                <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource TrialDataTemplate}" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Status}" Value="License">
-                                                <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource LicenseDataTemplate}" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Status}" Value="LicenseExpired">
-                                                <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource LicenseExpiredDataTemplate}" />
-                                            </DataTrigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ContentControl.Style>
-                </ContentControl>
             </StackPanel>
         </Grid>
     </StackPanel>

@@ -45,8 +45,6 @@ namespace Dispatch.ViewModels
 
         public QueueViewModel Queue { get; } = new QueueViewModel();
 
-        public LicenseViewModel License { get; } = new LicenseViewModel();
-
         public ObservableCollection<TabViewModel> OpenTabs { get; } = new ObservableCollection<TabViewModel>();
 
         private TabViewModel selectedTab;

@@ -49,11 +49,5 @@
                 </Button>
             </StackPanel>
         </ScrollViewer>
-        <Border
-            Grid.Row="1"
-            BorderBrush="{DynamicResource SeparatorSolidColorBrush}"
-            BorderThickness="0,1,0,0">
-            <f:LicenseView Margin="16" DataContext="{Binding License}" />
-        </Border>
     </Grid>
 </UserControl>

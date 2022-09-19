@@ -163,9 +163,6 @@
     <Compile Include="Fragments\FavoriteNameView.xaml.cs">
       <DependentUpon>FavoriteNameView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Fragments\LicenseView.xaml.cs">
-      <DependentUpon>LicenseView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\ItemToTemplateSelector.cs" />
@@ -178,9 +175,6 @@
     <Compile Include="Helpers\ResourceQueue.cs" />
     <Compile Include="Helpers\ResourceWatcher.cs" />
     <Compile Include="Helpers\WindowHelper.cs" />
-    <Compile Include="LicenseWindow.xaml.cs">
-      <DependentUpon>LicenseWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ModalWindow.xaml.cs">
       <DependentUpon>ModalWindow.xaml</DependentUpon>
     </Compile>
@@ -192,10 +186,6 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\LicenseViewModel.cs" />
-    <Compile Include="Service\Models\Device.cs" />
-    <Compile Include="Service\Models\DeviceStatus.cs" />
-    <Compile Include="Service\Models\License.cs" />
     <Compile Include="Service\Models\Bookmark.cs" />
     <Compile Include="Service\Models\FTPConnection.cs" />
     <Compile Include="Service\Models\ResourceProgress.cs" />
@@ -244,17 +234,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Fragments\LicenseView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Fragments\S3ConnectView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="LicenseWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ModalWindow.xaml">
       <SubType>Designer</SubType>
