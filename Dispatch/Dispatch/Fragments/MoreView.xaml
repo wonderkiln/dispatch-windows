@@ -47,7 +47,6 @@
                         <TextBlock VerticalAlignment="Center" Text="About" />
                     </StackPanel>
                 </Button>
-                <f:UpdateView Margin="8" DataContext="{Binding Update}" />
             </StackPanel>
         </ScrollViewer>
         <Border

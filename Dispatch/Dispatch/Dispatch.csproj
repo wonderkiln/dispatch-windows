@@ -166,9 +166,6 @@
     <Compile Include="Fragments\LicenseView.xaml.cs">
       <DependentUpon>LicenseView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Fragments\UpdateView.xaml.cs">
-      <DependentUpon>UpdateView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\ItemToTemplateSelector.cs" />
@@ -212,14 +209,9 @@
     <Compile Include="ViewModels\S3ConnectionViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\StorageViewModel.cs" />
-    <Compile Include="ViewModels\UpdateViewModel.cs" />
     <Compile Include="Service\Client\LocalClient.cs" />
     <Compile Include="Service\Client\IClient.cs" />
     <Compile Include="Service\Models\Resource.cs" />
-    <Compile Include="Service\Updater\ApplicationUpdater.cs" />
-    <Compile Include="Service\Updater\UpdateProvider.cs" />
-    <Compile Include="Service\Updater\IUpdateProvider.cs" />
-    <Compile Include="Service\Models\Update.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ResourcesViewModel.cs" />
     <Compile Include="ViewModels\TabViewModel.cs" />
@@ -259,10 +251,6 @@
     <Page Include="Fragments\S3ConnectView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Fragments\UpdateView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LicenseWindow.xaml">
       <SubType>Designer</SubType>

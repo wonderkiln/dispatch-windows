@@ -75,25 +75,5 @@ namespace Dispatch.Service.API
         {
             return Request<DeviceStatus>(HttpMethod.Get, $"{Constants.API_URL}/device/{HardwareIdentifier}/{Constants.VERSION}");
         }
-
-        public Task<Update> GetLatestUpdate()
-        {
-            string url;
-
-            switch (Constants.CHANNEL)
-            {
-                case Constants.Channel.Nightly:
-                    url = $"{Constants.API_URL}/release/nightly";
-                    break;
-                case Constants.Channel.Beta:
-                    url = $"{Constants.API_URL}/release/beta";
-                    break;
-                default:
-                    url = $"{Constants.API_URL}/release/stable";
-                    break;
-            }
-
-            return Request<Update>(HttpMethod.Get, url);
-        }
     }
 }
