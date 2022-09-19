@@ -178,10 +178,8 @@
     <Compile Include="ModalWindow.xaml.cs">
       <DependentUpon>ModalWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Service\API\APIClient.cs" />
     <Compile Include="Service\Client\FTPClient.cs" />
     <Compile Include="Service\Client\SFTPClient.cs" />
-    <Compile Include="Service\Licensing\Fingerprint.cs" />
     <Compile Include="Service\Models\ThemePackage.cs" />
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
