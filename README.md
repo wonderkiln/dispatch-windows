@@ -41,4 +41,3 @@ There is one GitHub action that distributes the app with these steps:
 1. Builds the solution including the build number environment variable & channel compiler tag
 2. Creates the executable setup file
 3. Uploads the setup to the specific container based on the channel
-4. Notifies the API that a new build has been uploaded so the users can be notified that an update for their specific channel is available.
