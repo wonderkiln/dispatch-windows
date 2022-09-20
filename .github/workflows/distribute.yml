@@ -2,7 +2,7 @@ name: Distribute
 
 on:
   push:
-    branches: [develop, beta, master]
+    branches: [develop, beta, main]
 
 jobs:
   build:
@@ -28,8 +28,8 @@ jobs:
         if: github.ref == 'refs/heads/beta'
         run: msbuild Dispatch\Dispatch.sln /p:Configuration=Release /p:Revision=${{ github.run_number }} /p:DefineConstants=BETA
 
-      - name: Build the Solution (Master)
-        if: github.ref == 'refs/heads/master'
+      - name: Build the Solution (Main)
+        if: github.ref == 'refs/heads/main'
         run: msbuild Dispatch\Dispatch.sln /p:Configuration=Release /p:Revision=${{ github.run_number }}
 
       - name: Sign Application
@@ -50,8 +50,8 @@ jobs:
         if: github.ref == 'refs/heads/beta'
         run: iscc /DMyAppChannel=Beta Setup\script.iss
 
-      - name: Package Setup (Master)
-        if: github.ref == 'refs/heads/master'
+      - name: Package Setup (Main)
+        if: github.ref == 'refs/heads/main'
         run: iscc Setup\script.iss
 
       - name: Sign Setup
@@ -85,8 +85,8 @@ jobs:
         if: github.ref == 'refs/heads/beta'
         run: echo 'CONTAINER_NAME=beta' >> $GITHUB_ENV
 
-      - name: Set Container Name (Master)
-        if: github.ref == 'refs/heads/master'
+      - name: Set Container Name (Main)
+        if: github.ref == 'refs/heads/main'
         run: echo 'CONTAINER_NAME=stable' >> $GITHUB_ENV
 
       - name: Create Release (Develop)
@@ -113,9 +113,9 @@ jobs:
           draft: false
           prerelease: true
 
-      - name: Create Release (Master)
-        id: create_release_master
-        if: github.ref == 'refs/heads/master'
+      - name: Create Release (Main)
+        id: create_release_main
+        if: github.ref == 'refs/heads/main'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -147,13 +147,13 @@ jobs:
           asset_name: setup.exe
           asset_content_type: application/octet-stream
 
-      - name: Upload Release Asset (Master)
-        if: github.ref == 'refs/heads/master'
+      - name: Upload Release Asset (Main)
+        if: github.ref == 'refs/heads/main'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release_master.outputs.upload_url }}
+          upload_url: ${{ steps.create_release_main.outputs.upload_url }}
           asset_path: ./${{ env.SETUP_NAME }}
           asset_name: setup.exe
           asset_content_type: application/octet-stream
