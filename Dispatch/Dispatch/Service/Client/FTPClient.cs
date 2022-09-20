@@ -1,5 +1,6 @@
 ﻿using Dispatch.Service.Models;
 using FluentFTP;
+using FluentFTP.Helpers;
 using System;
 using System.IO;
 using System.Linq;
@@ -11,11 +12,11 @@ namespace Dispatch.Service.Client
 {
     public class FTPClient : IClient
     {
-        private readonly FtpClient client;
+        private readonly AsyncFtpClient client;
 
         private readonly FTPConnection connectionInfo;
 
-        public FTPClient(FtpClient client, FTPConnection connectionInfo)
+        public FTPClient(AsyncFtpClient client, FTPConnection connectionInfo)
         {
             this.client = client;
             this.connectionInfo = connectionInfo;
@@ -23,16 +24,14 @@ namespace Dispatch.Service.Client
 
         public static async Task<FTPClient> Create(FTPConnection connectionInfo)
         {
-            FtpTrace.EnableTracing = false;
-
-            var client = new FtpClient();
-            client.ValidateAnyCertificate = true;
-            client.DataConnectionType = FtpDataConnectionType.PASV;
+            var client = new AsyncFtpClient();
+            client.Config.ValidateAnyCertificate = true;
+            client.Config.DataConnectionType = FtpDataConnectionType.PASV;
             client.Host = connectionInfo.Address;
             client.Port = connectionInfo.Port;
             client.Credentials = new NetworkCredential(connectionInfo.Username, connectionInfo.Password);
 
-            await client.ConnectAsync();
+            await client.Connect();
 
             return new FTPClient(client, connectionInfo);
         }
@@ -44,7 +43,7 @@ namespace Dispatch.Service.Client
 
         public async Task Diconnect()
         {
-            await client.DisconnectAsync();
+            await client.Disconnect();
             client.Dispose();
         }
 
@@ -52,7 +51,7 @@ namespace Dispatch.Service.Client
         {
             switch (item.Type)
             {
-                case FtpFileSystemObjectType.Directory:
+                case FtpObjectType.Directory:
                     return new Resource(this, item.FullName, item.Name)
                     {
                         Type = ResourceType.Directory,
@@ -69,7 +68,7 @@ namespace Dispatch.Service.Client
 
         public async Task<Resource> FetchResource(string path)
         {
-            var item = await client.GetObjectInfoAsync(path);
+            var item = await client.GetObjectInfo(path);
 
             if (item == null)
             {
@@ -81,7 +80,7 @@ namespace Dispatch.Service.Client
 
         public async Task<Resource[]> FetchResources(string path)
         {
-            var items = await client.GetListingAsync(path);
+            var items = await client.GetListing(path);
             return items.Select(MakeResource).ToArray();
         }
 
@@ -93,11 +92,11 @@ namespace Dispatch.Service.Client
 
             if (resource.Type == ResourceType.Directory)
             {
-                await client.DeleteDirectoryAsync(path, token);
+                await client.DeleteDirectory(path, token);
             }
             else
             {
-                await client.DeleteFileAsync(path, token);
+                await client.DeleteFile(path, token);
             }
         }
 
@@ -129,12 +128,12 @@ namespace Dispatch.Service.Client
             if (File.Exists(fileOrDirectory))
             {
                 var destination = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
-                await client.UploadFileAsync(fileOrDirectory, destination, FtpRemoteExists.Overwrite, false, FtpVerify.None, new FtpProgressConverter(progress) { Uploading = true }, token);
+                await client.UploadFile(fileOrDirectory, destination, FtpRemoteExists.Overwrite, false, FtpVerify.None, new FtpProgressConverter(progress) { Uploading = true }, token);
             }
             else if (Directory.Exists(fileOrDirectory))
             {
                 var destination = $"{normalizedPath}/{Path.GetFileName(fileOrDirectory)}";
-                await client.UploadDirectoryAsync(fileOrDirectory, destination, FtpFolderSyncMode.Update, FtpRemoteExists.Skip, FtpVerify.None, null, new FtpProgressConverter(progress) { Uploading = true }, token);
+                await client.UploadDirectory(fileOrDirectory, destination, FtpFolderSyncMode.Update, FtpRemoteExists.Skip, FtpVerify.None, null, new FtpProgressConverter(progress) { Uploading = true }, token);
             }
             else
             {
@@ -152,11 +151,11 @@ namespace Dispatch.Service.Client
 
             if (resource.Type == ResourceType.File)
             {
-                await client.DownloadFileAsync(localPath, path, FtpLocalExists.Overwrite, FtpVerify.None, new FtpProgressConverter(progress) { Uploading = false }, token);
+                await client.DownloadFile(localPath, path, FtpLocalExists.Overwrite, FtpVerify.None, new FtpProgressConverter(progress) { Uploading = false }, token);
             }
             else if (resource.Type == ResourceType.Directory)
             {
-                await client.DownloadDirectoryAsync(localPath, path, FtpFolderSyncMode.Update, FtpLocalExists.Skip, FtpVerify.None, null, new FtpProgressConverter(progress) { Uploading = false }, token);
+                await client.DownloadDirectory(localPath, path, FtpFolderSyncMode.Update, FtpLocalExists.Skip, FtpVerify.None, null, new FtpProgressConverter(progress) { Uploading = false }, token);
             }
         }
     }
