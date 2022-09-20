@@ -13,7 +13,7 @@ namespace Dispatch.Helpers
         private FrameworkElement targetObject;
         private PropertyInfo targetProperty;
 
-        public FontSizeExtension(): base("foo")
+        public FontSizeExtension() : base("foo")
         {
         }
 
@@ -21,7 +21,7 @@ namespace Dispatch.Helpers
         {
             try
             {
-                var providerValueTarget = (IProvideValueTarget) serviceProvider.GetService(typeof(IProvideValueTarget));
+                var providerValueTarget = (IProvideValueTarget)serviceProvider.GetService(typeof(IProvideValueTarget));
 
                 targetObject = (FrameworkElement)providerValueTarget.TargetObject;
                 targetObject.Unloaded += targetObject_Unloaded;

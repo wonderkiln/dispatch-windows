@@ -1,6 +1,5 @@
 ﻿using Dispatch.Service.Models;
 using FluentFTP;
-using FluentFTP.Helpers;
 using System;
 using System.IO;
 using System.Linq;

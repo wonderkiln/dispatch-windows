@@ -1,7 +1,6 @@
 ﻿using Dispatch.Service.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Dispatch.Helpers
 {
