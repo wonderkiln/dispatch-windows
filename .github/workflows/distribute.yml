@@ -72,6 +72,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v2
+
       - name: Download Setup
         uses: actions/download-artifact@v2
         with:
@@ -92,9 +94,23 @@ jobs:
       - name: Set Release Name and Version
         run: |
           NAME=$(ls | grep '.exe' | head -1)
-          VERSION=$(echo $NAME | egrep -o '[0-9]+.[0-9]+.[0-9]+.[0-9]+')
+          VERSION=$(echo $NAME | egrep -o '[0-9]+.[0-9]+.[0-9]+')
           echo "SETUP_NAME=$NAME" >> $GITHUB_ENV
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Set Variant (Develop)
+        if: github.ref == 'refs/heads/develop'
+        run: echo VARIANT=nightly >> $GITHUB_ENV
+
+      - name: Set Variant (Beta)
+        if: github.ref == 'refs/heads/beta'
+        run: echo VARIANT=beta >> $GITHUB_ENV
+
+      - name: Next Build Number Action
+        uses: ./.github/actions/next-build-number
+        id: next_build_number
+        with:
+          format: '${{ env.VERSION }}-${{ env.VARIANT }}\.(\d+)'
 
       - name: Create Release (Develop)
         id: create_release_develop
@@ -103,8 +119,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.VERSION }}-${{ env.CONTAINER_NAME }}
-          release_name: ${{ env.VERSION }}-${{ env.CONTAINER_NAME }}
+          tag_name: ${{ env.VERSION }}-${{ env.VARIANT }}.${{ steps.next_build_number.outputs.next }}
+          release_name: ${{ env.VERSION }}-${{ env.VARIANT }}.${{ steps.next_build_number.outputs.next }}
           draft: false
           prerelease: true
 
@@ -115,8 +131,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.VERSION }}-${{ env.CONTAINER_NAME }}
-          release_name: ${{ env.VERSION }}-${{ env.CONTAINER_NAME }}
+          tag_name: ${{ env.VERSION }}-${{ env.VARIANT }}.${{ steps.next_build_number.outputs.next }}
+          release_name: ${{ env.VERSION }}-${{ env.VARIANT }}.${{ steps.next_build_number.outputs.next }}
           draft: false
           prerelease: true
 

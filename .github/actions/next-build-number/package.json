@@ -1,0 +1,22 @@
+{
+  "name": "next-build-number",
+  "version": "1.0.0",
+  "description": "Determines the next sequential build number based on a version name and variant",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wonderkiln/next-build-number.git"
+  },
+  "keywords": [
+    "github",
+    "action"
+  ],
+  "author": "WonderKiln",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.9.1"
+  }
+}

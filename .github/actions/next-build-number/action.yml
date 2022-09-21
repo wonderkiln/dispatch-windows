@@ -1,0 +1,17 @@
+name: 'Next Build Number'
+description: 'Determines the next sequential build number based on a version name and variant'
+author: 'WonderKiln'
+inputs:
+  format:
+    description: 'Regular expression describing the format of your git tags. Capture the build number with (\d+). Ex: v1\.\0\.0-beta(\d+)'
+    required: true
+outputs:
+  build-number:
+    description: 'Next build number from incrementing the last matched tag. If no matched tag found, will return "1".'
+runs:
+  using: 'node12'
+  main: 'index.js'
+branding:
+  color: 'purple'
+  icon: 'hash'
+
