@@ -109,14 +109,6 @@ namespace Dispatch.ViewModels
                 viewModel.Transfer(localResources.ToArray());
             }
         }
-
-        public void DragEnter(IDropInfo dropInfo)
-        {
-        }
-
-        public void DragLeave(IDropInfo dropInfo)
-        {
-        }
     }
 
     public class ResourcesViewModel : Observable, ResourceQueue.Item.IRefreshable

@@ -35,14 +35,6 @@ namespace Dispatch.ViewModels
                 OnTabMove?.Invoke(this, new TabsMoveEventArgs() { Tab = tab, Index = dropInfo.InsertIndex });
             }
         }
-
-        public void DragEnter(IDropInfo dropInfo)
-        {
-        }
-
-        public void DragLeave(IDropInfo dropInfo)
-        {
-        }
     }
 
     public class MainViewModel : Observable

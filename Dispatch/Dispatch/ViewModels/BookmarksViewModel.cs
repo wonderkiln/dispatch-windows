@@ -88,14 +88,6 @@ namespace Dispatch.ViewModels
                 }
             }
         }
-
-        public void DragEnter(IDropInfo dropInfo)
-        {
-        }
-
-        public void DragLeave(IDropInfo dropInfo)
-        {
-        }
     }
 
     public class BookmarksViewModel : StorageViewModel<Bookmark>
