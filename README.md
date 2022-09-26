@@ -2,15 +2,7 @@
 # ![](.github/resources/logo.png) Dispatch FTP
 FTP Client for Windows; 100% Native from Install to Usage.
 
-![](.github/resources/intro-preview.png)
-
-
-## Table of Contents
-
-1. [Supported Platforms](#supported-platforms)
-2. [Libraries Used](#libraries-used)
-3. [How to Build](#how-to-build)
-4. [GitHub Actions](#github-actions)
+![](.github/resources/preview.png)
 
 ## Supported Platforms
 
@@ -47,3 +39,5 @@ There is one GitHub action that distributes the app with these steps:
 1. Builds the solution including the build number environment variable & channel compiler tag
 2. Creates the executable setup file
 3. Uploads the setup to the specific container based on the channel
+
+## Made and Maintained by WonderKiln, Inc.
