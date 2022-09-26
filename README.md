@@ -13,7 +13,12 @@ FTP Client for Windows; 100% Native from Install to Usage.
 
 ## Supported Platforms
 
-Currently the application is developed, tested and currently working on Windows 10. Should also work on Windows 7, 8 and 8.1 with .NET Framework 4.5 installed (but was not yet tested).
+Currently the application is developed, tested and currently working on Windows 10/11. Should also work on Windows 7, 8 and 8.1 with .NET Framework 4.5 installed (but was not yet tested).
+
+## Current Status
+Dispatch started as a paid FTP client for Windows. We realized this was better fit as a open source project to not only spur more support but also as a legitmate alternative to FileZilla. We are looking at a WinUI v3 redesign are 100% focused on keeping this free and open source.
+
+When a paid scenario does come up, if ever, it will be around 'PowerToys' style enhancements and will only be incorporated if the community agrees.
 
 ## Libraries Used
 
